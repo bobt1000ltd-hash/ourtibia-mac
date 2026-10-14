@@ -1,0 +1,347 @@
+ForgeRow < UIWidget
+  height: 32
+  background-color: #2b2b2bcc
+  border-width: 1
+  border-color: #1a1a1a
+  focusable: true
+  $hover:
+    background-color: #3a3a3acc
+  $focus:
+    background-color: #4a4a4a
+    border-color: #8a8a8a
+  UIItem
+    id: icon
+    size: 28 28
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 2
+    virtual: true
+    phantom: true
+  Label
+    id: name
+    anchors.left: icon.right
+    anchors.top: parent.top
+    margin-left: 6
+    margin-top: 2
+    color: #e8e8e8
+    font: verdana-11px-rounded
+    phantom: true
+    text-auto-resize: true
+  UIItem
+    id: fragIcon
+    size: 11 11
+    anchors.left: icon.right
+    anchors.bottom: parent.bottom
+    margin-left: 6
+    margin-bottom: 2
+    virtual: true
+    phantom: true
+  Label
+    id: frag
+    anchors.left: fragIcon.right
+    anchors.verticalCenter: fragIcon.verticalCenter
+    margin-left: 3
+    color: #c9c9ff
+    phantom: true
+    text-auto-resize: true
+  Label
+    id: gold
+    anchors.left: parent.left
+    anchors.verticalCenter: fragIcon.verticalCenter
+    margin-left: 120
+    color: #f0d060
+    phantom: true
+    text-auto-resize: true
+
+ForgeBox < UIWidget
+  background-color: #1e1e1eee
+  border-width: 1
+  border-color: #5a5a5a
+
+ForgeHeader < Label
+  height: 13
+  background-color: #3b3b3b
+  color: #bdbdbd
+  text-align: center
+  font: verdana-11px-rounded
+
+MainWindow
+  id: itemForgeWindow
+  text: Item Forge
+  size: 580 420
+  @onEscape: self:hide()
+  UIButton
+    id: tabCraft
+    anchors.top: parent.top
+    anchors.left: parent.left
+    size: 275 30
+    text: Stone Crafting
+    color: #ffffff
+    background-color: #3a3a3a
+    border-width: 1
+    border-color: #6a6a6a
+  UIButton
+    id: tabUpgrade
+    anchors.top: parent.top
+    anchors.right: parent.right
+    size: 275 30
+    text: Item Upgrading
+    color: #ffffff
+    background-color: #262626
+    border-width: 1
+    border-color: #6a6a6a
+  UIWidget
+    id: craftPanel
+    anchors.top: tabCraft.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: closeButton.top
+    margin-top: 6
+    margin-bottom: 6
+    ForgeBox
+      id: listBox
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.bottom: parent.bottom
+      width: 255
+      ForgeHeader
+        id: listHeader
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: Pick a recipe
+      ScrollablePanel
+        id: recipes
+        anchors.top: listHeader.bottom
+        anchors.left: parent.left
+        anchors.right: recipeScroll.left
+        anchors.bottom: parent.bottom
+        margin: 3
+        vertical-scrollbar: recipeScroll
+        layout:
+          type: verticalBox
+          spacing: 2
+      VerticalScrollBar
+        id: recipeScroll
+        anchors.top: listHeader.bottom
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        step: 34
+        pixels-scroll: true
+    ForgeBox
+      id: detailBox
+      anchors.top: parent.top
+      anchors.left: listBox.right
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin-left: 6
+      ForgeHeader
+        id: detailHeader
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: Recipe Details
+      UIItem
+        id: detailIcon
+        size: 32 32
+        anchors.top: detailHeader.bottom
+        anchors.left: parent.left
+        margin: 8
+        virtual: true
+      Label
+        id: detailName
+        anchors.top: detailIcon.top
+        anchors.left: detailIcon.right
+        anchors.right: parent.right
+        margin-left: 6
+        color: #ffffff
+      Label
+        id: detailDesc
+        anchors.top: detailName.bottom
+        anchors.left: detailIcon.right
+        anchors.right: parent.right
+        margin-left: 6
+        margin-right: 6
+        color: #a8a8a8
+        text-wrap: true
+        text-auto-resize: true
+      Label
+        id: ingredientsLabel
+        anchors.top: detailDesc.bottom
+        anchors.left: parent.left
+        margin: 12 8 0 8
+        text: Crafting Ingredients:
+        color: #dcdcdc
+      UIItem
+        id: ingredientIcon
+        size: 32 32
+        anchors.top: ingredientsLabel.bottom
+        anchors.left: parent.left
+        margin: 4 8 0 8
+        virtual: true
+        border-width: 1
+        border-color: #5a5a5a
+      Label
+        id: ingredientCount
+        anchors.left: ingredientIcon.right
+        anchors.verticalCenter: ingredientIcon.verticalCenter
+        margin-left: 6
+        color: #c9c9ff
+        text-auto-resize: true
+      Label
+        id: quantityLabel
+        anchors.bottom: fragLabel.top
+        anchors.left: parent.left
+        margin: 0 8 4 8
+        text: Quantity:
+        color: #dcdcdc
+      HorizontalScrollBar
+        id: quantity
+        anchors.verticalCenter: quantityLabel.verticalCenter
+        anchors.left: quantityLabel.right
+        anchors.right: quantityValue.left
+        margin-left: 6
+        margin-right: 6
+        minimum: 1
+        maximum: 1
+        step: 1
+      Label
+        id: quantityValue
+        anchors.verticalCenter: quantityLabel.verticalCenter
+        anchors.right: parent.right
+        margin-right: 8
+        width: 24
+        text: 1
+        text-align: right
+      Label
+        id: fragLabel
+        anchors.bottom: goldLabel.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin: 0 8 4 8
+        color: #c9c9ff
+      Label
+        id: goldLabel
+        anchors.bottom: canCraftLabel.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin: 0 8 4 8
+        color: #f0d060
+      Label
+        id: canCraftLabel
+        anchors.bottom: craftButton.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin: 0 8 6 8
+        color: #dcdcdc
+      Button
+        id: craftButton
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin: 6
+        height: 26
+        text: Craft item
+  UIWidget
+    id: upgradePanel
+    anchors.top: tabCraft.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: closeButton.top
+    margin-top: 6
+    margin-bottom: 6
+    visible: false
+    ForgeBox
+      id: slotBox
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.bottom: parent.bottom
+      width: 190
+      ForgeHeader
+        id: slotHeader
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: Item to Upgrade
+      UIItem
+        id: upgradeSlot
+        size: 64 64
+        anchors.centerIn: parent
+        virtual: true
+        background-color: #111111
+        border-width: 1
+        border-color: #7a7a7a
+      Label
+        id: slotHint
+        anchors.top: upgradeSlot.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin-top: 8
+        text-align: center
+        text-wrap: true
+        text-auto-resize: true
+        color: #9a9a9a
+        text: Drag an item here to upgrade it
+    ForgeBox
+      id: upgradeBox
+      anchors.top: parent.top
+      anchors.left: slotBox.right
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin-left: 6
+      ForgeHeader
+        id: upgradeHeader
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: Upgrade Details
+      Label
+        id: upgradeText
+        anchors.top: upgradeHeader.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: protectorCheck.top
+        margin: 10
+        text-wrap: true
+        text-align: topLeft
+        color: #dcdcdc
+        text: Select an item to see upgrade details
+      CheckBox
+        id: protectorCheck
+        anchors.bottom: upgradeButton.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin-left: 8
+        margin-right: 6
+        margin-bottom: 4
+        height: 16
+        color: #dcdcdc
+        text: Use Astral Protector
+        !tooltip: tr('If the upgrade fails, the item does not drop a level. One Astral Protector from your backpack is used up on the attempt (success or not).')
+      Button
+        id: upgradeButton
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin: 6
+        height: 26
+        text: Upgrade
+        enabled: false
+  Label
+    id: goldBalance
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    width: 110
+    height: 20
+    text-align: center
+    color: #f0d060
+    background-color: #111111
+    border-width: 1
+    border-color: #5a5a5a
+  Button
+    id: closeButton
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    width: 60
+    text: Close
+    @onClick: self:getParent():hide()

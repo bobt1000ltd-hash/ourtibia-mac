@@ -1,0 +1,687 @@
+TaskTab < UIButton
+  height: 40
+  font: verdana-11px-rounded
+  text-align: left
+  text-offset: 46 1
+  color: #bdbdbd
+  background-color: #262626
+  border-width: 1
+  border-color: #3c3c3c
+  $hover:
+    color: #ffffff
+    border-color: #6a6a6a
+  $on:
+    background-color: #3a3220
+    border-color: #c8a040
+    color: #ffd35a
+  UIItem
+    id: icon
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 7
+    size: 32 32
+    virtual: true
+    phantom: true
+
+TaskCard < UIWidget
+  size: 212 166
+  background-color: #222222
+  border-width: 1
+  border-color: #3c3c3c
+  UIWidget
+    id: artBox
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin: 6 0 0 6
+    size: 58 58
+    background-color: #161616
+    border-width: 1
+    border-color: #303030
+    phantom: true
+  UICreature
+    id: creature
+    anchors.centerIn: artBox
+    size: 52 52
+    phantom: true
+  Label
+    id: header
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin: 6 6 0 0
+    text-auto-resize: true
+    padding: 1 4 1 4
+    font: verdana-11px-monochrome
+    color: #ffffff
+    background-color: #3a3a3a
+    text: Task
+  Label
+    id: name
+    anchors.top: artBox.top
+    anchors.left: artBox.right
+    anchors.right: header.left
+    margin: 2 4 0 8
+    height: 16
+    font: verdana-11px-rounded
+    color: #ffd35a
+  Label
+    id: kills
+    anchors.top: name.bottom
+    anchors.left: name.left
+    anchors.right: parent.right
+    margin: 4 6 0 0
+    height: 14
+    color: #d8d8d8
+  ProgressBar
+    id: bar
+    anchors.top: kills.bottom
+    anchors.left: name.left
+    anchors.right: parent.right
+    margin: 4 8 0 0
+    height: 8
+    background-color: #3fbf3f
+  Panel
+    id: rewards
+    anchors.top: artBox.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin: 6 6 0 6
+    height: 60
+    background-color: #181818
+    border-width: 1
+    border-color: #2f2f2f
+    Label
+      id: exp
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin: 5 7 0 7
+      width: 92
+      color: #f0f0f0
+    Label
+      id: gold
+      anchors.top: parent.top
+      anchors.right: parent.right
+      margin: 5 7 0 0
+      width: 88
+      text-align: right
+      color: #f0d060
+    Label
+      id: tokens
+      anchors.top: exp.bottom
+      anchors.left: parent.left
+      margin: 3 7 0 7
+      width: 92
+      color: #9fd0ff
+    Label
+      id: points
+      anchors.top: gold.bottom
+      anchors.right: parent.right
+      margin: 3 7 0 0
+      width: 88
+      text-align: right
+      color: #ffd35a
+    Label
+      id: boss
+      anchors.top: tokens.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 3 7 0 7
+      color: #ffb050
+  Button
+    id: action
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin: 0 6 6 6
+    height: 22
+  Button
+    id: cancel
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin: 0 6 6 0
+    size: 58 22
+    text: Cancel
+    visible: false
+
+ShopTile < UIButton
+  size: 92 92
+  background-color: #222222
+  border-width: 1
+  border-color: #3c3c3c
+  $hover:
+    border-color: #6a6a6a
+  $on:
+    border-color: #c8a040
+    background-color: #2d2a22
+  Label
+    id: name
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin: 3 3 0 3
+    height: 26
+    text-wrap: true
+    text-align: center
+    font: verdana-11px-monochrome
+    color: #f5c24a
+    phantom: true
+  UIItem
+    id: item
+    anchors.top: name.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    size: 34 34
+    virtual: true
+    phantom: true
+  UICreature
+    id: creature
+    anchors.top: name.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: -10
+    size: 48 48
+    phantom: true
+  UIWidget
+    id: icon
+    anchors.top: name.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    size: 34 34
+    phantom: true
+  Label
+    id: price
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-bottom: 3
+    text-align: center
+    color: #ffd35a
+    phantom: true
+
+KitnRow < UIWidget
+  height: 58
+  background-color: #222222
+  border-width: 1
+  border-color: #3c3c3c
+  UIWidget
+    id: artBox
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 4
+    size: 50 50
+    background-color: #161616
+    border-width: 1
+    border-color: #303030
+    phantom: true
+  UICreature
+    id: creature
+    anchors.centerIn: artBox
+    size: 46 46
+  Label
+    id: name
+    anchors.top: parent.top
+    anchors.left: creature.right
+    anchors.right: action.left
+    margin-top: 4
+    margin-left: 6
+    height: 16
+    font: verdana-11px-rounded
+    color: #f0f0f0
+  Label
+    id: kills
+    anchors.top: name.bottom
+    anchors.left: name.left
+    width: 160
+    height: 14
+    color: #c8c8c8
+  ProgressBar
+    id: bar
+    anchors.top: kills.bottom
+    anchors.left: name.left
+    margin-top: 3
+    width: 160
+    height: 8
+  Label
+    id: boss
+    anchors.top: name.bottom
+    anchors.left: kills.right
+    anchors.right: action.left
+    margin-left: 8
+    height: 28
+    text-wrap: true
+    color: #f0c060
+  Button
+    id: action
+    anchors.right: cancel.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-right: 4
+    width: 96
+    height: 22
+  Button
+    id: cancel
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-right: 6
+    width: 54
+    height: 22
+    text: Cancel
+    visible: false
+
+MainWindow
+  id: myotsTaskBoard
+  text: Task Board
+  size: 700 660
+  @onEscape: modules.game_myotstasks.hide()
+  Panel
+    id: tabs
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 40
+    layout:
+      type: horizontalBox
+      spacing: 6
+  Panel
+    id: boardPanel
+    anchors.top: tabs.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: bottom.top
+    margin-top: 8
+    margin-bottom: 6
+    Panel
+      id: cards
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 516
+      layout:
+        type: grid
+        cell-size: 212 166
+        cell-spacing: 6
+        num-columns: 3
+        flow: true
+    Button
+      id: unlock
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin-top: 356
+      height: 60
+      background-color: #3a3220
+      border-width: 1
+      border-color: #c8a040
+      color: #ffd35a
+      text-wrap: true
+      @onClick: modules.game_myotstasks.unlock()
+    Label
+      id: active
+      anchors.left: parent.left
+      anchors.bottom: parent.bottom
+      width: 92
+      height: 20
+      text-align: center
+      background-color: #1c1c1c
+      border-width: 1
+      border-color: #3e3e3e
+    Label
+      id: done
+      anchors.left: active.right
+      anchors.bottom: parent.bottom
+      margin-left: 6
+      width: 150
+      height: 20
+      text-align: center
+      background-color: #1c1c1c
+      border-width: 1
+      border-color: #3e3e3e
+    Button
+      id: rerollPremium
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      width: 110
+      height: 20
+      @onClick: modules.game_myotstasks.reroll('premium')
+    Button
+      id: reroll
+      anchors.right: rerollPremium.left
+      anchors.bottom: parent.bottom
+      margin-right: 4
+      width: 120
+      height: 20
+      @onClick: modules.game_myotstasks.reroll('gold')
+    Label
+      id: reset
+      anchors.right: reroll.left
+      anchors.bottom: parent.bottom
+      margin-right: 6
+      width: 160
+      height: 20
+      text-align: center
+      background-color: #1c1c1c
+      border-width: 1
+      border-color: #3e3e3e
+  Panel
+    id: shopPanel
+    anchors.top: tabs.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: bottom.top
+    margin-top: 8
+    margin-bottom: 6
+    visible: false
+    ScrollablePanel
+      id: shopList
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.bottom: shopFooter.top
+      width: 418
+      vertical-scrollbar: shopScroll
+      layout:
+        type: verticalBox
+        spacing: 4
+    VerticalScrollBar
+      id: shopScroll
+      anchors.top: shopList.top
+      anchors.bottom: shopList.bottom
+      anchors.left: shopList.right
+      step: 40
+      pixels-scroll: true
+    Panel
+      id: detail
+      anchors.top: parent.top
+      anchors.left: shopScroll.right
+      anchors.right: parent.right
+      anchors.bottom: shopFooter.top
+      margin-left: 8
+      background-color: #262626
+      border-width: 1
+      border-color: #3e3e3e
+      Label
+        id: dName
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: 16
+        text-align: center
+        color: #c8c8c8
+        background-color: #1e1e1e
+      UIWidget
+        id: dBox
+        anchors.top: dName.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        margin-top: 10
+        size: 64 64
+        background-color: #1a1a1a
+        border-width: 1
+        border-color: #444444
+        UIItem
+          id: dItem
+          anchors.centerIn: parent
+          size: 48 48
+          virtual: true
+        UICreature
+          id: dCreature
+          anchors.centerIn: parent
+          size: 64 64
+        UIWidget
+          id: dIcon
+          anchors.centerIn: parent
+          size: 48 48
+      Label
+        id: dBought
+        anchors.top: dBox.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin-top: 6
+        height: 16
+        text-align: center
+        color: #e0e0e0
+      Label
+        id: dDesc
+        anchors.top: dBought.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin: 8 8 0 8
+        height: 64
+        text-wrap: true
+        background-color: #1c1c1c
+        color: #e8e8e8
+      Label
+        id: dTiers
+        anchors.top: dDesc.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin: 8 8 0 8
+        height: 100
+        text-wrap: true
+        color: #c8c8c8
+      Label
+        id: amountLabel
+        anchors.bottom: dPrice.top
+        anchors.left: parent.left
+        margin: 0 8 6 8
+        width: 60
+        text: Amount
+        color: #c8c8c8
+      Button
+        id: minus
+        anchors.left: amountLabel.right
+        anchors.verticalCenter: amountLabel.verticalCenter
+        width: 20
+        text: -
+        @onClick: modules.game_myotstasks.changeAmount(-1)
+      Label
+        id: amount
+        anchors.left: minus.right
+        anchors.verticalCenter: amountLabel.verticalCenter
+        margin-left: 4
+        width: 40
+        height: 18
+        text-align: center
+        background-color: #111111
+      Button
+        id: plus
+        anchors.left: amount.right
+        anchors.verticalCenter: amountLabel.verticalCenter
+        margin-left: 4
+        width: 20
+        text: +
+        @onClick: modules.game_myotstasks.changeAmount(1)
+      Button
+        id: max
+        anchors.left: plus.right
+        anchors.verticalCenter: amountLabel.verticalCenter
+        margin-left: 4
+        width: 40
+        text: Max
+        @onClick: modules.game_myotstasks.changeAmount(1000)
+      Label
+        id: dPrice
+        anchors.bottom: dMsg.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin: 0 8 4 8
+        height: 18
+        color: #ffd35a
+        background-color: #1c1c1c
+        text-offset: 4 0
+      Label
+        id: dMsg
+        anchors.bottom: buy.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin: 0 8 4 8
+        height: 16
+        text-align: center
+        color: #ff6060
+      Button
+        id: buy
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin: 0 8 8 8
+        text: Buy
+        @onClick: modules.game_myotstasks.buy()
+    Panel
+      id: shopFooter
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      height: 22
+      Label
+        id: shopPoints
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        width: 140
+        height: 20
+        text-align: center
+        color: #ffd35a
+        background-color: #1c1c1c
+        border-width: 1
+        border-color: #3e3e3e
+      Button
+        id: historyButton
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        width: 100
+        text: History
+        @onClick: modules.game_myotstasks.history()
+  Panel
+    id: grizzlyPanel
+    anchors.top: tabs.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: bottom.top
+    margin-top: 8
+    margin-bottom: 6
+    visible: false
+    Label
+      id: kitnInfo
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 32
+      text-wrap: true
+      color: #d8d8d8
+    ScrollablePanel
+      id: kitnList
+      anchors.top: kitnInfo.bottom
+      anchors.left: parent.left
+      anchors.right: kitnScroll.left
+      anchors.bottom: parent.bottom
+      margin-top: 4
+      vertical-scrollbar: kitnScroll
+      layout:
+        type: verticalBox
+        spacing: 3
+    VerticalScrollBar
+      id: kitnScroll
+      anchors.top: kitnInfo.bottom
+      anchors.bottom: parent.bottom
+      margin-top: 4
+      anchors.right: parent.right
+      step: 61
+      pixels-scroll: true
+  Panel
+    id: bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    height: 24
+    Label
+      id: footGold
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      width: 110
+      height: 20
+      text-align: center
+      color: #f0d060
+      background-color: #111111
+      border-width: 1
+      border-color: #4a4a4a
+    Label
+      id: footTokens
+      anchors.left: footGold.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 4
+      width: 110
+      height: 20
+      text-align: center
+      color: #9fd0ff
+      background-color: #111111
+      border-width: 1
+      border-color: #4a4a4a
+    Label
+      id: footPoints
+      anchors.left: footTokens.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 4
+      width: 110
+      height: 20
+      text-align: center
+      color: #ffd35a
+      background-color: #111111
+      border-width: 1
+      border-color: #4a4a4a
+    Label
+      id: status
+      anchors.left: footPoints.right
+      anchors.right: bossButton.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 6
+      margin-right: 6
+      color: #a8e0a8
+    Button
+      id: bossButton
+      anchors.right: closeButton.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 4
+      width: 110
+      text: Boss Access
+      @onClick: modules.game_myotstasks.bossList()
+    Button
+      id: closeButton
+      anchors.right: parent.right
+      anchors.verticalCenter: parent.verticalCenter
+      width: 60
+      text: Close
+      @onClick: modules.game_myotstasks.hide()
+  Panel
+    id: popup
+    anchors.centerIn: parent
+    size: 380 330
+    background-color: #2b2b2b
+    border-width: 1
+    border-color: #6a6a6a
+    visible: false
+    Label
+      id: popupTitle
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 18
+      text-align: center
+      background-color: #3b3b3b
+    ScrollablePanel
+      id: popupList
+      anchors.top: popupTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: popupClose.top
+      margin: 6
+      vertical-scrollbar: popupScroll
+      layout:
+        type: verticalBox
+        spacing: 3
+    VerticalScrollBar
+      id: popupScroll
+      anchors.top: popupList.top
+      anchors.bottom: popupList.bottom
+      anchors.right: parent.right
+      step: 20
+      pixels-scroll: true
+    Button
+      id: popupClose
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin: 0 6 6 0
+      width: 60
+      text: Close
+      @onClick: modules.game_myotstasks.closePopup()

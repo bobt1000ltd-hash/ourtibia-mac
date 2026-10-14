@@ -1,0 +1,260 @@
+LegendNode < UIWidget
+  size: 44 44
+  background-color: #151515
+  border-width: 2
+  border-color: #3a3a3a
+  UIWidget
+    id: icon
+    anchors.centerIn: parent
+    size: 32 32
+    phantom: true
+
+LegendRow < UIWidget
+  height: 66
+  Label
+    id: need
+    anchors.left: parent.left
+    anchors.top: parent.top
+    margin-top: 14
+    width: 46
+    text-align: center
+    font: verdana-11px-rounded
+    color: #6a6a6a
+  UIWidget
+    id: nodeA
+    anchors.left: need.right
+    anchors.top: parent.top
+    margin-left: 10
+    size: 110 66
+  UIWidget
+    id: nodeB
+    anchors.left: nodeA.right
+    anchors.top: parent.top
+    margin-left: 10
+    size: 110 66
+
+AchievementRow < UIWidget
+  height: 20
+  Label
+    id: name
+    anchors.left: parent.left
+    anchors.right: points.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 4
+    font: verdana-11px-monochrome
+    color: #d0d0d0
+  Label
+    id: points
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-right: 4
+    width: 40
+    text-align: right
+    font: verdana-11px-monochrome
+    color: #ffd35a
+
+MainWindow
+  id: myotsLegends
+  text: Hall of Legends
+  size: 820 600
+  @onEscape: modules.game_myotslegends.hide()
+  Label
+    id: title
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 18
+    text-align: center
+    font: verdana-11px-rounded
+    color: #ffe9a0
+  Panel
+    id: tree
+    anchors.top: title.bottom
+    anchors.left: parent.left
+    margin-top: 6
+    size: 340 498
+    background-color: #1a1a1aee
+    border-width: 1
+    border-color: #6a5320
+    UIWidget
+      id: header
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 40
+      background-color: #4a3812ff
+      Label
+        id: treeName
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        margin-left: 10
+        text: Hall of Legends
+        font: verdana-11px-rounded
+        color: #ffe9a0
+        text-auto-resize: true
+      Label
+        id: pts
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        margin-right: 10
+        font: Verdana Bold-13px
+        color: #ffd35a
+        text-auto-resize: true
+    Panel
+      id: rows
+      anchors.top: header.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 340
+      margin-top: 6
+      layout:
+        type: verticalBox
+        spacing: 2
+    UIWidget
+      id: capLine
+      anchors.top: rows.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      size: 2 8
+      background-color: #806020
+    UIWidget
+      id: cap
+      anchors.top: capLine.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      size: 64 64
+    Label
+      id: capName
+      anchors.top: cap.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin-top: 2
+      height: 16
+      text-align: center
+      font: verdana-11px-rounded
+      color: #f0d080
+    UIWidget
+      id: bar
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin: 0 10 8 10
+      height: 10
+      background-color: #2a2a2a
+      border-width: 1
+      border-color: #555555
+      UIWidget
+        id: fill
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        width: 0
+        background-color: #d0a030
+        phantom: true
+  Panel
+    id: side
+    anchors.top: tree.top
+    anchors.left: tree.right
+    anchors.right: parent.right
+    anchors.bottom: tree.bottom
+    margin-left: 8
+    background-color: #1a1a1aee
+    border-width: 1
+    border-color: #505050
+    Label
+      id: bonusTitle
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin: 8 8 0 8
+      text: Active bonuses
+      color: #c8c8c8
+    Label
+      id: bonuses
+      anchors.top: bonusTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 4 8 0 8
+      height: 70
+      text-wrap: true
+      text-align: topLeft
+      font: verdana-11px-monochrome
+      color: #9fe09f
+    Label
+      id: listTitle
+      anchors.top: bonuses.bottom
+      anchors.left: parent.left
+      margin: 6 8 0 8
+      text-auto-resize: true
+      color: #c8c8c8
+    Button
+      id: fMissing
+      anchors.top: bonuses.bottom
+      anchors.right: parent.right
+      margin: 2 8 0 0
+      width: 62
+      text: Missing
+      @onClick: modules.game_myotslegends.setFilter('missing')
+    Button
+      id: fEarned
+      anchors.top: fMissing.top
+      anchors.right: fMissing.left
+      margin-right: 4
+      width: 62
+      text: Earned
+      @onClick: modules.game_myotslegends.setFilter('earned')
+    Button
+      id: fAll
+      anchors.top: fMissing.top
+      anchors.right: fEarned.left
+      margin-right: 4
+      width: 40
+      text: All
+      @onClick: modules.game_myotslegends.setFilter('all')
+    TextEdit
+      id: search
+      anchors.top: fMissing.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 6 6 0 8
+      height: 20
+      !placeholder: tr('Search by name or description')
+      !tooltip: tr('Filters the list by name or description while you type')
+      @onTextChange: modules.game_myotslegends.setSearch(self:getText())
+    ScrollablePanel
+      id: list
+      anchors.top: search.bottom
+      anchors.left: parent.left
+      anchors.right: listScroll.left
+      anchors.bottom: help.top
+      margin: 6 0 6 8
+      vertical-scrollbar: listScroll
+      layout:
+        type: verticalBox
+        spacing: 1
+    VerticalScrollBar
+      id: listScroll
+      anchors.top: search.bottom
+      anchors.bottom: help.top
+      anchors.right: parent.right
+      margin-top: 6
+      margin-bottom: 6
+      margin-right: 6
+      step: 40
+      pixels-scroll: true
+    Label
+      id: help
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin: 0 8 6 8
+      height: 44
+      text-wrap: true
+      text-align: bottomLeft
+      font: verdana-11px-monochrome
+      color: #8a8a8a
+      text: Every achievement gives points. Both perks of a tier unlock automatically when you reach its points - nothing to spend. Type !achievements in game for a quick summary.
+  Button
+    id: close
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    width: 64
+    text: Close
+    @onClick: modules.game_myotslegends.hide()

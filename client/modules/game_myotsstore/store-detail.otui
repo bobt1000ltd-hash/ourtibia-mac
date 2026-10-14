@@ -1,0 +1,34 @@
+MainWindow
+  id: ourStoreDetail
+  text: Game Store
+  size: 440 365
+  @onEscape: self:hide()
+  StoreTile
+    id: preview
+    anchors.top: parent.top
+    anchors.left: parent.left
+  MultilineTextEdit
+    id: details
+    anchors.top: parent.top
+    anchors.left: preview.right
+    anchors.right: parent.right
+    anchors.bottom: buy.top
+    margin-left: 12
+    margin-bottom: 12
+    editable: false
+    text-wrap: true
+  Button
+    id: buy
+    text: Buy
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: close.top
+    margin-bottom: 10
+    @onClick: modules.game_myotsstore.buy()
+  Button
+    id: close
+    text: Close
+    width: 90
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    @onClick: self:getParent():hide()

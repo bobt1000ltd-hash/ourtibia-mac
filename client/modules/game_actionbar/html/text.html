@@ -1,0 +1,39 @@
+<style>
+  /* === WINDOW === */
+  .text-window { width: 243px; height: 121px; position: relative; background-color: red; }
+  /* === LABEL === */
+  .text-label { margin-top: 5px; width: 238px; }
+  /* === INPUT === */
+  .text-input { margin-top: 5px; width: 100%; display: block; }
+  /* === CHECKBOX PANEL === */
+  .text-checkbox-panel { margin-top: 6px; height: 22px; width: 100%; display: block; }
+  .text-checkbox-panel > #tick { position: relative; top: 3px; left: 5px; height: 16px; width: 225px; --text-offset: 16 -1; --text-auto-resize: false; color: #c0c0c0; } /* 07.10.2026: same style as the spells filter checkbox */
+  /* === FOOTER === */
+  /* 09.10.2026: normal-size buttons (like the other dialogs), centred in one row at the bottom */
+  .text-footer { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 6px; width: 100%; margin-top: -5px; height: 22px; }
+  .text-footer button { width: 64px; height: 20px; flex-shrink: 0; flex-grow: 0; margin-top: 1px; font: cipsoftFont; text-align: center; --text-auto-resize: false; }
+</style>
+
+<html>
+<Window id="assignTextWindow" class="text-window" onescape="self:unloadHtml()">
+
+  <label class="text-label" text="Text:"></label>
+
+  <input id="text" class="text-input" type="text" placeholder="Type to search"
+    onchange="self:updateAssignTextState(event)" />
+
+  <div class="text-checkbox-panel FlatPanel">
+    <input id="tick" type="checkbox" text="Send automatically" />
+  </div>
+
+  <hr style="height: 2px;" />
+
+  <div class="text-footer">
+    <button id="buttonOk" enabled="false">Ok</button>
+    <button id="buttonApply" enabled="false">Apply</button>
+    <button id="buttonClose" onclick="self:unloadHtml()">Cancel</button>
+  </div>
+
+</Window>
+
+</html>

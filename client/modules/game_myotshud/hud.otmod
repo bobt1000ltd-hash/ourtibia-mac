@@ -1,0 +1,8 @@
+Module
+  name: game_myotshud
+  description: Mythibia-style tasks, kill tracker, trainer and autoloot panels
+  sandboxed: true
+  scripts: [ npc_sell_prices, item_info, item_tooltip, rarity_frames, forge, dps, boost_bar, boss_bar, hud ]
+  dependencies: [ game_interface, client_topmenu ]
+  @onLoad: init()
+  @onUnload: terminate()

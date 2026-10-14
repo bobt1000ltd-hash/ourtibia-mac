@@ -1,0 +1,372 @@
+NemesisTab < UIButton
+  height: 28
+  font: verdana-11px-rounded
+  color: #bdbdbd
+  text-offset: 0 1
+  background-color: #262626
+  border-width: 1
+  border-color: #3c3c3c
+  $hover:
+    color: #ffffff
+    border-color: #6a6a6a
+  $on:
+    color: #ffd35a
+    background-color: #3a3220
+    border-color: #c8a040
+
+NemesisTile < UIButton
+  size: 132 150
+  background-color: #252525
+  border-width: 1
+  border-color: #3f3f3f
+  $hover:
+    border-color: #c8a040
+    background-color: #2d2a22
+  $on:
+    border-color: #ffd35a
+    background-color: #3a3220
+  UIWidget
+    id: stripe
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 3
+    phantom: true
+  UIWidget
+    id: artBox
+    anchors.top: stripe.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin: 4 5 0 5
+    height: 62
+    background-color: #161616
+    border-width: 1
+    border-color: #303030
+    phantom: true
+  UICreature
+    id: outfit
+    anchors.horizontalCenter: artBox.horizontalCenter
+    anchors.bottom: artBox.bottom
+    margin-bottom: 2
+    size: 60 60
+    phantom: true
+  Label
+    id: alive
+    anchors.top: artBox.top
+    anchors.right: artBox.right
+    margin: 3 4 0 0
+    text-auto-resize: true
+    font: verdana-11px-rounded
+    color: #ff5050
+    phantom: true
+  Label
+    id: name
+    anchors.top: artBox.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin: 4 4 0 4
+    height: 28
+    text-align: center
+    text-wrap: true
+    font: verdana-11px-rounded
+    color: #f0f0f0
+    phantom: true
+  LifeProgressBar
+    id: bar
+    phantom: true
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: stars.top
+    margin: 0 8 3 8
+    height: 14
+    background-color: #00a83a
+    border: 1 #182018
+    font: verdana-11px-rounded
+    color: #ffffff
+    text-align: center
+    text-offset: 0 1
+  Panel
+    id: stars
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+    margin-bottom: 5
+    size: 56 16
+    phantom: true
+    layout:
+      type: horizontalBox
+      spacing: 4
+
+NemesisStar < UIWidget
+  size: 16 16
+  phantom: true
+
+NemesisBonus < UIWidget
+  height: 22
+  background-color: #1b1b1b
+  border-width: 1
+  border-color: #303030
+  Label
+    id: pts
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 6
+    width: 70
+    font: verdana-11px-rounded
+  Label
+    id: text
+    anchors.left: pts.right
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    font: verdana-11px-monochrome
+
+NemesisRaidRow < Label
+  height: 17
+  font: verdana-11px-rounded
+  color: #ffd35a
+  text-offset: 6 2
+
+NemesisInfoRow < Label
+  height: 16
+  font: verdana-11px-monochrome
+  color: #c8c8c8
+  text-offset: 2 1
+
+MainWindow
+  id: myotsNemesis
+  text: Nemesis Bosses
+  size: 940 640
+  @onEscape: NemesisUI.hide()
+
+  Panel
+    id: tabs
+    anchors.top: parent.top
+    anchors.left: parent.left
+    width: 438
+    height: 28
+    layout:
+      type: horizontalBox
+      spacing: 4
+
+  UIWidget
+    id: pointsBox
+    anchors.top: parent.top
+    anchors.left: tabs.right
+    anchors.right: parent.right
+    margin-left: 8
+    height: 28
+    background-color: #111111
+    border-width: 1
+    border-color: #6b5626
+    Label
+      id: pointsLabel
+      anchors.centerIn: parent
+      text-auto-resize: true
+      font: verdana-11px-rounded
+      color: #ffd35a
+
+  UIWidget
+    id: gridBox
+    anchors.top: tabs.bottom
+    anchors.left: parent.left
+    anchors.bottom: closeButton.top
+    margin-top: 8
+    margin-bottom: 8
+    width: 438
+    background-color: #161616
+    border-width: 1
+    border-color: #303030
+
+  Panel
+    id: raidBox
+    anchors.top: gridBox.top
+    anchors.left: gridBox.left
+    anchors.right: gridBox.right
+    margin: 6 6 0 6
+    height: 0
+    background-color: #2a1414
+    border-width: 1
+    border-color: #803030
+    layout:
+      type: verticalBox
+      fit-children: true
+
+  ScrollablePanel
+    id: list
+    anchors.top: raidBox.bottom
+    anchors.left: gridBox.left
+    anchors.bottom: gridBox.bottom
+    anchors.right: listScroll.left
+    margin: 6
+    vertical-scrollbar: listScroll
+    layout:
+      type: grid
+      cell-size: 132 150
+      cell-spacing: 6
+      flow: true
+
+  VerticalScrollBar
+    id: listScroll
+    anchors.top: gridBox.top
+    anchors.bottom: gridBox.bottom
+    anchors.right: gridBox.right
+    margin: 1
+    step: 50
+    pixels-scroll: true
+
+  UIWidget
+    id: detail
+    anchors.top: tabs.bottom
+    anchors.left: gridBox.right
+    anchors.right: parent.right
+    anchors.bottom: closeButton.top
+    margin-top: 8
+    margin-left: 8
+    margin-bottom: 8
+    background-color: #1d1d1d
+    border-width: 1
+    border-color: #3f3f3f
+
+    UIWidget
+      id: dArt
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin: 8
+      size: 96 96
+      background-color: #161616
+      border-width: 1
+      border-color: #303030
+      UICreature
+        id: dOutfit
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        size: 92 92
+        phantom: true
+    Label
+      id: dName
+      anchors.top: dArt.top
+      anchors.left: dArt.right
+      margin-left: 10
+      font: verdana-11px-rounded
+      color: #ffffff
+      text-auto-resize: true
+    Label
+      id: dCat
+      anchors.top: dName.bottom
+      anchors.left: dName.left
+      margin-top: 4
+      text-auto-resize: true
+      font: verdana-11px-rounded
+    Panel
+      id: dStars
+      anchors.top: dCat.bottom
+      anchors.left: dName.left
+      margin-top: 6
+      size: 56 16
+      layout:
+        type: horizontalBox
+        spacing: 4
+    Button
+      id: dWiki
+      !text: tr('Wiki page')
+      anchors.top: parent.top
+      anchors.right: parent.right
+      margin: 8 8 0 0
+      width: 80
+      @onClick: NemesisUI.openWiki()
+    Label
+      id: dStatus
+      anchors.top: dStars.bottom
+      anchors.left: dName.left
+      anchors.right: parent.right
+      margin-top: 6
+      margin-right: 8
+      height: 32
+      text-wrap: true
+      font: verdana-11px-monochrome
+      color: #c8c8c8
+    Panel
+      id: dInfo
+      anchors.top: dArt.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 8 8 0 8
+      height: 132
+      layout:
+        type: verticalBox
+    Label
+      id: mapTitle
+      anchors.top: dInfo.bottom
+      anchors.left: parent.left
+      margin: 6 8 0 8
+      text-auto-resize: true
+      font: verdana-11px-rounded
+      color: #ffd35a
+      text: Spawn area
+    Minimap
+      id: bossMap
+      anchors.top: mapTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin: 4 8 8 8
+      clipping: true
+      background-color: black
+
+  Button
+    id: bonusButton
+    !text: tr('Point bonuses')
+    width: 110
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    @onClick: NemesisUI.toggleBonuses()
+
+  Label
+    id: hint
+    anchors.left: bonusButton.right
+    anchors.right: closeButton.left
+    anchors.verticalCenter: closeButton.verticalCenter
+    margin-left: 10
+    margin-right: 10
+    font: verdana-11px-monochrome
+    color: #8a8a8a
+    text: Nemesis bosses appear at random. Deal 5% of a boss's HP to get the extra rewards.
+
+  Button
+    id: closeButton
+    !text: tr('Close')
+    width: 64
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    @onClick: NemesisUI.hide()
+
+  UIWidget
+    id: bonusPopup
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: closeButton.top
+    margin-bottom: 8
+    height: 200
+    phantom: false
+    background-color: #1b1712
+    border-width: 1
+    border-color: #c8a040
+    visible: false
+    Label
+      id: bonusHead
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin: 6 8 0 8
+      text-auto-resize: true
+      font: verdana-11px-rounded
+      color: #ffd35a
+      text: Permanent Nemesis bonuses
+    Panel
+      id: bonusList
+      anchors.top: bonusHead.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin: 6 8 8 8
+      layout:
+        type: verticalBox
+        spacing: 3

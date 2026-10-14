@@ -1,0 +1,8 @@
+Module
+  name: game_myotslegends
+  description: Hall of Legends - achievement point tree and achievement list
+  sandboxed: true
+  scripts: [ achievements_data, legends, nemesis ]
+  dependencies: [ game_interface ]
+  @onLoad: init()
+  @onUnload: terminate()

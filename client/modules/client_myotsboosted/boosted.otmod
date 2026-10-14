@@ -1,0 +1,7 @@
+Module
+  name: client_myotsboosted
+  description: Today's boosted creatures on the start screen (MyOTS)
+  sandboxed: true
+  scripts: [ boosted ]
+  @onLoad: init()
+  @onUnload: terminate()

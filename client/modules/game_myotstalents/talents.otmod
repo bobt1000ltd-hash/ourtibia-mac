@@ -1,0 +1,8 @@
+Module
+  name: game_myotstalents
+  description: Talent trees (LoL Classic style masteries per vocation)
+  sandboxed: true
+  scripts: [ talents ]
+  dependencies: [ game_interface ]
+  @onLoad: init()
+  @onUnload: terminate()

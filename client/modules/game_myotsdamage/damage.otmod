@@ -1,0 +1,8 @@
+Module
+  name: game_myotsdamage
+  description: Damage calculator (spells, runes and weapon damage ranges)
+  sandboxed: true
+  scripts: [ damage ]
+  dependencies: [ game_interface ]
+  @onLoad: init()
+  @onUnload: terminate()

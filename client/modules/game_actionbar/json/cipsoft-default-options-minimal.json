@@ -1,0 +1,169 @@
+{
+ "chatOptions": {
+  "chatModeOn": true
+ },
+ "profiles": [
+  "Druid",
+  "Knight",
+  "Paladin",
+  "Sorcerer",
+  "Monk"
+ ],
+ "hotkeyOptions": {
+  "autoSwitchHotkeyPreset": true,
+  "currentHotkeySetName": "Knight",
+  "hotkeySets": {
+   "Druid": {
+    "actionBarOptions": {
+     "mappings": [
+      {
+       "actionBar": 1,
+       "actionButton": 1,
+       "actionsetting": {
+        "useObject": 268,
+        "useType": "UseOnYourself"
+       }
+      }
+     ]
+    },
+    "chatOff": [
+     {
+      "actionsetting": {
+       "action": "TriggerActionButton_1.1"
+      },
+      "keysequence": "F1"
+     }
+    ],
+    "chatOn": [
+     {
+      "actionsetting": {
+       "action": "TriggerActionButton_1.1"
+      },
+      "keysequence": "F1"
+     }
+    ]
+   },
+   "Knight": {
+    "actionBarOptions": {
+     "mappings": [
+      {
+       "actionBar": 1,
+       "actionButton": 1,
+       "actionsetting": {
+        "useObject": 268,
+        "useType": "UseOnYourself"
+       }
+      }
+     ]
+    },
+    "chatOff": [
+     {
+      "actionsetting": {
+       "action": "TriggerActionButton_1.1"
+      },
+      "keysequence": "F1"
+     }
+    ],
+    "chatOn": [
+     {
+      "actionsetting": {
+       "action": "TriggerActionButton_1.1"
+      },
+      "keysequence": "F1"
+     }
+    ]
+   },
+   "Paladin": {
+    "actionBarOptions": {
+     "mappings": [
+      {
+       "actionBar": 1,
+       "actionButton": 1,
+       "actionsetting": {
+        "useObject": 268,
+        "useType": "UseOnYourself"
+       }
+      }
+     ]
+    },
+    "chatOff": [
+     {
+      "actionsetting": {
+       "action": "TriggerActionButton_1.1"
+      },
+      "keysequence": "F1"
+     }
+    ],
+    "chatOn": [
+     {
+      "actionsetting": {
+       "action": "TriggerActionButton_1.1"
+      },
+      "keysequence": "F1"
+     }
+    ]
+   },
+   "Sorcerer": {
+    "actionBarOptions": {
+     "mappings": [
+      {
+       "actionBar": 1,
+       "actionButton": 1,
+       "actionsetting": {
+        "useObject": 268,
+        "useType": "UseOnYourself"
+       }
+      }
+     ]
+    },
+    "chatOff": [
+     {
+      "actionsetting": {
+       "action": "TriggerActionButton_1.1"
+      },
+      "keysequence": "F1"
+     }
+    ],
+    "chatOn": [
+     {
+      "actionsetting": {
+       "action": "TriggerActionButton_1.1"
+      },
+      "keysequence": "F1"
+     }
+    ]
+   },
+   "Monk": {
+    "actionBarOptions": {
+     "mappings": [
+      {
+       "actionBar": 1,
+       "actionButton": 1,
+       "actionsetting": {
+        "useObject": 268,
+        "useType": "UseOnYourself"
+       }
+      }
+     ]
+    },
+    "chatOff": [
+     {
+      "actionsetting": {
+       "action": "TriggerActionButton_1.1"
+      },
+      "keysequence": "F1"
+     }
+    ],
+    "chatOn": [
+     {
+      "actionsetting": {
+       "action": "TriggerActionButton_1.1"
+      },
+      "keysequence": "F1"
+     }
+    ]
+   }
+  }
+ },
+ "options": {}
+}

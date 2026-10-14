@@ -1,0 +1,60 @@
+name: macOS client
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15        # Apple Silicon (M1 and newer)
+            arch: arm64
+          - os: macos-15-intel  # Intel
+            arch: x86_64
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 300
+    env:
+      OURTIBIA_DATA_URL: https://ourtibia.com/downloads/OurTibia-Client.zip
+      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/../vcpkg-cache
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: vcpkg binary cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/../vcpkg-cache
+          key: vcpkg-${{ matrix.arch }}-${{ hashFiles('source/vcpkg.json', 'source/overlay-ports/**') }}
+          restore-keys: vcpkg-${{ matrix.arch }}-
+
+      - name: Build OurTibia.app
+        run: |
+          mkdir -p "$VCPKG_DEFAULT_BINARY_CACHE"
+          export OURTIBIA_OVERLAY="$GITHUB_WORKSPACE/client"
+          ./BUILD_MAC.command
+
+      - name: Screenshot of the running client
+        if: always()
+        run: |
+          if [ -d out/OurTibia.app ]; then
+            open out/OurTibia.app || true
+            sleep 40
+            screencapture -x out/screenshot-${{ matrix.arch }}.png || true
+            pkill -f otclient-bin || true
+          fi
+
+      - name: Upload
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: OurTibia-macOS-${{ matrix.arch }}
+          path: |
+            out/*.zip
+            out/*.log
+            out/*.txt
+            out/*.png
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,8 @@
+Module
+  name: game_myotsprof
+  description: Weapon proficiency (perk trees per weapon)
+  sandboxed: true
+  scripts: [ prof ]
+  dependencies: [ game_interface ]
+  @onLoad: init()
+  @onUnload: terminate()

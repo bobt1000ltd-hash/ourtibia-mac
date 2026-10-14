@@ -1,0 +1,8 @@
+Module
+  name: game_myotstasks
+  description: Task Board (daily / weekly tasks, task shop, boss access)
+  sandboxed: true
+  scripts: [ tasks ]
+  dependencies: [ game_interface ]
+  @onLoad: init()
+  @onUnload: terminate()

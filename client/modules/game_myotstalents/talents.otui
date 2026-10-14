@@ -1,0 +1,278 @@
+TalentNode < UIWidget
+  size: 44 44
+  background-color: #151515
+  border-width: 2
+  border-color: #4a4a4a
+  UIWidget
+    id: icon
+    anchors.centerIn: parent
+    size: 32 32
+    phantom: true
+  Label
+    id: rank
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 1
+    margin-bottom: 0
+    font: verdana-11px-rounded
+    text-auto-resize: true
+    color: #ffffff
+    background-color: #000000c0
+    phantom: true
+
+TalentRow < UIWidget
+  height: 52
+  Label
+    id: need
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    width: 26
+    text-align: center
+    font: verdana-11px-monochrome
+    color: #8a8a8a
+  Panel
+    id: nodes
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    width: 120
+    layout:
+      type: horizontalBox
+      spacing: 28
+
+TalentTree < UIWidget
+  size: 236 456
+  background-color: #1a1a1aee
+  border-width: 1
+  border-color: #505050
+  UIWidget
+    id: header
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 44
+    background-color: #402020
+    UIWidget
+      id: emblem
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 6
+      size: 32 32
+      phantom: true
+    Label
+      id: name
+      anchors.left: emblem.right
+      anchors.top: parent.top
+      margin-left: 8
+      margin-top: 5
+      font: verdana-11px-rounded
+      text-auto-resize: true
+      color: #ffffff
+    Label
+      id: kind
+      anchors.left: emblem.right
+      anchors.bottom: parent.bottom
+      margin-left: 8
+      margin-bottom: 5
+      font: verdana-11px-monochrome
+      text-auto-resize: true
+      color: #d0d0d0
+    Label
+      id: points
+      anchors.right: parent.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 8
+      font: verdana-11px-rounded
+      text-auto-resize: true
+      color: #ffd35a
+  Panel
+    id: rows
+    anchors.top: header.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 270
+    margin-top: 6
+    layout:
+      type: verticalBox
+      spacing: 2
+  UIWidget
+    id: capLine
+    anchors.top: rows.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    size: 2 10
+    background-color: #806020
+  UIWidget
+    id: cap
+    anchors.top: capLine.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    size: 64 64
+  Label
+    id: capRank
+    anchors.top: cap.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 2
+    font: verdana-11px-rounded
+    text-auto-resize: true
+    color: #ffd35a
+  Label
+    id: capName
+    anchors.top: capRank.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 2
+    height: 16
+    text-align: center
+    font: verdana-11px-rounded
+    color: #f0d080
+  UIWidget
+    id: bar
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin: 0 8 8 8
+    height: 8
+    background-color: #2a2a2a
+    border-width: 1
+    border-color: #555555
+    UIWidget
+      id: fill
+      anchors.left: parent.left
+      anchors.top: parent.top
+      anchors.bottom: parent.bottom
+      width: 0
+      background-color: #d0a030
+      phantom: true
+
+MainWindow
+  id: myotsTalents
+  text: Talent Trees
+  size: 990 560
+  @onEscape: modules.game_myotstalents.hide()
+  Label
+    id: title
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 18
+    text-align: center
+    font: verdana-11px-rounded
+    color: #ffe9a0
+  Panel
+    id: trees
+    anchors.top: title.bottom
+    anchors.left: parent.left
+    margin-top: 6
+    size: 724 456
+    layout:
+      type: horizontalBox
+      spacing: 8
+  Panel
+    id: side
+    anchors.top: trees.top
+    anchors.left: trees.right
+    anchors.right: parent.right
+    anchors.bottom: trees.bottom
+    margin-left: 8
+    background-color: #1a1a1aee
+    border-width: 1
+    border-color: #505050
+    Label
+      id: freeTitle
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 10 8 0 8
+      text: Free talent points
+      text-align: center
+      color: #c8c8c8
+    Label
+      id: free
+      anchors.top: freeTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin-top: 2
+      height: 30
+      text-align: center
+      font: Verdana Bold-13px
+      color: #ffd35a
+    Label
+      id: progress
+      anchors.top: free.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 4 6 0 6
+      height: 58
+      text-wrap: true
+      text-align: center
+      font: verdana-11px-monochrome
+      color: #b0b0b0
+    Label
+      id: bonusTitle
+      anchors.top: progress.bottom
+      anchors.left: parent.left
+      margin: 10 8 0 8
+      text: Active bonuses
+      color: #c8c8c8
+    Label
+      id: bonuses
+      anchors.top: bonusTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: help.top
+      margin: 4 8 6 8
+      text-wrap: true
+      text-align: topLeft
+      font: verdana-11px-monochrome
+      color: #9fe09f
+    Label
+      id: help
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin: 0 8 8 8
+      height: 110
+      text-wrap: true
+      text-align: bottomLeft
+      font: verdana-11px-monochrome
+      color: #8a8a8a
+      text: Click a talent to spend a point. Each row needs 4 more points in the same tree; the final perk needs 20. All three trees can be developed at the same time.
+  Panel
+    id: bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    height: 24
+    Label
+      id: gold
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      width: 130
+      height: 20
+      text-align: center
+      color: #f0d060
+      background-color: #111111
+      border-width: 1
+      border-color: #4a4a4a
+    Label
+      id: status
+      anchors.left: gold.right
+      anchors.right: reset.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 8
+      margin-right: 8
+      color: #ff9a7a
+    Button
+      id: reset
+      anchors.right: close.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 6
+      width: 150
+      text: Reset
+      @onClick: modules.game_myotstalents.reset()
+    Button
+      id: close
+      anchors.right: parent.right
+      anchors.verticalCenter: parent.verticalCenter
+      width: 64
+      text: Close
+      @onClick: modules.game_myotstalents.hide()

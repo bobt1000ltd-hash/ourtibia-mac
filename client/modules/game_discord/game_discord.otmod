@@ -1,0 +1,9 @@
+Module
+  name: game_discord
+  description: Discord Rich Presence ("Playing OurTibia")
+  sandboxed: true
+  autoload: true
+  autoload-priority: 1000
+  scripts: [ discord ]
+  @onLoad: init()
+  @onUnload: terminate()

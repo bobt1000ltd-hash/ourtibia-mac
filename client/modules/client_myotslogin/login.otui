@@ -1,0 +1,76 @@
+UIWidget
+  id: ourtibiaLoginRoot
+  anchors.fill: parent
+  phantom: true
+
+  UIWidget
+    id: ourtibiaTitle
+    size: 300 100
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.verticalCenter
+    margin-bottom: 178
+    image-source: /images/ourtibia_logo
+    image-fixed-ratio: true
+    image-smooth: true
+    phantom: true
+
+  MainWindow
+    id: ourtibiaNews
+    !text: tr('Latest News')
+    size: 440 252
+    draggable: false
+    anchors.left: parent.horizontalCenter
+    anchors.top: parent.verticalCenter
+    margin-left: -97
+    margin-top: -170
+
+    MultilineTextEdit
+      id: newsText
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: newsScrollBar.left
+      anchors.bottom: parent.bottom
+      vertical-scrollbar: newsScrollBar
+      text-wrap: true
+      editable: false
+      selectable: true
+      font: verdana-11px-monochrome
+      color: #e6e6e6
+      background-color: #00000040
+      padding: 4
+
+    VerticalScrollBar
+      id: newsScrollBar
+      anchors.top: parent.top
+      anchors.bottom: parent.bottom
+      anchors.right: parent.right
+      step: 24
+      pixels-scroll: true
+
+  Label
+    id: ourtibiaCredit
+    !text: tr('by Bloku')
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    margin-left: 14
+    margin-bottom: 10
+    font: verdana-11px-rounded
+    color: #e2c27e
+    text-auto-resize: true
+    background-color: #00000080
+    padding: 3 8 3 8
+    phantom: true
+
+  Label
+    id: ourtibiaSite
+    !text: 'ourtibia.com'
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 14
+    margin-bottom: 10
+    font: verdana-11px-rounded
+    color: #ffffff
+    text-auto-resize: true
+    background-color: #00000080
+    padding: 3 8 3 8
+    phantom: true

@@ -1,0 +1,9 @@
+Module
+  name: game_myots
+  description: MyOTS journal, character progression and hunting travel
+  author: MyOTS contributors
+  sandboxed: true
+  scripts: [ myots ]
+  dependencies: [ game_interface, client_topmenu ]
+  @onLoad: init()
+  @onUnload: terminate()

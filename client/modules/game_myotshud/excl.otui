@@ -1,0 +1,92 @@
+ExclRow < UIWidget
+  height: 36
+  background-color: #00000033
+  UIItem
+    id: icon
+    size: 32 32
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 2
+    virtual: true
+  Label
+    id: name
+    anchors.left: icon.right
+    anchors.right: remove.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 6
+    font: verdana-11px-monochrome
+    text-auto-resize: false
+  Button
+    id: remove
+    text: Remove
+    width: 64
+    height: 22
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-right: 4
+
+MainWindow
+  id: myotsLootExclusions
+  text: Auto-loot exclusions
+  size: 340 440
+  @onEscape: self:hide()
+  Label
+    id: info
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 44
+    text-wrap: true
+    font: verdana-11px-monochrome
+    text: These items are never auto-looted (gold, valuables, creature products and item slots). Right-click any item and choose "Exclude from auto-loot".
+  ScrollablePanel
+    id: list
+    anchors.top: info.bottom
+    anchors.left: parent.left
+    anchors.right: listScroll.left
+    anchors.bottom: count.top
+    margin-top: 4
+    margin-bottom: 6
+    vertical-scrollbar: listScroll
+    layout:
+      type: verticalBox
+      spacing: 2
+  VerticalScrollBar
+    id: listScroll
+    anchors.top: info.bottom
+    anchors.bottom: count.top
+    anchors.right: parent.right
+    margin-top: 4
+    margin-bottom: 6
+    step: 38
+    pixels-scroll: true
+  Label
+    id: count
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: addItem.top
+    margin-bottom: 6
+    height: 16
+    font: verdana-11px-monochrome
+  Button
+    id: addItem
+    text: Add an item
+    width: 96
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    @onClick: modules.game_myotshud.pickLootExclusion()
+  Button
+    id: clearAll
+    text: Clear all
+    width: 80
+    anchors.left: addItem.right
+    anchors.bottom: parent.bottom
+    margin-left: 6
+    @onClick: modules.game_myotshud.command('excl:clear')
+  Button
+    id: close
+    text: Close
+    width: 70
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    @onClick: self:getParent():hide()

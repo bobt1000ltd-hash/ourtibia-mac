@@ -1,0 +1,590 @@
+StoreTab < UIButton
+  height: 30
+  text-align: center
+  font: verdana-11px-rounded
+  color: #bdbdbd
+  text-offset: 0 -1
+  background-color: #262626
+  border-width: 1
+  border-color: #3c3c3c
+  $hover:
+    color: #ffffff
+    border-color: #6a6a6a
+  $on:
+    color: #ffd35a
+    background-color: #3a3220
+    border-color: #c8a040
+
+StoreSub < UIButton
+  height: 24
+  text-align: left
+  text-offset: 10 -1
+  font: verdana-11px-rounded
+  color: #c8c8c8
+  background-color: #00000000
+  border-width: 1
+  border-color: #00000000
+  $hover:
+    color: #ffffff
+    background-color: #2c2c2c
+  $on:
+    color: #ffd35a
+    background-color: #3a3220
+    border-color: #6b5626
+
+StoreSubTab < UIButton
+  height: 22
+  text-align: center
+  font: verdana-11px-rounded
+  color: #bdbdbd
+  text-offset: 0 -1
+  background-color: #222222
+  border-width: 1
+  border-color: #3a3a3a
+  $hover:
+    color: #ffffff
+    border-color: #6a6a6a
+  $on:
+    color: #ffd35a
+    background-color: #3a3220
+    border-color: #c8a040
+
+StoreTile < UIButton
+  size: 122 140
+  background-color: #252525
+  border-width: 1
+  border-color: #3f3f3f
+  $hover:
+    border-color: #c8a040
+    background-color: #2d2a22
+  UIWidget
+    id: artBox
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin: 5 5 0 5
+    height: 72
+    background-color: #161616
+    border-width: 1
+    border-color: #303030
+    phantom: true
+  UIItem
+    id: itemIcon
+    anchors.centerIn: artBox
+    size: 56 56
+    virtual: true
+    phantom: true
+  UICreature
+    id: creatureIcon
+    anchors.horizontalCenter: artBox.horizontalCenter
+    anchors.bottom: artBox.bottom
+    margin-bottom: 2
+    size: 70 70
+    phantom: true
+  UIWidget
+    id: serviceIcon
+    anchors.centerIn: artBox
+    size: 58 58
+    phantom: true
+  Label
+    id: name
+    anchors.top: artBox.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin: 4 4 0 4
+    height: 28
+    text-align: center
+    text-wrap: true
+    font: verdana-11px-rounded
+    color: #f0f0f0
+    phantom: true
+  UIWidget
+    id: priceBar
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin: 0 5 5 5
+    height: 20
+    background-color: #111111
+    border-width: 1
+    border-color: #3a3220
+    phantom: true
+  Label
+    id: price
+    anchors.horizontalCenter: priceBar.horizontalCenter
+    anchors.verticalCenter: priceBar.verticalCenter
+    margin-left: -9
+    text-auto-resize: true
+    font: verdana-11px-rounded
+    color: #ffd35a
+    phantom: true
+  UIItem
+    id: coin
+    anchors.left: price.right
+    anchors.verticalCenter: priceBar.verticalCenter
+    margin-left: 3
+    size: 16 16
+    virtual: true
+    show-count: false
+    phantom: true
+  Label
+    id: badge
+    anchors.left: artBox.left
+    anchors.top: artBox.top
+    margin: 3 0 0 3
+    height: 14
+    text-align: center
+    text-offset: 0 0
+    font: verdana-11px-monochrome
+    background-color: #2e8b2e
+    border-width: 1
+    border-color: #00000080
+    color: #ffffff
+    phantom: true
+    visible: false
+
+StoreBalance < UIWidget
+  size: 128 24
+  background-color: #111111
+  border-width: 1
+  border-color: #3f3f3f
+  UIItem
+    id: icon
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 4
+    size: 18 18
+    virtual: true
+    show-count: false
+    phantom: true
+  Label
+    id: value
+    anchors.left: icon.right
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 4
+    margin-right: 6
+    text-align: right
+    font: verdana-11px-rounded
+    phantom: true
+
+MainWindow
+  id: myotsStore
+  text: Game Store
+  size: 900 620
+  @onEscape: modules.game_myotsstore.hide()
+  Panel
+    id: tabs
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 30
+    layout:
+      type: horizontalBox
+      spacing: 4
+  Panel
+    id: subtabs
+    anchors.top: tabs.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 6
+    height: 22
+    layout:
+      type: horizontalBox
+      spacing: 4
+  Panel
+    id: leftBox
+    anchors.top: subtabs.bottom
+    anchors.left: parent.left
+    anchors.bottom: bottom.top
+    width: 176
+    margin-top: 8
+    margin-bottom: 8
+    background-color: #1d1d1d
+    border-width: 1
+    border-color: #3a3a3a
+    Label
+      id: leftTitle
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 8 10 0 10
+      height: 16
+      text-align: center
+      text-offset: 0 -2
+      font: verdana-11px-rounded
+      color: #c8a040
+      text: CATEGORY
+    Panel
+      id: left
+      anchors.top: leftTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin: 6 8 8 8
+      layout:
+        type: verticalBox
+        spacing: 3
+  ScrollablePanel
+    id: products
+    anchors.top: subtabs.bottom
+    anchors.left: leftBox.right
+    anchors.right: productScroll.left
+    anchors.bottom: bottom.top
+    margin: 8 2 8 8
+    vertical-scrollbar: productScroll
+    background-color: #181818
+    border-width: 1
+    border-color: #3a3a3a
+    padding: 6
+    layout:
+      type: grid
+      cell-size: 122 140
+      cell-spacing: 6
+      num-columns: 5
+      flow: true
+  // 13.10.2026 (Tobeto): History is a view inside the store (no popup)
+  ScrollablePanel
+    id: historyList
+    anchors.top: subtabs.bottom
+    anchors.left: leftBox.right
+    anchors.right: productScroll.left
+    anchors.bottom: bottom.top
+    margin: 8 2 8 8
+    background-color: #181818
+    border-width: 1
+    border-color: #3a3a3a
+    padding: 8
+    visible: false
+    layout:
+      type: verticalBox
+      spacing: 2
+  VerticalScrollBar
+    id: productScroll
+    anchors.top: subtabs.bottom
+    anchors.bottom: bottom.top
+    anchors.right: parent.right
+    margin-top: 8
+    margin-bottom: 8
+    step: 72
+    pixels-scroll: true
+  Panel
+    id: bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    height: 26
+    StoreBalance
+      id: coinsBox
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      tooltip: Store coins
+    StoreBalance
+      id: goldBox
+      anchors.left: coinsBox.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 0
+      width: 0
+      visible: false
+      tooltip: Gold (backpack + bank)
+    StoreBalance
+      id: tokensBox
+      anchors.left: goldBox.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 4
+      width: 110
+      tooltip: Loyalty tokens
+    Label
+      id: coins
+      visible: false
+    Label
+      id: gold
+      visible: false
+    Label
+      id: tokens
+      visible: false
+    Label
+      id: status
+      anchors.left: tokensBox.right
+      anchors.right: transferButton.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 8
+      margin-right: 8
+      color: #a8e0a8
+    Button
+      id: transferButton
+      anchors.right: history.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 4
+      size: 70 22
+      text: Transfer
+      tooltip: Transfer store coins to a character on another account
+      @onClick: modules.game_myotsstore.openTransfer()
+    Button
+      id: history
+      anchors.right: close.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 4
+      size: 64 22
+      text: History
+      @onClick: modules.game_myotsstore.history()
+    Button
+      id: close
+      anchors.right: parent.right
+      anchors.verticalCenter: parent.verticalCenter
+      size: 64 22
+      text: Close
+      @onClick: modules.game_myotsstore.hide()
+  Panel
+    id: confirm
+    anchors.centerIn: products
+    size: 380 270
+    background-color: #232323
+    border-width: 1
+    border-color: #6a6a6a
+    visible: false
+    Label
+      id: confirmTitle
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 18
+      text: Confirmation of Purchase
+      text-align: center
+      background-color: #3b3b3b
+      color: #d8d8d8
+    UIWidget
+      id: previewBox
+      anchors.top: confirmTitle.bottom
+      anchors.left: parent.left
+      margin: 10 10 0 10
+      size: 76 76
+      background-color: #1c1c1c
+      border-width: 1
+      border-color: #4a4a4a
+      UIItem
+        id: cItem
+        anchors.centerIn: parent
+        size: 48 48
+        virtual: true
+        phantom: true
+      UICreature
+        id: cCreature
+        anchors.centerIn: parent
+        size: 72 72
+        phantom: true
+      UIWidget
+        id: cIcon
+        anchors.centerIn: parent
+        size: 56 56
+        phantom: true
+    Label
+      id: cName
+      anchors.top: previewBox.top
+      anchors.left: previewBox.right
+      anchors.right: parent.right
+      margin: 0 10 0 10
+      height: 20
+      text-align: center
+      background-color: #111111
+      color: #f5c24a
+      font: verdana-11px-rounded
+    CheckBox
+      id: cAnonymous
+      anchors.top: cName.bottom
+      anchors.left: cName.left
+      margin-top: 8
+      text: Anonymous Purchase
+      width: 150
+    Label
+      id: cPrice
+      anchors.bottom: previewBox.bottom
+      anchors.left: cName.left
+      anchors.right: cName.right
+      height: 20
+      text-align: center
+      background-color: #111111
+      color: #f0d060
+    Label
+      id: cDesc
+      anchors.top: previewBox.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: cYes.top
+      margin: 8 10 8 10
+      text-wrap: true
+      text-align: topLeft
+      background-color: #1c1c1c
+      border-width: 1
+      border-color: #3a3a3a
+      padding: 4
+      color: #e0e0e0
+    Button
+      id: cNo
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin: 0 10 8 0
+      width: 50
+      text: No
+      @onClick: modules.game_myotsstore.closeConfirm()
+    Button
+      id: cYes
+      anchors.right: cNo.left
+      anchors.bottom: parent.bottom
+      margin: 0 6 8 0
+      width: 50
+      text: Yes
+      @onClick: modules.game_myotsstore.confirmBuy()
+  // 13.10.2026 (Tobeto): the gift window blocks the store behind it (no click-through)
+  UIWidget
+    id: transferShade
+    anchors.fill: parent
+    background-color: #000000a0
+    visible: false
+    @onClick: modules.game_myotsstore.closeTransfer()
+  Panel
+    id: transfer
+    anchors.centerIn: products
+    size: 340 214
+    phantom: false
+    focusable: true
+    background-color: #2b2b2b
+    border-width: 1
+    border-color: #6a6a6a
+    visible: false
+    Label
+      id: tTitle
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 18
+      text: Gift Premium Points
+      text-align: center
+      background-color: #3b3b3b
+      color: #d8d8d8
+    Label
+      id: tInfo
+      anchors.top: tTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 8 10 0 10
+      height: 42
+      text-wrap: true
+      text: Select the amount of Premium Points you like to gift and enter the name of the character that should receive them.
+      color: #bdbdbd
+    Label
+      id: tNameLabel
+      anchors.top: tInfo.bottom
+      anchors.left: parent.left
+      margin: 10 10 0 10
+      width: 70
+      text: Recipient:
+      color: #d8d8d8
+    TextEdit
+      id: tName
+      anchors.verticalCenter: tNameLabel.verticalCenter
+      anchors.left: tNameLabel.right
+      anchors.right: parent.right
+      margin-right: 10
+      height: 22
+      max-length: 30
+      text-align: center
+    UIItem
+      id: tCoin
+      anchors.top: tNameLabel.bottom
+      anchors.left: parent.left
+      margin: 12 0 0 10
+      size: 16 16
+      virtual: true
+      phantom: true
+    Label
+      id: tBalance
+      anchors.verticalCenter: tCoin.verticalCenter
+      anchors.left: tCoin.right
+      anchors.right: parent.right
+      margin: 0 10 0 4
+      height: 14
+      color: #d8d8d8
+    Label
+      id: tAmountLabel
+      anchors.top: tCoin.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 6 10 0 10
+      height: 14
+      color: #ffd35a
+    HorizontalScrollBar
+      id: tSlider
+      anchors.top: tAmountLabel.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 6 10 0 10
+      minimum: 1
+      maximum: 1
+      step: 1
+      focusable: false
+    Label
+      id: tStatus
+      anchors.top: tSlider.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 6 10 0 10
+      height: 16
+      text-align: center
+      color: #f0d060
+    Button
+      id: tNo
+      text-offset: 0 0
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin: 0 10 8 0
+      width: 60
+      text: Cancel
+      @onClick: modules.game_myotsstore.closeTransfer()
+    Button
+      id: tYes
+      text-offset: 0 0
+      anchors.right: tNo.left
+      anchors.bottom: parent.bottom
+      margin: 0 6 8 0
+      width: 60
+      text: Gift
+      @onClick: modules.game_myotsstore.confirmTransfer()
+  // 14.10.2026 (Tobeto): the answer to a donation is a small window (no room in the bottom bar)
+  Panel
+    id: donateInfo
+    anchors.centerIn: products
+    size: 320 150
+    background-color: #2b2b2b
+    border-width: 1
+    border-color: #6a6a6a
+    visible: false
+    Label
+      id: dTitle
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 18
+      text: Respawn Fund
+      text-align: center
+      background-color: #3b3b3b
+      color: #d8d8d8
+    Label
+      id: dText
+      anchors.top: dTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: dOk.top
+      margin: 8 10 6 10
+      text-wrap: true
+      text-align: topLeft
+      color: #e0e0e0
+    Button
+      id: dOk
+      anchors.horizontalCenter: parent.horizontalCenter
+      anchors.bottom: parent.bottom
+      margin-bottom: 8
+      width: 60
+      text-offset: 0 0
+      text: Ok
+      @onClick: modules.game_myotsstore.closeDonateInfo()

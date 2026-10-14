@@ -1,0 +1,406 @@
+GFBossEntry < UIWidget
+  height: 58
+  background-color: #1c1c1cdd
+  border-width: 1
+  border-color: #3a3a3a
+  focusable: true
+  $focus:
+    background-color: #3a2c14ee
+    border-color: #d8a840
+  $hover !focus:
+    background-color: #262626ee
+  UICreature
+    id: creature
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 2
+    size: 52 52
+    phantom: true
+  Label
+    id: name
+    anchors.left: creature.right
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-left: 4
+    margin-top: 5
+    font: verdana-11px-rounded
+    color: #f0d080
+    phantom: true
+  Label
+    id: info
+    anchors.left: name.left
+    anchors.top: name.bottom
+    anchors.right: parent.right
+    margin-top: 2
+    font: verdana-11px-monochrome
+    color: #b0b0b0
+    phantom: true
+  Label
+    id: status
+    anchors.left: name.left
+    anchors.top: info.bottom
+    anchors.right: parent.right
+    margin-top: 2
+    font: verdana-11px-monochrome
+    phantom: true
+
+GFRoleButton < UIButton
+  size: 92 30
+  font: verdana-11px-rounded
+  color: #e0e0e0
+  background-color: #262626
+  border-width: 2
+  border-color: #4a4a4a
+  text-align: center
+  $hover:
+    background-color: #333333
+  $checked:
+    border-color: #f0c040
+    background-color: #3c3014
+  $disabled:
+    color: #5a5a5a
+    background-color: #181818
+    border-color: #2a2a2a
+
+GFSlot < UIWidget
+  height: 26
+  background-color: #161616dd
+  border-width: 1
+  border-color: #3a3a3a
+  Label
+    id: role
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 4
+    width: 52
+    text-align: center
+    font: verdana-11px-rounded
+    phantom: true
+  Label
+    id: name
+    anchors.left: role.right
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 6
+    margin-right: 70
+    font: verdana-11px-monochrome
+    color: #e0e0e0
+    phantom: true
+  Button
+    id: kick
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-right: 3
+    size: 62 18
+    text: Remove
+    visible: false
+
+GFGroupRow < UIWidget
+  height: 24
+  background-color: #161616dd
+  border-width: 1
+  border-color: #3a3a3a
+  Label
+    id: text
+    anchors.left: parent.left
+    anchors.right: joinGroup.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 6
+    margin-right: 4
+    font: verdana-11px-monochrome
+    color: #d8d8d8
+    phantom: true
+  Button
+    id: joinGroup
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-right: 3
+    size: 64 18
+    text: Join
+
+GFRewardItem < UIItem
+  size: 34 34
+  virtual: true
+  border-width: 1
+  border-color: #3a3a3a
+  background-color: #10101099
+
+MainWindow
+  id: groupFinder
+  text: Group Finder - Daily Bosses
+  size: 800 760
+  @onEscape: modules.game_groupfinder.hide()
+
+  Label
+    id: intro
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 30
+    text-wrap: true
+    font: verdana-11px-monochrome
+    color: #b8b8b8
+    text: Six bosses for groups of 4 (1 Tank, 1 Healer, 2 DPS). Quick join, pick a group from the list, create your own (optionally with a password) or queue your whole party. Each boss once per day (reset 10:00), 15 minutes per attempt.
+
+  Panel
+    id: list
+    anchors.top: intro.bottom
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    margin-top: 4
+    margin-bottom: 30
+    width: 256
+    layout:
+      type: verticalBox
+      spacing: 4
+
+  Panel
+    id: details
+    anchors.top: intro.bottom
+    anchors.left: list.right
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-top: 4
+    margin-left: 8
+    margin-bottom: 30
+    background-color: #141414cc
+    border-width: 1
+    border-color: #3a3a3a
+
+    UICreature
+      id: bigCreature
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin: 6
+      size: 76 76
+    Label
+      id: bossName
+      anchors.top: parent.top
+      anchors.left: bigCreature.right
+      anchors.right: parent.right
+      margin-top: 8
+      margin-left: 8
+      font: verdana-11px-rounded
+      color: #f0d080
+    Label
+      id: bossTitle
+      anchors.top: bossName.bottom
+      anchors.left: bossName.left
+      anchors.right: parent.right
+      margin-top: 2
+      font: verdana-11px-monochrome
+      color: #c0a070
+    Label
+      id: bossStats
+      anchors.top: bossTitle.bottom
+      anchors.left: bossName.left
+      anchors.right: parent.right
+      margin-top: 4
+      font: verdana-11px-monochrome
+      color: #d0d0d0
+    Label
+      id: bossDesc
+      anchors.top: bigCreature.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 4 8 0 8
+      height: 30
+      text-wrap: true
+      font: verdana-11px-monochrome
+      color: #b8b8b8
+    Label
+      id: mechanics
+      anchors.top: bossDesc.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 4 8 0 8
+      height: 62
+      text-wrap: true
+      font: verdana-11px-monochrome
+      color: #e8a0a0
+    Label
+      id: rewardsTitle
+      anchors.top: mechanics.bottom
+      anchors.left: parent.left
+      margin: 4 8 0 8
+      font: verdana-11px-rounded
+      color: #f0d080
+      text: Rewards (rolled for every player separately)
+      text-auto-resize: true
+    Panel
+      id: rewards
+      anchors.top: rewardsTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 4 8 0 8
+      height: 38
+      layout:
+        type: grid
+        cell-size: 34 34
+        cell-spacing: 3
+        flow: true
+    Label
+      id: rewardsText
+      anchors.top: rewards.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 2 8 0 8
+      height: 30
+      text-wrap: true
+      font: verdana-11px-monochrome
+      color: #a8c8a8
+
+    Label
+      id: roleTitle
+      anchors.top: rewardsText.bottom
+      anchors.left: parent.left
+      margin: 6 8 0 8
+      font: verdana-11px-rounded
+      color: #f0d080
+      text: Your role
+      text-auto-resize: true
+    GFRoleButton
+      id: roleTank
+      anchors.top: roleTitle.bottom
+      anchors.left: parent.left
+      margin: 4 8 0 8
+      text: Tank
+      @onClick: modules.game_groupfinder.pickRole('tank')
+    GFRoleButton
+      id: roleDps
+      anchors.top: roleTank.top
+      anchors.left: roleTank.right
+      margin-left: 6
+      text: DPS
+      @onClick: modules.game_groupfinder.pickRole('dps')
+    GFRoleButton
+      id: roleHealer
+      anchors.top: roleTank.top
+      anchors.left: roleDps.right
+      margin-left: 6
+      text: Healer
+      @onClick: modules.game_groupfinder.pickRole('healer')
+    Button
+      id: joinButton
+      anchors.top: roleTank.top
+      anchors.right: parent.right
+      margin-right: 8
+      size: 120 30
+      text: Quick join
+      @onClick: modules.game_groupfinder.join()
+
+    Label
+      id: pwLabel
+      anchors.top: roleTank.bottom
+      anchors.left: parent.left
+      margin: 10 8 0 8
+      font: verdana-11px-monochrome
+      color: #c0c0c0
+      text: Password:
+      text-auto-resize: true
+    TextEdit
+      id: passwordEdit
+      anchors.verticalCenter: pwLabel.verticalCenter
+      anchors.left: pwLabel.right
+      margin-left: 6
+      size: 110 20
+      max-length: 16
+      tooltip: Optional. Create a private group with this password, or type the password of a locked group before you join it.
+    Button
+      id: createButton
+      anchors.verticalCenter: pwLabel.verticalCenter
+      anchors.left: passwordEdit.right
+      margin-left: 8
+      size: 110 22
+      text: Create group
+      tooltip: Make a new group of your own (locked if you typed a password).
+      @onClick: modules.game_groupfinder.create()
+    Button
+      id: partyButton
+      anchors.verticalCenter: pwLabel.verticalCenter
+      anchors.left: createButton.right
+      margin-left: 6
+      size: 110 22
+      text: Join as party
+      tooltip: Party leader only: queue your whole party (max 4 players) as one closed group.
+      @onClick: modules.game_groupfinder.joinParty()
+
+    Label
+      id: groupsTitle
+      anchors.top: pwLabel.bottom
+      anchors.left: parent.left
+      margin: 12 8 0 8
+      font: verdana-11px-rounded
+      color: #f0d080
+      text: Groups waiting for this boss
+      text-auto-resize: true
+    Panel
+      id: groups
+      anchors.top: groupsTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 4 8 0 8
+      height: 104
+      layout:
+        type: verticalBox
+        spacing: 2
+
+    Label
+      id: groupTitle
+      anchors.top: groups.bottom
+      anchors.left: parent.left
+      margin: 8 8 0 8
+      font: verdana-11px-rounded
+      color: #f0d080
+      text: Your group
+      text-auto-resize: true
+    Label
+      id: groupState
+      anchors.top: groupTitle.top
+      anchors.left: groupTitle.right
+      anchors.right: parent.right
+      margin-left: 8
+      font: verdana-11px-monochrome
+      color: #b0b0b0
+    Panel
+      id: slots
+      anchors.top: groupTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 4 8 0 8
+      height: 112
+      layout:
+        type: verticalBox
+        spacing: 2
+
+  Button
+    id: startButton
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    size: 110 22
+    text: Start
+    @onClick: modules.game_groupfinder.start()
+  Button
+    id: leaveButton
+    anchors.bottom: parent.bottom
+    anchors.right: startButton.left
+    margin-right: 6
+    size: 110 22
+    text: Leave group
+    @onClick: modules.game_groupfinder.leave()
+  Button
+    id: closeButton
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    size: 80 22
+    text: Close
+    @onClick: modules.game_groupfinder.hide()
+  Label
+    id: footer
+    anchors.bottom: parent.bottom
+    anchors.left: closeButton.right
+    anchors.right: leaveButton.left
+    margin: 0 8 4 8
+    font: verdana-11px-monochrome
+    color: #9a9a9a
+    text: Rewards go to the reward chest in any town temple.

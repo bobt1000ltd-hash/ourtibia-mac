@@ -1,0 +1,8 @@
+Module
+  name: game_myotsmarket
+  description: Market (BUY / SELL) for items with or without rarity, for gold or Tibia Coins
+  sandboxed: true
+  scripts: [ market ]
+  dependencies: [ game_interface ]
+  @onLoad: init()
+  @onUnload: terminate()

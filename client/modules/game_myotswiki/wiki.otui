@@ -1,0 +1,631 @@
+WikiCard < Button
+  size: 198 53
+  padding: 2
+  border-width: 1
+  border-color: #555555
+  text-align: left
+  text-offset: 57 0
+  font: verdana-11px-monochrome
+  $pressed:
+    text-offset: 58 1
+  UIItem
+    id: item
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 7
+    size: 32 32
+    virtual: true
+    phantom: true
+  UICreature
+    id: creature
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 4
+    size: 42 42
+    phantom: true
+
+WikiStatRow < Panel
+  height: 22
+  UIWidget
+    id: icon
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    size: 16 16
+    phantom: true
+  Label
+    id: name
+    anchors.left: icon.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 5
+    height: 20
+    width: 92
+    font: verdana-11px-monochrome
+  Label
+    id: value
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-right: 14
+    text-align: right
+    height: 20
+    width: 72
+    font: verdana-11px-monochrome
+
+WikiAttack < Panel
+  height: 49
+  UIWidget
+    id: icon
+    anchors.left: parent.left
+    anchors.top: parent.top
+    margin-top: 8
+    size: 24 24
+    phantom: true
+  Label
+    id: name
+    anchors.top: parent.top
+    anchors.left: icon.right
+    anchors.right: range.left
+    margin-left: 9
+    height: 26
+    font: verdana-11px-monochrome
+  Label
+    id: range
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-right: 14
+    text-align: right
+    width: 130
+    height: 26
+    font: verdana-11px-monochrome
+  ProgressBar
+    id: bar
+    anchors.top: name.bottom
+    anchors.left: name.left
+    anchors.right: parent.right
+    margin-right: 14
+    height: 6
+
+WikiNavButton < Button
+  height: 24
+  font: verdana-11px-rounded
+  text-align: center
+  text-offset: 0 2
+  $pressed:
+    text-offset: 1 3
+  $on:
+    text-offset: 1 3
+    color: #ffd35a
+
+WikiNavSub < WikiNavButton
+  color: #c8c8c8
+  $on:
+    text-offset: 1 3
+    color: #ffd35a
+
+WikiTab < Button
+  font: verdana-11px-monochrome
+  border-width: 1
+  border-color: #00000000
+  $on:
+    color: #ffd35a
+    border-color: #c8a040
+
+MainWindow
+  id: myotsWikiWindow
+  text: Game Wiki & Knowledge Compendium
+  size: 870 640
+  @onEscape: modules.game_myotswiki.hide()
+  Button
+    id: closeTop
+    text: X
+    size: 20 19
+    anchors.top: parent.top
+    anchors.right: parent.right
+    @onClick: modules.game_myotswiki.hide()
+  Button
+    id: back
+    text: <
+    size: 25 22
+    anchors.top: parent.top
+    anchors.left: parent.left
+    @onClick: modules.game_myotswiki.back()
+  Button
+    id: copyLink
+    text: Link to chat
+    size: 100 22
+    anchors.top: parent.top
+    anchors.right: closeTop.left
+    margin-right: 6
+    @onClick: modules.game_myotswiki.linkToChat()
+  Label
+    id: address
+    anchors.left: back.right
+    anchors.right: copyLink.left
+    anchors.top: parent.top
+    margin-left: 10
+    height: 22
+    text: wiki://items
+  Panel
+    id: tabs
+    anchors.top: back.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 40
+    margin-top: 8
+    layout:
+      type: horizontalBox
+      spacing: 4
+  Panel
+    id: detailHero
+    anchors.top: tabs.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 8
+    height: 62
+    border-width: 1
+    border-color: #555555
+    visible: false
+    UICreature
+      id: heroPortrait
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 7
+      size: 46 50
+      phantom: true
+    Label
+      id: heroName
+      anchors.left: heroPortrait.right
+      anchors.right: parent.right
+      anchors.top: parent.top
+      margin-top: 8
+      margin-left: 10
+      height: 24
+      font: verdana-11px-monochrome
+    Label
+      id: heroSpawns
+      anchors.left: heroName.left
+      anchors.right: parent.right
+      anchors.top: heroName.bottom
+      height: 20
+      color: #b6b6b6
+  ScrollablePanel
+    id: sidebar
+    anchors.left: parent.left
+    anchors.top: tabs.bottom
+    anchors.bottom: footer.top
+    margin-top: 10
+    width: 185
+    vertical-scrollbar: filterScroll
+    layout:
+      type: verticalBox
+      spacing: 3
+    Label
+      id: sidebarTitle
+      text: Filters
+      height: 22
+    Label
+      id: searchLabel
+      text: Search
+      height: 14
+    TextEdit
+      id: search
+      height: 25
+      placeholder: Search...
+    Label
+      id: categoryLabel
+      text: Category
+      height: 14
+    ComboBox
+      id: category
+      height: 23
+    Label
+      id: sortLabel
+      text: Sort by
+      height: 14
+    ComboBox
+      id: sort
+      height: 23
+    Label
+      id: directionLabel
+      text: Sort mode
+      height: 14
+    ComboBox
+      id: direction
+      height: 23
+    Label
+      id: obtainingLabel
+      text: Way of obtaining
+      height: 14
+    ComboBox
+      id: obtaining
+      height: 23
+    Label
+      id: resistanceLabel
+      text: Resistance
+      height: 14
+    ComboBox
+      id: resistance
+      height: 23
+    Label
+      id: tierLabel
+      text: Drop tier
+      height: 14
+    ComboBox
+      id: tier
+      height: 23
+    Label
+      id: weaponLabel
+      text: Weapon type
+      height: 14
+    ComboBox
+      id: weapon
+      height: 23
+    Label
+      id: handsLabel
+      text: Hands
+      height: 14
+    ComboBox
+      id: hands
+      height: 23
+    Label
+      id: elementLabel
+      text: Damage element
+      height: 14
+    ComboBox
+      id: element
+      height: 23
+    Label
+      id: weaknessLabel
+      text: Weak to
+      height: 14
+    ComboBox
+      id: weakness
+      height: 23
+    Label
+      id: spawnFilterLabel
+      text: Spawn availability
+      height: 14
+    ComboBox
+      id: spawnFilter
+      height: 23
+    Label
+      id: minimumLabel
+      text: Minimum selected stat
+      height: 14
+    TextEdit
+      id: minimum
+      height: 23
+    Label
+      id: maximumLabel
+      text: Maximum selected stat
+      height: 14
+    TextEdit
+      id: maximum
+      height: 23
+    Button
+      id: resetFilters
+      text: Reset filters
+      height: 24
+      @onClick: modules.game_myotswiki.resetFilters()
+    Panel
+      id: statRows
+      height: 290
+      width: 185
+      visible: false
+      layout:
+        type: verticalBox
+        spacing: 2
+    Label
+      id: stats
+      height: 250
+      text-wrap: true
+      font: verdana-11px-monochrome
+    Button
+      id: locate
+      text: Locate on map
+      height: 24
+      @onClick: modules.game_myotswiki.locate()
+  VerticalScrollBar
+    id: filterScroll
+    anchors.top: sidebar.top
+    anchors.bottom: sidebar.bottom
+    anchors.left: sidebar.right
+    step: 36
+    pixels-scroll: true
+  Panel
+    id: mapBrowser
+    anchors.fill: sidebar
+    visible: false
+    Panel
+      id: mapGroups
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 26
+      layout:
+        type: horizontalBox
+        spacing: 3
+      Button
+        id: mapGroupMonsters
+        text: Monsters
+        width: 64
+        $on:
+          color: #ffd35a
+        @onClick: modules.game_myotswiki.mapList('Monsters')
+      Button
+        id: mapGroupBosses
+        text: Bosses
+        width: 56
+        $on:
+          color: #ffd35a
+        @onClick: modules.game_myotswiki.mapList('Bosses')
+      Button
+        id: mapGroupNPCs
+        text: NPCs
+        width: 56
+        $on:
+          color: #ffd35a
+        @onClick: modules.game_myotswiki.mapList('NPCs')
+    TextEdit
+      id: mapSearch
+      anchors.top: mapGroups.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin-top: 6
+      height: 25
+      placeholder: Search spawns...
+    ScrollablePanel
+      id: mapList
+      anchors.top: mapSearch.bottom
+      anchors.left: parent.left
+      anchors.right: mapListScroll.left
+      anchors.bottom: parent.bottom
+      margin-top: 6
+      margin-right: 4
+      vertical-scrollbar: mapListScroll
+      layout:
+        type: verticalBox
+        spacing: 3
+    VerticalScrollBar
+      id: mapListScroll
+      anchors.top: mapSearch.bottom
+      margin-top: 6
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      step: 48
+      pixels-scroll: true
+  Panel
+    id: right
+    anchors.left: sidebar.right
+    anchors.right: parent.right
+    anchors.top: tabs.bottom
+    anchors.bottom: footer.top
+    margin-left: 20
+    margin-top: 10
+    Panel
+      id: detailHeader
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 0
+      UICreature
+        id: portrait
+        anchors.left: parent.left
+        anchors.top: parent.top
+        size: 48 54
+      UIItem
+        id: itemPortrait
+        anchors.left: parent.left
+        anchors.top: parent.top
+        size: 48 48
+        virtual: true
+        phantom: true
+        visible: false
+      Label
+        id: creatureTitle
+        anchors.left: portrait.right
+        anchors.right: parent.right
+        anchors.top: parent.top
+        margin-left: 8
+        height: 54
+        font: verdana-11px-monochrome
+    Panel
+      id: detailTabs
+      anchors.top: detailHeader.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 0
+      layout:
+        type: horizontalBox
+        spacing: 5
+    Panel
+      id: lootControls
+      anchors.right: parent.right
+      anchors.top: detailTabs.top
+      height: 26
+      width: 230
+      visible: false
+      layout:
+        type: horizontalBox
+        spacing: 4
+      ComboBox
+        id: lootSort
+        width: 110
+        height: 20
+        margin-top: 2
+      ComboBox
+        id: lootOrder
+        width: 110
+        height: 20
+        margin-top: 2
+    ScrollablePanel
+      id: cards
+      anchors.top: detailTabs.bottom
+      anchors.left: parent.left
+      anchors.right: scrollbar.left
+      anchors.bottom: parent.bottom
+      vertical-scrollbar: scrollbar
+      layout:
+        type: grid
+        cell-size: 200 55
+        num-columns: 3
+        cell-spacing: 3
+    VerticalScrollBar
+      id: scrollbar
+      anchors.top: detailTabs.bottom
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      step: 55
+      pixels-scroll: true
+    MultilineTextEdit
+      id: description
+      anchors.fill: cards
+      editable: false
+      text-wrap: true
+      vertical-scrollbar: descriptionScroll
+    VerticalScrollBar
+      id: descriptionScroll
+      anchors.top: cards.top
+      anchors.bottom: cards.bottom
+      anchors.right: parent.right
+      step: 24
+      pixels-scroll: true
+    Minimap
+      id: worldmap
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.top: mapControls.bottom
+      anchors.bottom: parent.bottom
+      margin-top: 4
+      clipping: true
+      background-color: black
+    Panel
+      id: mapControls
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.top: parent.top
+      height: 26
+      layout:
+        type: horizontalBox
+        spacing: 4
+      Button
+        text: <
+        width: 28
+        @onClick: modules.game_myotswiki.mapStep(-1)
+      Button
+        text: >
+        width: 28
+        @onClick: modules.game_myotswiki.mapStep(1)
+      Label
+        id: location
+        width: 220
+        height: 22
+      Button
+        id: showAllSpawnsButton
+        text: Show all spawns
+        width: 125
+        @onClick: modules.game_myotswiki.showAllSpawns()
+      Button
+        text: My position
+        width: 85
+        @onClick: modules.game_myotswiki.mapPlayer()
+  Panel
+    id: knowledge
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: tabs.bottom
+    anchors.bottom: footer.top
+    margin-top: 10
+    visible: false
+    Panel
+      id: knowledgeNavBox
+      anchors.left: parent.left
+      anchors.top: parent.top
+      anchors.bottom: parent.bottom
+      width: 200
+      border-width: 1
+      border-color: #555555
+      Label
+        id: knowledgeNavTitle
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin: 6 8 0 8
+        height: 20
+        font: Verdana Bold-13px
+        color: #f0f0f0
+        text: Categories
+      ScrollablePanel
+        id: knowledgeNav
+        anchors.top: knowledgeNavTitle.bottom
+        anchors.left: parent.left
+        anchors.right: knowledgeNavScroll.left
+        anchors.bottom: parent.bottom
+        margin: 6 2 6 6
+        vertical-scrollbar: knowledgeNavScroll
+        layout:
+          type: verticalBox
+          spacing: 3
+      VerticalScrollBar
+        id: knowledgeNavScroll
+        anchors.top: knowledgeNavTitle.bottom
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        margin: 6 2 6 0
+        step: 27
+        pixels-scroll: true
+    ScrollablePanel
+      id: knowledgeContent
+      anchors.left: knowledgeNavBox.right
+      anchors.right: knowledgeScroll.left
+      anchors.top: parent.top
+      anchors.bottom: parent.bottom
+      margin-left: 10
+      padding: 8
+      vertical-scrollbar: knowledgeScroll
+      layout:
+        type: verticalBox
+        spacing: 4
+    VerticalScrollBar
+      id: knowledgeScroll
+      anchors.top: parent.top
+      anchors.bottom: parent.bottom
+      anchors.right: parent.right
+      step: 40
+      pixels-scroll: true
+  Panel
+    id: footer
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    height: 28
+    margin-top: 8
+    Label
+      id: page
+      anchors.horizontalCenter: parent.horizontalCenter
+      anchors.verticalCenter: parent.verticalCenter
+      width: 380
+      height: 22
+      text-align: center
+    Button
+      id: previousPage
+      text: <
+      width: 35
+      anchors.right: page.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 6
+      @onClick: modules.game_myotswiki.movePage(-1)
+    Button
+      id: nextPage
+      text: >
+      width: 35
+      anchors.left: page.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 6
+      @onClick: modules.game_myotswiki.movePage(1)
+    Button
+      id: close
+      text: Close
+      width: 90
+      anchors.bottom: parent.bottom
+      anchors.right: parent.right
+      @onClick: modules.game_myotswiki.hide()

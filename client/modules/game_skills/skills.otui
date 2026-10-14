@@ -1,0 +1,1065 @@
+OurAttributeHeading < UIWidget
+  height: 32
+  HorizontalSeparator
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 6
+  Label
+    id: title
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    height: 17
+    font: verdana-11px-monochrome
+    color: #c0c0c0
+
+OurAttributeRow < UIWidget
+  height: 17
+  UIWidget
+    id: icon
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    size: 10 10
+    visible: false
+    phantom: true
+  Label
+    id: name
+    anchors.left: parent.left
+    anchors.right: next.left
+    anchors.top: parent.top
+    height: 17
+    font: verdana-11px-monochrome
+    color: #c0c0c0
+    text-auto-resize: false
+    phantom: true
+  Label
+    id: value
+    anchors.right: parent.right
+    anchors.top: parent.top
+    width: 46
+    height: 17
+    text-align: right
+    font: verdana-11px-monochrome
+    phantom: true
+
+MyStatRow < UIWidget
+  height: 17
+  SkillNameLabel
+    id: name
+  Label
+    id: amount
+    anchors.right: parent.right
+    anchors.top: parent.top
+    margin-right: 17
+    text-align: right
+    width: 45
+    height: 16
+  Button
+    id: add
+    anchors.right: parent.right
+    anchors.top: parent.top
+    size: 14 14
+    text: +
+
+SkillFirstWidget < UIWidget
+
+SkillButton < UIButton
+  height: 21
+  margin-bottom: 2
+  &onClick: onSkillButtonClick
+
+SmallSkillButton < SkillButton
+  height: 14
+
+SkillNameLabel < GameLabel
+  font: verdana-11px-monochrome
+  anchors.left: parent.left
+  anchors.top: parent.top
+  anchors.bottom: parent.bottom
+  color: #C0C0C0
+
+SkillValueLabel < GameLabel
+  id: value
+  font: verdana-11px-monochrome
+  text-align: topright
+  anchors.right: parent.right
+  anchors.top: parent.top
+  anchors.bottom: parent.bottom
+  anchors.left: prev.left
+  color: #C0C0C0
+
+ImageSkill < UIWidget
+  id: icon
+  size: 9 9
+  width: 9
+  margin-top: 13
+  anchors.left: parent.left
+  anchors.top: parent.top
+  phantom: false
+
+ImageAbsorb < UIWidget
+  id: icon
+  size: 9 9
+  width: 9
+  margin-top: 2
+  anchors.right: parent.right
+  anchors.top: parent.top
+  phantom: false
+
+RedPercentPanel < ProgressBar
+  id: percent
+  background-color: red
+  height: 5
+  margin-top: 15
+  anchors.left: parent.left
+  anchors.right: parent.right
+  anchors.top: parent.top
+  phantom: false
+
+SkillPercentPanel < ProgressBar
+  id: percent
+  background-color: green
+  height: 5
+  margin-top: 15
+  margin-left: 15
+  anchors.left: parent.left
+  anchors.right: parent.right
+  anchors.top: parent.top
+  phantom: false
+
+XpBoostButton < UIWidget
+  height: 30
+  HorizontalSeparator
+    id: leftSeparator
+    anchors.top: parent.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: -23
+    margin-left: 5
+  UIWidget
+    id: xpBoostButton
+    image-source: /images/ui/button-storexp
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: prev.bottom
+    margin-top : -7
+    @onClick: |
+      modules.game_store.toggle()
+      g_game.sendRequestStorePremiumBoost()
+    $pressed:
+      image-source: /images/ui/button-storexp-pressed
+
+MiniWindow
+  id: skillWindow
+  height: 150
+  @onOpen: modules.game_skills.onMiniWindowOpen()
+  @onClose: modules.game_skills.onMiniWindowClose()
+  &save: true
+
+  UIWidget
+    id: miniwindowIcon
+    anchors.top: miniwindowHeader.top
+    anchors.left: miniwindowHeader.left
+    margin-top: 2
+    margin-left: 4
+    image-source: /images/topbuttons/skills
+    image-rect: 0 0 12 12
+    image-smooth: false
+
+  Label
+    id: miniwindowTitle
+    anchors.top: miniwindowHeader.top
+    anchors.left: miniwindowHeader.left
+    anchors.right: miniwindowHeader.right
+    margin-top: 2
+    margin-left: 20
+    margin-right: 50
+    font: verdana-11px-monochrome
+    height: 13
+    !text: tr('Skills')
+    color: #9d9d9dff
+
+  MiniWindowContents
+    padding-left: 5
+    padding-right: 5
+    layout: verticalBox
+
+    UIWidget
+      id: myotsTabs
+      height: 23
+      Button
+        anchors.left: parent.left
+        anchors.top: parent.top
+        width: 65
+        height: 20
+        padding: 0
+        text: Skills
+        @onClick: modules.game_skills.myotsTab(false)
+      Button
+        anchors.right: parent.right
+        anchors.top: parent.top
+        width: 82
+        height: 20
+        padding: 0
+        text: Attributes
+        @onClick: modules.game_skills.myotsTab(true)
+
+    SkillButton
+      margin-top: 5
+      id: level
+      SkillNameLabel
+        !text: tr('Level')
+      SkillValueLabel
+      RedPercentPanel
+
+    SkillButton
+      id: experience
+      height: 15
+      SkillNameLabel
+        !text: tr('Experience')
+      SkillValueLabel
+
+    SkillButton
+      id: xpGainRate
+      height: 15
+      SkillNameLabel
+        !text: tr('Experience Rate')
+      SkillValueLabel
+        color: #44ad25
+
+    HorizontalSeparator
+      id: ourSepPoints
+      margin-top: 5
+      margin-bottom: 5
+
+    SkillButton
+      id: myotsPoints
+      height: 15
+      SkillNameLabel
+        text: Stat points
+      SkillValueLabel
+
+    UIWidget
+      id: myots_str
+      height: 17
+      Label
+        anchors.left: parent.left
+        anchors.top: parent.top
+        text-align: left
+        width: 109
+        height: 16
+        text: Strength
+      Label
+        id: amount
+        anchors.right: parent.right
+        anchors.top: parent.top
+        margin-right: 18
+        text-align: right
+        width: 38
+        height: 16
+        text: 0
+      Button
+        id: add
+        anchors.right: parent.right
+        anchors.top: parent.top
+        size: 14 14
+        padding: 0
+        text: +
+        !tooltip: modules.game_skills.myotsAddTip
+        @onClick: modules.game_skills.myotsAllocate('str')
+
+    UIWidget
+      id: myots_dex
+      height: 17
+      Label
+        anchors.left: parent.left
+        anchors.top: parent.top
+        text-align: left
+        width: 109
+        height: 16
+        text: Dexterity
+      Label
+        id: amount
+        anchors.right: parent.right
+        anchors.top: parent.top
+        margin-right: 18
+        text-align: right
+        width: 38
+        height: 16
+        text: 0
+      Button
+        id: add
+        anchors.right: parent.right
+        anchors.top: parent.top
+        size: 14 14
+        padding: 0
+        text: +
+        !tooltip: modules.game_skills.myotsAddTip
+        @onClick: modules.game_skills.myotsAllocate('dex')
+
+    UIWidget
+      id: myots_int
+      height: 17
+      Label
+        anchors.left: parent.left
+        anchors.top: parent.top
+        text-align: left
+        width: 109
+        height: 16
+        text: Intelligence
+      Label
+        id: amount
+        anchors.right: parent.right
+        anchors.top: parent.top
+        margin-right: 18
+        text-align: right
+        width: 38
+        height: 16
+        text: 0
+      Button
+        id: add
+        anchors.right: parent.right
+        anchors.top: parent.top
+        size: 14 14
+        padding: 0
+        text: +
+        !tooltip: modules.game_skills.myotsAddTip
+        @onClick: modules.game_skills.myotsAllocate('int')
+
+    UIWidget
+      id: myots_con
+      height: 17
+      Label
+        anchors.left: parent.left
+        anchors.top: parent.top
+        text-align: left
+        width: 109
+        height: 16
+        text: Constitution
+      Label
+        id: amount
+        anchors.right: parent.right
+        anchors.top: parent.top
+        margin-right: 18
+        text-align: right
+        width: 38
+        height: 16
+        text: 0
+      Button
+        id: add
+        anchors.right: parent.right
+        anchors.top: parent.top
+        size: 14 14
+        padding: 0
+        text: +
+        !tooltip: modules.game_skills.myotsAddTip
+        @onClick: modules.game_skills.myotsAllocate('con')
+
+    UIWidget
+      id: myots_wil
+      height: 17
+      Label
+        anchors.left: parent.left
+        anchors.top: parent.top
+        text-align: left
+        width: 109
+        height: 16
+        text: Willpower
+      Label
+        id: amount
+        anchors.right: parent.right
+        anchors.top: parent.top
+        margin-right: 18
+        text-align: right
+        width: 38
+        height: 16
+        text: 0
+      Button
+        id: add
+        anchors.right: parent.right
+        anchors.top: parent.top
+        size: 14 14
+        padding: 0
+        text: +
+        !tooltip: modules.game_skills.myotsAddTip
+        @onClick: modules.game_skills.myotsAllocate('wil')
+
+    UIWidget
+      id: myots_luck
+      height: 17
+      Label
+        anchors.left: parent.left
+        anchors.top: parent.top
+        text-align: left
+        width: 109
+        height: 16
+        text: Luck
+      Label
+        id: amount
+        anchors.right: parent.right
+        anchors.top: parent.top
+        margin-right: 18
+        text-align: right
+        width: 38
+        height: 16
+        text: 0
+      Button
+        id: add
+        anchors.right: parent.right
+        anchors.top: parent.top
+        size: 14 14
+        padding: 0
+        text: +
+        !tooltip: modules.game_skills.myotsAddTip
+        @onClick: modules.game_skills.myotsAllocate('luck')
+
+    HorizontalSeparator
+      id: ourSepVitals
+      margin-top: 5
+      margin-bottom: 5
+
+    Panel
+      id: myotsDetails
+      height: 420
+      visible: false
+      layout:
+        type: verticalBox
+
+    XpBoostButton
+      id: xpBoos
+      visible: false
+
+    SkillButton
+      id: health
+      height: 15
+      SkillNameLabel
+        !text: tr('Hit Points')
+      SkillValueLabel
+
+    SkillButton
+      id: mana
+      height: 15
+      SkillNameLabel
+        !text: tr('Mana')
+      SkillValueLabel
+
+    SkillButton
+      id: myotsHpRegen
+      height: 15
+      visible: false
+      SkillNameLabel
+        text: HP Regen
+      SkillValueLabel
+
+    SkillButton
+      id: myotsManaRegen
+      height: 15
+      visible: false
+      SkillNameLabel
+        text: MP Regen
+      SkillValueLabel
+
+    SkillButton
+      id: soul
+      height: 15
+      SkillNameLabel
+        !text: tr('Soul Points')
+      SkillValueLabel
+
+    SkillButton
+      id: capacity
+      height: 15
+      SkillNameLabel
+        !text: tr('Capacity')
+      SkillValueLabel
+
+    SkillButton
+      id: speed
+      height: 15
+      visible: false
+      SkillNameLabel
+        !text: tr('Speed')
+      SkillValueLabel
+
+    SkillButton
+      id: regenerationTime
+      SkillNameLabel
+        !text: tr('Fullness')
+      SkillValueLabel
+      RedPercentPanel
+        background-color: green
+
+
+    SkillButton
+      id: stamina
+      SkillNameLabel
+        !text: tr('Stamina')
+      SkillValueLabel
+      RedPercentPanel
+
+    SkillButton
+      id: offlineTraining
+      SkillNameLabel
+        !text: tr('Offline Training')
+      SkillValueLabel
+      RedPercentPanel
+
+    HorizontalSeparator
+      margin-top: 5
+      margin-bottom: 5
+
+    SkillButton
+      id: magiclevel
+      SkillNameLabel
+        !text: tr('Magic Level')
+      SkillValueLabel
+      ImageSkill
+        image-source: /images/icons/icon_magic
+        image-size: 9 9
+      SkillPercentPanel
+        background-color: red
+
+    SkillButton
+      id: skillId0
+      SkillNameLabel
+        !text: tr('Fist Fighting')
+      SkillValueLabel
+      ImageSkill
+        image-source: /images/icons/icon_fist
+        image-size: 9 9
+      SkillPercentPanel
+
+    SkillButton
+      id: skillId2
+      SkillNameLabel
+        !text: tr('Melee Fighting')
+      SkillValueLabel
+      ImageSkill
+        image-source: /images/icons/icon_sword
+        image-size: 9 9
+      SkillPercentPanel
+
+    SkillButton
+      id: skillId4
+      SkillNameLabel
+        !text: tr('Distance Fighting')
+      SkillValueLabel
+      ImageSkill
+        image-source: /images/icons/icon_distance
+        image-size: 9 9
+      SkillPercentPanel
+
+    SkillButton
+      id: skillId5
+      SkillNameLabel
+        !text: tr('Shielding')
+      SkillValueLabel
+      ImageSkill
+        image-source: /images/icons/icon_shielding
+        image-size: 9 9
+      SkillPercentPanel
+
+    SkillButton
+      id: skillId6
+      SkillNameLabel
+        !text: tr('Fishing')
+      SkillValueLabel
+      ImageSkill
+        image-source: /images/icons/icon_fishing
+        image-size: 9 9
+      SkillPercentPanel
+      margin-bottom: 5
+        
+    HorizontalSeparator
+      id: separadorOnOffenceInfoChange
+      margin-bottom: 5
+
+    SmallSkillButton
+      id: skillId7
+      SkillNameLabel
+        !text: tr('Critical Hit Chance')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: skillId8
+      SkillNameLabel
+        !text: tr('Critical Hit Damage')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: skillId9
+      SkillNameLabel
+        !text: tr('Life Leech Chance')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: skillId10
+      SkillNameLabel
+        !text: tr('Life Leech Amount')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: skillId11
+      SkillNameLabel
+        !text: tr('Mana Leech Chance')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: skillId12
+      SkillNameLabel
+        !text: tr('Mana Leech Amount')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: skillId13
+      SkillNameLabel
+        !text: tr('Fatal')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: skillId14
+      SkillNameLabel
+        !text: tr('Dodge')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: skillId15
+      SkillNameLabel
+        !text: tr('Momentum')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: skillId16
+      SkillNameLabel
+        !text: tr('Transcendence')
+      SkillValueLabel
+
+    // 14.12
+    SmallSkillButton
+      id: damageHealing
+      visible: false
+      SkillNameLabel
+        !text: tr('Damage/Healing')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: attackValue
+      visible: false
+      SkillNameLabel
+        !text: tr('Attack Value')
+      SkillValueLabel
+        margin-right: 12
+      ImageAbsorb
+
+    SmallSkillButton
+      visible: false
+      id: convertedDamage
+      SkillNameLabel
+        !text: tr('Converted Damage')
+        text-overflow-length: 15
+      SkillValueLabel
+    SmallSkillButton
+      visible: false
+      id: convertedElement
+      SkillNameLabel
+        !text: tr('Converted Element')
+        text-overflow-length: 16
+      SkillValueLabel
+      
+    SmallSkillButton
+      id: lifeLeech
+      visible: false
+      SkillNameLabel
+        !text: tr('Life Leech')
+      SkillValueLabel
+    SmallSkillButton
+      id: manaLeech
+      visible: false
+      SkillNameLabel
+        !text: tr('Mana Leech')
+      SkillValueLabel
+    SmallSkillButton
+      visible: false
+      id: criticalHit
+      SkillNameLabel
+        !text: tr('Critical Hit:')
+    SmallSkillButton
+      id: criticalChance
+      visible: false
+      SkillNameLabel
+        margin-left: 15
+        !text: tr('Chance')
+      SkillValueLabel
+    SmallSkillButton
+      id: criticalExtraDamage
+      visible: false
+      SkillNameLabel
+        margin-left: 15
+        !text: tr('Extra Damage')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: onslaught
+      visible: false
+      SkillNameLabel
+        !text: tr('Onslaught')
+      SkillValueLabel
+      
+    HorizontalSeparator
+      id: separadorOnDefenseInfoChange
+      margin-top: 5      
+      visible: false
+      margin-bottom: 5
+
+    SmallSkillButton
+      id: physicalResist
+      visible: false
+      SkillNameLabel
+        !text: tr('Physical')
+      SkillValueLabel
+        margin-right: 12
+      ImageAbsorb
+        image-source: /game_cyclopedia/images/bestiary/icons/monster-icon-physical-resist
+    SmallSkillButton
+      id: fireResist
+      visible: false
+      SkillNameLabel
+        !text: tr('Fire')
+      SkillValueLabel
+        margin-right: 12
+      ImageAbsorb
+        image-source: /game_cyclopedia/images/bestiary/icons/monster-icon-fire-resist
+
+    SmallSkillButton
+      id: earthResist
+      visible: false
+      SkillNameLabel
+        !text: tr('Earth')
+      SkillValueLabel
+        margin-right: 12
+      ImageAbsorb
+        image-source: /game_cyclopedia/images/bestiary/icons/monster-icon-earth-resist
+    SmallSkillButton
+      id: energyResist
+      visible: false
+      SkillNameLabel
+        !text: tr('Energy')
+      SkillValueLabel
+        margin-right: 12
+      ImageAbsorb
+        image-source: /game_cyclopedia/images/bestiary/icons/monster-icon-energy-resist
+    SmallSkillButton
+      id: IceResist
+      visible: false
+      SkillNameLabel
+        !text: tr('Ice')
+      SkillValueLabel
+        margin-right: 12
+      ImageAbsorb
+        image-source: /game_cyclopedia/images/bestiary/icons/monster-icon-ice-resist
+    SmallSkillButton
+      id: HolyResist
+      visible: false
+      SkillNameLabel
+        !text: tr('Holy')
+      SkillValueLabel
+        margin-right: 12
+      ImageAbsorb
+        image-source: /game_cyclopedia/images/bestiary/icons/monster-icon-holy-resist
+
+    SmallSkillButton
+      id: deathResist
+      visible: false
+      SkillNameLabel
+        !text: tr('Death')
+      SkillValueLabel
+        margin-right: 12
+      ImageAbsorb
+        image-source: /game_cyclopedia/images/bestiary/icons/monster-icon-death-resist
+    SmallSkillButton
+      id: HealingResist
+      visible: false
+      SkillNameLabel
+        !text: tr('Healing')
+      SkillValueLabel
+        margin-right: 12
+      ImageAbsorb
+        image-source: /game_cyclopedia/images/bestiary/icons/monster-icon-healing-resist
+    SmallSkillButton
+      id: drowResist
+      visible: false
+      SkillNameLabel
+        !text: tr('Drown')
+      SkillValueLabel
+        margin-right: 12
+      ImageAbsorb
+        image-source: /game_cyclopedia/images/bestiary/icons/monster-icon-drowning-resist
+    SmallSkillButton
+      id: lifedrainResist
+      visible: false
+      SkillNameLabel
+        !text: tr('Lifedrain')
+      SkillValueLabel
+        margin-right: 12
+      ImageAbsorb
+        image-source: /game_cyclopedia/images/bestiary/icons/monster-icon-lifedrain-resist
+    SmallSkillButton
+      id: manadRainResist
+      visible: false
+      SkillNameLabel
+        !text: tr('Manadrain')
+      SkillValueLabel
+        margin-right: 12
+      ImageAbsorb
+        image-source: /game_cyclopedia/images/bestiary/icons/monster-icon-manadrain-resist
+    SmallSkillButton
+      id: defenceValue
+      visible: false
+      SkillNameLabel
+        !text: tr('Defence Value')
+      SkillValueLabel
+      
+    SmallSkillButton
+      id: armorValue
+      visible: false
+      SkillNameLabel
+        !text: tr('Armor Value')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: mantraValue
+      visible: false
+      SkillNameLabel
+        !text: tr('Mantra Value')
+      SkillValueLabel
+
+    SmallSkillButton
+      id: mitigation
+      visible: false
+      SkillNameLabel
+        !text: tr('Mitigation')
+      SkillValueLabel
+    SmallSkillButton
+      id: dodge
+      visible: false
+      SkillNameLabel
+        !text: tr('Dodge')
+      SkillValueLabel    
+    SmallSkillButton
+      id: damageReflection
+      visible: false
+      SkillNameLabel
+        !text: tr('Damage Reflection')
+      SkillValueLabel  
+
+    HorizontalSeparator
+      id: separadorOnForgeBonusesChange
+      visible: false
+      margin-top: 5
+      margin-bottom: 5
+
+    SmallSkillButton
+      id: momentum
+      visible: false
+      SkillNameLabel
+        !text: tr('Momentum')
+      SkillValueLabel  
+    SmallSkillButton
+      id: transcendence
+      visible: false
+      SkillNameLabel
+        !text: tr('Transcendence')
+      SkillValueLabel  
+    SmallSkillButton
+      id: amplification
+      visible: false
+      SkillNameLabel
+        !text: tr('Amplification')
+      SkillValueLabel  
+  
+    HorizontalSeparator
+      id: HorizontalSeparator
+      margin-top: 5
+      margin-bottom: 15
+      visible: false
+
+  UIWidget
+    id: miniborder
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    image-source: /images/ui/miniborder
+    size: 14 14
+    margin-left: 2
+    margin-bottom: 2
+
+SkillsSubMenuOption < ThickCheckBox
+  text-offset: 18 1
+  text-align: left
+  color: white
+  background-color: alpha
+  font: verdana-11px-rounded
+  padding: 3 6
+
+  $hover:
+    background-color: #ffffff1a
+
+  $disabled:
+    color: #c0c0c0ff
+
+SkillsListOption < UIButton
+  text-align: left
+  color: white
+  background-color: alpha
+  font: verdana-11px-rounded
+  padding: 3 6
+  margin-left: 5
+
+  $hover:
+    background-color: #ffffff1a
+
+  $disabled:
+    color: #c0c0c0ff
+
+SkillsListSubMenu < PopupMenu
+  id: skillsListSubMenu
+  width: 285
+
+  SkillsListOption
+    id: resetExperienceCounter
+    !text: tr('Reset Experience Counter')
+
+  HorizontalSeparator
+    margin-top: 2
+    margin-bottom: 3
+
+  SkillsListOption
+    id: rowsHeader
+    !text: tr('Show rows (name and bar)')
+    enabled: false
+
+  SkillsSubMenuOption
+    id: rowExperience
+    !text: tr('Experience')
+
+  SkillsSubMenuOption
+    id: rowHealth
+    !text: tr('Hit Points')
+
+  SkillsSubMenuOption
+    id: rowMana
+    !text: tr('Mana')
+
+  SkillsSubMenuOption
+    id: rowSoul
+    !text: tr('Soul Points')
+
+  SkillsSubMenuOption
+    id: rowCapacity
+    !text: tr('Capacity')
+
+  SkillsSubMenuOption
+    id: rowRegenTime
+    !text: tr('Fullness')
+
+  SkillsSubMenuOption
+    id: rowOfflineTraining
+    !text: tr('Offline Training')
+
+  SkillsSubMenuOption
+    id: rowMagic
+    !text: tr('Magic Level')
+
+  SkillsSubMenuOption
+    id: rowFist
+    !text: tr('Fist Fighting')
+
+  SkillsSubMenuOption
+    id: rowMelee
+    !text: tr('Melee Fighting')
+
+  SkillsSubMenuOption
+    id: rowDistance
+    !text: tr('Distance Fighting')
+
+  SkillsSubMenuOption
+    id: rowShielding
+    !text: tr('Shielding')
+
+  SkillsSubMenuOption
+    id: rowFishing
+    !text: tr('Fishing')
+
+  HorizontalSeparator
+    margin-top: 2
+    margin-bottom: 3
+
+  SkillsListOption
+    id: barsHeader
+    !text: tr('Show progress bars only')
+    enabled: false
+
+  SkillsSubMenuOption
+    id: showLevel
+    !text: tr('Level')
+
+  SkillsSubMenuOption
+    id: showFullness
+    !text: tr('Fullness')
+
+  SkillsSubMenuOption
+    id: showStamina
+    !text: tr('Stamina')
+
+  SkillsSubMenuOption
+    id: showOfflineTraining
+    !text: tr('Offline Training')
+
+  SkillsSubMenuOption
+    id: showMagic
+    !text: tr('Magic')
+
+  SkillsSubMenuOption
+    id: showFist
+    !text: tr('Fist')
+
+  SkillsSubMenuOption
+    id: showSword
+    !text: tr('Melee')
+
+  SkillsSubMenuOption
+    id: showDistance
+    !text: tr('Distance')
+  
+  SkillsSubMenuOption
+    id: showShielding
+    !text: tr('Shielding')
+
+  SkillsSubMenuOption
+    id: showFishing
+    !text: tr('Fishing')
+
+  HorizontalSeparator
+    id: HorizontalSeparator
+    margin-top: 2
+    margin-bottom: 3
+
+  SkillsSubMenuOption
+    id: showOffenceStats
+    !text: tr('Offence Stats')
+
+  SkillsSubMenuOption
+    id: showDefenceStats
+    !text: tr('Defence Stats')
+
+  SkillsSubMenuOption
+    id: showMiscStats
+    !text: tr('Misc. Stats')
+  
+  HorizontalSeparator
+    id: HorizontalSeparator
+    margin-top: 2
+    margin-bottom: 3
+  
+  SkillsSubMenuOption
+    id: showAllSkillBars
+    !text: tr('Show all Skill Bars')

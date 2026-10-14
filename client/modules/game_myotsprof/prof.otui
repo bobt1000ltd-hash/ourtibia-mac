@@ -1,0 +1,210 @@
+ProfPerk < UIButton
+  size: 76 60
+  font: verdana-11px-monochrome
+  text-wrap: false
+  text-align: bottom
+  padding-bottom: 4
+  color: #f0f0f0
+  background-color: #2a2a2aee
+  border-width: 2
+  border-color: #3a3a3a
+  $hover:
+    border-color: #d8d8d8
+  $disabled:
+    color: #808080
+  UIWidget
+    id: icon
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 5
+    size: 32 32
+    phantom: true
+
+ProfColumn < UIWidget
+  size: 90 330
+  background-color: #262626
+  border-width: 1
+  border-color: #3c3c3c
+  Label
+    id: stars
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 18
+    text-align: center
+    color: #ffd35a
+    background-color: #1b4a1b
+  Panel
+    id: perks
+    anchors.top: stars.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: chosen.top
+    margin: 10 6 6 7
+    layout:
+      type: verticalBox
+      spacing: 10
+  Label
+    id: chosen
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin: 2
+    height: 38
+    text-wrap: true
+    text-align: center
+    font: verdana-11px-monochrome
+    color: #d8d8d8
+    background-color: #1c1c1c
+
+MainWindow
+  id: myotsProficiency
+  text: Weapon Proficiency
+  size: 908 520
+  @onEscape: modules.game_myotsprof.hide()
+  Panel
+    id: left
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.bottom: bottom.top
+    width: 206
+    margin-bottom: 6
+    background-color: #262626
+    border-width: 1
+    border-color: #3c3c3c
+    UIItem
+      id: icon
+      anchors.top: parent.top
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 10
+      size: 64 64
+      virtual: true
+    Label
+      id: name
+      anchors.top: icon.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 8 8 0 8
+      height: 30
+      text-wrap: true
+      font: verdana-11px-rounded
+      color: #ffffff
+      text-align: center
+    Label
+      id: expText
+      anchors.top: name.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 6 8 0 8
+      height: 16
+      color: #e0e0e0
+    Label
+      id: levelText
+      anchors.top: expText.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 2 8 0 8
+      height: 16
+      color: #e0e0e0
+    ProgressBar
+      id: bar
+      anchors.top: levelText.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 4 8 0 8
+      height: 8
+      background-color: #3fbf3f
+    Label
+      id: statsTitle
+      anchors.top: bar.bottom
+      anchors.left: parent.left
+      margin: 12 8 0 8
+      text: Base stats
+      color: #c8c8c8
+    Label
+      id: stats
+      anchors.top: statsTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 4 8 0 8
+      text-wrap: true
+      text-auto-resize: true
+      color: #ffffff
+    Label
+      id: info
+      anchors.top: stats.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin: 10 8 8 8
+      text-wrap: true
+      clipping: true
+      font: verdana-11px-monochrome
+      color: #b0b0b0
+  Panel
+    id: columns
+    anchors.top: parent.top
+    anchors.left: left.right
+    anchors.right: parent.right
+    anchors.bottom: bottom.top
+    margin-left: 8
+    margin-bottom: 6
+    layout:
+      type: horizontalBox
+      spacing: 4
+  Panel
+    id: bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    height: 24
+    Label
+      id: gold
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      width: 120
+      height: 20
+      text-align: center
+      color: #f0d060
+      background-color: #111111
+      border-width: 1
+      border-color: #4a4a4a
+    Label
+      id: status
+      anchors.left: gold.right
+      anchors.right: confirm.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 8
+      margin-right: 8
+      color: #a8e0a8
+    Button
+      id: confirm
+      anchors.right: apply.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 4
+      width: 64
+      text: Confirm
+      @onClick: modules.game_myotsprof.confirm()
+    Button
+      id: apply
+      anchors.right: reset.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 4
+      width: 64
+      text: Apply
+      @onClick: modules.game_myotsprof.apply()
+    Button
+      id: reset
+      anchors.right: close.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 4
+      width: 64
+      text: Reset
+      @onClick: modules.game_myotsprof.reset()
+    Button
+      id: close
+      anchors.right: parent.right
+      anchors.verticalCenter: parent.verticalCenter
+      width: 64
+      text: Exit
+      @onClick: modules.game_myotsprof.hide()

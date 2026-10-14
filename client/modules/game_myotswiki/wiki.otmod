@@ -1,0 +1,8 @@
+Module
+  name: game_myotswiki
+  description: Complete local reference catalogue
+  sandboxed: true
+  scripts: [ wiki, knowledge ]
+  dependencies: [ game_interface, client_topmenu ]
+  @onLoad: init()
+  @onUnload: terminate()

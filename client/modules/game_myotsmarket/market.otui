@@ -1,0 +1,970 @@
+MarketTab < UIButton
+  size: 120 30
+  font: verdana-11px-rounded
+  color: #d8d8d8
+  background-color: #2e2e2e
+  border-width: 1
+  border-color: #4a4a4a
+  $on:
+    background-color: #5a4a20
+    color: #ffffff
+    border-color: #c8a040
+
+MarketBox < UIWidget
+  background-color: #1c1c1c
+  border-width: 1
+  border-color: #3e3e3e
+  padding: 4
+
+MarketCaption < Label
+  font: verdana-11px-rounded
+  color: #c8a040
+  height: 14
+
+MarketRow < UIButton
+  height: 36
+  background-color: #222222
+  border-width: 1
+  border-color: #303030
+  $hover:
+    background-color: #2c2c2c
+  $on:
+    background-color: #3a3220
+    border-color: #c8a040
+  UIItem
+    id: item
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 2
+    size: 32 32
+    virtual: true
+    phantom: true
+  Label
+    id: name
+    anchors.left: item.right
+    anchors.right: parent.right
+    anchors.top: parent.top
+    margin: 3 4 0 6
+    height: 14
+    color: #ffffff
+    phantom: true
+  Label
+    id: info
+    anchors.left: name.left
+    anchors.right: parent.right
+    anchors.top: name.bottom
+    margin: 2 4 0 0
+    height: 14
+    color: #a8a8a8
+    font: verdana-11px-rounded
+    phantom: true
+
+OfferRow < UIButton
+  height: 36
+  background-color: #222222
+  border-width: 1
+  border-color: #303030
+  $hover:
+    background-color: #2c2c2c
+  $on:
+    background-color: #3a3220
+    border-color: #c8a040
+  UIItem
+    id: item
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 2
+    size: 32 32
+    virtual: true
+    phantom: true
+  Label
+    id: name
+    anchors.left: item.right
+    anchors.top: parent.top
+    margin: 3 0 0 6
+    width: 210
+    height: 14
+    color: #ffffff
+    phantom: true
+  Label
+    id: info
+    anchors.left: name.left
+    anchors.top: name.bottom
+    margin-top: 2
+    width: 210
+    height: 14
+    color: #a8a8a8
+    phantom: true
+  Label
+    id: amount
+    anchors.left: name.right
+    anchors.verticalCenter: parent.verticalCenter
+    width: 50
+    text-align: center
+    color: #e0e0e0
+    phantom: true
+  Label
+    id: price
+    anchors.left: amount.right
+    anchors.verticalCenter: parent.verticalCenter
+    width: 110
+    text-align: right
+    color: #ffd75a
+    phantom: true
+  Label
+    id: seller
+    anchors.left: price.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 10
+    width: 100
+    color: #c8c8c8
+    phantom: true
+  Label
+    id: ends
+    anchors.left: seller.right
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    text-align: right
+    margin-right: 6
+    color: #909090
+    phantom: true
+
+MyOfferRow < UIWidget
+  height: 36
+  background-color: #222222
+  border-width: 1
+  border-color: #303030
+  UIItem
+    id: item
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 2
+    size: 32 32
+    virtual: true
+  Label
+    id: name
+    anchors.left: item.right
+    anchors.right: cancel.left
+    anchors.top: parent.top
+    margin: 3 4 0 6
+    height: 14
+    color: #ffffff
+  Label
+    id: info
+    anchors.left: name.left
+    anchors.right: cancel.left
+    anchors.top: name.bottom
+    margin: 2 4 0 0
+    height: 14
+    color: #a8a8a8
+  Button
+    id: cancel
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-right: 4
+    size: 60 20
+    text: Cancel
+
+HistoryRow < Label
+  height: 16
+  color: #c8c8c8
+  text-offset: 4 0
+
+SmallEdit < TextEdit
+  height: 20
+  width: 50
+
+MainWindow
+  id: myotsMarket
+  text: Market
+  size: 980 650
+  @onEscape: modules.game_myotsmarket.hide()
+
+  Panel
+    id: top
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 30
+    MarketTab
+      id: tabBuy
+      anchors.left: parent.left
+      anchors.top: parent.top
+      text: BUY
+      @onClick: modules.game_myotsmarket.setTab('buy')
+    MarketTab
+      id: tabSell
+      anchors.left: tabBuy.right
+      anchors.top: parent.top
+      margin-left: 4
+      text: SELL
+      @onClick: modules.game_myotsmarket.setTab('sell')
+    Label
+      id: balance
+      anchors.right: parent.right
+      anchors.verticalCenter: parent.verticalCenter
+      text-auto-resize: true
+      color: #ffd75a
+      font: verdana-11px-rounded
+
+  Panel
+    id: buyPanel
+    anchors.top: top.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: status.top
+    margin-top: 6
+    margin-bottom: 4
+
+    MarketBox
+      id: catalogBox
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.bottom: parent.bottom
+      width: 270
+      MarketCaption
+        id: catCaption
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: Items
+      TextEdit
+        id: search
+        anchors.top: catCaption.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin-top: 4
+        height: 20
+        placeholder: Search item...
+        @onTextChange: modules.game_myotsmarket.refreshCatalog()
+      ComboBox
+        id: category
+        anchors.top: search.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin-top: 4
+        height: 20
+      ScrollablePanel
+        id: catalogList
+        anchors.top: category.bottom
+        anchors.left: parent.left
+        anchors.right: catalogScroll.left
+        anchors.bottom: allOffers.top
+        margin-top: 5
+        margin-bottom: 4
+        vertical-scrollbar: catalogScroll
+        layout:
+          type: verticalBox
+          spacing: 2
+      VerticalScrollBar
+        id: catalogScroll
+        anchors.top: category.bottom
+        anchors.bottom: allOffers.top
+        margin-top: 5
+        margin-bottom: 4
+        anchors.right: parent.right
+        step: 38
+        pixels-scroll: true
+      Button
+        id: allOffers
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: 22
+        text: Show all offers
+        @onClick: modules.game_myotsmarket.showAllOffers()
+
+    MarketBox
+      id: filterBox
+      anchors.top: parent.top
+      anchors.left: catalogBox.right
+      anchors.right: parent.right
+      margin-left: 6
+      height: 112
+      MarketCaption
+        id: fCaption
+        anchors.top: parent.top
+        anchors.left: parent.left
+        text: Filters
+        width: 200
+      Label
+        id: lCur
+        anchors.top: fCaption.bottom
+        anchors.left: parent.left
+        margin-top: 8
+        text: Currency
+        width: 58
+      ComboBox
+        id: fCur
+        anchors.left: lCur.right
+        anchors.verticalCenter: lCur.verticalCenter
+        width: 90
+        height: 20
+      Label
+        id: lTier
+        anchors.left: fCur.right
+        anchors.verticalCenter: lCur.verticalCenter
+        margin-left: 12
+        text: Tier
+        width: 28
+      SmallEdit
+        id: fTmin
+        anchors.left: lTier.right
+        anchors.verticalCenter: lCur.verticalCenter
+        width: 34
+      Label
+        id: lTierDash
+        anchors.left: fTmin.right
+        anchors.verticalCenter: lCur.verticalCenter
+        text: -
+        width: 14
+      SmallEdit
+        id: fTmax
+        anchors.left: lTierDash.right
+        anchors.verticalCenter: lCur.verticalCenter
+        width: 34
+      Label
+        id: lUp
+        anchors.left: fTmax.right
+        anchors.verticalCenter: lCur.verticalCenter
+        margin-left: 12
+        text: Upgrade min
+        width: 74
+      SmallEdit
+        id: fUmin
+        anchors.left: lUp.right
+        anchors.verticalCenter: lCur.verticalCenter
+        width: 34
+      Label
+        id: lRar
+        anchors.left: fUmin.right
+        anchors.verticalCenter: lCur.verticalCenter
+        margin-left: 12
+        text: Rarity min
+        width: 64
+      ComboBox
+        id: fRar
+        anchors.left: lRar.right
+        anchors.verticalCenter: lCur.verticalCenter
+        width: 110
+        height: 20
+
+      Button
+        id: fA1
+        anchors.top: lCur.bottom
+        anchors.left: parent.left
+        margin-top: 12
+        width: 170
+        height: 20
+      SmallEdit
+        id: fV1
+        anchors.left: fA1.right
+        anchors.verticalCenter: fA1.verticalCenter
+        margin-left: 2
+        width: 44
+      Button
+        id: fA2
+        anchors.left: fV1.right
+        anchors.verticalCenter: fA1.verticalCenter
+        margin-left: 10
+        width: 170
+        height: 20
+      SmallEdit
+        id: fV2
+        anchors.left: fA2.right
+        anchors.verticalCenter: fA1.verticalCenter
+        margin-left: 2
+        width: 44
+      Button
+        id: fA3
+        anchors.left: fV2.right
+        anchors.verticalCenter: fA1.verticalCenter
+        margin-left: 10
+        width: 170
+        height: 20
+      SmallEdit
+        id: fV3
+        anchors.left: fA3.right
+        anchors.verticalCenter: fA1.verticalCenter
+        margin-left: 2
+        width: 44
+
+      Label
+        id: lSort
+        anchors.top: fA1.bottom
+        anchors.left: parent.left
+        margin-top: 12
+        text: Sort by
+        width: 50
+      ComboBox
+        id: fSort
+        anchors.left: lSort.right
+        anchors.verticalCenter: lSort.verticalCenter
+        width: 110
+        height: 20
+      CheckBox
+        id: fDesc
+        anchors.left: fSort.right
+        anchors.verticalCenter: lSort.verticalCenter
+        margin-left: 10
+        width: 110
+        text: Descending
+      Button
+        id: fApply
+        anchors.right: fReset.left
+        anchors.verticalCenter: lSort.verticalCenter
+        margin-right: 6
+        size: 90 22
+        text: Search
+        @onClick: modules.game_myotsmarket.search(1)
+      Button
+        id: fReset
+        anchors.right: parent.right
+        anchors.verticalCenter: lSort.verticalCenter
+        size: 90 22
+        text: Reset filters
+        @onClick: modules.game_myotsmarket.resetFilters()
+
+    MarketBox
+      id: offersBox
+      anchors.top: filterBox.bottom
+      anchors.left: filterBox.left
+      anchors.right: parent.right
+      anchors.bottom: detailBox.top
+      margin-top: 6
+      margin-bottom: 6
+      MarketCaption
+        id: oCaption
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: Offers
+      Label
+        id: hName
+        anchors.top: oCaption.bottom
+        anchors.left: parent.left
+        margin: 4 0 0 40
+        width: 210
+        text: Item
+        color: #909090
+      Label
+        id: hAmount
+        anchors.left: hName.right
+        anchors.verticalCenter: hName.verticalCenter
+        width: 50
+        text-align: center
+        text: Amount
+        color: #909090
+      Label
+        id: hPrice
+        anchors.left: hAmount.right
+        anchors.verticalCenter: hName.verticalCenter
+        width: 110
+        text-align: right
+        text: Price (each)
+        color: #909090
+      Label
+        id: hSeller
+        anchors.left: hPrice.right
+        anchors.verticalCenter: hName.verticalCenter
+        margin-left: 10
+        width: 100
+        text: Seller
+        color: #909090
+      Label
+        id: hEnds
+        anchors.left: hSeller.right
+        anchors.right: parent.right
+        anchors.verticalCenter: hName.verticalCenter
+        margin-right: 20
+        text-align: right
+        text: Ends in
+        color: #909090
+      ScrollablePanel
+        id: offerList
+        anchors.top: hName.bottom
+        anchors.left: parent.left
+        anchors.right: offerScroll.left
+        anchors.bottom: pager.top
+        margin-top: 3
+        margin-bottom: 3
+        vertical-scrollbar: offerScroll
+        layout:
+          type: verticalBox
+          spacing: 2
+      VerticalScrollBar
+        id: offerScroll
+        anchors.top: hName.bottom
+        anchors.bottom: pager.top
+        margin-top: 3
+        margin-bottom: 3
+        anchors.right: parent.right
+        step: 38
+        pixels-scroll: true
+      Panel
+        id: pager
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: 20
+        Button
+          id: prev
+          anchors.left: parent.left
+          anchors.verticalCenter: parent.verticalCenter
+          size: 60 20
+          text: < Prev
+          @onClick: modules.game_myotsmarket.page(-1)
+        Label
+          id: pageLabel
+          anchors.left: prev.right
+          anchors.right: next.left
+          anchors.verticalCenter: parent.verticalCenter
+          text-align: center
+          color: #c8c8c8
+        Button
+          id: next
+          anchors.right: parent.right
+          anchors.verticalCenter: parent.verticalCenter
+          size: 60 20
+          text: Next >
+          @onClick: modules.game_myotsmarket.page(1)
+
+    MarketBox
+      id: detailBox
+      anchors.left: filterBox.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      height: 160
+      UIItem
+        id: dItem
+        anchors.top: parent.top
+        anchors.left: parent.left
+        margin: 4 0 0 4
+        size: 64 64
+        virtual: true
+        background-color: #2a2a2a
+        border-width: 1
+        border-color: #4a4a4a
+      CheckBox
+        id: dRanges
+        anchors.top: dItem.bottom
+        anchors.left: dItem.left
+        margin-top: 6
+        width: 64
+        text: Ranges
+        !tooltip: tr('Show the minimum and maximum value of every bonus on this item')
+        @onCheckChange: modules.game_myotsmarket.toggleRanges(self)
+      ScrollablePanel
+        id: dTextPanel
+        anchors.top: parent.top
+        anchors.left: dItem.right
+        anchors.right: dScroll.left
+        anchors.bottom: parent.bottom
+        margin: 4 2 4 10
+        vertical-scrollbar: dScroll
+        layout:
+          type: verticalBox
+        Label
+          id: dText
+          text-wrap: true
+          text-vertical-auto-resize: true
+          text-align: topLeft
+          color: #e8e8e8
+          text: Select an item on the left or an offer in the list.
+      VerticalScrollBar
+        id: dScroll
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.right: buyArea.left
+        margin: 4 8 4 0
+        step: 14
+        pixels-scroll: true
+      Panel
+        id: buyArea
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        width: 190
+        Label
+          id: lAmount
+          anchors.top: parent.top
+          anchors.left: parent.left
+          margin-top: 6
+          text: Amount
+          width: 56
+        SmallEdit
+          id: buyAmount
+          anchors.left: lAmount.right
+          anchors.verticalCenter: lAmount.verticalCenter
+          width: 60
+          text: 1
+          @onTextChange: modules.game_myotsmarket.updateBuyTotal()
+        Button
+          id: buyMax
+          anchors.left: buyAmount.right
+          anchors.verticalCenter: lAmount.verticalCenter
+          margin-left: 4
+          size: 40 20
+          text: Max
+          @onClick: modules.game_myotsmarket.buyMaxAmount()
+        Label
+          id: buyTotal
+          anchors.top: lAmount.bottom
+          anchors.left: parent.left
+          anchors.right: parent.right
+          margin-top: 6
+          height: 30
+          text-wrap: true
+          text-align: topLeft
+          color: #ffd75a
+        Label
+          id: dStats
+          anchors.top: buyTotal.bottom
+          anchors.left: parent.left
+          anchors.right: parent.right
+          anchors.bottom: buyButton.top
+          margin: 2 0 4 0
+          text-wrap: true
+          text-align: topLeft
+          color: #a8a8a8
+        Button
+          id: buyButton
+          anchors.left: parent.left
+          anchors.right: parent.right
+          anchors.bottom: parent.bottom
+          margin-bottom: 4
+          height: 30
+          text: Buy
+          @onClick: modules.game_myotsmarket.buy()
+
+  Panel
+    id: sellPanel
+    anchors.top: top.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: status.top
+    margin-top: 6
+    margin-bottom: 4
+
+    MarketBox
+      id: invBox
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.bottom: parent.bottom
+      width: 270
+      MarketCaption
+        id: invCaption
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: Your backpack
+      ScrollablePanel
+        id: invList
+        anchors.top: invCaption.bottom
+        anchors.left: parent.left
+        anchors.right: invScroll.left
+        anchors.bottom: invRefresh.top
+        margin-top: 5
+        margin-bottom: 4
+        vertical-scrollbar: invScroll
+        layout:
+          type: verticalBox
+          spacing: 2
+      VerticalScrollBar
+        id: invScroll
+        anchors.top: invCaption.bottom
+        anchors.bottom: invRefresh.top
+        margin-top: 5
+        margin-bottom: 4
+        anchors.right: parent.right
+        step: 38
+        pixels-scroll: true
+      Button
+        id: invRefresh
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: 22
+        text: Refresh
+        @onClick: modules.game_myotsmarket.refreshSell()
+
+    MarketBox
+      id: createBox
+      anchors.top: parent.top
+      anchors.left: invBox.right
+      anchors.right: parent.right
+      margin-left: 6
+      height: 272
+      MarketCaption
+        id: cCaption
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: Create offer
+      UIItem
+        id: sItem
+        anchors.top: cCaption.bottom
+        anchors.left: parent.left
+        margin: 6 0 0 4
+        size: 64 64
+        virtual: true
+        background-color: #2a2a2a
+        border-width: 1
+        border-color: #4a4a4a
+      CheckBox
+        id: sRanges
+        anchors.top: sItem.bottom
+        anchors.left: sItem.left
+        margin-top: 6
+        width: 64
+        text: Ranges
+        !tooltip: tr('Show the minimum and maximum value of every bonus on this item')
+        @onCheckChange: modules.game_myotsmarket.toggleRanges(self)
+      ScrollablePanel
+        id: sTextPanel
+        anchors.top: cCaption.bottom
+        anchors.left: sItem.right
+        anchors.right: sScroll.left
+        anchors.bottom: parent.bottom
+        margin: 6 2 4 10
+        vertical-scrollbar: sScroll
+        layout:
+          type: verticalBox
+        Label
+          id: sText
+          text-wrap: true
+          text-vertical-auto-resize: true
+          text-align: topLeft
+          color: #e8e8e8
+          text: Choose an item from your backpack.
+      VerticalScrollBar
+        id: sScroll
+        anchors.top: cCaption.bottom
+        anchors.bottom: parent.bottom
+        anchors.right: sForm.left
+        margin: 6 8 4 0
+        step: 14
+        pixels-scroll: true
+      Panel
+        id: sForm
+        anchors.top: cCaption.bottom
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        width: 250
+        Label
+          id: lsCur
+          anchors.top: parent.top
+          anchors.left: parent.left
+          margin-top: 8
+          width: 80
+          text: Currency
+        ComboBox
+          id: sCur
+          anchors.left: lsCur.right
+          anchors.verticalCenter: lsCur.verticalCenter
+          width: 120
+          height: 20
+        Label
+          id: lsDur
+          anchors.top: lsCur.bottom
+          anchors.left: parent.left
+          margin-top: 12
+          width: 80
+          text: Duration
+        ComboBox
+          id: sDur
+          anchors.left: lsDur.right
+          anchors.verticalCenter: lsDur.verticalCenter
+          width: 120
+          height: 20
+        Label
+          id: lsPrice
+          anchors.top: lsDur.bottom
+          anchors.left: parent.left
+          margin-top: 10
+          width: 80
+          text: Price (each)
+        SmallEdit
+          id: sPrice
+          anchors.left: lsPrice.right
+          anchors.verticalCenter: lsPrice.verticalCenter
+          width: 120
+          @onTextChange: modules.game_myotsmarket.updateSellTotal()
+        Label
+          id: lsAmount
+          anchors.top: lsPrice.bottom
+          anchors.left: parent.left
+          margin-top: 10
+          width: 80
+          text: Amount
+        SmallEdit
+          id: sAmount
+          anchors.left: lsAmount.right
+          anchors.verticalCenter: lsAmount.verticalCenter
+          width: 60
+          text: 1
+          @onTextChange: modules.game_myotsmarket.updateSellTotal()
+        Label
+          id: sTotal
+          anchors.top: lsAmount.bottom
+          anchors.left: parent.left
+          anchors.right: parent.right
+          margin-top: 8
+          height: 30
+          text-wrap: true
+          text-align: topLeft
+          color: #ffd75a
+        Label
+          id: sStats
+          anchors.top: sTotal.bottom
+          anchors.left: parent.left
+          anchors.right: parent.right
+          margin-top: 2
+          height: 48
+          text-wrap: true
+          color: #a8a8a8
+        Button
+          id: sButton
+          anchors.left: parent.left
+          anchors.right: parent.right
+          anchors.bottom: parent.bottom
+          margin-bottom: 2
+          height: 28
+          text: Create offer
+          @onClick: modules.game_myotsmarket.sell()
+
+    MarketBox
+      id: mineBox
+      anchors.top: createBox.bottom
+      anchors.left: createBox.left
+      anchors.right: historyBox.left
+      anchors.bottom: parent.bottom
+      margin-top: 6
+      margin-right: 6
+      MarketCaption
+        id: mCaption
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: Your offers
+      ScrollablePanel
+        id: mineList
+        anchors.top: mCaption.bottom
+        anchors.left: parent.left
+        anchors.right: mineScroll.left
+        anchors.bottom: parent.bottom
+        margin-top: 5
+        vertical-scrollbar: mineScroll
+        layout:
+          type: verticalBox
+          spacing: 2
+      VerticalScrollBar
+        id: mineScroll
+        anchors.top: mCaption.bottom
+        anchors.bottom: parent.bottom
+        margin-top: 5
+        margin-bottom: 0
+        anchors.right: parent.right
+        step: 38
+        pixels-scroll: true
+
+    MarketBox
+      id: historyBox
+      anchors.top: createBox.bottom
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin-top: 6
+      width: 300
+      MarketCaption
+        id: hCaption
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        text: History (bought / sold)
+      ScrollablePanel
+        id: historyList
+        anchors.top: hCaption.bottom
+        anchors.left: parent.left
+        anchors.right: historyScroll.left
+        anchors.bottom: parent.bottom
+        margin-top: 5
+        vertical-scrollbar: historyScroll
+        layout:
+          type: verticalBox
+          spacing: 1
+      VerticalScrollBar
+        id: historyScroll
+        anchors.top: hCaption.bottom
+        anchors.bottom: parent.bottom
+        margin-top: 5
+        margin-bottom: 0
+        anchors.right: parent.right
+        step: 17
+        pixels-scroll: true
+
+  Label
+    id: status
+    anchors.left: parent.left
+    anchors.right: closeButton.left
+    anchors.bottom: parent.bottom
+    height: 20
+    color: #e0e0e0
+    text-offset: 4 0
+  Button
+    id: closeButton
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    size: 70 20
+    text: Close
+    @onClick: modules.game_myotsmarket.hide()
+
+  UIWidget
+    id: picker
+    size: 300 380
+    background-color: #1a1a1a
+    border-width: 1
+    border-color: #c8a040
+    padding: 6
+    visible: false
+    focusable: true
+    MarketCaption
+      id: pickerTitle
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: pickerClose.left
+      text: Choose a bonus
+    Button
+      id: pickerClose
+      anchors.top: parent.top
+      anchors.right: parent.right
+      size: 20 18
+      text: X
+      @onClick: modules.game_myotsmarket.closePicker()
+    TextEdit
+      id: pickerSearch
+      anchors.top: pickerTitle.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin-top: 6
+      height: 20
+      placeholder: Search bonus...
+      @onTextChange: modules.game_myotsmarket.fillPicker()
+    ScrollablePanel
+      id: pickerList
+      anchors.top: pickerSearch.bottom
+      anchors.left: parent.left
+      anchors.right: pickerScroll.left
+      anchors.bottom: parent.bottom
+      margin-top: 4
+      vertical-scrollbar: pickerScroll
+      layout:
+        type: verticalBox
+        spacing: 1
+    VerticalScrollBar
+      id: pickerScroll
+      anchors.top: pickerSearch.bottom
+      anchors.bottom: parent.bottom
+      anchors.right: parent.right
+      margin-top: 4
+      step: 21
+      pixels-scroll: true

@@ -1,0 +1,231 @@
+EnterGameWindow < MainWindow
+  !text: tr('Login')
+  size: 240 252
+
+
+EnterGameButton < Button
+  width: 64
+
+ServerListButton < UIButton
+  size: 17 17
+  image-source: /images/topbuttons/minimap
+  image-color: #ffffffff
+
+  $hover !disabled:
+    image-color: #ffffff99
+
+  $pressed:
+    image-color: #ffffff44
+
+  $disabled:
+    image-color: #ffffff55
+
+// OurTibia start screen (Claude, 01.10.2026): Mythibia-like login panel.
+// Server, port and client version are fixed by Servers_init (init.lua), their
+// widgets stay here hidden because entergame.lua still reads them.
+EnterGameWindow
+  id: enterGame
+  &authenticatorEnabled: false
+  &authenticatorHeight: 44
+  &stayLoggedBoxEnabled: false
+  &stayLoggedBoxHeight: 24
+  size: 240 252
+  @onEnter: EnterGame.doLogin()
+
+  Label
+    id: emailLabel
+    !text: tr('Account name')
+    anchors.left: parent.left
+    anchors.top: parent.top
+    font: verdana-11px-rounded
+    color: #e8e8e8
+    text-auto-resize: true
+
+  HiddenTextQtToggleEdit
+    id: accountNameTextEdit
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: emailLabel.bottom
+    margin-top: 3
+
+  Label
+    id: passwordLabel
+    !text: tr('Password')
+    anchors.left: parent.left
+    anchors.top: accountNameTextEdit.bottom
+    margin-top: 8
+    font: verdana-11px-rounded
+    color: #e8e8e8
+    text-auto-resize: true
+
+  HiddenTextQtEdit
+    id: accountPasswordTextEdit
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: passwordLabel.bottom
+    margin-top: 3
+
+  QtCheckBox
+    id: rememberEmailBox
+    !text: tr('Remember password')
+    !tooltip: tr('Remember account and password when starts client')
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: accountPasswordTextEdit.bottom
+    margin-top: 8
+    @onCheckChange: |
+      self:getParent():getChildById('autoLoginBox'):setEnabled(self:isChecked())
+      self:getParent():getChildById('rememberEmailTip'):setOn(self:isChecked())
+
+  UIWidget
+    id: rememberEmailTip
+    image-source: /images/icons/show_gui_help_grey
+    anchors.right: parent.right
+    anchors.verticalCenter: rememberEmailBox.verticalCenter
+    visible: false
+    $on:
+      visible: false
+    $!on:
+      visible: false
+
+  Button
+    id: loginButton
+    !text: tr('Login')
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: rememberEmailBox.bottom
+    margin-top: 10
+    height: 22
+    @onClick: EnterGame.doLogin()
+
+  Label
+    id: serverInfoLabel
+    font: verdana-11px-rounded
+    anchors.top: loginButton.bottom
+    anchors.left: parent.left
+    margin-top: 4
+    color: green
+    text-auto-resize: true
+
+  HorizontalSeparator
+    id: noAccountSeparator
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: noAccountLabel.top
+    margin-bottom: 6
+
+  Label
+    id: noAccountLabel
+    !text: tr("Don't have an account?")
+    anchors.left: parent.left
+    anchors.bottom: btnCreateNewAccount.top
+    margin-bottom: 5
+    text-auto-resize: true
+    color: #d0d0d0
+
+  Button
+    id: btnCreateNewAccount
+    !text: tr('Create an account online')
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: discordButton.top
+    margin-bottom: 5
+    height: 22
+    @onClick: g_platform.openUrl((Services and Services.createAccount) or 'https://ourtibia.com/?subtopic=createaccount')
+
+  Button
+    id: discordButton
+    !text: tr('Join our Discord')
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    height: 22
+    color: #ffffff
+    background-color: #3c4bb0
+    @onClick: g_platform.openUrl((Services and Services.discord) or 'https://discord.gg/acXk9UZ8m')
+
+  // ---- hidden technical fields (fixed server) ----
+  UIButton
+    id: Forgot_password_email
+    visible: false
+    anchors.left: parent.left
+    anchors.top: parent.top
+    size: 0 0
+
+  QtCheckBox
+    id: stayLoggedBox
+    !text: tr('Stay logged during session')
+    anchors.left: parent.left
+    anchors.top: parent.top
+    visible: false
+    $on:
+      visible: false
+
+  MenuLabel
+    id: serverLabel
+    !text: tr('Server')
+    anchors.left: parent.left
+    anchors.top: parent.top
+    visible: false
+
+  ServerListButton
+    id: serverListButton
+    anchors.right: parent.right
+    anchors.top: parent.top
+    visible: false
+    @onClick: EnterGame.showServerList()
+
+  TextEdit
+    id: serverHostTextEdit
+    anchors.left: parent.left
+    anchors.top: parent.top
+    width: 100
+    visible: false
+
+  MenuLabel
+    id: clientLabel
+    !text: tr('Client Version')
+    anchors.left: parent.left
+    anchors.top: parent.top
+    visible: false
+
+  ComboBox
+    id: clientComboBox
+    anchors.left: parent.left
+    anchors.top: parent.top
+    width: 90
+    visible: false
+    menu-scroll: true
+    menu-height: 125
+    menu-scroll-step: 25
+
+  MenuLabel
+    id: portLabel
+    !text: tr('Port')
+    anchors.left: parent.left
+    anchors.top: parent.top
+    visible: false
+
+  TextEdit
+    id: serverPortTextEdit
+    text: 7171
+    anchors.left: parent.left
+    anchors.top: parent.top
+    width: 60
+    visible: false
+
+  QtCheckBox
+    id: autoLoginBox
+    enabled: false
+    !text: tr('Auto login')
+    anchors.left: parent.left
+    anchors.top: parent.top
+    visible: false
+
+  QtCheckBox
+    id: httpLoginBox
+    enabled: true
+    !text: tr('Enable HTTP login')
+    anchors.left: parent.left
+    anchors.top: parent.top
+    visible: false

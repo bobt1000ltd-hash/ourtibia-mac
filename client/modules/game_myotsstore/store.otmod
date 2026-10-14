@@ -1,0 +1,8 @@
+Module
+  name: game_myotsstore
+  description: Local game store
+  sandboxed: true
+  scripts: [ store ]
+  dependencies: [ game_interface, client_topmenu ]
+  @onLoad: init()
+  @onUnload: terminate()

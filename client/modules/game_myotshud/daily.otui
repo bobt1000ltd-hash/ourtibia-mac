@@ -1,0 +1,60 @@
+MainWindow
+  id: myotsDailyWindow
+  text: Daily Task
+  size: 690 590
+  @onEscape: self:hide()
+  Button
+    text: X
+    size: 20 19
+    anchors.right: parent.right
+    anchors.top: parent.top
+    @onClick: self:getParent():hide()
+  Label
+    id: status
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 43
+    text-wrap: true
+  ScrollablePanel
+    id: offers
+    anchors.top: status.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: reroll.top
+    margin-bottom: 10
+    layout:
+      type: grid
+      cell-size: 213 216
+      num-columns: 3
+      cell-spacing: 4
+  Button
+    id: reroll
+    text: Reroll
+    width: 135
+    anchors.left: parent.left
+    anchors.bottom: close.top
+    margin-bottom: 10
+    @onClick: modules.game_myotshud.command('daily:reroll')
+  Button
+    id: cancelTask
+    text: Cancel daily
+    width: 135
+    anchors.left: reroll.right
+    anchors.bottom: reroll.bottom
+    margin-left: 12
+    @onClick: modules.game_myotshud.command('daily:cancel')
+  Button
+    id: claim
+    text: Claim reward
+    width: 135
+    anchors.right: parent.right
+    anchors.bottom: reroll.bottom
+    @onClick: modules.game_myotshud.command('daily:claim')
+  Button
+    id: close
+    text: Close
+    width: 100
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    @onClick: self:getParent():hide()

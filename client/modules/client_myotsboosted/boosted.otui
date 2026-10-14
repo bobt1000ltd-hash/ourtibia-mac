@@ -1,0 +1,56 @@
+BoostedCreatureBox < UIWidget
+  size: 118 112
+  UICreature
+    id: outfit
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    size: 64 64
+  Label
+    id: name
+    anchors.top: outfit.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    text-align: center
+    font: verdana-11px-rounded
+    color: #ffffff
+  Label
+    id: bonus
+    anchors.top: name.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 26
+    margin-top: 1
+    text-align: center
+    font: verdana-11px-monochrome
+    color: #ffd35a
+
+UIWidget
+  id: myotsBoostedPanel
+  size: 520 140
+  anchors.top: parent.top
+  anchors.horizontalCenter: parent.horizontalCenter
+  margin-top: 40
+  background-color: #000000b0
+  border-width: 1
+  border-color: #7a1a1a
+  phantom: false
+  Label
+    id: title
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 4
+    text-align: center
+    font: verdana-11px-rounded
+    color: #ff4040
+    text: Today's boosted creatures
+  Panel
+    id: list
+    anchors.top: title.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin: 4 6 4 6
+    layout:
+      type: horizontalBox
+      spacing: 8

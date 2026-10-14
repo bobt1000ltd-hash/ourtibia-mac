@@ -1,0 +1,68 @@
+MainWindow
+  id: myotsJournal
+  text: MyOTS | Character journal
+  size: 540 600
+  @onEscape: modules.game_myots.hide()
+
+  MultilineTextEdit
+    id: journal
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: scroll.left
+    anchors.bottom: commandLabel.top
+    margin-bottom: 10
+    editable: false
+    text-wrap: true
+    vertical-scrollbar: scroll
+    text: Loading your character journal...
+
+  VerticalScrollBar
+    id: scroll
+    anchors.top: parent.top
+    anchors.bottom: commandLabel.top
+    anchors.right: parent.right
+    margin-bottom: 10
+    step: 16
+    pixels-scroll: true
+
+  Label
+    id: commandLabel
+    anchors.bottom: command.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-bottom: 5
+    text: Action: stat con 10 | daily 1 | hunt rats | temple | protect
+
+  TextEdit
+    id: command
+    anchors.bottom: close.top
+    anchors.left: parent.left
+    anchors.right: send.left
+    margin-right: 8
+    margin-bottom: 10
+    @onEnter: modules.game_myots.submit()
+
+  Button
+    id: send
+    text: Apply
+    width: 80
+    anchors.right: parent.right
+    anchors.bottom: close.top
+    margin-bottom: 10
+    @onClick: modules.game_myots.submit()
+
+  Button
+    id: refresh
+    text: Refresh
+    width: 90
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    @onClick: modules.game_myots.request('journal')
+
+  Button
+    id: close
+    text: Close
+    width: 90
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    @onClick: modules.game_myots.hide()

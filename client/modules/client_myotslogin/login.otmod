@@ -1,0 +1,9 @@
+Module
+  name: client_myotslogin
+  description: OurTibia start screen (logo, news, music, credits)
+  author: Claude for Bloku
+  sandboxed: true
+  scripts: [ login ]
+  dependencies: [ client_entergame, client_background ]
+  @onLoad: init()
+  @onUnload: terminate()

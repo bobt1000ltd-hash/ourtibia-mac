@@ -1,0 +1,202 @@
+Panel
+  id: itemDetailsPage
+  anchors.top: tabs.bottom
+  anchors.left: parent.left
+  anchors.right: parent.right
+  anchors.bottom: footer.top
+  margin-top: 8
+  visible: false
+  Panel
+    id: summary
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 56
+    border-width: 1
+    border-color: #111111
+    UIItem
+      id: icon
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 6
+      size: 40 40
+      virtual: true
+      phantom: true
+    Label
+      id: name
+      anchors.left: icon.right
+      anchors.right: parent.right
+      anchors.top: parent.top
+      margin-top: 8
+      margin-left: 8
+      margin-right: 6
+      height: 42
+      text-wrap: true
+      font: verdana-11px-monochrome
+  Panel
+    id: base
+    anchors.top: summary.bottom
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    margin-top: 6
+    width: 198
+    border-width: 1
+    border-color: #111111
+    Label
+      text: Item details
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin: 8
+      height: 24
+    Button
+      id: trackButton
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin: 6
+      margin-right: 16
+      height: 22
+      text: Track drop
+      !tooltip: tr('Add this item to the Drop Tracker (Analyzer)')
+    Button
+      id: profButton
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: trackButton.top
+      margin: 0 16 4 6
+      height: 22
+      text: Show proficiency
+      visible: false
+    Label
+      id: stats
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: profButton.top
+      margin: 8
+      margin-top: 40
+      text-wrap: true
+      font: verdana-11px-monochrome
+  Panel
+    id: obtaining
+    anchors.left: base.right
+    anchors.right: parent.right
+    anchors.top: summary.bottom
+    margin-left: 6
+    margin-top: 6
+    height: 245
+    border-width: 1
+    border-color: #111111
+    Button
+      id: dropTab
+      anchors.verticalCenter: sourceOrder.verticalCenter
+      anchors.left: parent.left
+      margin-left: 5
+      size: 78 20
+      text: Drop
+      !tooltip: tr('Monsters and bosses that drop this item')
+      @onClick: modules.game_myotswiki.setSourceTab('drop')
+    Button
+      id: questTab
+      anchors.verticalCenter: sourceOrder.verticalCenter
+      anchors.left: dropTab.right
+      margin-left: 4
+      size: 78 20
+      text: Quest
+      !tooltip: tr('Quests that give this item')
+      @onClick: modules.game_myotswiki.setSourceTab('quest')
+    ComboBox
+      id: sourceFilter
+      anchors.top: parent.top
+      anchors.right: sourceSort.left
+      margin-top: 5
+      margin-right: 5
+      width: 106
+    ComboBox
+      id: sourceSort
+      anchors.top: parent.top
+      anchors.right: sourceOrder.left
+      margin-top: 5
+      margin-right: 5
+      width: 106
+    ComboBox
+      id: sourceOrder
+      anchors.top: parent.top
+      anchors.right: parent.right
+      margin-top: 5
+      margin-right: 5
+      width: 106
+    ScrollablePanel
+      id: sources
+      anchors.top: sourceOrder.bottom
+      anchors.left: parent.left
+      anchors.right: sourceScroll.left
+      anchors.bottom: parent.bottom
+      margin: 5
+      vertical-scrollbar: sourceScroll
+      layout:
+        type: grid
+        cell-size: 198 51
+        cell-spacing: 4
+        num-columns: 3
+    VerticalScrollBar
+      id: sourceScroll
+      anchors.top: sourceOrder.bottom
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin-top: 5
+      step: 55
+      pixels-scroll: true
+  Label
+    id: buyTitle
+    text: Buy from
+    anchors.top: obtaining.bottom
+    anchors.left: obtaining.left
+    margin-top: 8
+    height: 24
+  Label
+    id: sellTitle
+    text: Sell to
+    anchors.top: obtaining.bottom
+    anchors.right: parent.right
+    width: 302
+    margin-top: 8
+    height: 24
+  ScrollablePanel
+    id: buy
+    anchors.top: buyTitle.bottom
+    anchors.left: obtaining.left
+    anchors.bottom: parent.bottom
+    width: 298
+    border-width: 1
+    border-color: #111111
+    vertical-scrollbar: buyScroll
+    layout:
+      type: verticalBox
+      spacing: 4
+  VerticalScrollBar
+    id: buyScroll
+    step: 48
+    anchors.top: buyTitle.bottom
+    anchors.left: buy.right
+    anchors.bottom: parent.bottom
+    pixels-scroll: true
+  ScrollablePanel
+    id: sell
+    anchors.top: sellTitle.bottom
+    anchors.left: sellTitle.left
+    anchors.right: sellScroll.left
+    anchors.bottom: parent.bottom
+    border-width: 1
+    border-color: #111111
+    vertical-scrollbar: sellScroll
+    layout:
+      type: verticalBox
+      spacing: 4
+  VerticalScrollBar
+    id: sellScroll
+    step: 48
+    anchors.top: sellTitle.bottom
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    pixels-scroll: true

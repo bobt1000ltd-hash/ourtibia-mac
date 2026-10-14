@@ -1,0 +1,8 @@
+Module
+  name: game_groupfinder
+  description: Group Finder for the daily bosses (OurTibia)
+  sandboxed: true
+  scripts: [ groupfinder ]
+  dependencies: [ game_interface ]
+  @onLoad: init()
+  @onUnload: terminate()

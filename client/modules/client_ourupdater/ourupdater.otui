@@ -1,0 +1,28 @@
+StaticMainWindow
+  id: ourUpdaterWindow
+  text: OurTibia
+  width: 360
+  layout:
+    type: verticalBox
+    fit-children: true
+
+  Label
+    id: status
+    text: Checking for updates...
+    text-align: center
+    margin-top: 4
+
+  ProgressBar
+    id: progress
+    height: 15
+    background-color: #3c8c3c
+    margin-top: 8
+    margin-bottom: 4
+
+  Label
+    id: detail
+    text-align: center
+    text-auto-resize: true
+    text-wrap: true
+    color: #b0b0b0
+    margin-bottom: 6

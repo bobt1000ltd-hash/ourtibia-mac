@@ -1,0 +1,9 @@
+Module
+  name: client_myotsoptions
+  description: OurTibia simple options window (Mythibia layout)
+  author: Claude for Bloku
+  sandboxed: true
+  scripts: [ myotsoptions ]
+  dependencies: [ client_options ]
+  @onLoad: init()
+  @onUnload: terminate()
