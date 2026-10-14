@@ -30,7 +30,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/../vcpkg-cache
-          key: vcpkg-${{ matrix.arch }}-${{ hashFiles('source/vcpkg.json', 'source/overlay-ports/**') }}
+          key: vcpkg-${{ matrix.arch }}-${{ hashFiles('source/vcpkg.json', 'source/overlay-ports/**', 'mac-triplets/**') }}
           restore-keys: vcpkg-${{ matrix.arch }}-
 
       - name: Build OurTibia.app
