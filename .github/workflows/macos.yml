@@ -35,6 +35,8 @@ jobs:
 
       - name: Build OurTibia.app
         run: |
+          # Intel runners: Homebrew's libpng (no APNG) in /usr/local would shadow the vcpkg one
+          if [ "${{ matrix.arch }}" = "x86_64" ]; then brew unlink libpng 2>/dev/null || true; fi
           mkdir -p "$VCPKG_DEFAULT_BINARY_CACHE"
           export OURTIBIA_OVERLAY="$GITHUB_WORKSPACE/client"
           ./BUILD_MAC.command

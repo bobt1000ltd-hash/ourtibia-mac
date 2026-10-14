@@ -60,7 +60,9 @@ cmake -S "$SRC" -B "$BUILD" -G Ninja \
   -DVCPKG_INSTALL_OPTIONS="--clean-buildtrees-after-build" \
   -DCMAKE_BUILD_TYPE=Release -DBUILD_STATIC_LIBRARY=ON -DSPEED_UP_BUILD_UNITY=ON \
   -DOPTIONS_ENABLE_SCCACHE=OFF -DOPTIONS_ENABLE_IPO=OFF -DOTCLIENT_BUILD_TESTS=OFF \
-  -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 \
+  -DCMAKE_OSX_DEPLOYMENT_TARGET=13.3 \
+  -DPNG_PNG_INCLUDE_DIR="$BUILD/vcpkg_installed/$TRIPLET/include" \
+  -DPNG_LIBRARY="$BUILD/vcpkg_installed/$TRIPLET/lib/libpng16.a" \
   || die "configure failed"
 
 say "5/7 Build"
@@ -127,7 +129,7 @@ cat > "$APP/Contents/Info.plist" <<EOF
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>CFBundleShortVersionString</key><string>1.0</string>
   <key>CFBundleVersion</key><string>$(date +%Y%m%d)</string>
-  <key>LSMinimumSystemVersion</key><string>11.0</string>
+  <key>LSMinimumSystemVersion</key><string>13.3</string>
   <key>NSHighResolutionCapable</key><true/>
   <key>NSPrincipalClass</key><string>NSApplication</string>
 </dict>
