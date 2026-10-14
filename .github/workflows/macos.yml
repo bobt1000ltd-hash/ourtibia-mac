@@ -5,6 +5,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     strategy:
@@ -58,3 +61,16 @@ jobs:
             out/*.png
           if-no-files-found: warn
           retention-days: 14
+
+      - name: Results to branch results-${{ matrix.arch }} (logs, screenshot, zip in parts)
+        if: always()
+        run: |
+          R="$RUNNER_TEMP/results"; rm -rf "$R"; mkdir -p "$R"
+          cp out/*.log out/*.txt out/*.png "$R/" 2>/dev/null || true
+          for z in out/*.zip; do [ -f "$z" ] && split -b 90m "$z" "$R/$(basename "$z").part-" || true; done
+          for z in out/*.zip; do [ -f "$z" ] && (cd out && shasum -a 256 "$(basename "$z")") >> "$R/sha256.txt" || true; done
+          cd "$R"
+          git init -q -b "results-${{ matrix.arch }}"
+          git config user.name "OurTibia build"; git config user.email "actions@github.com"
+          git add -A; git commit -q -m "Build ${{ github.run_id }} (${{ matrix.arch }}): ${{ job.status }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" "HEAD:refs/heads/results-${{ matrix.arch }}"
