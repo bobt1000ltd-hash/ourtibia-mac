@@ -1,0 +1,2439 @@
+
+==> 1/7 Apple Command Line Tools
+
+==> 2/7 Homebrew tools
+[33mWarning:[0m cmake 4.4.3 is already installed and up-to-date.
+To reinstall 4.4.3, run:
+  brew reinstall cmake
+[33mWarning:[0m ninja 1.13.2 is already installed and up-to-date.
+To reinstall 1.13.2, run:
+  brew reinstall ninja
+[33mWarning:[0m pkgconf 3.0.7 is already installed and up-to-date.
+To reinstall 3.0.7, run:
+  brew reinstall pkgconf
+[32m==>[0m [1mDownloading bottle manifests[0m
+✔︎ Bottle Manifest autoconf (2.73)
+✔︎ Bottle Manifest autoconf-archive (2024.10.16)
+✔︎ Bottle Manifest automake (1.18.1_1)
+✔︎ Bottle Manifest libtool (2.6.2)
+✔︎ Bottle Manifest nasm (3.02)
+[32m==>[0m [1mFetching downloads for: [32mautoconf[39m, [32mautoconf-archive[39m, [32mautomake[39m, [32mlibtool[39m and [32mnasm[39m[0m
+✔︎ Bottle Manifest m4 (1.4.21)
+✔︎ Bottle libtool (2.6.2)
+✔︎ Bottle nasm (3.02)
+✔︎ Bottle autoconf (2.73)
+✔︎ Bottle automake (1.18.1_1)
+✔︎ Bottle m4 (1.4.21)
+✔︎ Bottle autoconf-archive (2024.10.16)
+CPU: arm64  (vcpkg triplet arm64-osx)
+
+==> 3/7 vcpkg (libraries - the first build takes 30-60 minutes)
+Cloning into '/Users/runner/OurTibia-mac-build/vcpkg'...
+Updating files:  51% (7342/14340)Updating files:  52% (7457/14340)Updating files:  53% (7601/14340)Updating files:  54% (7744/14340)Updating files:  55% (7887/14340)Updating files:  56% (8031/14340)Updating files:  57% (8174/14340)Updating files:  58% (8318/14340)Updating files:  59% (8461/14340)Updating files:  60% (8604/14340)Updating files:  61% (8748/14340)Updating files:  62% (8891/14340)Updating files:  63% (9035/14340)Updating files:  64% (9178/14340)Updating files:  65% (9321/14340)Updating files:  66% (9465/14340)Updating files:  67% (9608/14340)Updating files:  68% (9752/14340)Updating files:  69% (9895/14340)Updating files:  70% (10038/14340)Updating files:  71% (10182/14340)Updating files:  72% (10325/14340)Updating files:  73% (10469/14340)Updating files:  74% (10612/14340)Updating files:  75% (10755/14340)Updating files:  76% (10899/14340)Updating files:  77% (11042/14340)Updating files:  78% (11186/14340)Updating files:  79% (11329/14340)Updating files:  80% (11472/14340)Updating files:  81% (11616/14340)Updating files:  82% (11759/14340)Updating files:  83% (11903/14340)Updating files:  84% (12046/14340)Updating files:  85% (12189/14340)Updating files:  86% (12333/14340)Updating files:  87% (12476/14340)Updating files:  88% (12620/14340)Updating files:  89% (12763/14340)Updating files:  90% (12906/14340)Updating files:  91% (13050/14340)Updating files:  92% (13193/14340)Updating files:  93% (13337/14340)Updating files:  94% (13480/14340)Updating files:  95% (13623/14340)Updating files:  96% (13767/14340)Updating files:  97% (13910/14340)Updating files:  98% (14054/14340)Updating files:  99% (14197/14340)Updating files: 100% (14340/14340)Updating files: 100% (14340/14340), done.
+Downloading vcpkg-macos...
+vcpkg package management program version 2026-09-26-51bf87ca6e9bf3e622d84ff323bd202ab1ca0c0b
+
+See LICENSE.txt for license information.
+
+==> 4/7 Configure
+-- Shared vcpkg installed tree disabled: explicitly disabled
+-- Running vcpkg install
+Detecting compiler hash for triplet arm64-osx...
+Compiler found: /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++
+The following packages will be built and installed:
+    abseil:arm64-osx@20260107.1#3
+    asio:arm64-osx@1.32.0
+  * brotli:arm64-osx@1.2.0
+    bshoshany-thread-pool:arm64-osx@5.1.0
+  * bzip2[core,tool]:arm64-osx@1.0.8#6
+    cpp-httplib[brotli,core]:arm64-osx@0.48.0
+    cppcodec:arm64-osx@0.2#4
+    discord-rpc:arm64-osx@3.4.0#4
+  * egl-registry:arm64-osx@2025-05-27
+    fmt:arm64-osx@12.2.0
+    freetype[brotli,bzip2,core,png,zlib]:arm64-osx@2.14.3
+    glew:arm64-osx@2.3.1
+    inih[core,cpp]:arm64-osx@58 -- /Users/runner/OurTibia-mac-build/source/overlay-ports/inih
+    ixwebsocket[core,sectransp,ssl]:arm64-osx@12.0.0
+    libarchive[bzip2,core,crypto,lz4,lzma,xar,zstd]:arm64-osx@3.8.7
+  * libiconv:arm64-osx@1.19
+    liblzma:arm64-osx@5.8.3
+    libobfuscate:arm64-osx@2024-07-10
+    libogg:arm64-osx@1.3.6#1
+    libpng[apng,core]:arm64-osx@1.6.58
+    libvorbis:arm64-osx@1.3.7#4
+  * libxml2[core,iconv,zlib]:arm64-osx@2.15.3
+    luajit:arm64-osx@2026-06-16
+  * lz4:arm64-osx@1.10.0
+  * mbedtls:arm64-osx@3.6.5
+    nlohmann-json:arm64-osx@3.12.0#2
+    openal-soft:arm64-osx@1.25.1#2
+  * opengl:arm64-osx@2022-12-04#3
+  * opengl-registry:arm64-osx@2026-01-26
+    openssl:arm64-osx@3.6.3
+    parallel-hashmap:arm64-osx@2.0.0
+    physfs:arm64-osx@3.2.0#1
+    protobuf:arm64-osx@6.33.4#2
+    pugixml:arm64-osx@1.16
+  * rapidjson:arm64-osx@2025-02-26
+    spdlog[core,fmt,tz-offset]:arm64-osx@1.17.0
+    stduuid:arm64-osx@1.2.3
+  * utf8-range:arm64-osx@6.33.4
+    utfcpp:arm64-osx@4.1.1
+  * vcpkg-cmake:arm64-osx@2024-04-23
+  * vcpkg-cmake-config:arm64-osx@2024-05-23
+  * vcpkg-cmake-get-vars:arm64-osx@2025-05-29
+  * vcpkg-make:arm64-osx@2026-01-01
+    zlib:arm64-osx@1.3.2#1
+  * zstd:arm64-osx@1.5.7
+Additional packages (*) will be modified to complete this operation.
+Restored 0 package(s) from /Users/runner/work/ourtibia-mac/ourtibia-mac/../vcpkg-cache in 352 us. Use --debug to see more details.
+Installing 1/45 vcpkg-cmake-config:arm64-osx@2024-05-23...
+vcpkg-cmake-config:arm64-osx@2024-05-23 package ABI: 02fac3a1f058430535a66de89cce66989691a4a8ad0ac610c4270d4526d89bde
+Building vcpkg-cmake-config:arm64-osx@2024-05-23...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake-config_arm64-osx/share/vcpkg-cmake-config/vcpkg_cmake_config_fixup.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake-config_arm64-osx/share/vcpkg-cmake-config/vcpkg-port-config.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake-config_arm64-osx/share/vcpkg-cmake-config/copyright
+-- Skipping post-build validation due to VCPKG_POLICY_EMPTY_PACKAGE
+Starting submission of vcpkg-cmake-config:arm64-osx@2024-05-23 to 1 binary cache(s) in the background
+Elapsed time to handle vcpkg-cmake-config:arm64-osx: 48 ms
+Installing 2/45 vcpkg-cmake:arm64-osx@2024-04-23...
+vcpkg-cmake:arm64-osx@2024-04-23 package ABI: 933a50373c7efc0a50a2cd096d5ff6eff81c76f791274b95aea21154fb249026
+Building vcpkg-cmake:arm64-osx@2024-04-23...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake_arm64-osx/share/vcpkg-cmake/vcpkg_cmake_configure.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake_arm64-osx/share/vcpkg-cmake/vcpkg_cmake_build.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake_arm64-osx/share/vcpkg-cmake/vcpkg_cmake_install.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake_arm64-osx/share/vcpkg-cmake/vcpkg-port-config.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake_arm64-osx/share/vcpkg-cmake/copyright
+-- Performing post-build validation
+Starting submission of vcpkg-cmake:arm64-osx@2024-04-23 to 1 binary cache(s) in the background
+Elapsed time to handle vcpkg-cmake:arm64-osx: 36 ms
+Completed submission of vcpkg-cmake-config:arm64-osx@2024-05-23 to 1 binary cache(s) in 20.9 ms
+Installing 3/45 abseil:arm64-osx@20260107.1#3...
+abseil:arm64-osx@20260107.1#3 package ABI: 0c03476ea06ecf142f908038aef28c75b8fde940bfe2f384b3a90d4c448d34d7
+Building abseil:arm64-osx@20260107.1#3...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/abseil/abseil-cpp/archive/20260107.1.tar.gz -> abseil-abseil-cpp-20260107.1.tar.gz
+Successfully downloaded abseil-abseil-cpp-20260107.1.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/abseil-abseil-cpp-20260107.1.tar.gz
+-- Applying patch 003-force-cxx-17.patch
+-- Applying patch fix-heterogeneous_lookup_testing-target.patch
+-- Applying patch fix-mingw-dll.patch
+-- Applying patch fix-gcc13-constexpr-function-pointer.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/abseil/src/20260107.1-b1a4a53e9a.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_absl_check.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_absl_log.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_absl_vlog_is_on.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_algorithm.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_algorithm_container.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_any.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_any_invocable.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_atomic_hook.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_bad_any_cast.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_bad_optional_access.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_bad_variant_access.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_base.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_base_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_bind_front.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_bits.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_borrowed_fixup_buffer.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_bounded_utf8_length_sequence.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_btree.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_charset.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_check.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_chunked_queue.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_city.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_civil_time.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_cleanup.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_cleanup_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_common_policy_traits.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_compare.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_compressed_tuple.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_config.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_constexpr_testing_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_container_common.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_container_memory.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_cord.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_cord_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_cordz_functions.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_cordz_handle.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_cordz_info.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_cordz_sample_token.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_cordz_statistics.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_cordz_update_scope.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_cordz_update_tracker.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_core_headers.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_crc32c.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_crc_cord_state.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_crc_cpu_detect.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_crc_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_debugging.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_debugging_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_decode_rust_punycode.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_demangle_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_demangle_rust.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_die_if_null.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_dynamic_annotations.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_endian.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_errno_saver.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_examine_stack.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_exponential_biased.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_failure_signal_handler.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_fast_type_id.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_fixed_array.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags_commandlineflag.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags_commandlineflag_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags_config.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags_marshalling.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags_parse.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags_path_util.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags_private_handle_accessor.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags_program_name.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags_reflection.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags_usage.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flags_usage_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flat_hash_map.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_flat_hash_set.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_function_ref.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_generic_printer_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_graphcycles_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_has_ostream_operator.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_hash.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_hash_container_defaults.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_hash_function_defaults.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_hash_policy_traits.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_hashtable_control_bytes.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_hashtable_debug.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_hashtable_debug_hooks.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_hashtable_profiler.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_hashtablez_sampler.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_inlined_vector.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_inlined_vector_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_int128.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_iterator_traits_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_iterator_traits_test_helper_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_kernel_timeout_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_layout.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_leak_check.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_linked_hash_map.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_linked_hash_set.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_entry.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_flags.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_globals.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_initialize.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_append_truncated.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_check_impl.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_check_op.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_conditions.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_config.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_container.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_flags.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_fnmatch.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_format.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_globals.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_log_impl.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_log_sink_set.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_message.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_nullguard.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_nullstream.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_proto.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_strip.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_structured.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_structured_proto.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_internal_voidify.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_severity.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_sink.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_sink_registry.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_streamer.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_log_structured.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_malloc_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_memory.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_meta.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_no_destructor.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_node_hash_map.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_node_hash_set.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_node_slot_policy.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_non_temporal_arm_intrinsics.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_non_temporal_memcpy.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_nullability.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_nullability_traits_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_numeric.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_numeric_representation.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_optional.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_overload.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_periodic_sampler.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_poison.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_prefetch.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_pretty_function.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_profile_builder.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_bit_gen_ref.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_distributions.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_distribution_caller.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_distribution_test_util.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_entropy_pool.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_fast_uniform_bits.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_fastmath.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_generate_real.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_iostream_state_saver.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_mock_helpers.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_nonsecure_base.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_pcg_engine.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_platform.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_randen.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_randen_engine.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_randen_hwaes.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_randen_hwaes_impl.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_randen_slow.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_salted_seed_seq.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_seed_material.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_traits.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_uniform_helper.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_internal_wide_multiply.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_random.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_seed_gen_exception.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_random_seed_sequences.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_raw_hash_map.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_raw_hash_set.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_raw_hash_set_resize_impl.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_raw_logging_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_requires_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_sample_recorder.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_scoped_set_env.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_span.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_spinlock_wait.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_stacktrace.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_status.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_statusor.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_str_format.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_str_format_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_strerror.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_string_view.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_strings.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_strings_append_and_overwrite.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_strings_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_strings_resize_and_overwrite.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_symbolize.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_synchronization.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_throw_delegate.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_time.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_time_zone.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_tracing_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_type_traits.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_utf8_for_code_point.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_utility.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_variant.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_vlog_config_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_vlog_is_on.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/lib/pkgconfig/absl_weakly_mixed_integer.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_absl_check.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_absl_log.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_absl_vlog_is_on.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_algorithm.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_algorithm_container.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_any.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_any_invocable.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_atomic_hook.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_bad_any_cast.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_bad_optional_access.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_bad_variant_access.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_base.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_base_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_bind_front.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_bits.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_borrowed_fixup_buffer.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_bounded_utf8_length_sequence.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_btree.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_charset.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_check.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_chunked_queue.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_city.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_civil_time.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_cleanup.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_cleanup_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_common_policy_traits.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_compare.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_compressed_tuple.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_config.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_constexpr_testing_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_container_common.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_container_memory.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_cord.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_cord_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_cordz_functions.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_cordz_handle.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_cordz_info.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_cordz_sample_token.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_cordz_statistics.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_cordz_update_scope.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_cordz_update_tracker.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_core_headers.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_crc32c.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_crc_cord_state.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_crc_cpu_detect.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_crc_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_debugging.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_debugging_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_decode_rust_punycode.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_demangle_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_demangle_rust.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_die_if_null.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_dynamic_annotations.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_endian.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_errno_saver.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_examine_stack.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_exponential_biased.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_failure_signal_handler.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_fast_type_id.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_fixed_array.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags_commandlineflag.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags_commandlineflag_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags_config.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags_marshalling.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags_parse.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags_path_util.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags_private_handle_accessor.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags_program_name.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags_reflection.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags_usage.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flags_usage_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flat_hash_map.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_flat_hash_set.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_function_ref.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_generic_printer_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_graphcycles_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_has_ostream_operator.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_hash.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_hash_container_defaults.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_hash_function_defaults.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_hash_policy_traits.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_hashtable_control_bytes.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_hashtable_debug.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_hashtable_debug_hooks.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_hashtable_profiler.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_hashtablez_sampler.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_inlined_vector.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_inlined_vector_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_int128.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_iterator_traits_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_iterator_traits_test_helper_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_kernel_timeout_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_layout.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_leak_check.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_linked_hash_map.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_linked_hash_set.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_entry.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_flags.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_globals.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_initialize.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_append_truncated.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_check_impl.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_check_op.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_conditions.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_config.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_container.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_flags.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_fnmatch.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_format.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_globals.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_log_impl.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_log_sink_set.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_message.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_nullguard.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_nullstream.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_proto.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_strip.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_structured.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_structured_proto.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_internal_voidify.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_severity.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_sink.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_sink_registry.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_streamer.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_log_structured.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_malloc_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_memory.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_meta.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_no_destructor.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_node_hash_map.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_node_hash_set.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_node_slot_policy.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_non_temporal_arm_intrinsics.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_non_temporal_memcpy.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_nullability.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_nullability_traits_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_numeric.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_numeric_representation.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_optional.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_overload.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_periodic_sampler.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_poison.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_prefetch.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_pretty_function.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_profile_builder.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_bit_gen_ref.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_distributions.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_distribution_caller.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_distribution_test_util.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_entropy_pool.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_fast_uniform_bits.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_fastmath.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_generate_real.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_iostream_state_saver.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_mock_helpers.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_nonsecure_base.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_pcg_engine.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_platform.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_randen.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_randen_engine.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_randen_hwaes.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_randen_hwaes_impl.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_randen_slow.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_salted_seed_seq.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_seed_material.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_traits.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_uniform_helper.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_internal_wide_multiply.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_random.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_seed_gen_exception.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_random_seed_sequences.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_raw_hash_map.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_raw_hash_set.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_raw_hash_set_resize_impl.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_raw_logging_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_requires_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_sample_recorder.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_scoped_set_env.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_span.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_spinlock_wait.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_stacktrace.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_status.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_statusor.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_str_format.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_str_format_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_strerror.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_string_view.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_strings.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_strings_append_and_overwrite.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_strings_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_strings_resize_and_overwrite.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_symbolize.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_synchronization.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_throw_delegate.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_time.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_time_zone.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_tracing_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_type_traits.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_utf8_for_code_point.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_utility.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_variant.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_vlog_config_internal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_vlog_is_on.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/debug/lib/pkgconfig/absl_weakly_mixed_integer.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/abseil_arm64-osx/share/abseil/copyright
+-- Performing post-build validation
+Starting submission of abseil:arm64-osx@20260107.1#3 to 1 binary cache(s) in the background
+Elapsed time to handle abseil:arm64-osx: 1.2 min
+Completed submission of vcpkg-cmake:arm64-osx@2024-04-23 to 1 binary cache(s) in 10.6 ms
+Installing 4/45 asio:arm64-osx@1.32.0...
+asio:arm64-osx@1.32.0 package ABI: 847c715021bdf35bb486c2d92b1460d3cf21555c053bb6586f45c3b5603645ce
+Building asio:arm64-osx@1.32.0...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/chriskohlhoff/asio/archive/asio-1-32-0.tar.gz -> chriskohlhoff-asio-asio-1-32-0.tar.gz
+Successfully downloaded chriskohlhoff-asio-asio-1-32-0.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/chriskohlhoff-asio-asio-1-32-0.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/asio/src/sio-1-32-0-e4cfb7a1b9.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/asio_arm64-osx/share/pkgconfig/asio.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/asio_arm64-osx/share/asio/asio-config.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/asio_arm64-osx/share/asio/copyright
+-- Performing post-build validation
+Starting submission of asio:arm64-osx@1.32.0 to 1 binary cache(s) in the background
+Elapsed time to handle asio:arm64-osx: 2 s
+Completed submission of abseil:arm64-osx@20260107.1#3 to 1 binary cache(s) in 1.3 s
+Installing 5/45 bshoshany-thread-pool:arm64-osx@5.1.0...
+bshoshany-thread-pool:arm64-osx@5.1.0 package ABI: 3c8f022b42a5fbe978aa7bb5fb9c9db2d6525d2570a7937d84233a5be87a3997
+Building bshoshany-thread-pool:arm64-osx@5.1.0...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/bshoshany/thread-pool/archive/v5.1.0.tar.gz -> bshoshany-thread-pool-v5.1.0.tar.gz
+Successfully downloaded bshoshany-thread-pool-v5.1.0.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/bshoshany-thread-pool-v5.1.0.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/bshoshany-thread-pool/src/v5.1.0-31ea724873.clean
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/bshoshany-thread-pool_arm64-osx/include/BS_thread_pool.hpp
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/bshoshany-thread-pool_arm64-osx/modules/BS.thread_pool.cppm
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/bshoshany-thread-pool_arm64-osx/share/bshoshany-thread-pool/copyright
+-- Performing post-build validation
+Starting submission of bshoshany-thread-pool:arm64-osx@5.1.0 to 1 binary cache(s) in the background
+Elapsed time to handle bshoshany-thread-pool:arm64-osx: 837 ms
+Completed submission of asio:arm64-osx@1.32.0 to 1 binary cache(s) in 108 ms
+Installing 6/45 brotli:arm64-osx@1.2.0...
+brotli:arm64-osx@1.2.0 package ABI: c439acca7b2a4ae07c8fb735de1735404a4c88feb73783c481b433bcba3a48c8
+Building brotli:arm64-osx@1.2.0...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/google/brotli/archive/v1.2.0.tar.gz -> google-brotli-v1.2.0.tar.gz
+Successfully downloaded google-brotli-v1.2.0.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/google-brotli-v1.2.0.tar.gz
+-- Applying patch install.patch
+-- Applying patch pkgconfig.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/brotli/src/v1.2.0-7af7ca71ad.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/brotli_arm64-osx/lib/pkgconfig/libbrotlicommon.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/brotli_arm64-osx/lib/pkgconfig/libbrotlidec.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/brotli_arm64-osx/lib/pkgconfig/libbrotlienc.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/brotli_arm64-osx/debug/lib/pkgconfig/libbrotlicommon.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/brotli_arm64-osx/debug/lib/pkgconfig/libbrotlidec.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/brotli_arm64-osx/debug/lib/pkgconfig/libbrotlienc.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/brotli_arm64-osx/share/brotli/usage
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/brotli_arm64-osx/share/brotli/copyright
+-- Adjusted RPATH of '/Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/brotli_arm64-osx/tools/brotli/brotli' to '@loader_path/../../lib'
+-- Performing post-build validation
+Starting submission of brotli:arm64-osx@1.2.0 to 1 binary cache(s) in the background
+Elapsed time to handle brotli:arm64-osx: 8 s
+Completed submission of bshoshany-thread-pool:arm64-osx@5.1.0 to 1 binary cache(s) in 15.8 ms
+Installing 7/45 cpp-httplib[brotli,core]:arm64-osx@0.48.0...
+cpp-httplib[brotli,core]:arm64-osx@0.48.0 package ABI: 6162618f2d63698bbc898df2a0a2a9c4c7696c33225a50fd6ca46ac0d851c3a5
+Building cpp-httplib[brotli,core]:arm64-osx@0.48.0...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/yhirose/cpp-httplib/archive/v0.48.0.tar.gz -> yhirose-cpp-httplib-v0.48.0.tar.gz
+Successfully downloaded yhirose-cpp-httplib-v0.48.0.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/yhirose-cpp-httplib-v0.48.0.tar.gz
+-- Applying patch fix-find-brotli.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/cpp-httplib/src/v0.48.0-951d099e57.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-rel
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/cpp-httplib_arm64-osx/share/cpp-httplib/copyright
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/cpp-httplib_arm64-osx/share/cpp-httplib/usage
+-- Performing post-build validation
+Starting submission of cpp-httplib[brotli,core]:arm64-osx@0.48.0 to 1 binary cache(s) in the background
+Elapsed time to handle cpp-httplib:arm64-osx: 1.4 s
+Completed submission of brotli:arm64-osx@1.2.0 to 1 binary cache(s) in 200 ms
+Installing 8/45 cppcodec:arm64-osx@0.2#4...
+cppcodec:arm64-osx@0.2#4 package ABI: 208569504b02eaa877efe274bac990ebc306281b2c74a22260eac3a9c33ef8cb
+Building cppcodec:arm64-osx@0.2#4...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/tplgy/cppcodec/archive/v0.2.tar.gz -> tplgy-cppcodec-v0.2.tar.gz
+Successfully downloaded tplgy-cppcodec-v0.2.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/tplgy-cppcodec-v0.2.tar.gz
+-- Applying patch 0001-Fix-62.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/cppcodec/src/v0.2-1e4df035de.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/cppcodec_arm64-osx/share/cppcodec/copyright
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/cppcodec_arm64-osx/share/pkgconfig/cppcodec-1.pc
+-- Performing post-build validation
+Starting submission of cppcodec:arm64-osx@0.2#4 to 1 binary cache(s) in the background
+Elapsed time to handle cppcodec:arm64-osx: 3.9 s
+Completed submission of cpp-httplib[brotli,core]:arm64-osx@0.48.0 to 1 binary cache(s) in 24.2 ms
+Installing 9/45 rapidjson:arm64-osx@2025-02-26...
+rapidjson:arm64-osx@2025-02-26 package ABI: dc0be9003d67d36b640312692da8b7edcb69285f65f8abfe3db332100b3dead8
+Building rapidjson:arm64-osx@2025-02-26...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/Tencent/rapidjson/archive/24b5e7a8b27f42fa16b96fc70aade9106cf7102f.tar.gz -> Tencent-rapidjson-24b5e7a8b27f42fa16b96fc70aade9106cf7102f-2.tar.gz
+Successfully downloaded Tencent-rapidjson-24b5e7a8b27f42fa16b96fc70aade9106cf7102f-2.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/Tencent-rapidjson-24b5e7a8b27f42fa16b96fc70aade9106cf7102f-2.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/rapidjson/src/106cf7102f-b0877c68bd.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/rapidjson_arm64-osx/lib/pkgconfig/RapidJSON.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/rapidjson_arm64-osx/debug/lib/pkgconfig/RapidJSON.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/rapidjson_arm64-osx/share/rapidjson/copyright
+-- Performing post-build validation
+Starting submission of rapidjson:arm64-osx@2025-02-26 to 1 binary cache(s) in the background
+Elapsed time to handle rapidjson:arm64-osx: 1.1 s
+Completed submission of cppcodec:arm64-osx@0.2#4 to 1 binary cache(s) in 10.4 ms
+Installing 10/45 discord-rpc:arm64-osx@3.4.0#4...
+discord-rpc:arm64-osx@3.4.0#4 package ABI: 26a6eb6cabb17f34776e7fe6e5816fa85934834300610f0a6d3030d611866a2c
+Building discord-rpc:arm64-osx@3.4.0#4...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/discordapp/discord-rpc/archive/v3.4.0.tar.gz -> discordapp-discord-rpc-v3.4.0.tar.gz
+Successfully downloaded discordapp-discord-rpc-v3.4.0.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/discordapp-discord-rpc-v3.4.0.tar.gz
+-- Applying patch disable-downloading.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/discord-rpc/src/v3.4.0-b52706b93b.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/discord-rpc_arm64-osx/share/discord-rpc/copyright
+-- Performing post-build validation
+Starting submission of discord-rpc:arm64-osx@3.4.0#4 to 1 binary cache(s) in the background
+Elapsed time to handle discord-rpc:arm64-osx: 4 s
+Completed submission of rapidjson:arm64-osx@2025-02-26 to 1 binary cache(s) in 22.3 ms
+Installing 11/45 fmt:arm64-osx@12.2.0...
+fmt:arm64-osx@12.2.0 package ABI: 0f1b276285eb12765c47ec7d23f3c70b9baf909bee1c2c92cdea54f213929a08
+Building fmt:arm64-osx@12.2.0...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/fmtlib/fmt/archive/12.2.0.tar.gz -> fmtlib-fmt-12.2.0.tar.gz
+Successfully downloaded fmtlib-fmt-12.2.0.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/fmtlib-fmt-12.2.0.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/fmt/src/12.2.0-16a8f6dd71.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/fmt_arm64-osx/lib/pkgconfig/fmt.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/fmt_arm64-osx/debug/lib/pkgconfig/fmt.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/fmt_arm64-osx/share/fmt/usage
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/fmt_arm64-osx/share/fmt/copyright
+-- Performing post-build validation
+Starting submission of fmt:arm64-osx@12.2.0 to 1 binary cache(s) in the background
+Elapsed time to handle fmt:arm64-osx: 3.8 s
+Completed submission of discord-rpc:arm64-osx@3.4.0#4 to 1 binary cache(s) in 77.8 ms
+Installing 12/45 zlib:arm64-osx@1.3.2#1...
+zlib:arm64-osx@1.3.2#1 package ABI: 555978d3d1f5e29be9a57735197b5d3aa56435938c0ffbf2ceecfb56c5ad0fd8
+Building zlib:arm64-osx@1.3.2#1...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/madler/zlib/archive/v1.3.2.tar.gz -> madler-zlib-v1.3.2.tar.gz
+Successfully downloaded madler-zlib-v1.3.2.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/madler-zlib-v1.3.2.tar.gz
+-- Applying patch 0001-no-version-script-on-ohos.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/zlib/src/v1.3.2-c19a0bfd23.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/zlib_arm64-osx/lib/pkgconfig/zlib.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/zlib_arm64-osx/debug/lib/pkgconfig/zlib.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/zlib_arm64-osx/share/zlib/vcpkg-cmake-wrapper.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/zlib_arm64-osx/share/zlib/copyright
+-- Performing post-build validation
+Starting submission of zlib:arm64-osx@1.3.2#1 to 1 binary cache(s) in the background
+Elapsed time to handle zlib:arm64-osx: 3.2 s
+Completed submission of fmt:arm64-osx@12.2.0 to 1 binary cache(s) in 66.6 ms
+Installing 13/45 libpng[apng,core]:arm64-osx@1.6.58...
+libpng[apng,core]:arm64-osx@1.6.58 package ABI: b41e014f92143e90b15bd14439a742f82fd768fc6b589e6cad2c4a505e522fc5
+Building libpng[apng,core]:arm64-osx@1.6.58...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://downloads.sourceforge.net/project/libpng-apng/libpng16/1.6.58/libpng-1.6.58-apng.patch.gz -> libpng-1.6.58-apng.patch.gz
+Successfully downloaded libpng-1.6.58-apng.patch.gz
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/libpng/src/libpng-1.6.58-apng.patch.gz
+Downloading https://github.com/pnggroup/libpng/archive/v1.6.58.tar.gz -> pnggroup-libpng-v1.6.58.tar.gz
+Successfully downloaded pnggroup-libpng-v1.6.58.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/pnggroup-libpng-v1.6.58.tar.gz
+-- Applying patch /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/libpng/src/libpng-1.6.58-apng.patch
+-- Applying patch cmake.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/libpng/src/v1.6.58-4037dc71e1.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libpng_arm64-osx/share/png/vcpkg-cmake-wrapper.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libpng_arm64-osx/share/libpng/libpng-config.cmake
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libpng_arm64-osx/lib/pkgconfig/libpng16.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libpng_arm64-osx/debug/lib/pkgconfig/libpng16.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libpng_arm64-osx/debug/lib/pkgconfig/libpng.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libpng_arm64-osx/lib/pkgconfig/libpng.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libpng_arm64-osx/share/libpng/usage
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libpng_arm64-osx/share/libpng/copyright
+-- Performing post-build validation
+Starting submission of libpng[apng,core]:arm64-osx@1.6.58 to 1 binary cache(s) in the background
+Elapsed time to handle libpng:arm64-osx: 22 s
+Completed submission of zlib:arm64-osx@1.3.2#1 to 1 binary cache(s) in 49.2 ms
+Installing 14/45 bzip2[core,tool]:arm64-osx@1.0.8#6...
+bzip2[core,tool]:arm64-osx@1.0.8#6 package ABI: 9c4b235ab630b2b8930c4f4b5bc9864145f4a9c98e3f9673e8786bb8b191340c
+Building bzip2[core,tool]:arm64-osx@1.0.8#6...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading bzip2-1.0.8.tar.gz, trying https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
+Successfully downloaded bzip2-1.0.8.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/bzip2-1.0.8.tar.gz
+-- Applying patch fix-import-export-macros.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/bzip2/src/bzip2-1-336d4794a3.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/bzip2_arm64-osx/lib/pkgconfig/bzip2.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/bzip2_arm64-osx/debug/lib/pkgconfig/bzip2.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/bzip2_arm64-osx/share/bzip2/copyright
+-- Adjusted RPATH of '/Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/bzip2_arm64-osx/tools/bzip2/bzip2' to '@loader_path/../../lib'
+-- Adjusted RPATH of '/Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/bzip2_arm64-osx/tools/bzip2/bzip2recover' to '@loader_path/../../lib'
+-- Performing post-build validation
+Starting submission of bzip2[core,tool]:arm64-osx@1.0.8#6 to 1 binary cache(s) in the background
+Elapsed time to handle bzip2:arm64-osx: 2.9 s
+Completed submission of libpng[apng,core]:arm64-osx@1.6.58 to 1 binary cache(s) in 84.5 ms
+Installing 15/45 freetype[brotli,bzip2,core,png,zlib]:arm64-osx@2.14.3...
+freetype[brotli,bzip2,core,png,zlib]:arm64-osx@2.14.3 package ABI: b9700a645b12e97b0643a47cf2271c730f2dde5d4e95fdaf327ae806bc052d04
+Building freetype[brotli,bzip2,core,png,zlib]:arm64-osx@2.14.3...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://gitlab.freedesktop.org//freetype/freetype/-/archive/VER-2-14-3/freetype-VER-2-14-3.tar.gz -> freetype-freetype-VER-2-14-3.tar.gz
+Successfully downloaded freetype-freetype-VER-2-14-3.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/freetype-freetype-VER-2-14-3.tar.gz
+-- Applying patch 0003-Fix-UWP.patch
+-- Applying patch brotli-static.patch
+-- Applying patch bzip2.patch
+-- Applying patch fix-exports.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/freetype/src/VER-2-14-3-46d5ca34ec.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/freetype_arm64-osx/lib/pkgconfig/freetype2.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/freetype_arm64-osx/debug/lib/pkgconfig/freetype2.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/freetype_arm64-osx/share/freetype/usage
+-- Performing post-build validation
+Starting submission of freetype[brotli,bzip2,core,png,zlib]:arm64-osx@2.14.3 to 1 binary cache(s) in the background
+Elapsed time to handle freetype:arm64-osx: 8.2 s
+Completed submission of bzip2[core,tool]:arm64-osx@1.0.8#6 to 1 binary cache(s) in 27.5 ms
+Installing 16/45 egl-registry:arm64-osx@2025-05-27...
+egl-registry:arm64-osx@2025-05-27 package ABI: 09593e2503bf7973aec4048ea5f569a4c046cc063acb656f352bd933bd44ffde
+Building egl-registry:arm64-osx@2025-05-27...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/KhronosGroup/EGL-Registry/archive/3ae2b7c48690d2ce13cc6db3db02dfc0572be65e.tar.gz -> KhronosGroup-EGL-Registry-3ae2b7c48690d2ce13cc6db3db02dfc0572be65e.tar.gz
+Successfully downloaded KhronosGroup-EGL-Registry-3ae2b7c48690d2ce13cc6db3db02dfc0572be65e.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/KhronosGroup-EGL-Registry-3ae2b7c48690d2ce13cc6db3db02dfc0572be65e.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/egl-registry/src/c0572be65e-4257a9ad9b.clean
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/egl-registry_arm64-osx/share/egl-registry/copyright
+-- Performing post-build validation
+Starting submission of egl-registry:arm64-osx@2025-05-27 to 1 binary cache(s) in the background
+Elapsed time to handle egl-registry:arm64-osx: 599 ms
+Completed submission of freetype[brotli,bzip2,core,png,zlib]:arm64-osx@2.14.3 to 1 binary cache(s) in 239 ms
+Installing 17/45 opengl-registry:arm64-osx@2026-01-26...
+opengl-registry:arm64-osx@2026-01-26 package ABI: 6c86c05a0a16d1637fcd6cde95faddbc2b688907dc8d20acd9b3a30ce4c6ca61
+Building opengl-registry:arm64-osx@2026-01-26...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/KhronosGroup/OpenGL-Registry/archive/0b449b97cdf1043eef5e1f0e235cbbab6ec10c86.tar.gz -> KhronosGroup-OpenGL-Registry-0b449b97cdf1043eef5e1f0e235cbbab6ec10c86.tar.gz
+Successfully downloaded KhronosGroup-OpenGL-Registry-0b449b97cdf1043eef5e1f0e235cbbab6ec10c86.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/KhronosGroup-OpenGL-Registry-0b449b97cdf1043eef5e1f0e235cbbab6ec10c86.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/opengl-registry/src/ab6ec10c86-88344330ab.clean
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/opengl-registry_arm64-osx/share/opengl-registry/copyright
+-- Performing post-build validation
+Starting submission of opengl-registry:arm64-osx@2026-01-26 to 1 binary cache(s) in the background
+Elapsed time to handle opengl-registry:arm64-osx: 7.8 s
+Completed submission of egl-registry:arm64-osx@2025-05-27 to 1 binary cache(s) in 12.7 ms
+Installing 18/45 opengl:arm64-osx@2022-12-04#3...
+opengl:arm64-osx@2022-12-04#3 package ABI: 81e25730e80118d9a9460c0cb1a81e35c75d19c20733a62ae0e02da01811b47c
+Building opengl:arm64-osx@2022-12-04#3...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/opengl_arm64-osx/share/opengl/usage
+-- Skipping post-build validation due to VCPKG_POLICY_EMPTY_PACKAGE
+Starting submission of opengl:arm64-osx@2022-12-04#3 to 1 binary cache(s) in the background
+Elapsed time to handle opengl:arm64-osx: 55.8 ms
+Installing 19/45 glew:arm64-osx@2.3.1...
+glew:arm64-osx@2.3.1 package ABI: 3aa73d81f68efeef6f0a08b42d41eeb5e8a042f6ce9ca80fa3b8648d9a885a29
+Building glew:arm64-osx@2.3.1...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/nigels-com/glew/releases/download/glew-2.3.1/glew-2.3.1.tgz -> glew-2.3.1.tgz
+Successfully downloaded glew-2.3.1.tgz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/glew-2.3.1.tgz
+-- Applying patch fix-LNK2019.patch
+-- Applying patch trim-build.diff
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/glew/src/glew-8cf78e348c.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/glew_arm64-osx/lib/pkgconfig/glew.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/glew_arm64-osx/debug/lib/pkgconfig/glew.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/glew_arm64-osx/share/glew/vcpkg-cmake-wrapper.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/glew_arm64-osx/share/glew/copyright
+-- Performing post-build validation
+Starting submission of glew:arm64-osx@2.3.1 to 1 binary cache(s) in the background
+Elapsed time to handle glew:arm64-osx: 43 s
+Completed submission of opengl-registry:arm64-osx@2026-01-26 to 1 binary cache(s) in 85 ms
+Completed submission of opengl:arm64-osx@2022-12-04#3 to 1 binary cache(s) in 10 ms
+Installing 20/45 inih[core,cpp]:arm64-osx@58...
+inih[core,cpp]:arm64-osx@58 package ABI: e53f29b9edb0cf82370791b3b54e6a2a7f7cb5af48198df0d5f94b3666b4f631
+Building inih[core,cpp]:arm64-osx@58...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+/Users/runner/OurTibia-mac-build/source/overlay-ports/inih: info: installing overlay port from here
+Downloading https://github.com/benhoyt/inih/archive/r58.tar.gz -> benhoyt-inih-r58.tar.gz
+Successfully downloaded benhoyt-inih-r58.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/benhoyt-inih-r58.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/inih/src/r58-2aa5ec8387.clean
+-- Configuring arm64-osx-dbg
+-- Configuring arm64-osx-rel
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/inih_arm64-osx/share/inih/copyright
+-- Performing post-build validation
+/Users/runner/OurTibia-mac-build/source/overlay-ports/inih/portfile.cmake: warning: ${CURRENT_PACKAGES_DIR}/debug/include should not exist. To suppress this message, add set(VCPKG_POLICY_ALLOW_DEBUG_INCLUDE enabled)
+note: If this directory was created by a build system that does not allow installing headers in debug to be disabled, delete the duplicate directory with file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
+/Users/runner/OurTibia-mac-build/source/overlay-ports/inih/portfile.cmake: warning: Found 1 post-build check problem(s). These are usually caused by bugs in portfile.cmake or the upstream build system. Please correct these before submitting this port to the curated registry.
+Starting submission of inih[core,cpp]:arm64-osx@58 to 1 binary cache(s) in the background
+Elapsed time to handle inih:arm64-osx: 3.8 s
+Completed submission of glew:arm64-osx@2.3.1 to 1 binary cache(s) in 170 ms
+Installing 21/45 ixwebsocket[core,sectransp,ssl]:arm64-osx@12.0.0...
+ixwebsocket[core,sectransp,ssl]:arm64-osx@12.0.0 package ABI: 4b87182f83b921a7f8d4df7953017895aef2c048a7704b80ea236843e00f6d72
+Building ixwebsocket[core,sectransp,ssl]:arm64-osx@12.0.0...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/machinezone/IXWebSocket/archive/v12.0.0.tar.gz -> machinezone-IXWebSocket-v12.0.0.tar.gz
+Successfully downloaded machinezone-IXWebSocket-v12.0.0.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/machinezone-IXWebSocket-v12.0.0.tar.gz
+-- Applying patch 582.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/ixwebsocket/src/v12.0.0-6b30c02c33.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/ixwebsocket_arm64-osx/lib/pkgconfig/ixwebsocket.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/ixwebsocket_arm64-osx/debug/lib/pkgconfig/ixwebsocket.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/ixwebsocket_arm64-osx/share/ixwebsocket/copyright
+-- Performing post-build validation
+Starting submission of ixwebsocket[core,sectransp,ssl]:arm64-osx@12.0.0 to 1 binary cache(s) in the background
+Elapsed time to handle ixwebsocket:arm64-osx: 13 s
+Completed submission of inih[core,cpp]:arm64-osx@58 to 1 binary cache(s) in 20.7 ms
+Installing 22/45 zstd:arm64-osx@1.5.7...
+zstd:arm64-osx@1.5.7 package ABI: 32b4fd1d8da6bc0a1f55e7cd9af6a3ffdf8d2fafa3e7efa24155c4fb810f2111
+Building zstd:arm64-osx@1.5.7...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/facebook/zstd/archive/v1.5.7.tar.gz -> facebook-zstd-v1.5.7.tar.gz
+Successfully downloaded facebook-zstd-v1.5.7.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/facebook-zstd-v1.5.7.tar.gz
+-- Applying patch no-static-suffix.patch
+-- Applying patch fix-emscripten-and-clang-cl.patch
+-- Applying patch fix-windows-rc-compile.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/zstd_arm64-osx/lib/pkgconfig/libzstd.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/zstd_arm64-osx/debug/lib/pkgconfig/libzstd.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/zstd_arm64-osx/share/zstd/usage
+-- Performing post-build validation
+Starting submission of zstd:arm64-osx@1.5.7 to 1 binary cache(s) in the background
+Elapsed time to handle zstd:arm64-osx: 13 s
+Completed submission of ixwebsocket[core,sectransp,ssl]:arm64-osx@12.0.0 to 1 binary cache(s) in 428 ms
+Installing 23/45 vcpkg-cmake-get-vars:arm64-osx@2025-05-29...
+vcpkg-cmake-get-vars:arm64-osx@2025-05-29 package ABI: 1ea4d1a4e88fffcadf9d2825a406e5d263f4da87526a5500bac11d953f9fb5fb
+Building vcpkg-cmake-get-vars:arm64-osx@2025-05-29...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake-get-vars_arm64-osx/share/vcpkg-cmake-get-vars/vcpkg_cmake_get_vars.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake-get-vars_arm64-osx/share/vcpkg-cmake-get-vars/cmake_get_vars
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake-get-vars_arm64-osx/share/vcpkg-cmake-get-vars/cmake_get_vars/CMakeLists.txt
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake-get-vars_arm64-osx/share/vcpkg-cmake-get-vars/cmake-get-vars.cmake.in
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake-get-vars_arm64-osx/share/vcpkg-cmake-get-vars/vcpkg-port-config.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/vcpkg-cmake-get-vars_arm64-osx/share/vcpkg-cmake-get-vars/copyright
+-- Performing post-build validation
+Starting submission of vcpkg-cmake-get-vars:arm64-osx@2025-05-29 to 1 binary cache(s) in the background
+Elapsed time to handle vcpkg-cmake-get-vars:arm64-osx: 32.4 ms
+Installing 24/45 vcpkg-make:arm64-osx@2026-01-01...
+vcpkg-make:arm64-osx@2026-01-01 package ABI: 783c7df23fd31b7fd345c31f5be114d6ac115040e4f2b7249eb266a54b336fcb
+Building vcpkg-make:arm64-osx@2026-01-01...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading automake-1.17.tar.gz, trying https://ftpmirror.gnu.org/gnu/automake/automake-1.17.tar.gz
+Successfully downloaded automake-1.17.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/automake-1.17.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/vcpkg-make/src/automake-1-c362683103.clean
+-- Getting CMake variables for arm64-osx
+-- Loading CMake variables from /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/vcpkg-make/cmake-get-vars_C_CXX-arm64-osx.cmake.log
+-- arm64-osx autotools triplet: aarch64-apple-darwin (from vcpkg)
+-- Performing post-build validation
+Starting submission of vcpkg-make:arm64-osx@2026-01-01 to 1 binary cache(s) in the background
+Elapsed time to handle vcpkg-make:arm64-osx: 2.4 s
+Completed submission of zstd:arm64-osx@1.5.7 to 1 binary cache(s) in 252 ms
+Completed submission of vcpkg-cmake-get-vars:arm64-osx@2025-05-29 to 1 binary cache(s) in 13.9 ms
+Installing 25/45 libiconv:arm64-osx@1.19...
+libiconv:arm64-osx@1.19 package ABI: b8b23b6335d8c91cb7f642448d851a22dcb122438e1ce8d3aee0314aae2761b3
+Building libiconv:arm64-osx@1.19...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+-- Not building GNU libiconv.
+-- Skipping post-build validation due to VCPKG_POLICY_EMPTY_PACKAGE
+Starting submission of libiconv:arm64-osx@1.19 to 1 binary cache(s) in the background
+Elapsed time to handle libiconv:arm64-osx: 32.4 ms
+Completed submission of vcpkg-make:arm64-osx@2026-01-01 to 1 binary cache(s) in 11.1 ms
+Installing 26/45 libxml2[core,iconv,zlib]:arm64-osx@2.15.3...
+libxml2[core,iconv,zlib]:arm64-osx@2.15.3 package ABI: cc33f2bff68d15e78721073c8fab6dde67c5557e2bcc2bfbf30102aad6ff1597
+Building libxml2[core,iconv,zlib]:arm64-osx@2.15.3...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/GNOME/libxml2/archive/v2.15.3.tar.gz -> GNOME-libxml2-v2.15.3.tar.gz
+Successfully downloaded GNOME-libxml2-v2.15.3.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/GNOME-libxml2-v2.15.3.tar.gz
+-- Applying patch cxx-for-icu.diff
+-- Applying patch disable-xml2-config.diff
+-- Applying patch fix_cmakelist.patch
+-- Applying patch fix_ios_compilation.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/libxml2/src/v2.15.3-bfc57cf8fe.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libxml2_arm64-osx/lib/pkgconfig/libxml-2.0.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libxml2_arm64-osx/debug/lib/pkgconfig/libxml-2.0.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libxml2_arm64-osx/share/libxml2/copyright
+-- Performing post-build validation
+Starting submission of libxml2[core,iconv,zlib]:arm64-osx@2.15.3 to 1 binary cache(s) in the background
+Elapsed time to handle libxml2:arm64-osx: 9.2 s
+Completed submission of libiconv:arm64-osx@1.19 to 1 binary cache(s) in 13.2 ms
+Installing 27/45 liblzma:arm64-osx@5.8.3...
+liblzma:arm64-osx@5.8.3 package ABI: d695d59bc59a00ec0df0768948c0b28886f113e64e87c64b5847935043114c32
+Building liblzma:arm64-osx@5.8.3...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/tukaani-project/xz/archive/v5.8.3.tar.gz -> tukaani-project-xz-v5.8.3.tar.gz
+Successfully downloaded tukaani-project-xz-v5.8.3.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/tukaani-project-xz-v5.8.3.tar.gz
+-- Applying patch build-tools.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/liblzma/src/v5.8.3-6de1f0384d.clean
+-- Configuring arm64-osx
+CMake Warning at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/share/vcpkg-cmake/vcpkg_cmake_configure.cmake:344 (message):
+  The following variables are not used in CMakeLists.txt:
+
+      XZ_SANDBOX
+
+  Please recheck them and remove the unnecessary options from the
+  `vcpkg_cmake_configure` call.
+
+  If these options should still be passed for whatever reason, please use the
+  `MAYBE_UNUSED_VARIABLES` argument.
+Call Stack (most recent call first):
+  /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/versioning_/versions/liblzma/ae94eaf58eb64ce5b0dfba7769095c43c6c65d71/portfile.cmake:26 (vcpkg_cmake_configure)
+  scripts/ports.cmake:209 (include)
+
+
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/liblzma_arm64-osx/lib/pkgconfig/liblzma.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/liblzma_arm64-osx/debug/lib/pkgconfig/liblzma.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/liblzma_arm64-osx/share/liblzma/copyright
+-- Performing post-build validation
+Starting submission of liblzma:arm64-osx@5.8.3 to 1 binary cache(s) in the background
+Elapsed time to handle liblzma:arm64-osx: 15 s
+Completed submission of libxml2[core,iconv,zlib]:arm64-osx@2.15.3 to 1 binary cache(s) in 325 ms
+Installing 28/45 lz4:arm64-osx@1.10.0...
+lz4:arm64-osx@1.10.0 package ABI: 6238df1f5321ad85387fa5e2e24a20733bdfde7621f72521f78f6207515cab68
+Building lz4:arm64-osx@1.10.0...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/lz4/lz4/archive/v1.10.0.tar.gz -> lz4-lz4-v1.10.0.tar.gz
+Successfully downloaded lz4-lz4-v1.10.0.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/lz4-lz4-v1.10.0.tar.gz
+-- Applying patch target-lz4-lz4.diff
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/lz4/src/v1.10.0-61bd08d80e.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/lz4_arm64-osx/lib/pkgconfig/liblz4.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/lz4_arm64-osx/debug/lib/pkgconfig/liblz4.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/lz4_arm64-osx/share/lz4/usage
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/lz4_arm64-osx/share/lz4/copyright
+-- Performing post-build validation
+Starting submission of lz4:arm64-osx@1.10.0 to 1 binary cache(s) in the background
+Elapsed time to handle lz4:arm64-osx: 4.5 s
+Completed submission of liblzma:arm64-osx@5.8.3 to 1 binary cache(s) in 76.6 ms
+Installing 29/45 mbedtls:arm64-osx@3.6.5...
+mbedtls:arm64-osx@3.6.5 package ABI: 1b85a3d908b9a970c6f180af01de27d82e809f3e7ef09136cccd061f8dd98fc7
+Building mbedtls:arm64-osx@3.6.5...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/Mbed-TLS/mbedtls/archive/v3.6.5.tar.gz -> Mbed-TLS-mbedtls-v3.6.5.tar.gz
+Successfully downloaded Mbed-TLS-mbedtls-v3.6.5.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/Mbed-TLS-mbedtls-v3.6.5.tar.gz
+-- Applying patch enable-pthread.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/mbedtls/src/v3.6.5-9a14cad72c.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/mbedtls_arm64-osx/lib/pkgconfig/mbedcrypto.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/mbedtls_arm64-osx/lib/pkgconfig/mbedtls.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/mbedtls_arm64-osx/lib/pkgconfig/mbedx509.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/mbedtls_arm64-osx/debug/lib/pkgconfig/mbedcrypto.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/mbedtls_arm64-osx/debug/lib/pkgconfig/mbedtls.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/mbedtls_arm64-osx/debug/lib/pkgconfig/mbedx509.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/mbedtls_arm64-osx/share/mbedtls/copyright
+-- Performing post-build validation
+Starting submission of mbedtls:arm64-osx@3.6.5 to 1 binary cache(s) in the background
+Elapsed time to handle mbedtls:arm64-osx: 13 s
+Completed submission of lz4:arm64-osx@1.10.0 to 1 binary cache(s) in 57.9 ms
+Installing 30/45 libarchive[bzip2,core,crypto,lz4,lzma,xar,zstd]:arm64-osx@3.8.7...
+libarchive[bzip2,core,crypto,lz4,lzma,xar,zstd]:arm64-osx@3.8.7 package ABI: 6ad0160c2a6767030f293e64a2c86ccbbec68e53d84042a3a9ee3b2593a9fb2e
+Building libarchive[bzip2,core,crypto,lz4,lzma,xar,zstd]:arm64-osx@3.8.7...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/libarchive/libarchive/archive/v3.8.7.tar.gz -> libarchive-libarchive-v3.8.7.tar.gz
+Successfully downloaded libarchive-libarchive-v3.8.7.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/libarchive-libarchive-v3.8.7.tar.gz
+-- Applying patch fix-buildsystem.patch
+-- Applying patch fix-deps.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/libarchive/src/v3.8.7-79570ade8c.clean
+-- Configuring arm64-osx
+CMake Warning at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/share/vcpkg-cmake/vcpkg_cmake_configure.cmake:344 (message):
+  The following variables are not used in CMakeLists.txt:
+
+      CMAKE_REQUIRE_FIND_PACKAGE_MbedTLS
+
+  Please recheck them and remove the unnecessary options from the
+  `vcpkg_cmake_configure` call.
+
+  If these options should still be passed for whatever reason, please use the
+  `MAYBE_UNUSED_VARIABLES` argument.
+Call Stack (most recent call first):
+  /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/versioning_/versions/libarchive/5fa6c30380bdf44dc81d78116c3a1f01a87a86b5/portfile.cmake:56 (vcpkg_cmake_configure)
+  scripts/ports.cmake:209 (include)
+
+
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libarchive_arm64-osx/lib/pkgconfig/libarchive.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libarchive_arm64-osx/debug/lib/pkgconfig/libarchive.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libarchive_arm64-osx/share/libarchive/usage
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libarchive_arm64-osx/share/libarchive/copyright
+-- Performing post-build validation
+Starting submission of libarchive[bzip2,core,crypto,lz4,lzma,xar,zstd]:arm64-osx@3.8.7 to 1 binary cache(s) in the background
+Elapsed time to handle libarchive:arm64-osx: 1.2 min
+Completed submission of mbedtls:arm64-osx@3.6.5 to 1 binary cache(s) in 327 ms
+Installing 31/45 libobfuscate:arm64-osx@2024-07-10...
+libobfuscate:arm64-osx@2024-07-10 package ABI: f281889c4324449bb669a296ab14ba0dc8a79edfa7bc0c19b69ceafb50075a6e
+Building libobfuscate:arm64-osx@2024-07-10...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/adamyaxley/Obfuscate/archive/a46cd5d8bd09e44afb27f97cde842e9473a4fdf6.tar.gz -> adamyaxley-Obfuscate-a46cd5d8bd09e44afb27f97cde842e9473a4fdf6.tar.gz
+Successfully downloaded adamyaxley-Obfuscate-a46cd5d8bd09e44afb27f97cde842e9473a4fdf6.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/adamyaxley-Obfuscate-a46cd5d8bd09e44afb27f97cde842e9473a4fdf6.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/libobfuscate/src/9473a4fdf6-d360ee923c.clean
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libobfuscate_arm64-osx/include/obfuscate.h
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libobfuscate_arm64-osx/share/libobfuscate/copyright
+-- Performing post-build validation
+Starting submission of libobfuscate:arm64-osx@2024-07-10 to 1 binary cache(s) in the background
+Elapsed time to handle libobfuscate:arm64-osx: 441 ms
+Completed submission of libarchive[bzip2,core,crypto,lz4,lzma,xar,zstd]:arm64-osx@3.8.7 to 1 binary cache(s) in 296 ms
+Installing 32/45 libogg:arm64-osx@1.3.6#1...
+libogg:arm64-osx@1.3.6#1 package ABI: 1c8a09b10933908b18e14dcdffb510ac898531d8749dccf4396763380820b2e3
+Building libogg:arm64-osx@1.3.6#1...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/xiph/ogg/archive/v1.3.6.tar.gz -> xiph-ogg-v1.3.6.tar.gz
+Successfully downloaded xiph-ogg-v1.3.6.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/xiph-ogg-v1.3.6.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/libogg/src/v1.3.6-4ad11a7327.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libogg_arm64-osx/lib/pkgconfig/ogg.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libogg_arm64-osx/debug/lib/pkgconfig/ogg.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libogg_arm64-osx/share/libogg/copyright
+-- Performing post-build validation
+Starting submission of libogg:arm64-osx@1.3.6#1 to 1 binary cache(s) in the background
+Elapsed time to handle libogg:arm64-osx: 5.1 s
+Completed submission of libobfuscate:arm64-osx@2024-07-10 to 1 binary cache(s) in 8.23 ms
+Installing 33/45 libvorbis:arm64-osx@1.3.7#4...
+libvorbis:arm64-osx@1.3.7#4 package ABI: 0c1b97aa4f495883caf4b75a60fdb2d76bde81c8ae6fe3ee4f8b2a40f60ee146
+Building libvorbis:arm64-osx@1.3.7#4...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/xiph/vorbis/archive/v1.3.7.tar.gz -> xiph-vorbis-v1.3.7.tar.gz
+Successfully downloaded xiph-vorbis-v1.3.7.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/xiph-vorbis-v1.3.7.tar.gz
+-- Applying patch 0001-Dont-export-vorbisenc-functions.patch
+-- Applying patch 0002-Fixup-pkgconfig-libs.patch
+-- Applying patch 0003-def-mingw-compat.patch
+-- Applying patch 0004-ogg-find-dependency.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/libvorbis/src/v1.3.7-c32164610e.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libvorbis_arm64-osx/lib/pkgconfig/vorbis.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libvorbis_arm64-osx/lib/pkgconfig/vorbisenc.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libvorbis_arm64-osx/lib/pkgconfig/vorbisfile.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libvorbis_arm64-osx/debug/lib/pkgconfig/vorbis.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libvorbis_arm64-osx/debug/lib/pkgconfig/vorbisenc.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libvorbis_arm64-osx/debug/lib/pkgconfig/vorbisfile.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libvorbis_arm64-osx/share/libvorbis/usage
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/libvorbis_arm64-osx/share/libvorbis/copyright
+-- Performing post-build validation
+Starting submission of libvorbis:arm64-osx@1.3.7#4 to 1 binary cache(s) in the background
+Elapsed time to handle libvorbis:arm64-osx: 4.6 s
+Completed submission of libogg:arm64-osx@1.3.6#1 to 1 binary cache(s) in 14.6 ms
+Installing 34/45 luajit:arm64-osx@2026-06-16...
+luajit:arm64-osx@2026-06-16 package ABI: f01ba9d6604f26a1a8454b7b874152cabb7501d045e67c0cd706cc74fe85eb64
+Building luajit:arm64-osx@2026-06-16...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/LuaJIT/LuaJIT/archive/8e6520a7aecd0517e792b359afbbfd7274791f5f.tar.gz -> LuaJIT-LuaJIT-8e6520a7aecd0517e792b359afbbfd7274791f5f.tar.gz
+Successfully downloaded LuaJIT-LuaJIT-8e6520a7aecd0517e792b359afbbfd7274791f5f.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/LuaJIT-LuaJIT-8e6520a7aecd0517e792b359afbbfd7274791f5f.tar.gz
+-- Applying patch msvcbuild.patch
+-- Applying patch 003-do-not-set-macosx-deployment-target.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/luajit/src/7274791f5f-6de310b911.clean
+-- Getting CMake variables for arm64-osx
+-- Loading CMake variables from /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/luajit/cmake-get-vars_C_CXX-arm64-osx.cmake.log
+-- Getting CMake variables for arm64-osx-dbg
+-- Getting CMake variables for arm64-osx-rel
+-- Configuring arm64-osx-dbg
+-- Configuring arm64-osx-rel
+-- Building arm64-osx-dbg
+-- Installing arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Installing arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/luajit_arm64-osx/lib/pkgconfig/luajit.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/luajit_arm64-osx/debug/lib/pkgconfig/luajit.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/luajit_arm64-osx/share/luajit/copyright
+CMake Warning at scripts/cmake/z_vcpkg_fixup_rpath_macho.cmake:194 (message):
+  Couldn't adjust RPATH of
+  '/Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/luajit_arm64-osx/debug/manual-tools/luajit/minilua':
+  error:
+  /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool:
+  changing install names or rpaths can't be redone for:
+  /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/luajit_arm64-osx/debug/manual-tools/luajit/minilua
+  (for architecture arm64) because larger updated load commands do not fit
+  (the program must be relinked, and you may need to use -headerpad or
+  -headerpad_max_install_names)
+
+Call Stack (most recent call first):
+  scripts/ports.cmake:222 (z_vcpkg_fixup_macho_rpath_in_dir)
+
+
+CMake Warning at scripts/cmake/z_vcpkg_fixup_rpath_macho.cmake:194 (message):
+  Couldn't adjust RPATH of
+  '/Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/luajit_arm64-osx/manual-tools/luajit/minilua':
+  error:
+  /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool:
+  changing install names or rpaths can't be redone for:
+  /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/luajit_arm64-osx/manual-tools/luajit/minilua
+  (for architecture arm64) because larger updated load commands do not fit
+  (the program must be relinked, and you may need to use -headerpad or
+  -headerpad_max_install_names)
+
+Call Stack (most recent call first):
+  scripts/ports.cmake:222 (z_vcpkg_fixup_macho_rpath_in_dir)
+
+
+-- Adjusted RPATH of '/Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/luajit_arm64-osx/tools/luajit/luajit' to '@loader_path/../../lib'
+-- Performing post-build validation
+Starting submission of luajit:arm64-osx@2026-06-16 to 1 binary cache(s) in the background
+Elapsed time to handle luajit:arm64-osx: 16 s
+Completed submission of libvorbis:arm64-osx@1.3.7#4 to 1 binary cache(s) in 96.3 ms
+Installing 35/45 nlohmann-json:arm64-osx@3.12.0#2...
+nlohmann-json:arm64-osx@3.12.0#2 package ABI: a9001ef85c1d42029a495e4d487e237456f45c5b536e6b881766f9b877819df4
+Building nlohmann-json:arm64-osx@3.12.0#2...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/nlohmann/json/archive/v3.12.0.tar.gz -> nlohmann-json-v3.12.0.tar.gz
+Successfully downloaded nlohmann-json-v3.12.0.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/nlohmann-json-v3.12.0.tar.gz
+-- Applying patch fix-4736_char8_t.patch
+-- Applying patch fix-4742_std_optional.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/nlohmann-json/src/v3.12.0-89fed620e6.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/nlohmann-json_arm64-osx/share/pkgconfig/nlohmann_json.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/nlohmann-json_arm64-osx/debug/share/pkgconfig/nlohmann_json.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/nlohmann-json_arm64-osx/share/nlohmann-json/copyright
+-- Performing post-build validation
+Starting submission of nlohmann-json:arm64-osx@3.12.0#2 to 1 binary cache(s) in the background
+Elapsed time to handle nlohmann-json:arm64-osx: 1.5 s
+Completed submission of luajit:arm64-osx@2026-06-16 to 1 binary cache(s) in 320 ms
+Installing 36/45 openal-soft:arm64-osx@1.25.1#2...
+openal-soft:arm64-osx@1.25.1#2 package ABI: 5bac45efd594ff9ac939474d6887e4d7b04a22a4436423941d501d3bbe7d7599
+Building openal-soft:arm64-osx@1.25.1#2...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/kcat/openal-soft/archive/1.25.1.tar.gz -> kcat-openal-soft-1.25.1.tar.gz
+Successfully downloaded kcat-openal-soft-1.25.1.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/kcat-openal-soft-1.25.1.tar.gz
+-- Applying patch pkgconfig-cxx.diff
+-- Applying patch devendor-fmt.diff
+-- Applying patch fix-fmt-header.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/openal-soft/src/1.25.1-b1ba430f75.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/openal-soft_arm64-osx/lib/pkgconfig/openal.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/openal-soft_arm64-osx/debug/lib/pkgconfig/openal.pc
+-- Performing post-build validation
+Starting submission of openal-soft:arm64-osx@1.25.1#2 to 1 binary cache(s) in the background
+Elapsed time to handle openal-soft:arm64-osx: 1.8 min
+Completed submission of nlohmann-json:arm64-osx@3.12.0#2 to 1 binary cache(s) in 25.5 ms
+Installing 37/45 openssl:arm64-osx@3.6.3...
+openssl:arm64-osx@3.6.3 package ABI: 81e5ac9f109204a9ec95e3b308325eadbca580d01d0daad5104f2ce74059ccc9
+Building openssl:arm64-osx@3.6.3...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/openssl/openssl/archive/openssl-3.6.3.tar.gz -> openssl-openssl-openssl-3.6.3.tar.gz
+Successfully downloaded openssl-openssl-openssl-3.6.3.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/openssl-openssl-openssl-3.6.3.tar.gz
+-- Applying patch cmake-config.patch
+-- Applying patch command-line-length.patch
+-- Applying patch script-prefix.patch
+-- Applying patch windows/install-layout.patch
+-- Applying patch windows/install-pdbs.patch
+-- Applying patch windows/install-programs.diff
+-- Applying patch unix/android-cc.patch
+-- Applying patch unix/move-openssldir.patch
+-- Applying patch unix/no-empty-dirs.patch
+-- Applying patch unix/no-static-libs-for-shared.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/openssl/src/nssl-3.6.3-28a9d34a24.clean
+-- Getting CMake variables for arm64-osx
+-- Loading CMake variables from /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/openssl/cmake-get-vars_C_CXX-arm64-osx.cmake.log
+-- Getting CMake variables for arm64-osx-dbg
+-- Getting CMake variables for arm64-osx-rel
+-- Configuring arm64-osx-dbg
+-- Configuring arm64-osx-rel
+-- Building arm64-osx-dbg
+-- Installing arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Installing arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/openssl_arm64-osx/lib/pkgconfig/libcrypto.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/openssl_arm64-osx/lib/pkgconfig/libssl.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/openssl_arm64-osx/lib/pkgconfig/openssl.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/openssl_arm64-osx/debug/lib/pkgconfig/libcrypto.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/openssl_arm64-osx/debug/lib/pkgconfig/libssl.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/openssl_arm64-osx/debug/lib/pkgconfig/openssl.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/openssl_arm64-osx/share/openssl/usage
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/openssl_arm64-osx/share/openssl/copyright
+-- Performing post-build validation
+Starting submission of openssl:arm64-osx@3.6.3 to 1 binary cache(s) in the background
+Elapsed time to handle openssl:arm64-osx: 2 min
+Completed submission of openal-soft:arm64-osx@1.25.1#2 to 1 binary cache(s) in 3.2 s
+Installing 38/45 parallel-hashmap:arm64-osx@2.0.0...
+parallel-hashmap:arm64-osx@2.0.0 package ABI: d392fbc778553d93a980db1912039e41ed5b396b173f48cd33d9e640421a3c0b
+Building parallel-hashmap:arm64-osx@2.0.0...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/greg7mdp/parallel-hashmap/archive/v2.0.0.tar.gz -> greg7mdp-parallel-hashmap-v2.0.0.tar.gz
+Successfully downloaded greg7mdp-parallel-hashmap-v2.0.0.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/greg7mdp-parallel-hashmap-v2.0.0.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/parallel-hashmap/src/v2.0.0-7f56771825.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/parallel-hashmap_arm64-osx/share/parallel-hashmap/copyright
+-- Performing post-build validation
+Starting submission of parallel-hashmap:arm64-osx@2.0.0 to 1 binary cache(s) in the background
+Elapsed time to handle parallel-hashmap:arm64-osx: 1.4 s
+Installing 39/45 physfs:arm64-osx@3.2.0#1...
+physfs:arm64-osx@3.2.0#1 package ABI: 9459a9afa352ec8a4ca96e7842be064772050a7a1b744a9afc88f6cd51af82be
+Building physfs:arm64-osx@3.2.0#1...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/icculus/physfs/archive/release-3.2.0.tar.gz -> icculus-physfs-release-3.2.0.tar.gz
+Successfully downloaded icculus-physfs-release-3.2.0.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/icculus-physfs-release-3.2.0.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/physfs/src/ease-3.2.0-f300eac03a.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/physfs_arm64-osx/lib/pkgconfig/physfs.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/physfs_arm64-osx/debug/lib/pkgconfig/physfs.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/physfs_arm64-osx/share/physfs/vcpkg-cmake-wrapper.cmake
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/physfs_arm64-osx/share/physfs/usage
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/physfs_arm64-osx/share/physfs/copyright
+-- Performing post-build validation
+Starting submission of physfs:arm64-osx@3.2.0#1 to 1 binary cache(s) in the background
+Elapsed time to handle physfs:arm64-osx: 3.2 s
+Completed submission of openssl:arm64-osx@3.6.3 to 1 binary cache(s) in 1.9 s
+Completed submission of parallel-hashmap:arm64-osx@2.0.0 to 1 binary cache(s) in 28.3 ms
+Installing 40/45 utf8-range:arm64-osx@6.33.4...
+utf8-range:arm64-osx@6.33.4 package ABI: e227d7993e27658f7481ee4a7130d3d9701f1e36c7dca791f4314bbc571ecff8
+Building utf8-range:arm64-osx@6.33.4...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/protocolbuffers/protobuf/archive/v33.4.tar.gz -> protocolbuffers-protobuf-v33.4.tar.gz
+Successfully downloaded protocolbuffers-protobuf-v33.4.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/protocolbuffers-protobuf-v33.4.tar.gz
+-- Applying patch fix-cmake.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/utf8-range/src/v33.4-7b17d08241.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/utf8-range_arm64-osx/lib/pkgconfig/utf8_range.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/utf8-range_arm64-osx/debug/lib/pkgconfig/utf8_range.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/utf8-range_arm64-osx/share/utf8-range/copyright
+-- Performing post-build validation
+Starting submission of utf8-range:arm64-osx@6.33.4 to 1 binary cache(s) in the background
+Elapsed time to handle utf8-range:arm64-osx: 3.2 s
+Completed submission of physfs:arm64-osx@3.2.0#1 to 1 binary cache(s) in 58.5 ms
+Installing 41/45 protobuf:arm64-osx@6.33.4#2...
+protobuf:arm64-osx@6.33.4#2 package ABI: fd783c7f9d1dab14fa8e217f12b0e74dbd5e32fcbdd622ad7b180ad7017383f0
+Building protobuf:arm64-osx@6.33.4#2...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+-- Using cached protocolbuffers-protobuf-v33.4.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/protocolbuffers-protobuf-v33.4.tar.gz
+-- Applying patch fix-static-build.patch
+-- Applying patch fix-default-proto-file-path.patch
+-- Applying patch fix-utf8-range.patch
+-- Applying patch fix-install-dirs.patch
+-- Applying patch fix-constinit-with-clang-cl.patch
+-- Applying patch fix-upb.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/protobuf/src/v33.4-f8b43d71cd.clean
+-- Configuring arm64-osx
+CMake Warning at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/share/vcpkg-cmake/vcpkg_cmake_configure.cmake:344 (message):
+  The following variables are not used in CMakeLists.txt:
+
+      protobuf_BUILD_TARGET_LIBPROTOC
+
+  Please recheck them and remove the unnecessary options from the
+  `vcpkg_cmake_configure` call.
+
+  If these options should still be passed for whatever reason, please use the
+  `MAYBE_UNUSED_VARIABLES` argument.
+Call Stack (most recent call first):
+  /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/versioning_/versions/protobuf/ed5f5c06952c67498f580082ff1209d051222947/portfile.cmake:51 (vcpkg_cmake_configure)
+  scripts/ports.cmake:209 (include)
+
+
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/protobuf_arm64-osx/lib/pkgconfig/protobuf-lite.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/protobuf_arm64-osx/lib/pkgconfig/protobuf.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/protobuf_arm64-osx/lib/pkgconfig/upb.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/protobuf_arm64-osx/debug/lib/pkgconfig/protobuf-lite.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/protobuf_arm64-osx/debug/lib/pkgconfig/protobuf.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/protobuf_arm64-osx/debug/lib/pkgconfig/upb.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/protobuf_arm64-osx/share/protobuf/copyright
+-- Adjusted RPATH of '/Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/protobuf_arm64-osx/tools/protobuf/protoc-33.4.0' to '@loader_path/../../lib'
+-- Performing post-build validation
+Starting submission of protobuf:arm64-osx@6.33.4#2 to 1 binary cache(s) in the background
+Elapsed time to handle protobuf:arm64-osx: 7.6 min
+Completed submission of utf8-range:arm64-osx@6.33.4 to 1 binary cache(s) in 21.3 ms
+Installing 42/45 pugixml:arm64-osx@1.16...
+pugixml:arm64-osx@1.16 package ABI: 6943957d1297f13d5f9cc43e4785966dd3c8836728245bd0fc36cf958ebea2f5
+Building pugixml:arm64-osx@1.16...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/zeux/pugixml/archive/v1.16.tar.gz -> zeux-pugixml-v1.16.tar.gz
+Successfully downloaded zeux-pugixml-v1.16.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/zeux-pugixml-v1.16.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/pugixml/src/v1.16-22f15b704a.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/pugixml_arm64-osx/lib/pkgconfig/pugixml.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/pugixml_arm64-osx/debug/lib/pkgconfig/pugixml.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/pugixml_arm64-osx/share/pugixml/copyright
+-- Performing post-build validation
+Starting submission of pugixml:arm64-osx@1.16 to 1 binary cache(s) in the background
+Elapsed time to handle pugixml:arm64-osx: 5 s
+Installing 43/45 spdlog[core,fmt,tz-offset]:arm64-osx@1.17.0...
+spdlog[core,fmt,tz-offset]:arm64-osx@1.17.0 package ABI: 82d99daa4029dc66e8075f31fade3db8aa2553f4dea23d855e1ea97b80f071bf
+Building spdlog[core,fmt,tz-offset]:arm64-osx@1.17.0...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/gabime/spdlog/archive/v1.17.0.tar.gz -> gabime-spdlog-v1.17.0.tar.gz
+Successfully downloaded gabime-spdlog-v1.17.0.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/gabime-spdlog-v1.17.0.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/spdlog/src/v1.17.0-2617b3696e.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-dbg
+-- Building arm64-osx-rel
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/spdlog_arm64-osx/lib/pkgconfig/spdlog.pc
+-- Fixing pkgconfig file: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/spdlog_arm64-osx/debug/lib/pkgconfig/spdlog.pc
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/spdlog_arm64-osx/share/spdlog/usage
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/spdlog_arm64-osx/share/spdlog/copyright
+-- Performing post-build validation
+Starting submission of spdlog[core,fmt,tz-offset]:arm64-osx@1.17.0 to 1 binary cache(s) in the background
+Elapsed time to handle spdlog:arm64-osx: 11 s
+Installing 44/45 stduuid:arm64-osx@1.2.3...
+stduuid:arm64-osx@1.2.3 package ABI: 086bd2c983833bbc600988c065545fa3359622961cd6ac34a6aabb3e0dadf38a
+Building stduuid:arm64-osx@1.2.3...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/mariusbancila/stduuid/archive/v1.2.3.tar.gz -> mariusbancila-stduuid-v1.2.3.tar.gz
+Successfully downloaded mariusbancila-stduuid-v1.2.3.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/mariusbancila-stduuid-v1.2.3.tar.gz
+-- Applying patch fix-install-directory.patch
+-- Applying patch fix-gsl-polyfill.patch
+-- Applying patch fix-libuuid-dependency.patch
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/stduuid/src/v1.2.3-5c3cdc77df.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-rel
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/stduuid_arm64-osx/share/stduuid/copyright
+-- Performing post-build validation
+Starting submission of stduuid:arm64-osx@1.2.3 to 1 binary cache(s) in the background
+Elapsed time to handle stduuid:arm64-osx: 1.5 s
+Installing 45/45 utfcpp:arm64-osx@4.1.1...
+utfcpp:arm64-osx@4.1.1 package ABI: 097e3b01fa7a34ddf7e3c6a005045014e6ef3de1b6a4024166157b1f0bdefff6
+Building utfcpp:arm64-osx@4.1.1...
+/Users/runner/work/ourtibia-mac/ourtibia-mac/mac-triplets/arm64-osx.cmake: info: loaded overlay triplet from here
+Downloading https://github.com/nemtrif/utfcpp/archive/v4.1.1.tar.gz -> nemtrif-utfcpp-v4.1.1.tar.gz
+Successfully downloaded nemtrif-utfcpp-v4.1.1.tar.gz
+-- Extracting source /Users/runner/OurTibia-mac-build/vcpkg/downloads/nemtrif-utfcpp-v4.1.1.tar.gz
+-- Using source at /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-buildtrees/utfcpp/src/v4.1.1-a4242085af.clean
+-- Configuring arm64-osx
+-- Building arm64-osx-rel
+-- Installing: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg-packages/utfcpp_arm64-osx/share/utfcpp/copyright
+-- Performing post-build validation
+Starting submission of utfcpp:arm64-osx@4.1.1 to 1 binary cache(s) in the background
+Elapsed time to handle utfcpp:arm64-osx: 1.6 s
+Installed contents are licensed to you by owners. Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Some packages did not declare an SPDX license. Check the `copyright` file for each package for more information about their licensing.
+Packages installed in this vcpkg installation declare the following licenses:
+(Apache-2.0 OR GPL-2.0-or-later)
+(BSD-3-Clause OR GPL-2.0-only)
+(FTL OR GPL-2.0-or-later)
+Apache-2.0
+BSD-2-Clause
+BSD-3-Clause
+BSL-1.0
+LGPL-2.0-or-later
+MIT
+Unlicense
+Zlib
+bzip2-1.0.6
+libpng-2.0
+abseil provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(absl CONFIG REQUIRED)
+  # note: 203 additional targets are not displayed.
+  target_link_libraries(main PRIVATE absl::any absl::log absl::base absl::bits)
+
+abseil provides pkg-config modules:
+
+  # Abseil absl_check library
+  absl_absl_check
+
+  # Abseil absl_log library
+  absl_absl_log
+
+  # Abseil absl_vlog_is_on library
+  absl_absl_vlog_is_on
+
+  # Abseil algorithm library
+  absl_algorithm
+
+  # Abseil algorithm_container library
+  absl_algorithm_container
+
+  # Abseil any library
+  absl_any
+
+  # Abseil any_invocable library
+  absl_any_invocable
+
+  # Abseil atomic_hook library
+  absl_atomic_hook
+
+  # Abseil bad_any_cast library
+  absl_bad_any_cast
+
+  # Abseil bad_optional_access library
+  absl_bad_optional_access
+
+  # Abseil bad_variant_access library
+  absl_bad_variant_access
+
+  # Abseil base library
+  absl_base
+
+  # Abseil base_internal library
+  absl_base_internal
+
+  # Abseil bind_front library
+  absl_bind_front
+
+  # Abseil bits library
+  absl_bits
+
+  # Abseil borrowed_fixup_buffer library
+  absl_borrowed_fixup_buffer
+
+  # Abseil bounded_utf8_length_sequence library
+  absl_bounded_utf8_length_sequence
+
+  # Abseil btree library
+  absl_btree
+
+  # Abseil charset library
+  absl_charset
+
+  # Abseil check library
+  absl_check
+
+  # Abseil chunked_queue library
+  absl_chunked_queue
+
+  # Abseil city library
+  absl_city
+
+  # Abseil civil_time library
+  absl_civil_time
+
+  # Abseil cleanup library
+  absl_cleanup
+
+  # Abseil cleanup_internal library
+  absl_cleanup_internal
+
+  # Abseil common_policy_traits library
+  absl_common_policy_traits
+
+  # Abseil compare library
+  absl_compare
+
+  # Abseil compressed_tuple library
+  absl_compressed_tuple
+
+  # Abseil config library
+  absl_config
+
+  # Abseil constexpr_testing_internal library
+  absl_constexpr_testing_internal
+
+  # Abseil container_common library
+  absl_container_common
+
+  # Abseil container_memory library
+  absl_container_memory
+
+  # Abseil cord library
+  absl_cord
+
+  # Abseil cord_internal library
+  absl_cord_internal
+
+  # Abseil cordz_functions library
+  absl_cordz_functions
+
+  # Abseil cordz_handle library
+  absl_cordz_handle
+
+  # Abseil cordz_info library
+  absl_cordz_info
+
+  # Abseil cordz_sample_token library
+  absl_cordz_sample_token
+
+  # Abseil cordz_statistics library
+  absl_cordz_statistics
+
+  # Abseil cordz_update_scope library
+  absl_cordz_update_scope
+
+  # Abseil cordz_update_tracker library
+  absl_cordz_update_tracker
+
+  # Abseil core_headers library
+  absl_core_headers
+
+  # Abseil crc32c library
+  absl_crc32c
+
+  # Abseil crc_cord_state library
+  absl_crc_cord_state
+
+  # Abseil crc_cpu_detect library
+  absl_crc_cpu_detect
+
+  # Abseil crc_internal library
+  absl_crc_internal
+
+  # Abseil debugging library
+  absl_debugging
+
+  # Abseil debugging_internal library
+  absl_debugging_internal
+
+  # Abseil decode_rust_punycode library
+  absl_decode_rust_punycode
+
+  # Abseil demangle_internal library
+  absl_demangle_internal
+
+  # Abseil demangle_rust library
+  absl_demangle_rust
+
+  # Abseil die_if_null library
+  absl_die_if_null
+
+  # Abseil dynamic_annotations library
+  absl_dynamic_annotations
+
+  # Abseil endian library
+  absl_endian
+
+  # Abseil errno_saver library
+  absl_errno_saver
+
+  # Abseil examine_stack library
+  absl_examine_stack
+
+  # Abseil exponential_biased library
+  absl_exponential_biased
+
+  # Abseil failure_signal_handler library
+  absl_failure_signal_handler
+
+  # Abseil fast_type_id library
+  absl_fast_type_id
+
+  # Abseil fixed_array library
+  absl_fixed_array
+
+  # Abseil flags library
+  absl_flags
+
+  # Abseil flags_commandlineflag library
+  absl_flags_commandlineflag
+
+  # Abseil flags_commandlineflag_internal library
+  absl_flags_commandlineflag_internal
+
+  # Abseil flags_config library
+  absl_flags_config
+
+  # Abseil flags_internal library
+  absl_flags_internal
+
+  # Abseil flags_marshalling library
+  absl_flags_marshalling
+
+  # Abseil flags_parse library
+  absl_flags_parse
+
+  # Abseil flags_path_util library
+  absl_flags_path_util
+
+  # Abseil flags_private_handle_accessor library
+  absl_flags_private_handle_accessor
+
+  # Abseil flags_program_name library
+  absl_flags_program_name
+
+  # Abseil flags_reflection library
+  absl_flags_reflection
+
+  # Abseil flags_usage library
+  absl_flags_usage
+
+  # Abseil flags_usage_internal library
+  absl_flags_usage_internal
+
+  # Abseil flat_hash_map library
+  absl_flat_hash_map
+
+  # Abseil flat_hash_set library
+  absl_flat_hash_set
+
+  # Abseil function_ref library
+  absl_function_ref
+
+  # Abseil generic_printer_internal library
+  absl_generic_printer_internal
+
+  # Abseil graphcycles_internal library
+  absl_graphcycles_internal
+
+  # Abseil has_ostream_operator library
+  absl_has_ostream_operator
+
+  # Abseil hash library
+  absl_hash
+
+  # Abseil hash_container_defaults library
+  absl_hash_container_defaults
+
+  # Abseil hash_function_defaults library
+  absl_hash_function_defaults
+
+  # Abseil hash_policy_traits library
+  absl_hash_policy_traits
+
+  # Abseil hashtable_control_bytes library
+  absl_hashtable_control_bytes
+
+  # Abseil hashtable_debug library
+  absl_hashtable_debug
+
+  # Abseil hashtable_debug_hooks library
+  absl_hashtable_debug_hooks
+
+  # Abseil hashtable_profiler library
+  absl_hashtable_profiler
+
+  # Abseil hashtablez_sampler library
+  absl_hashtablez_sampler
+
+  # Abseil inlined_vector library
+  absl_inlined_vector
+
+  # Abseil inlined_vector_internal library
+  absl_inlined_vector_internal
+
+  # Abseil int128 library
+  absl_int128
+
+  # Abseil iterator_traits_internal library
+  absl_iterator_traits_internal
+
+  # Abseil iterator_traits_test_helper_internal library
+  absl_iterator_traits_test_helper_internal
+
+  # Abseil kernel_timeout_internal library
+  absl_kernel_timeout_internal
+
+  # Abseil layout library
+  absl_layout
+
+  # Abseil leak_check library
+  absl_leak_check
+
+  # Abseil linked_hash_map library
+  absl_linked_hash_map
+
+  # Abseil linked_hash_set library
+  absl_linked_hash_set
+
+  # Abseil log library
+  absl_log
+
+  # Abseil log_entry library
+  absl_log_entry
+
+  # Abseil log_flags library
+  absl_log_flags
+
+  # Abseil log_globals library
+  absl_log_globals
+
+  # Abseil log_initialize library
+  absl_log_initialize
+
+  # Abseil log_internal_append_truncated library
+  absl_log_internal_append_truncated
+
+  # Abseil log_internal_check_impl library
+  absl_log_internal_check_impl
+
+  # Abseil log_internal_check_op library
+  absl_log_internal_check_op
+
+  # Abseil log_internal_conditions library
+  absl_log_internal_conditions
+
+  # Abseil log_internal_config library
+  absl_log_internal_config
+
+  # Abseil log_internal_container library
+  absl_log_internal_container
+
+  # Abseil log_internal_flags library
+  absl_log_internal_flags
+
+  # Abseil log_internal_fnmatch library
+  absl_log_internal_fnmatch
+
+  # Abseil log_internal_format library
+  absl_log_internal_format
+
+  # Abseil log_internal_globals library
+  absl_log_internal_globals
+
+  # Abseil log_internal_log_impl library
+  absl_log_internal_log_impl
+
+  # Abseil log_internal_log_sink_set library
+  absl_log_internal_log_sink_set
+
+  # Abseil log_internal_message library
+  absl_log_internal_message
+
+  # Abseil log_internal_nullguard library
+  absl_log_internal_nullguard
+
+  # Abseil log_internal_nullstream library
+  absl_log_internal_nullstream
+
+  # Abseil log_internal_proto library
+  absl_log_internal_proto
+
+  # Abseil log_internal_strip library
+  absl_log_internal_strip
+
+  # Abseil log_internal_structured library
+  absl_log_internal_structured
+
+  # Abseil log_internal_structured_proto library
+  absl_log_internal_structured_proto
+
+  # Abseil log_internal_voidify library
+  absl_log_internal_voidify
+
+  # Abseil log_severity library
+  absl_log_severity
+
+  # Abseil log_sink library
+  absl_log_sink
+
+  # Abseil log_sink_registry library
+  absl_log_sink_registry
+
+  # Abseil log_streamer library
+  absl_log_streamer
+
+  # Abseil log_structured library
+  absl_log_structured
+
+  # Abseil malloc_internal library
+  absl_malloc_internal
+
+  # Abseil memory library
+  absl_memory
+
+  # Abseil meta library
+  absl_meta
+
+  # Abseil no_destructor library
+  absl_no_destructor
+
+  # Abseil node_hash_map library
+  absl_node_hash_map
+
+  # Abseil node_hash_set library
+  absl_node_hash_set
+
+  # Abseil node_slot_policy library
+  absl_node_slot_policy
+
+  # Abseil non_temporal_arm_intrinsics library
+  absl_non_temporal_arm_intrinsics
+
+  # Abseil non_temporal_memcpy library
+  absl_non_temporal_memcpy
+
+  # Abseil nullability library
+  absl_nullability
+
+  # Abseil nullability_traits_internal library
+  absl_nullability_traits_internal
+
+  # Abseil numeric library
+  absl_numeric
+
+  # Abseil numeric_representation library
+  absl_numeric_representation
+
+  # Abseil optional library
+  absl_optional
+
+  # Abseil overload library
+  absl_overload
+
+  # Abseil periodic_sampler library
+  absl_periodic_sampler
+
+  # Abseil poison library
+  absl_poison
+
+  # Abseil prefetch library
+  absl_prefetch
+
+  # Abseil pretty_function library
+  absl_pretty_function
+
+  # Abseil profile_builder library
+  absl_profile_builder
+
+  # Abseil random_bit_gen_ref library
+  absl_random_bit_gen_ref
+
+  # Abseil random_distributions library
+  absl_random_distributions
+
+  # Abseil random_internal_distribution_caller library
+  absl_random_internal_distribution_caller
+
+  # Abseil random_internal_distribution_test_util library
+  absl_random_internal_distribution_test_util
+
+  # Abseil random_internal_entropy_pool library
+  absl_random_internal_entropy_pool
+
+  # Abseil random_internal_fast_uniform_bits library
+  absl_random_internal_fast_uniform_bits
+
+  # Abseil random_internal_fastmath library
+  absl_random_internal_fastmath
+
+  # Abseil random_internal_generate_real library
+  absl_random_internal_generate_real
+
+  # Abseil random_internal_iostream_state_saver library
+  absl_random_internal_iostream_state_saver
+
+  # Abseil random_internal_mock_helpers library
+  absl_random_internal_mock_helpers
+
+  # Abseil random_internal_nonsecure_base library
+  absl_random_internal_nonsecure_base
+
+  # Abseil random_internal_pcg_engine library
+  absl_random_internal_pcg_engine
+
+  # Abseil random_internal_platform library
+  absl_random_internal_platform
+
+  # Abseil random_internal_randen library
+  absl_random_internal_randen
+
+  # Abseil random_internal_randen_engine library
+  absl_random_internal_randen_engine
+
+  # Abseil random_internal_randen_hwaes library
+  absl_random_internal_randen_hwaes
+
+  # Abseil random_internal_randen_hwaes_impl library
+  absl_random_internal_randen_hwaes_impl
+
+  # Abseil random_internal_randen_slow library
+  absl_random_internal_randen_slow
+
+  # Abseil random_internal_salted_seed_seq library
+  absl_random_internal_salted_seed_seq
+
+  # Abseil random_internal_seed_material library
+  absl_random_internal_seed_material
+
+  # Abseil random_internal_traits library
+  absl_random_internal_traits
+
+  # Abseil random_internal_uniform_helper library
+  absl_random_internal_uniform_helper
+
+  # Abseil random_internal_wide_multiply library
+  absl_random_internal_wide_multiply
+
+  # Abseil random_random library
+  absl_random_random
+
+  # Abseil random_seed_gen_exception library
+  absl_random_seed_gen_exception
+
+  # Abseil random_seed_sequences library
+  absl_random_seed_sequences
+
+  # Abseil raw_hash_map library
+  absl_raw_hash_map
+
+  # Abseil raw_hash_set library
+  absl_raw_hash_set
+
+  # Abseil raw_hash_set_resize_impl library
+  absl_raw_hash_set_resize_impl
+
+  # Abseil raw_logging_internal library
+  absl_raw_logging_internal
+
+  # Abseil requires_internal library
+  absl_requires_internal
+
+  # Abseil sample_recorder library
+  absl_sample_recorder
+
+  # Abseil scoped_set_env library
+  absl_scoped_set_env
+
+  # Abseil span library
+  absl_span
+
+  # Abseil spinlock_wait library
+  absl_spinlock_wait
+
+  # Abseil stacktrace library
+  absl_stacktrace
+
+  # Abseil status library
+  absl_status
+
+  # Abseil statusor library
+  absl_statusor
+
+  # Abseil str_format library
+  absl_str_format
+
+  # Abseil str_format_internal library
+  absl_str_format_internal
+
+  # Abseil strerror library
+  absl_strerror
+
+  # Abseil string_view library
+  absl_string_view
+
+  # Abseil strings library
+  absl_strings
+
+  # Abseil strings_append_and_overwrite library
+  absl_strings_append_and_overwrite
+
+  # Abseil strings_internal library
+  absl_strings_internal
+
+  # Abseil strings_resize_and_overwrite library
+  absl_strings_resize_and_overwrite
+
+  # Abseil symbolize library
+  absl_symbolize
+
+  # Abseil synchronization library
+  absl_synchronization
+
+  # Abseil throw_delegate library
+  absl_throw_delegate
+
+  # Abseil time library
+  absl_time
+
+  # Abseil time_zone library
+  absl_time_zone
+
+  # Abseil tracing_internal library
+  absl_tracing_internal
+
+  # Abseil type_traits library
+  absl_type_traits
+
+  # Abseil utf8_for_code_point library
+  absl_utf8_for_code_point
+
+  # Abseil utility library
+  absl_utility
+
+  # Abseil variant library
+  absl_variant
+
+  # Abseil vlog_config_internal library
+  absl_vlog_config_internal
+
+  # Abseil vlog_is_on library
+  absl_vlog_is_on
+
+  # Abseil weakly_mixed_integer library
+  absl_weakly_mixed_integer
+
+asio provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(asio CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE asio::asio)
+
+asio provides pkg-config modules:
+
+  # A cross-platform C++ library for network and low-level I/O programming that provides developers with a consistent asynchronous model using a modern C++ approach.
+  asio
+
+bshoshany-thread-pool is header-only and can be used from CMake via:
+
+  find_path(BSHOSHANY_THREAD_POOL_INCLUDE_DIRS "BS_thread_pool.hpp")
+  target_include_directories(main PRIVATE ${BSHOSHANY_THREAD_POOL_INCLUDE_DIRS})
+
+cpp-httplib provides CMake targets:
+
+    find_package(httplib CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE httplib::httplib)
+
+cppcodec is header-only and can be used from CMake via:
+
+  find_path(CPPCODEC_INCLUDE_DIRS "cppcodec/base32_crockford.hpp")
+  target_include_directories(main PRIVATE ${CPPCODEC_INCLUDE_DIRS})
+
+cppcodec provides pkg-config modules:
+
+  # C++ header-only library to encode/decode base64, base64url, base32, base32hex and hex
+  cppcodec-1
+
+The package fmt provides CMake targets:
+
+    find_package(fmt CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE fmt::fmt)
+
+    # Or use the header-only version
+    find_package(fmt CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE fmt::fmt-header-only)
+
+zlib is compatible with built-in CMake targets:
+
+  find_package(ZLIB REQUIRED)
+  target_link_libraries(main PRIVATE ZLIB::ZLIB)
+
+libpng provides CMake targets:
+
+  find_package(PNG REQUIRED)
+  target_link_libraries(main PRIVATE PNG::PNG)
+
+freetype is compatible with built-in CMake targets:
+
+    find_package(Freetype REQUIRED)
+    target_link_libraries(main PRIVATE Freetype::Freetype) # since CMake 3.10
+
+glew provides CMake targets:
+
+  # Legacy CMake find module
+  find_package(GLEW REQUIRED)
+  target_link_libraries(main PRIVATE GLEW::GLEW)
+
+  # Modern CMake config package
+  find_package(GLEW CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE GLEW::GLEW)
+
+glew provides pkg-config modules:
+
+  # The OpenGL Extension Wrangler library
+  glew
+
+The package inih provides unofficial CMake targets:
+    find_package(unofficial-inih CONFIG REQUIRED)
+    # C API
+    target_link_libraries(main PRIVATE unofficial::inih::libinih)
+    # C++ API (Requires "cpp" feature)
+    target_link_libraries(main PRIVATE unofficial::inih::inireader)
+Alternatively, if you are using pkg-config use the name "inih" for the C API and "inireader" for the C++ API
+
+ixwebsocket provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(ixwebsocket CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE ixwebsocket::ixwebsocket)
+
+ixwebsocket provides pkg-config modules:
+
+  # websocket and http client and server library, with TLS support and very few dependencies
+  ixwebsocket
+
+liblzma is compatible with built-in CMake targets:
+
+    find_package(LibLZMA REQUIRED)
+    target_link_libraries(main PRIVATE LibLZMA::LibLZMA)
+
+liblzma provides CMake targets:
+
+    find_package(liblzma CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE liblzma::liblzma)
+
+libarchive is compatible with the CMake Find Module:
+
+  find_package(LibArchive REQUIRED)
+  target_link_libraries(main PRIVATE LibArchive::LibArchive) # since CMake 3.17
+
+libarchive provides pkg-config modules:
+
+  # library that can create and read several streaming archive formats
+  libarchive
+
+libobfuscate is header-only and can be used from CMake via:
+
+  find_path(LIBOBFUSCATE_INCLUDE_DIRS "obfuscate.h")
+  target_include_directories(main PRIVATE ${LIBOBFUSCATE_INCLUDE_DIRS})
+
+libogg provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(Ogg CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Ogg::ogg)
+
+libogg provides pkg-config modules:
+
+  # ogg is a library for manipulating ogg bitstreams
+  ogg
+
+The package libvorbis provides CMake targets:
+
+    # Vorbis reference encoder and decoder, low-level API
+    find_package(Vorbis CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Vorbis::vorbis)
+
+    # Audio stream decoding and basic manipulation, high-level API
+    find_package(Vorbis CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Vorbis::vorbisfile)
+
+    # Convenience API for setting up an encoding environment
+    find_package(Vorbis CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Vorbis::vorbisenc)
+
+luajit provides pkg-config modules:
+
+  # Just-in-time compiler for Lua
+  luajit
+
+The package nlohmann-json provides CMake targets:
+
+    find_package(nlohmann_json CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json)
+
+The package nlohmann-json can be configured to not provide implicit conversions via a custom triplet file:
+
+    set(nlohmann-json_IMPLICIT_CONVERSIONS OFF)
+
+For more information, see the docs here:
+    
+    https://json.nlohmann.me/api/macros/json_use_implicit_conversions/
+
+openal-soft provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(OpenAL CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE OpenAL::OpenAL)
+
+openal-soft provides pkg-config modules:
+
+  # OpenAL is a cross-platform 3D audio API
+  openal
+
+openssl is compatible with built-in CMake targets:
+
+  find_package(OpenSSL REQUIRED)
+  target_link_libraries(main PRIVATE OpenSSL::SSL)
+  target_link_libraries(main PRIVATE OpenSSL::Crypto)
+
+parallel-hashmap is header-only and can be used from CMake via:
+
+  find_path(PARALLEL_HASHMAP_INCLUDE_DIRS "parallel_hashmap/btree.h")
+  target_include_directories(main PRIVATE ${PARALLEL_HASHMAP_INCLUDE_DIRS})
+
+physfs provides CMake targets:
+
+    find_package(PhysFS CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE $<IF:$<TARGET_EXISTS:PhysFS::PhysFS>,PhysFS::PhysFS,PhysFS::PhysFS-static>)
+
+physfs is compatible with built-in CMake targets:
+
+    find_package(PhysFS REQUIRED)
+    target_include_directories(main PRIVATE ${PHYSFS_INCLUDE_DIR})
+    target_link_libraries(main PRIVATE ${PHYSFS_LIBRARY})
+
+protobuf provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(protobuf CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE protobuf::libupb protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
+
+protobuf provides pkg-config modules:
+
+  # Google's Data Interchange Format
+  protobuf-lite
+
+  # Google's Data Interchange Format
+  protobuf
+
+  # Google's Data Interchange Format
+  upb
+
+pugixml provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(pugixml CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE pugixml::static pugixml::pugixml)
+
+pugixml provides pkg-config modules:
+
+  # Light-weight, simple and fast XML parser for C++ with XPath support.
+  pugixml
+
+The package spdlog provides CMake targets:
+
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog)
+
+    # Or use the header-only version
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog_header_only)
+
+stduuid provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(stduuid CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE stduuid)
+
+utfcpp provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(utf8cpp CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE utf8::cpp utf8cpp::utf8cpp)
+
+Waiting for 5 remaining binary cache submissions...
+Completed submission of protobuf:arm64-osx@6.33.4#2 to 1 binary cache(s) in 20 s (1/5)
+Completed submission of pugixml:arm64-osx@1.16 to 1 binary cache(s) in 106 ms (2/5)
+Completed submission of spdlog[core,fmt,tz-offset]:arm64-osx@1.17.0 to 1 binary cache(s) in 483 ms (3/5)
+Completed submission of stduuid:arm64-osx@1.2.3 to 1 binary cache(s) in 20.2 ms (4/5)
+Completed submission of utfcpp:arm64-osx@4.1.1 to 1 binary cache(s) in 40.8 ms (5/5)
+All requested installations completed successfully in: 18 min
+-- Running vcpkg install - done
+-- The C compiler identification is AppleClang 17.0.0.17000013
+-- The CXX compiler identification is AppleClang 17.0.0.17000013
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Disabled:[m [33m[1mipo[m
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Found Protobuf: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/tools/protobuf/protoc (found version "33.4.0")
+-- Found Protobuf Compiler: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/tools/protobuf/protoc-33.4.0
+-- Build type: Release
+-- Build commit: 
+-- Build revision: 
+-- Found ZLIB: optimized;/Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/lib/libz.a;debug;/Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/debug/lib/libz.a (found version "1.3.2")
+-- Found PNG: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/lib/libpng16.a (found version "1.6.58")
+-- Looking for C++ include parallel_hashmap/phmap.h
+-- Looking for C++ include parallel_hashmap/phmap.h - not found
+-- Looking for C++ include parallel_hashmap/btree.h
+-- Looking for C++ include parallel_hashmap/btree.h - not found
+-- Found LibLZMA: optimized;/Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/lib/liblzma.a;debug;/Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/debug/lib/liblzma.a (found version "5.8.3")
+-- Found LibArchive: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/lib/libarchive.a (found version "3.8.7")
+-- Found BZip2: optimized;/Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/lib/libbz2.a;debug;/Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/debug/lib/libbz2d.a (found version "1.0.8")
+-- Looking for BZ2_bzCompressInit
+-- Looking for BZ2_bzCompressInit - found
+-- Performing Test Iconv_IS_BUILT_IN
+-- Performing Test Iconv_IS_BUILT_IN - Failed
+-- Found Iconv: /Applications/Xcode_16.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/libiconv.tbd
+-- Found nlohmann_json: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/share/nlohmann_json/nlohmann_jsonConfig.cmake (found version "3.12.0")
+-- Found asio: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/include
+-- Found httplib: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/include/httplib.h (found version "0.48.0")
+-- Disabled:[m [33m[1mDiscord Rich Presence[m
+-- Found VorbisFile: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/lib/libvorbisfile.a
+-- Found LuaJIT: /Users/runner/OurTibia-mac-build/build-arm64/vcpkg_installed/arm64-osx/lib/libluajit-5.1.a
+-- Use precompiled header: ON
+-- Enabled:[m [32m[1mBuild unity for speed up compilation[m
+-- Disabled:[m [33m[1masan[m
+-- Disabled:[m [33m[1mDEBUG LOG[m
+-- Disabled:[m [33m[1mBuild tests[m
+-- Configuring done (1086.1s)
+-- Generating done (0.1s)
+-- Build files have been written to: /Users/runner/OurTibia-mac-build/build-arm64
+
+==> 5/7 Build
+[1/40] Running cpp protocol buffer compiler on /Users/runner/OurTibia-mac-build/source/src/protobuf/staticdata.proto
+[2/40] Running cpp protocol buffer compiler on /Users/runner/OurTibia-mac-build/source/src/protobuf/sounds.proto
+[3/40] Running cpp protocol buffer compiler on /Users/runner/OurTibia-mac-build/source/src/protobuf/appearances.proto
+[4/40] Building CXX object src/protobuf/CMakeFiles/protobuf.dir/sounds.pb.cc.o
+[5/40] Building CXX object src/protobuf/CMakeFiles/protobuf.dir/appearances.pb.cc.o
+[6/40] Building CXX object src/CMakeFiles/otclient_core.dir/cmake_pch.hxx.pch
+[7/40] Building CXX object src/protobuf/CMakeFiles/protobuf.dir/staticdata.pb.cc.o
+[8/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_21_cxx.cxx.o
+[9/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_20_cxx.cxx.o
+[10/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_19_cxx.cxx.o
+[11/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_18_cxx.cxx.o
+[12/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_17_cxx.cxx.o
+[13/40] Building CXX object src/CMakeFiles/otclient_core.dir/framework/net/httplogin.cpp.o
+[14/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_16_cxx.cxx.o
+[15/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_15_cxx.cxx.o
+[16/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_13_cxx.cxx.o
+[17/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_14_cxx.cxx.o
+[18/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_12_cxx.cxx.o
+[19/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_10_cxx.cxx.o
+[20/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_11_cxx.cxx.o
+[21/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_8_cxx.cxx.o
+[22/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_6_cxx.cxx.o
+[23/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_7_cxx.cxx.o
+[24/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_5_cxx.cxx.o
+[25/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_4_cxx.cxx.o
+[26/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_3_cxx.cxx.o
+[27/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_1_cxx.cxx.o
+[28/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_0_cxx.cxx.o
+[29/40] Building C object src/CMakeFiles/otclient_core.dir/framework/core/minizip/ioapi.c.o
+[30/40] Building C object src/CMakeFiles/otclient_core.dir/framework/core/minizip/ioapi_mem.c.o
+[31/40] Building C object src/CMakeFiles/otclient_core.dir/framework/core/minizip/unzip.c.o
+[32/40] Building C object src/CMakeFiles/otclient_core.dir/framework/core/minizip/crypt.c.o
+[33/40] Building CXX object src/CMakeFiles/otclient_core.dir/framework/platform/cocoawindow.mm.o
+[34/40] Building CXX object src/CMakeFiles/otclient_core.dir/framework/platform/cocoaview.mm.o
+[35/40] Linking CXX static library src/protobuf/libprotobuf.a
+[36/40] Building CXX object src/CMakeFiles/otclient.dir/main.cpp.o
+[37/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_2_cxx.cxx.o
+[38/40] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_9_cxx.cxx.o
+[39/40] Linking CXX static library src/libotclient_core.a
+[40/40] Linking CXX executable /Users/runner/OurTibia-mac-build/source/OTClient.app/Contents/MacOS/OTClient; Copying OTClient.icns to app bundle Resources
+ld: warning: ignoring duplicate libraries: 'vcpkg_installed/arm64-osx/lib/libabsl_base.a', 'vcpkg_installed/arm64-osx/lib/libabsl_borrowed_fixup_buffer.a', 'vcpkg_installed/arm64-osx/lib/libabsl_city.a', 'vcpkg_installed/arm64-osx/lib/libabsl_civil_time.a', 'vcpkg_installed/arm64-osx/lib/libabsl_cord.a', 'vcpkg_installed/arm64-osx/lib/libabsl_cord_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_cordz_functions.a', 'vcpkg_installed/arm64-osx/lib/libabsl_cordz_handle.a', 'vcpkg_installed/arm64-osx/lib/libabsl_cordz_info.a', 'vcpkg_installed/arm64-osx/lib/libabsl_crc32c.a', 'vcpkg_installed/arm64-osx/lib/libabsl_crc_cord_state.a', 'vcpkg_installed/arm64-osx/lib/libabsl_crc_cpu_detect.a', 'vcpkg_installed/arm64-osx/lib/libabsl_crc_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_debugging_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_decode_rust_punycode.a', 'vcpkg_installed/arm64-osx/lib/libabsl_demangle_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_demangle_rust.a', 'vcpkg_installed/arm64-osx/lib/libabsl_die_if_null.a', 'vcpkg_installed/arm64-osx/lib/libabsl_examine_stack.a', 'vcpkg_installed/arm64-osx/lib/libabsl_exponential_biased.a', 'vcpkg_installed/arm64-osx/lib/libabsl_flags_commandlineflag.a', 'vcpkg_installed/arm64-osx/lib/libabsl_flags_commandlineflag_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_flags_config.a', 'vcpkg_installed/arm64-osx/lib/libabsl_flags_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_flags_marshalling.a', 'vcpkg_installed/arm64-osx/lib/libabsl_flags_private_handle_accessor.a', 'vcpkg_installed/arm64-osx/lib/libabsl_flags_program_name.a', 'vcpkg_installed/arm64-osx/lib/libabsl_flags_reflection.a', 'vcpkg_installed/arm64-osx/lib/libabsl_graphcycles_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_hash.a', 'vcpkg_installed/arm64-osx/lib/libabsl_hashtablez_sampler.a', 'vcpkg_installed/arm64-osx/lib/libabsl_int128.a', 'vcpkg_installed/arm64-osx/lib/libabsl_kernel_timeout_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_leak_check.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_entry.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_globals.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_initialize.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_internal_check_op.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_internal_conditions.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_internal_fnmatch.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_internal_format.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_internal_globals.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_internal_log_sink_set.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_internal_message.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_internal_nullguard.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_internal_proto.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_internal_structured_proto.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_severity.a', 'vcpkg_installed/arm64-osx/lib/libabsl_log_sink.a', 'vcpkg_installed/arm64-osx/lib/libabsl_malloc_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_random_distributions.a', 'vcpkg_installed/arm64-osx/lib/libabsl_random_internal_entropy_pool.a', 'vcpkg_installed/arm64-osx/lib/libabsl_random_internal_platform.a', 'vcpkg_installed/arm64-osx/lib/libabsl_random_internal_randen.a', 'vcpkg_installed/arm64-osx/lib/libabsl_random_internal_randen_hwaes.a', 'vcpkg_installed/arm64-osx/lib/libabsl_random_internal_randen_hwaes_impl.a', 'vcpkg_installed/arm64-osx/lib/libabsl_random_internal_randen_slow.a', 'vcpkg_installed/arm64-osx/lib/libabsl_random_internal_seed_material.a', 'vcpkg_installed/arm64-osx/lib/libabsl_random_seed_gen_exception.a', 'vcpkg_installed/arm64-osx/lib/libabsl_random_seed_sequences.a', 'vcpkg_installed/arm64-osx/lib/libabsl_raw_hash_set.a', 'vcpkg_installed/arm64-osx/lib/libabsl_raw_logging_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_spinlock_wait.a', 'vcpkg_installed/arm64-osx/lib/libabsl_stacktrace.a', 'vcpkg_installed/arm64-osx/lib/libabsl_status.a', 'vcpkg_installed/arm64-osx/lib/libabsl_statusor.a', 'vcpkg_installed/arm64-osx/lib/libabsl_str_format_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_strerror.a', 'vcpkg_installed/arm64-osx/lib/libabsl_strings.a', 'vcpkg_installed/arm64-osx/lib/libabsl_strings_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_symbolize.a', 'vcpkg_installed/arm64-osx/lib/libabsl_synchronization.a', 'vcpkg_installed/arm64-osx/lib/libabsl_throw_delegate.a', 'vcpkg_installed/arm64-osx/lib/libabsl_time.a', 'vcpkg_installed/arm64-osx/lib/libabsl_time_zone.a', 'vcpkg_installed/arm64-osx/lib/libabsl_tracing_internal.a', 'vcpkg_installed/arm64-osx/lib/libabsl_utf8_for_code_point.a', 'vcpkg_installed/arm64-osx/lib/libabsl_vlog_config_internal.a', 'vcpkg_installed/arm64-osx/lib/libbrotlicommon.a', 'vcpkg_installed/arm64-osx/lib/libbrotlidec.a', 'vcpkg_installed/arm64-osx/lib/libcrypto.a', 'vcpkg_installed/arm64-osx/lib/libprotobuf.a', 'vcpkg_installed/arm64-osx/lib/libutf8_validity.a', 'vcpkg_installed/arm64-osx/lib/libvorbisfile.a'
+Program: /Users/runner/OurTibia-mac-build/source/OTClient.app/Contents/MacOS/OTClient
+
+==> 6/7 Game data and OurTibia.app
+#=#=#                                                                          ##O#-#                                                                         ##O=#  #                                                                                                                                                  0.0%                                                                           0.1%                                                                           0.1%                                                                           0.1%                                                                           0.2%                                                                           0.5%                                                                           0.8%#                                                                          1.6%#                                                                          2.5%###                                                                        4.8%#####                                                                      7.3%######                                                                     9.5%########                                                                  11.9%##########                                                                14.2%###########                                                               16.2%#############                                                             18.6%###############                                                           20.8%################                                                          23.3%##################                                                        25.6%###################                                                       27.7%#####################                                                     30.1%#######################                                                   32.5%#########################                                                 34.9%##########################                                                37.2%############################                                              39.2%#############################                                             41.4%###############################                                           43.9%#################################                                         46.0%##################################                                        48.5%####################################                                      50.9%#####################################                                     52.6%#######################################                                   55.0%#########################################                                 57.4%##########################################                                59.2%############################################                              61.8%##############################################                            64.2%###############################################                           66.5%#################################################                         68.9%##################################################                        70.7%###################################################                       71.4%####################################################                      73.2%######################################################                    75.4%#######################################################                   77.7%#########################################################                 80.1%###########################################################               82.6%############################################################              84.6%##############################################################            87.0%################################################################          89.4%##################################################################        91.7%###################################################################       93.8%####################################################################      94.9%######################################################################    97.5%#######################################################################  100.0%######################################################################## 100.0%
+Overlay: /Users/runner/work/ourtibia-mac/ourtibia-mac/client
+Libraries outside macOS:
+  none (all built in)
+Signature OK (ad-hoc)
+
+==> 7/7 Start test (25 seconds)
+The client is running.
+Errors in the client log (audio/game_bot messages are normal):
+  none
+/Users/runner/work/ourtibia-mac/ourtibia-mac/out/OurTibia.app: replacing existing signature
+-rw-r--r--  1 runner  staff   151M Oct 14 22:22 /Users/runner/work/ourtibia-mac/ourtibia-mac/out/OurTibia-macOS-arm64.zip
+
+==> DONE. Now open out/OurTibia.app, log in and play a moment (walk, chat, open the Store).
+If it works, send back: /Users/runner/work/ourtibia-mac/ourtibia-mac/out/OurTibia-macOS-arm64.zip  (and out/build.log)

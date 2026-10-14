@@ -1,0 +1,14 @@
+[2026-10-14 22:21:31.246] [[32minfo[m] Application started at Oct 14 2026 22:21:31
+[2026-10-14 22:21:33.324] [[33m[1mwarning[m] No accelerated OpenGL pixel format - using the software renderer
+[2026-10-14 22:21:33.324] [[32minfo[m] Creating GL view with frame: 600x480
+[2026-10-14 22:21:33.338] [[32minfo[m] GL context created, content view frame: 600x480
+[2026-10-14 22:21:33.342] [[32minfo[m] GPU Apple Software Renderer
+[2026-10-14 22:21:33.342] [[32minfo[m] OpenGL 2.1 APPLE-21.1.1
+[2026-10-14 22:21:34.314] [[32minfo[m] Operating system: 
+[2026-10-14 22:21:34.314] [[32minfo[m] OurTibia 4.x rev 0.000 (desenv) built on Oct 14 2026 for arch unknown
+[2026-10-14 22:21:35.039] [[32minfo[m] CocoaWindow::show() - making window visible
+[2026-10-14 22:21:35.227] [[32minfo[m] CocoaWindow::show() - done, visible=true
+[2026-10-14 22:21:39.834] [[32minfo[m] [OurUpdater] 3 files to update
+[2026-10-14 22:21:41.060] [[32minfo[m] [OurUpdater] installed 3 files (version 2026-10-14T17:22:52.584155+00:00)
+[2026-10-14 22:21:42.687] [[31m[1merror[m] Unable to find module 'game_bot' required by 'client_mods'
+[2026-10-14 22:21:56.334] [[32minfo[m] Exiting application..
