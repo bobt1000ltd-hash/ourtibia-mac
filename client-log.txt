@@ -1,0 +1,8 @@
+[2026-10-14 22:29:35.257] [info] Operating system: 
+[2026-10-14 22:29:35.257] [info] OurTibia 4.x rev 0.000 (desenv) built on Oct 14 2026 for arch x64
+[2026-10-14 22:29:35.954] [info] CocoaWindow::show() - making window visible
+[2026-10-14 22:29:36.546] [info] CocoaWindow::show() - done, visible=true
+[2026-10-14 22:29:44.607] [info] [OurUpdater] 3 files to update
+[2026-10-14 22:29:46.048] [info] [OurUpdater] installed 3 files (version 2026-10-14T17:22:52.584155+00:00)
+[2026-10-14 22:29:48.169] [error] Unable to find module 'game_bot' required by 'client_mods'
+[2026-10-14 22:29:57.324] [info] Exiting application..
