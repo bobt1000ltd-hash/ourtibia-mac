@@ -258,6 +258,21 @@ void CocoaWindow::internalCreateGLContext()
 
     NSOpenGLPixelFormat* pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
     if (!pixelFormat) {
+        // OurTibia (14.10.2026): no hardware OpenGL (virtual machines, remote desktops) -
+        // fall back to any renderer, the Apple software one included, instead of quitting
+        NSOpenGLPixelFormatAttribute fallback[] = {
+            NSOpenGLPFADoubleBuffer,
+            NSOpenGLPFADepthSize, 24,
+            NSOpenGLPFAStencilSize, 8,
+            NSOpenGLPFAColorSize, 32,
+            NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersionLegacy,
+            0
+        };
+        pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:fallback];
+        if (pixelFormat)
+            g_logger.warning("No accelerated OpenGL pixel format - using the software renderer");
+    }
+    if (!pixelFormat) {
         g_logger.fatal("Failed to create OpenGL pixel format");
         return;
     }

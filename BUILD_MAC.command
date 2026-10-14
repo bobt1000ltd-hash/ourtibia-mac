@@ -43,6 +43,8 @@ echo "CPU: $ARCH  (vcpkg triplet $TRIPLET)"
 
 say "3/7 vcpkg (libraries - the first build takes 30-60 minutes)"
 export VCPKG_ROOT="$WORK/vcpkg"
+# libraries for the same minimum macOS as the client (std::format needs 13.3)
+export MACOSX_DEPLOYMENT_TARGET=13.3
 if [ ! -d "$VCPKG_ROOT/.git" ]; then
   git clone https://github.com/microsoft/vcpkg "$VCPKG_ROOT"
 else
