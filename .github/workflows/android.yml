@@ -170,10 +170,21 @@ jobs:
             adb install -r out/OurTibia-Android.apk
             adb logcat -c
             adb shell am start -n com.ourtibia.client/com.otclient.MainActivity
-            sleep 100
-            adb exec-out screencap -p > out/test/01_start.png
-            sleep 40
-            adb exec-out screencap -p > out/test/02_login.png
+            for t in 20 45 70 100 140 180; do
+              sleep 25
+              adb exec-out screencap -p > out/test/shot_${t}s.png
+              adb shell pidof com.ourtibia.client > /dev/null || echo "not running at ${t}s" >> out/test/screen.txt
+            done
+            # login with a made-up account: the live server must answer (proves network + protocol)
+            adb shell input tap 1200 470
+            sleep 1
+            adb shell input text "qatestnoacc"
+            adb shell input tap 1200 560
+            sleep 1
+            adb shell input text "qatest123"
+            adb shell input keyevent 66
+            sleep 12
+            adb exec-out screencap -p > out/test/shot_login_try.png
             adb shell wm size > out/test/screen.txt
             adb shell dumpsys window | grep -m3 -i "mCurrentFocus\|mFocusedApp" >> out/test/screen.txt || true
             adb shell pidof com.ourtibia.client >> out/test/screen.txt || echo "PROCESS NOT RUNNING" >> out/test/screen.txt

@@ -78,9 +78,11 @@ local function restartClient(binaryChanged)
   log('restarting after update')
   -- 15.10.2026: an Android app cannot start itself again; ask the player to
   -- reopen it (the new files are already on the phone)
+  -- On a phone the app cannot start itself again: it simply goes on (the
+  -- game modules are loaded after the update; the few already loaded ones
+  -- are replaced on the next start).
   if g_platform.isMobile() then
-    setStatus('Update installed', 'Open OurTibia again to use the new version.', 100)
-    scheduleEvent(function() g_app.exit() end, 3500)
+    finish()
     return
   end
   -- OurTibia (03.10.2026): always restart through the launcher. It brings the
