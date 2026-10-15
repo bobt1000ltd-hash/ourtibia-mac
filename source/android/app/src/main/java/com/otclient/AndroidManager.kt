@@ -37,7 +37,7 @@ class AndroidManager(
             val clipText = getClipboardText()
             if (clipText.isNotEmpty() && editText.visibility == View.VISIBLE) {
                 try {
-                    editText.ic.commitText(clipText, 1)
+                    (editText.ic ?: editText.onCreateInputConnection(android.view.inputmethod.EditorInfo())).commitText(clipText, 1)
                 } catch (_: Exception) { }
             }
         }

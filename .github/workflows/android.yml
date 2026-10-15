@@ -170,13 +170,13 @@ jobs:
             adb shell pidof com.ourtibia.client > /dev/null || echo "not running at ${t}s" >> out/test/screen.txt
           done
           # login with a made-up account: the live server must answer (proves network + protocol)
-          adb shell input tap 720 322 || true
+          adb shell input tap 860 376 || true
           sleep 1
           adb shell input text "qatestnoacc" || true
-          adb shell input tap 744 412 || true
+          adb shell input tap 860 444 || true
           sleep 1
           adb shell input text "qatest123" || true
-          adb shell input keyevent 66 || true
+          adb shell input tap 860 520 || true
           sleep 12
           adb exec-out screencap -p > out/test/shot_login_try.png || true
           adb shell wm size >> out/test/screen.txt || true

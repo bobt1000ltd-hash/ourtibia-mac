@@ -8,7 +8,9 @@ import android.view.inputmethod.InputConnection
 import android.view.inputmethod.EditorInfo
 
 class FakeEditText : View, View.OnKeyListener {
-    lateinit var ic: InputConnection
+    // OurTibia (15.10.2026): a hardware/physical key can arrive before the keyboard asked for an
+    // input connection - that crashed the app (lateinit "ic" not initialized).
+    var ic: InputConnection? = null
 
     init {
         isFocusableInTouchMode = true
@@ -32,7 +34,8 @@ class FakeEditText : View, View.OnKeyListener {
     override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
         if (event.isPrintingKey) {
             if (event.action == KeyEvent.ACTION_DOWN) {
-                ic.commitText(event.unicodeChar.toChar().toString(), 1)
+                val conn = ic ?: onCreateInputConnection(EditorInfo())
+                conn.commitText(event.unicodeChar.toChar().toString(), 1)
             }
             return true
         }
