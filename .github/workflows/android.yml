@@ -176,10 +176,10 @@ jobs:
               adb shell pidof com.ourtibia.client > /dev/null || echo "not running at ${t}s" >> out/test/screen.txt
             done
             # login with a made-up account: the live server must answer (proves network + protocol)
-            adb shell input tap 1200 470
+            adb shell input tap 720 322
             sleep 1
             adb shell input text "qatestnoacc"
-            adb shell input tap 1200 560
+            adb shell input tap 744 412
             sleep 1
             adb shell input text "qatest123"
             adb shell input keyevent 66
