@@ -1,0 +1,104 @@
+name: Windows client (MinGW UCRT64)
+
+# Same toolchain as the shipped MyOTS.exe (MSYS2 UCRT64, DLLs next to the exe).
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'source/src/**'
+      - 'source/CMakeLists.txt'
+      - '.github/workflows/windows-mingw.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: windows-mingw
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 150
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            git zip
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-cmake
+            mingw-w64-ucrt-x86_64-ninja
+            mingw-w64-ucrt-x86_64-pkgconf
+
+      - name: Packages
+        run: |
+          mkdir -p out
+          for p in abseil-cpp protobuf luajit glew openal physfs libvorbis libogg openssl spdlog fmt inih libarchive freetype pugixml nlohmann-json asio parallel-hashmap cpp-httplib utfcpp zlib xz libpng stduuid ixwebsocket cppcodec gmp; do
+            if pacman -S --noconfirm --needed mingw-w64-ucrt-x86_64-$p > /dev/null 2>&1; then echo "OK $p"; else echo "MISSING $p"; fi
+          done | tee out/packages.txt
+
+      - name: Header-only libraries missing in MSYS2
+        run: |
+          P=/ucrt64
+          if grep -q "MISSING stduuid" out/packages.txt; then
+            git clone -q --depth 1 https://github.com/mariusbancila/stduuid.git /tmp/stduuid
+            cmake -S /tmp/stduuid -B /tmp/stduuid/b -G Ninja -DCMAKE_INSTALL_PREFIX=$P -DUUID_BUILD_TESTS=OFF -DUUID_USING_CXX20_SPAN=ON && cmake --install /tmp/stduuid/b
+          fi
+          if grep -q "MISSING cppcodec" out/packages.txt; then
+            git clone -q --depth 1 https://github.com/tplgy/cppcodec.git /tmp/cppcodec
+            cp -r /tmp/cppcodec/cppcodec $P/include/
+          fi
+          if grep -q "MISSING ixwebsocket" out/packages.txt; then
+            git clone -q --depth 1 https://github.com/machinezone/IXWebSocket.git /tmp/ixws
+            cmake -S /tmp/ixws -B /tmp/ixws/b -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$P -DUSE_TLS=ON -DUSE_OPEN_SSL=ON -DUSE_ZLIB=ON -DBUILD_SHARED_LIBS=OFF && cmake --build /tmp/ixws/b && cmake --install /tmp/ixws/b
+          fi
+
+      - name: Configure
+        working-directory: source
+        run: |
+          cmake -S . -B build-mingw -G Ninja -DCMAKE_BUILD_TYPE=Release -DOPTIONS_ENABLE_IPO=OFF -DOPTIONS_ENABLE_SCCACHE=OFF 2>&1 | tee ../out/configure.log
+          test -f build-mingw/build.ninja
+
+      - name: Build
+        working-directory: source
+        run: |
+          cmake --build build-mingw 2>&1 | tail -c 300000 | tee ../out/build.log
+          test ${PIPESTATUS[0]} -eq 0
+
+      - name: Collect (exe + the DLLs it needs)
+        if: always()
+        run: |
+          EXE=$(find source -maxdepth 3 -name "otclient.exe" -newer source/CMakeLists.txt | head -1)
+          [ -z "$EXE" ] && EXE=$(find source -name "*.exe" -not -path "*/CMakeFiles/*" | head -1)
+          echo "exe: $EXE"
+          if [ -n "$EXE" ]; then
+            mkdir -p out/bin; cp "$EXE" out/bin/MyOTS.exe
+            # copy every non-system DLL the exe needs (recursively)
+            for i in 1 2 3 4 5; do
+              for f in out/bin/*.exe out/bin/*.dll; do
+                ldd "$f" 2>/dev/null | awk '/\/ucrt64\//{print $3}'
+              done | sort -u | while read d; do cp -n "$d" out/bin/ 2>/dev/null; done
+            done
+            ls out/bin
+            (cd out && zip -q -r OurTibia-Windows-mingw.zip bin)
+          fi
+
+      - name: Results to branch results-windows-mingw
+        if: always()
+        run: |
+          R="$RUNNER_TEMP/res"; rm -rf "$R"; mkdir -p "$R"
+          cp out/*.txt out/*.log out/*.zip "$R/" 2>/dev/null || true
+          (cd "$R" && sha256sum *.zip > sha256.txt 2>/dev/null || true)
+          echo "${{ job.status }}" > "$R/status.txt"
+          cd "$R"; git init -q -b results-windows-mingw
+          git config user.name "OurTibia build"; git config user.email "actions@github.com"
+          git add -A; git commit -q -m "Windows MinGW build ${{ github.run_id }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" "HEAD:refs/heads/results-windows-mingw"
