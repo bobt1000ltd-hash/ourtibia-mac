@@ -16,11 +16,11 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.github.otclient"
+        applicationId = "com.ourtibia.client"
         minSdk = 21
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = (System.getenv("OURTIBIA_VERSION_CODE") ?: "1").toInt()
+        versionName = System.getenv("OURTIBIA_VERSION_NAME") ?: "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
@@ -78,6 +78,11 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
+    }
+
+    androidResources {
+        // data.zip is streamed out of the APK; keep it stored, not compressed twice
+        noCompress += listOf("zip")
     }
 
     buildFeatures {

@@ -335,6 +335,19 @@ function updateSpellInformation(widget)
             end
         end
 
+        -- 15.10.2026 (Tobeto): the details fit the compact window - all four vocations
+        -- are "All", three or more use short names
+        local count = select(2, vocation:gsub(',', ',')) + (vocation ~= '' and 1 or 0)
+        if count >= 4 then vocation = 'All vocations'
+        elseif #vocation > 22 then
+            for long, short in pairs({['Master Sorcerer'] = 'MS', ['Elder Druid'] = 'ED', ['Royal Paladin'] = 'RP', ['Elite Knight'] = 'EK'}) do
+                vocation = vocation:gsub(long, short)
+            end
+            if #vocation > 22 then
+                vocation = vocation:gsub('Sorcerer', 'Sorc.'):gsub('Paladin', 'Pal.'):gsub('Knight', 'Kn.')
+            end
+        end
+
         cooldown = (info.exhaustion / 1000) .. 's'
         for groupId, groupName in ipairs(SpellGroups) do
             if info.group[groupId] then
@@ -442,8 +455,8 @@ function toggleFilter(widget, selectedWidget)
 end
 
 function resizeWindow()
-    spelllistWindow:setWidth(SpelllistSettings['Default'].spellWindowWidth +
-                                 SpelllistSettings[SpelllistProfile].iconSize.width - 32)
+    -- 15.10.2026 (Tobeto): compact window (470 px) instead of 550
+    spelllistWindow:setWidth(470 + SpelllistSettings[SpelllistProfile].iconSize.width - 32)
     spellList:setWidth(
         SpelllistSettings['Default'].spellListWidth + SpelllistSettings[SpelllistProfile].iconSize.width - 32)
 end
@@ -483,8 +496,9 @@ local function setPickMode(on, title)
     local assignButton = spelllistWindow:getChildById('buttonAssign')
     local param = spelllistWindow:getChildById('pickParam')
     if assignButton then assignButton:setVisible(on) end
+    -- 15.10.2026 (Tobeto): no "Parameter (name)" box in the Assign Spell window
     if param then
-        param:setVisible(on)
+        param:setVisible(false)
         param:clearText()
     end
     spelllistWindow:setText(on and (title or tr('Assign Spell')) or tr('Spell List'))

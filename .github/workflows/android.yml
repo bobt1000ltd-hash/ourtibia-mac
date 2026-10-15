@@ -1,0 +1,179 @@
+name: Android client
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'source/**'
+      - 'client/**'
+      - '.github/workflows/android.yml'
+
+permissions:
+  contents: write
+
+env:
+  ABIS: arm64-v8a,armeabi-v7a,x86_64
+  OURTIBIA_DATA_URL: https://ourtibia.com/downloads/OurTibia-Client.zip
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 340
+    env:
+      VCPKG_ROOT: ${{ github.workspace }}/../vcpkg
+      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/../vcpkg-cache
+      VCPKG_FORCE_SYSTEM_BINARIES: 1
+      VCPKG_OVERLAY_PORTS: ${{ github.workspace }}/source/overlay-ports
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/.ghcup /usr/share/swift || true
+          df -h /
+
+      - name: NDK, CMake, tools
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q gcc-multilib g++-multilib ninja-build nasm zip unzip
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_HOME" "ndk;29.0.13599879" "cmake;3.22.1" >/dev/null
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/29.0.13599879" >> "$GITHUB_ENV"
+
+      - name: vcpkg binary cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/../vcpkg-cache
+          key: vcpkg-android-${{ hashFiles('source/vcpkg.json', 'source/overlay-ports/**') }}
+          restore-keys: vcpkg-android-
+
+      - name: vcpkg
+        run: |
+          mkdir -p "$VCPKG_DEFAULT_BINARY_CACHE"
+          git clone -q https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
+          "$VCPKG_ROOT/bootstrap-vcpkg.sh" -disableMetrics
+
+      - name: LuaJIT for Android
+        working-directory: source
+        run: |
+          git clone -q https://github.com/LuaJIT/LuaJIT.git luajit-src
+          (cd luajit-src && git checkout -q d0e88930ddde28ff662503f9f20facf34f7265aa)
+          OTCLIENT_ANDROID_ABIS="$ABIS" bash build_luajit_android.sh
+
+      - name: Game data (website package + newest modules from client/)
+        run: |
+          W="$RUNNER_TEMP/gd"; rm -rf "$W"; mkdir -p "$W/x"
+          curl -fsSL -o "$W/c.zip" "$OURTIBIA_DATA_URL"
+          unzip -q "$W/c.zip" -d "$W/x"
+          GAME="$(dirname "$(find "$W/x" -maxdepth 4 -name init.lua -type f | head -1)")"
+          echo "game data: $GAME"; ls "$GAME"
+          rm -rf "$GAME/modules"
+          cp -R client/. "$GAME/"
+          rm -rf "$GAME/bin" "$GAME/bin_dx" "$GAME"/*.exe "$GAME"/*.dll "$GAME"/*.log "$GAME/ourupdate-state.json"
+          A="source/android/app/src/main/assets"; mkdir -p "$A"; rm -f "$A/data.zip"
+          (cd "$GAME" && zip -q -r -9 "$GITHUB_WORKSPACE/$A/data.zip" init.lua data modules mods config.ini cacert.pem update-url.txt update-public-key.xml)
+          echo "${{ github.run_id }}-${{ github.run_attempt }}" > "$A/data.stamp"
+          ls -la "$A"
+
+      - name: Signing key
+        env:
+          KS_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+          K="$RUNNER_TEMP/release.jks"
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 -d > "$K"
+            echo "RELEASE_KEYSTORE=$K" >> "$GITHUB_ENV"
+            echo "RELEASE_KEYSTORE_PASSWORD=$KS_PASS" >> "$GITHUB_ENV"
+            echo "RELEASE_KEY_PASSWORD=$KS_PASS" >> "$GITHUB_ENV"
+            echo "RELEASE_KEY_ALIAS=ourtibia" >> "$GITHUB_ENV"
+            echo "Signing with the OurTibia release key"
+          else
+            mkdir -p ~/.android
+            keytool -genkeypair -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android \
+              -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US" >/dev/null
+            echo "::warning::No ANDROID_KEYSTORE_B64 secret - APK signed with a temporary key"
+          fi
+
+      - name: Build APK
+        working-directory: source/android
+        env:
+          OTCLIENT_ANDROID_ABIS: ${{ env.ABIS }}
+          OURTIBIA_VERSION_CODE: ${{ github.run_number }}
+          OURTIBIA_VERSION_NAME: 1.0.${{ github.run_number }}
+        run: |
+          tr -d '\r' < gradlew > gradlew_unix && chmod +x gradlew_unix
+          ./gradlew_unix --no-daemon assembleRelease 2>&1 | tee "$RUNNER_TEMP/gradle.log"
+          exit ${PIPESTATUS[0]}
+
+      - name: Collect
+        if: always()
+        run: |
+          mkdir -p out
+          cp source/android/app/build/outputs/apk/release/*.apk out/OurTibia-Android.apk 2>/dev/null || true
+          cp "$RUNNER_TEMP/gradle.log" out/ 2>/dev/null || true
+          find source/android/app/.cxx -name "CMakeError.log" -o -name "vcpkg-manifest-install.log" 2>/dev/null | head -5 | while read f; do cp "$f" "out/$(basename "$f")" ; done
+          ls -la out
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: OurTibia-Android
+          path: out/
+          retention-days: 14
+
+  emulator-test:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: OurTibia-Android
+          path: out
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+
+      - name: Test in the emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          target: google_apis
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            mkdir -p out/test
+            adb install -r out/OurTibia-Android.apk
+            adb logcat -c
+            adb shell am start -n com.ourtibia.client/com.otclient.MainActivity
+            sleep 100
+            adb exec-out screencap -p > out/test/01_start.png
+            sleep 40
+            adb exec-out screencap -p > out/test/02_login.png
+            adb shell wm size > out/test/screen.txt
+            adb shell dumpsys window | grep -m3 -i "mCurrentFocus\|mFocusedApp" >> out/test/screen.txt || true
+            adb shell pidof com.ourtibia.client >> out/test/screen.txt || echo "PROCESS NOT RUNNING" >> out/test/screen.txt
+            adb logcat -d > out/test/logcat.txt || true
+
+      - name: Results to branch results-android
+        if: always()
+        run: |
+          R="$RUNNER_TEMP/results"; rm -rf "$R"; mkdir -p "$R"
+          cp -r out/test "$R/" 2>/dev/null || true
+          cp out/*.log "$R/" 2>/dev/null || true
+          [ -f out/OurTibia-Android.apk ] && split -b 90m out/OurTibia-Android.apk "$R/OurTibia-Android.apk.part-" && (cd out && sha256sum OurTibia-Android.apk) > "$R/sha256.txt" || true
+          cd "$R"
+          git init -q -b results-android
+          git config user.name "OurTibia build"; git config user.email "actions@github.com"
+          git add -A; git commit -q -m "Android build ${{ github.run_id }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" "HEAD:refs/heads/results-android"

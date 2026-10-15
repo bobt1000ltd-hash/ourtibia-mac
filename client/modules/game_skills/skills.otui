@@ -922,7 +922,7 @@ SkillsListOption < UIButton
 
 SkillsListSubMenu < PopupMenu
   id: skillsListSubMenu
-  width: 285
+  width: 200
 
   SkillsListOption
     id: resetExperienceCounter
@@ -932,10 +932,10 @@ SkillsListSubMenu < PopupMenu
     margin-top: 2
     margin-bottom: 3
 
-  SkillsListOption
-    id: rowsHeader
-    !text: tr('Show rows (name and bar)')
-    enabled: false
+  // 14.10.2026 (Tobeto): one list - ticking a position off hides its whole row (name and bar)
+  SkillsSubMenuOption
+    id: rowLevel
+    !text: tr('Level')
 
   SkillsSubMenuOption
     id: rowExperience
@@ -960,6 +960,10 @@ SkillsListSubMenu < PopupMenu
   SkillsSubMenuOption
     id: rowRegenTime
     !text: tr('Fullness')
+
+  SkillsSubMenuOption
+    id: rowStamina
+    !text: tr('Stamina')
 
   SkillsSubMenuOption
     id: rowOfflineTraining
@@ -989,77 +993,3 @@ SkillsListSubMenu < PopupMenu
     id: rowFishing
     !text: tr('Fishing')
 
-  HorizontalSeparator
-    margin-top: 2
-    margin-bottom: 3
-
-  SkillsListOption
-    id: barsHeader
-    !text: tr('Show progress bars only')
-    enabled: false
-
-  SkillsSubMenuOption
-    id: showLevel
-    !text: tr('Level')
-
-  SkillsSubMenuOption
-    id: showFullness
-    !text: tr('Fullness')
-
-  SkillsSubMenuOption
-    id: showStamina
-    !text: tr('Stamina')
-
-  SkillsSubMenuOption
-    id: showOfflineTraining
-    !text: tr('Offline Training')
-
-  SkillsSubMenuOption
-    id: showMagic
-    !text: tr('Magic')
-
-  SkillsSubMenuOption
-    id: showFist
-    !text: tr('Fist')
-
-  SkillsSubMenuOption
-    id: showSword
-    !text: tr('Melee')
-
-  SkillsSubMenuOption
-    id: showDistance
-    !text: tr('Distance')
-  
-  SkillsSubMenuOption
-    id: showShielding
-    !text: tr('Shielding')
-
-  SkillsSubMenuOption
-    id: showFishing
-    !text: tr('Fishing')
-
-  HorizontalSeparator
-    id: HorizontalSeparator
-    margin-top: 2
-    margin-bottom: 3
-
-  SkillsSubMenuOption
-    id: showOffenceStats
-    !text: tr('Offence Stats')
-
-  SkillsSubMenuOption
-    id: showDefenceStats
-    !text: tr('Defence Stats')
-
-  SkillsSubMenuOption
-    id: showMiscStats
-    !text: tr('Misc. Stats')
-  
-  HorizontalSeparator
-    id: HorizontalSeparator
-    margin-top: 2
-    margin-bottom: 3
-  
-  SkillsSubMenuOption
-    id: showAllSkillBars
-    !text: tr('Show all Skill Bars')

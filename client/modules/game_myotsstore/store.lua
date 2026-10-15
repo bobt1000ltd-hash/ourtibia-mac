@@ -28,11 +28,13 @@ local function setArt(item,creature,icon,offer,big)
   local art=offer.art or {}
   if art.item and art.item>0 then item:setItemId(art.item);item:show()
   elseif art.outfit then
+    pcall(function() creature:setCenter(true) end) -- 15.10.2026: outfits centred like mounts
     local female=data and data.sex==0
     creature:setOutfit({type=female and art.outfit.female or art.outfit.male,head=78,body=106,legs=58,feet=76,addons=art.outfit.addons or 3});creature:show()
     local c=creature:getCreature()
     if c then pcall(function() c:setShader(art.shader or 'Default') end) end
-  elseif art.mount then creature:setOutfit({type=art.mount});creature:show()
+  -- 15.10.2026 (Tobeto): mounts centred horizontally (Black Stag, Coralripper, Copper Fly...)
+  elseif art.mount then creature:setOutfit({type=art.mount});pcall(function() creature:setCenter(true) end);creature:show()
   elseif art.icon then icon:setImageSource(art.icon);icon:show() end
 end
 -- 13.10.2026 (Tobeto): outfits and mounts list their bonus one per line
@@ -138,7 +140,75 @@ function refresh()
   end
   for _,b in ipairs(ui('tabs'):getChildren()) do b:setOn(b.tabName==category) end
 end
-local function buildLeft()
+-- 15.10.2026 (Tobeto): bonus filter dropdown (max 7 rows, scrollable, grouped by kind)
+local function ourGroupLabels(labels)
+  local byLast={}
+  for _,l in ipairs(labels) do
+    local first,last=l:match('^(.-)%s+(%S+)$')
+    if first and first~='' then byLast[last:lower()]=byLast[last:lower()] or {};table.insert(byLast[last:lower()],{label=l,short=first}) end
+  end
+  local entries,used={},{}
+  for last,list in pairs(byLast) do
+    if #list>=2 then
+      table.sort(list,function(a,b) return a.short:lower()<b.short:lower() end)
+      entries[#entries+1]={text=last:sub(1,1):upper()..last:sub(2),children=list}
+      for _,c in ipairs(list) do used[c.label]=true end
+    end
+  end
+  for _,l in ipairs(labels) do if not used[l] then entries[#entries+1]={text=l,label=l} end end
+  table.sort(entries,function(a,b) return a.text:lower()<b.text:lower() end)
+  table.insert(entries,1,{text='(none)',none=true})
+  return entries
+end
+function ourCloseBonusMenu()
+  local m=rootWidget:getChildById('ourBonusMenuShade');if m then m:destroy() end
+end
+local ROWH,ROWS=20,7
+local function ourMenuList(shade,x,y,w,entries,onPick,onGroup)
+  local box=g_ui.createWidget('UIWidget',shade);box:setPhantom(false)
+  box:setBackgroundColor('#1e1e1e');box:setBorderWidth(1);box:setBorderColor('#6a6a6a')
+  local n=math.min(ROWS,#entries);box:setSize({width=w,height=n*ROWH+4});box:setPosition({x=x,y=y})
+  local list=g_ui.createWidget('UIScrollArea',box);list:fill('parent');list:setMargin(2)
+  list:setPaddingRight(#entries>ROWS and 12 or 0)
+  local layout=UIVerticalLayout.create(list);list:setLayout(layout)
+  if #entries>ROWS then
+    local sb=g_ui.createWidget('VerticalScrollBar',box)
+    sb:addAnchor(AnchorTop,'parent',AnchorTop);sb:addAnchor(AnchorBottom,'parent',AnchorBottom);sb:addAnchor(AnchorRight,'parent',AnchorRight)
+    sb:setMargin(2);sb:setStep(ROWH);pcall(function() sb:setPixelsScroll(true) end)
+    list:setVerticalScrollBar(sb)
+  end
+  for _,e in ipairs(entries) do
+    local r=g_ui.createWidget('UIButton',list);r:setHeight(ROWH);r:setFont('verdana-11px-rounded')
+    r:setText(e.children and (e.text..'  >') or e.text);r:setTextAlign(AlignLeft);r:setTextOffset({x=6,y=0})
+    r:setColor((e.label and e.label==bonusPicks[1]) and '#ffd35a' or '#d8d8d8')
+    r.onHoverChange=function(self,h) self:setBackgroundColor(h and '#3a3a3a' or '#00000000');if h and e.children then onGroup(e,self) end end
+    r.onClick=function() if e.children then onGroup(e,r) else onPick(e) end end
+  end
+  return box
+end
+function ourOpenBonusMenu(bf,labels)
+  ourCloseBonusMenu()
+  local shade=g_ui.createWidget('UIWidget',rootWidget);shade:setId('ourBonusMenuShade');shade:fill('parent');shade:setPhantom(false)
+  shade.onMousePress=function(self,pos,button)
+    for _,c in ipairs(self:getChildren()) do if c:containsPoint(pos) then return false end end
+    ourCloseBonusMenu();return true
+  end
+  local entries=ourGroupLabels(labels)
+  local side
+  local function pick(e)
+    bonusPicks=e.none and {} or {e.label};ourCloseBonusMenu()
+    scheduleEvent(function() buildLeft();refresh();ui('productScroll'):setValue(0) end,1)
+  end
+  local main
+  local function group(e,row)
+    if side then side:destroy();side=nil end
+    local subs={};for _,c in ipairs(e.children) do subs[#subs+1]={text=c.short,label=c.label} end
+    side=ourMenuList(shade,main:getX()+main:getWidth()-1,row:getY()-2,130,subs,pick,function() end)
+  end
+  main=ourMenuList(shade,bf:getX(),bf:getY()+bf:getHeight(),bf:getWidth(),entries,pick,group)
+  shade:raise()
+end
+function buildLeft()
   local left=ui('left');left:destroyChildren()
   -- 11.10.2026 (Tobeto's mockup): sub-categories are a second row of tabs under
   -- the main tabs; the left panel only holds search, sorting and filters.
@@ -159,14 +229,16 @@ local function buildLeft()
     hint:setColor('#8a8a8a');hint:setWidth(400);hint:setTextOffset({x=4,y=4})
   end
   if SUBS[category] and not sub[category] then sub[category]=SUBS[category][1] end
-  -- 14.10.2026 (Tobeto): typed text stays on the left (where the cursor is) and is limited
-  local s=g_ui.createWidget('TextEdit',left);s:setHeight(22);s:setTooltip('Search product...');s:setTextAlign(AlignLeft);pcall(function() s:setMaxLength(20) end);s:setText(search)
+  -- 14.10.2026 (Tobeto): typed text centred in the box and limited
+  -- 15.10.2026 (Tobeto): text starts at the left like the search box of Set Outfit (cursor and text in one place)
+  local s=g_ui.createWidget('TextEdit',left);s:setHeight(22);s:setTooltip('Search product...');pcall(function() s:setMaxLength(20) end);s:setText(search)
   pcall(function() s:setPlaceholder('Search products...') end)
-  pcall(function() s:setPlaceholderAlign(AlignLeft) end)
   s.onTextChange=function(_,t) search=t:lower();refresh() end
   local sort=g_ui.createWidget('ComboBox',left);sort:setHeight(22)
-  for _,o in ipairs(SORTS) do sort:addOption(o) end
-  sort:setTextAlign(AlignCenter);sort:setTextOffset({x=-10,y=2})
+  -- 15.10.2026 (Tobeto): Bonus Tier 1-3 only in Cosmetics
+  if TIER_PRICE[sortMode] and category~='Cosmetics' then sortMode=SORTS[1] end
+  for _,o in ipairs(SORTS) do if category=='Cosmetics' or not TIER_PRICE[o] then sort:addOption(o) end end
+  sort:setTextAlign(AlignCenter);sort:setTextOffset({x=-1,y=0}) -- 14.10.2026 (Tobeto): centred in the whole box, equal space above and below
   sort:setCurrentOption(sortMode,true);sort.onOptionChange=function(_,t) sortMode=t;if historyMode then setHistory(false) end;refresh();ui('productScroll'):setValue(0) end
   -- the options of the list are centred too
   local press=sort.onMousePress
@@ -184,27 +256,21 @@ local function buildLeft()
       for _,b in ipairs(o.bonus or {}) do if b.l and not seen[b.l] then seen[b.l]=true;labels[#labels+1]=b.l end end
     end
     table.sort(labels)
-    local bf=g_ui.createWidget('ComboBox',left);bf:setHeight(22);bf:setTooltip('Add a bonus filter - you can pick several. Outfits and mounts with them are listed, the best matches first.')
-    bf:addOption('+ Add bonus filter');for _,l in ipairs(labels) do bf:addOption(l) end
+    -- 15.10.2026 (Tobeto): ONE bonus filter. The dropdown shows the picked bonus (or "+ Add bonus
+    -- filter"), lists at most 7 entries (scroll for more), groups bonuses of one kind (Damage ->
+    -- Earth, Energy, Fire ...) in a side list and has "(none)" to reset it.
     for i=#bonusPicks,1,-1 do if not seen[bonusPicks[i]] then table.remove(bonusPicks,i) end end
-    bf:setCurrentOption('+ Add bonus filter')
-    bf.onOptionChange=function(_,t)
-      if t~='+ Add bonus filter' and not table.contains(bonusPicks,t) then bonusPicks[#bonusPicks+1]=t end
-      scheduleEvent(function() buildLeft();refresh();ui('productScroll'):setValue(0) end,1)
-    end
-    for _,l in ipairs(bonusPicks) do
-      local chip=g_ui.createWidget('Button',left);chip:setHeight(20);chip:setText('x  '..l);chip:setColor('#ffd35a')
-      chip:setTooltip('Remove this filter')
-      chip.onClick=function() table.removevalue(bonusPicks,l);scheduleEvent(function() buildLeft();refresh() end,1) end
-    end
-    if #bonusPicks>1 then
-      local all=g_ui.createWidget('CheckBox',left);all:setText('Must have all');all:setChecked(matchAll)
-      all:setTooltip('Show only outfits and mounts with ALL picked bonuses (otherwise: any of them)')
-      all.onCheckChange=function(_,v) matchAll=v;refresh() end
-    end
-    if #bonusPicks>0 then
-      local clr=g_ui.createWidget('Button',left);clr:setHeight(20);clr:setText('Clear filters')
-      clr.onClick=function() bonusPicks={};scheduleEvent(function() buildLeft();refresh() end,1) end
+    while #bonusPicks>1 do table.remove(bonusPicks) end
+    matchAll=false
+    local bf=g_ui.createWidget('ComboBox',left);bf:setId('ourBonusFilter');bf:setHeight(22)
+    bf:setTooltip('Show only outfits and mounts with this bonus, the strongest first.')
+    local current=bonusPicks[1] or '+ Add bonus filter'
+    bf:addOption(current);bf:setCurrentOption(current,true)
+    bf:setTextAlign(AlignCenter);bf:setTextOffset({x=-1,y=0})
+    if bonusPicks[1] then bf:setColor('#ffd35a') end
+    bf.onMousePress=function(self,mousePos,button)
+      if button~=MouseLeftButton then return false end
+      ourOpenBonusMenu(self,labels);return true
     end
   end
   local owned=g_ui.createWidget('CheckBox',left);owned:setText('Show Owned');owned:setChecked(showOwned);owned.onCheckChange=function(_,v) showOwned=v;refresh() end
@@ -236,18 +302,20 @@ local function buildLeft()
   -- 14.10.2026 (Tobeto): respawn fund (every 1,000,000 gp = 1 hour of Spawn Boost for everyone)
   if data then
     local step=tonumber(data.fundStep) or 1000000;local fund=tonumber(data.fund) or 0
-    local title=g_ui.createWidget('Label',left);title:setText('RESPAWN FUND');title:setColor('#c8a040');title:setHeight(16);title:setMarginTop(8);title:setTextAlign(AlignCenter)
+    -- 14.10.2026 (Tobeto): the [i] box stands next to the RESPAWN FUND title, the bar uses the whole row
+    local trow=g_ui.createWidget('UIWidget',left);trow:setHeight(16);trow:setMarginTop(8)
+    local title=g_ui.createWidget('Label',trow);title:setId('fundTitle');title:setText('RESPAWN FUND');title:setColor('#c8a040');title:setTextAutoResize(true)
+    title:addAnchor(AnchorHorizontalCenter,'parent',AnchorHorizontalCenter);title:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);title:setMarginLeft(-10)
+    local info=g_ui.createWidget('Label',trow);info:setId('fundInfo');info:setPhantom(false);info:setSize({width=16,height=16});info:setText('i');info:setTextAlign(AlignCenter)
+    info:setFont('verdana-11px-rounded');info:setTextOffset({x=0,y=-2});info:setColor('#c8c8c8');info:setBackgroundColor('#0a0a0a');info:setBorderWidth(1);info:setBorderColor('#4a4a4a')
+    info:addAnchor(AnchorLeft,'fundTitle',AnchorRight);info:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);info:setMarginLeft(5)
+    info:setTooltip('Respawn fund: '..money(fund)..' / '..money(step)..' gp.\nEvery 1,000,000 gp donated by the players starts 1 hour of Spawn Boost (10% faster respawns) for everyone.\nDonating 1,000,000 gp in total gives the achievement "Areas of Effect" (Hall of Legends).\n\nYour lifetime donations: '..money(tonumber(data.fundMine) or 0)..' gp')
     local row=g_ui.createWidget('UIWidget',left);row:setHeight(36)
     local gold=g_ui.createWidget('UIItem',row);gold:setVirtual(true);gold:setPhantom(true);gold:setSize({width=32,height=32})
     gold:addAnchor(AnchorLeft,'parent',AnchorLeft);gold:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
     gold:setItemId(3043);pcall(function() gold:setShowCount(false) end);gold:setItemCount(100)
     local bar=g_ui.createWidget('UIProgressBar',row);bar:setPhantom(true);bar:setHeight(16)
-    -- 14.10.2026 (Tobeto): [i] box (black, not a button) with the explanation instead of a bar tooltip
-    local info=g_ui.createWidget('Label',row);info:setId('fundInfo');info:setPhantom(false);info:setSize({width=16,height=16});info:setText('i');info:setTextAlign(AlignCenter)
-    info:setFont('verdana-11px-rounded');info:setTextOffset({x=0,y=-2});info:setColor('#c8c8c8');info:setBackgroundColor('#0a0a0a');info:setBorderWidth(1);info:setBorderColor('#4a4a4a')
-    info:addAnchor(AnchorRight,'parent',AnchorRight);info:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
-    info:setTooltip('Respawn fund: '..money(fund)..' / '..money(step)..' gp.\nEvery 1,000,000 gp donated by the players starts 1 hour of Spawn Boost (10% faster respawns) for everyone.\nDonating 1,000,000 gp in total gives the achievement "Areas of Effect" (Hall of Legends).')
-    bar:addAnchor(AnchorLeft,'parent',AnchorLeft);bar:addAnchor(AnchorRight,'fundInfo',AnchorLeft);bar:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);bar:setMarginLeft(36);bar:setMarginRight(4)
+    bar:addAnchor(AnchorLeft,'parent',AnchorLeft);bar:addAnchor(AnchorRight,'parent',AnchorRight);bar:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);bar:setMarginLeft(36)
     bar:setBackgroundColor('#b08a20');bar:setBorderWidth(1);bar:setBorderColor('#8a7030');bar:setFont('verdana-11px-rounded');bar:setColor('#ffffff');bar:setTextOffset({x=0,y=-2})
     bar:setPercent(math.max(0,math.min(100,math.floor(fund*100/step))))
     -- 14.10.2026: short text so it fits next to the [i] box
@@ -255,10 +323,10 @@ local function buildLeft()
     bar:setText(money(fund)..' / '..short(step))
     local donateRow=g_ui.createWidget('UIWidget',left);donateRow:setHeight(22)
     -- 14.10.2026 (Tobeto): empty field, digits only, at most 1,000,000 (more jumps back to 1,000,000)
-    local amount=g_ui.createWidget('TextEdit',donateRow);amount:setId('fundAmount');amount:setHeight(22);amount:setWidth(84);amount:setTextAlign(AlignLeft)
+    local amount=g_ui.createWidget('TextEdit',donateRow);amount:setId('fundAmount');amount:setHeight(22);amount:setWidth(84);
     amount:addAnchor(AnchorLeft,'parent',AnchorLeft);amount:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
     pcall(function() amount:setMaxLength(7) end)
-    pcall(function() amount:setPlaceholder('gp');amount:setPlaceholderAlign(AlignLeft) end)
+    pcall(function() amount:setPlaceholder('gp') end)
     amount:setText(window.ourFundAmount or '')
     amount.onTextChange=function(_,t)
       local d=t:gsub('%D','')
@@ -266,7 +334,7 @@ local function buildLeft()
       if d~=t then amount:setText(d);pcall(function() amount:setCursorPos(#d) end) end
       window.ourFundAmount=d
     end
-    local btn=g_ui.createWidget('Button',donateRow);btn:setText('Donate');btn:setHeight(22)
+    local btn=g_ui.createWidget('Button',donateRow);btn:setText('Donate');btn:setHeight(22);btn:setTextOffset({x=0,y=1})
     btn:addAnchor(AnchorLeft,'prev',AnchorRight);btn:addAnchor(AnchorRight,'parent',AnchorRight);btn:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);btn:setMarginLeft(4)
     btn:setTooltip('Donate gold (backpack first, then bank) to the respawn fund. At least 1,000 gp, in whole thousands.')
     btn.onClick=function()
@@ -302,10 +370,20 @@ end
 function closeConfirm() ui('confirm'):hide();selected=nil end
 function showDonateInfo(text)
   if not window then return end
-  ui('dText'):setText(tostring(text)..'\n\nDonating 1,000,000 gp in total gives the achievement "Areas of Effect" - see Hall of Legends.')
-  ui('donateInfo'):show();ui('donateInfo'):raise()
+  -- 14.10.2026 (Tobeto): only the answer (the achievement is in the [i] tooltip); the window
+  -- is moved by its title bar and blocks the store behind it
+  ui('dText'):setText(tostring(text))
+  local box,title=ui('donateInfo'),ui('dTitle')
+  if not title.ourDrag then
+    title.ourDrag=true;title:setDraggable(true)
+    title.onDragEnter=function(self,mousePos) box:breakAnchors();self.ourRef={x=mousePos.x-box:getX(),y=mousePos.y-box:getY()};return true end
+    title.onDragMove=function(self,mousePos) if self.ourRef then box:setPosition({x=mousePos.x-self.ourRef.x,y=mousePos.y-self.ourRef.y}) end;return true end
+    title.onDragLeave=function(self) self.ourRef=nil;return true end
+  end
+  pcall(g_tooltip.hide)
+  ui('donateShade'):show();ui('donateShade'):raise();box:show();box:raise();box:focus()
 end
-function closeDonateInfo() if window then ui('donateInfo'):hide() end end
+function closeDonateInfo() if window then ui('donateInfo'):hide();ui('donateShade'):hide() end end
 function confirmBuy()
   if not selected or not data then return end
   send('buy:'..selected.id..':'..data.nonce..(ui('cAnonymous'):isChecked() and ':anon' or ''))

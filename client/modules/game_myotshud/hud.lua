@@ -40,9 +40,25 @@ function ourCapPanels()
       local bottom=0
       for _,ch in ipairs(cp:getChildren()) do if ch:isVisible() then bottom=math.max(bottom,ch:getY()+ch:getHeight()+ch:getMarginBottom()-cp:getY()) end end
       if bottom>40 then
-        w:setContentMaximumHeight(bottom+4)
-        local maxH=bottom+4+(cp:getY()-w:getY())+6
+        -- 15.10.2026 (Tobeto): the panel stretches only until the scroll bar is full (nothing left
+        -- to scroll) - the padding of the contents panel counts too
+        local content=bottom+4+cp:getPaddingBottom()
+        w:setContentMaximumHeight(content)
+        local maxH=content+(cp:getY()-w:getY())+6
         if w:getHeight()>maxH then w:setHeight(maxH) end
+        w.ourCapContent=content
+        addEvent(function()
+          if w:isDestroyed() then return end
+          local sb=w:getChildById('miniwindowScrollBar')
+          local extra=sb and sb:getMaximum() or 0
+          if extra>0 then
+            -- what is still hidden below the visible part: the full height is visible + hidden
+            local need=math.max(content,cp:getHeight()+extra)
+            w.ourCapContent=need
+            w:setContentMaximumHeight(need)
+            if w:getHeight()>=maxH-1 then w:setHeight(w:getHeight()+(need-content)) end
+          end
+        end)
       end
     end
   end
@@ -246,8 +262,14 @@ drawStateInner=function()
   if tb and rows then
     local daily=type(tb.daily)=='table' and tb.daily or {}
     local weekly=type(tb.weekly)=='table' and tb.weekly or {}
-    local function header(text)
-      local h=g_ui.createWidget('TaskHeader',rows);h:setText(text);return h
+    -- 15.10.2026 (Tobeto): section bar "Daily" / "Weekly" with the time left until the reset
+    local function header(title,color,leftSeconds,weeklyFmt)
+      local h=g_ui.createWidget('TaskSection',rows)
+      h:getChildById('accent'):setBackgroundColor(color)
+      h:getChildById('title'):setText(title);h:getChildById('title'):setColor(color)
+      ourTaskTimers[#ourTaskTimers+1]={label=h:getChildById('title'),name=title,ends=g_clock.seconds()+(tonumber(leftSeconds) or 0),weekly=weeklyFmt}
+      h:getChildById('left'):hide()
+      return h
     end
     local function entry(t,color)
       t=type(t)=='table' and t or {}
@@ -267,18 +289,38 @@ drawStateInner=function()
         end
         scheduleEvent(fit,50) end
       local bar=row:getChildById('progress')
-      bar:setBackgroundColor(color)
+      bar:setBackgroundColor(t.done and '#4a4a4a' or color)
+      if t.done then row:setOpacity(0.55);row:setTooltip('Completed') end
       bar:setPercent(math.max(0,math.min(100,math.floor(kills*100/need))))
       bar:setText(string.format('%d / %d',kills,need))
       local monster=refs and refs.monsters and refs.monsters[tostring(t.name or ''):lower()]
       OurTibiaArt.creature(row:getChildById('outfit'),monster and monster.outfit,tostring(t.name or ''))
     end
-    header('Daily  '..(tonumber(tb.dailyActive) or 0)..'/3 active, '..(tonumber(tb.dailyDone) or 0)..' done')
-    for _,t in ipairs(daily) do entry(t,'#2f8f3a') end
-    header('Weekly  '..#weekly..' active')
-    for _,t in ipairs(weekly) do entry(t,'#7a4fb0') end
+    ourTaskTimers={}
+    -- active tasks first, finished ones at the bottom of their list
+    local function split(list)
+      local act,fin={},{}
+      for _,t in ipairs(list) do if type(t)=='table' and t.done then fin[#fin+1]=t else act[#act+1]=t end end
+      return act,fin
+    end
+    local dAct,dFin=split(daily)
+    header('Daily','#5fc06a',tb.dailyLeft,false)
+    for _,t in ipairs(dAct) do entry(t,'#2f8f3a') end
+    -- 15.10.2026 (Tobeto): 3 places - empty ones show that another task can be taken
+    for _=#dAct+1,3 do
+      local e=g_ui.createWidget('TaskEmpty',rows)
+      e:setTooltip('Click to open the Task Board and take a task')
+      e.onClick=function() showDaily() end
+      e.onHoverChange=function(self,h) local b=self:getChildById('box');b:setBorderColor(h and '#7a7a7a' or '#3a3a3a');self:getChildById('text'):setColor(h and '#c8c8c8' or '#6a6a6a') end
+    end
+    for _,t in ipairs(dFin) do entry(t,'#2f8f3a') end
+    local wAct,wFin=split(weekly)
+    header('Weekly','#a07ad8',tb.weeklyLeft,true)
+    for _,t in ipairs(wAct) do entry(t,'#7a4fb0') end
+    for _,t in ipairs(wFin) do entry(t,'#7a4fb0') end
+    ourTaskTimersTick()
     fields.dailyStatus:setVisible(false);fields.dailyStatus:setHeight(0)
-    local h=32+(#daily+#weekly)*36+40
+    local h=24+(math.max(3,#dAct)+#dFin+#weekly)*36+40
     if tasksWindow and tasksWindow:getHeight()<math.min(h+30,260) then tasksWindow:setHeight(math.min(h+30,260)) end
   else
     fields.dailyStatus:setVisible(true)
@@ -302,6 +344,7 @@ drawStateInner=function()
   for page=1,4 do fields['preset'..page]:setOn(page==state.loot.preset) end
   local slots=math.max(0,tonumber(state.loot.slots) or 0)
   fields.lootItems:setHeight(math.max(1,math.ceil(slots/4))*38)
+  ourLootEmpty={}
   for i=1,slots do
     local slotIndex=i
     local sid=(state.loot.items or {})[slotIndex]
@@ -320,13 +363,9 @@ drawStateInner=function()
     else
       row:setTooltip('Click, then click an item (backpack, equipment or ground) - or drag an item here - to autoloot it.')
       row.onClick=function() MyOTSHudPickItem(slotIndex) end
-      -- 14.10.2026 (Tobeto): an empty slot lights up while an item is dragged over it
-      row.onHoverChange=function(self,hovered)
-        local ok,drag=pcall(function() return g_ui.getDraggingWidget() end)
-        local on=hovered and ok and drag and drag.currentDragThing
-        self:setBorderWidth(on and 1 or 0);self:setBorderColor(on and '#ffd35a' or '#00000000')
-        local plus=self:getChildById('plus');if plus then plus:setColor(on and '#ffd35a' or '#8a8a8a') end
-      end
+      -- 14.10.2026 (Tobeto): empty slots light up as soon as an item is dragged (brighter under the mouse)
+      ourLootEmpty[#ourLootEmpty+1]=row
+      row.onHoverChange=function(self) ourLootDragGlow(true) end
     end
     -- 14.10.2026 (Tobeto): items can be dragged onto the looting slots (backpack, equipment, ground)
     row.onDrop=function(self,widget,mousePos)
@@ -340,6 +379,53 @@ drawStateInner=function()
   pcall(drawExclusions)
   loading=false
 end
+-- 15.10.2026 (Tobeto): time left until the task reset - Daily in hours (minutes in the last
+-- hour), Weekly in days (hours on the last day, minutes in the last hour)
+ourTaskTimers={}
+local function fmtLeft(sec,weekly)
+  sec=math.max(0,math.floor(sec))
+  if sec<3600 then return math.max(1,math.ceil(sec/60))..' min' end
+  if weekly and sec>=86400 then local d=math.ceil(sec/86400);return d..(d==1 and ' day' or ' days') end
+  return math.ceil(sec/3600)..'h'
+end
+function ourTaskTimersTick()
+  local now=g_clock.seconds()
+  for _,t in ipairs(ourTaskTimers) do
+    if not t.label:isDestroyed() then
+      t.label:setText(t.name..' ('..fmtLeft(t.ends-now,t.weekly)..')')
+      t.label:setTooltip(t.name..' tasks reset in '..fmtLeft(t.ends-now,t.weekly))
+    end
+  end
+end
+-- 14.10.2026 (Tobeto): glow of the empty autoloot slots while any item is being dragged
+ourLootEmpty={}
+local glowState,glowEvent=nil,nil
+function ourLootDragGlow(force)
+  local ok,drag=pcall(function() return g_ui.getDraggingWidget() end)
+  local dragging=ok and drag and drag.currentDragThing and true or false
+  local key=tostring(dragging)
+  for _,row in ipairs(ourLootEmpty) do if not row:isDestroyed() and row:isHovered() then key=key..tostring(row) end end
+  if not force and key==glowState then return end
+  glowState=key
+  for _,row in ipairs(ourLootEmpty) do
+    if not row:isDestroyed() then
+      local hot=dragging and row:isHovered()
+      row:setBorderWidth(dragging and 1 or 0)
+      row:setBorderColor(hot and '#ffd35a' or (dragging and '#9a7a28' or '#00000000'))
+      local plus=row:getChildById('plus');if plus then plus:setColor(hot and '#ffd35a' or (dragging and '#c8a040' or '#8a8a8a')) end
+    end
+  end
+end
+local glowStopped=false
+function ourStopLootGlow() glowStopped=true;if glowEvent then removeEvent(glowEvent);glowEvent=nil end end
+local function glowTick()
+  glowEvent=nil
+  if glowStopped then return end
+  if #ourLootEmpty>0 then pcall(ourLootDragGlow) end
+  ourTaskTick=(ourTaskTick or 0)+1;if ourTaskTick%250==0 then pcall(ourTaskTimersTick) end
+  glowEvent=scheduleEvent(glowTick,120)
+end
+glowEvent=scheduleEvent(glowTick,1000)
 -- Unlooted corpses: diagonal shimmer on the corpse sprite (server sends the list).
 local corpseList,corpseTimer={},nil
 local function corpseItems(pos)
@@ -695,9 +781,10 @@ function init()
   fields.xp=label(content(xp),'Session: 00:00');fields.xp:setHeight(65)
   button(content(xp),'Reset session',resetSession)
   local tasks=panel('myotsTasks','Task Tracker',78,left)
+  -- 15.10.2026 (Tobeto): the Task Board button is on top of the tracker
+  -- 15.10.2026 (Tobeto): no Task Board button any more - a click on a free task slot opens the Task Board
   fields.dailyStatus=label(content(tasks),'No active task')
   fields.taskRows=g_ui.createWidget('TaskRows',content(tasks))
-  button(content(tasks),'Task Board',showDaily)
   local loot=panel('myotsLoot','Autolooting',590,extra);local c=content(loot)
   -- Mythibia-like layout: a section per category with its destination
   -- container slot and "[+]" buttons; custom items are picked with a
@@ -809,6 +896,7 @@ function init()
   updateTrainerButton()
 end
 function terminate()
+  pcall(ourStopLootGlow)
   RarityFrames.terminate()
   ItemForge.terminate()
   DpsMeter.terminate()

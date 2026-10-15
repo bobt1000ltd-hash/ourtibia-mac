@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
+    paths:
+      - 'BUILD_MAC.command'
+      - 'mac-triplets/**'
+      - '.github/workflows/macos.yml'
 
 permissions:
   contents: write

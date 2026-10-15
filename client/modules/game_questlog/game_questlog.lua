@@ -399,8 +399,9 @@ local function createQuestItem(parent, id, text, color, icon)
 end
 
 local function updateQuestCounter()
-    UIlabel.numberQuestComplete:setText(questLogCache.completed)
-    UIlabel.numberQuestHidden:setText(questLogCache.hidden)
+    -- 15.10.2026 (Tobeto): "Show completed (N)" / "Show hidden (N)" instead of separate counters
+    if UICheckBox.showComplete then UICheckBox.showComplete:setText('Show completed (' .. tostring(questLogCache.completed or 0) .. ')') end
+    if UICheckBox.showShidden then UICheckBox.showShidden:setText('Show hidden (' .. tostring(questLogCache.hidden or 0) .. ')') end
 end
 
 local function recolorVisibleItems()

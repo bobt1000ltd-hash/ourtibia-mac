@@ -355,6 +355,62 @@ TaskHeader < Label
   color: #f0c060
   text-offset: 2 2
 
+// 15.10.2026 (Tobeto): Daily and Weekly are separate sections - a dark bar with a
+// coloured edge and the time left until the reset
+TaskSection < UIWidget
+  height: 20
+  margin-top: 4
+  background-color: #00000070
+  phantom: true
+  UIWidget
+    id: accent
+    anchors.left: parent.left
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    width: 3
+    phantom: true
+  Label
+    id: title
+    anchors.left: accent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 5
+    font: verdana-11px-rounded
+    text-auto-resize: true
+    text-offset: 0 -1
+    phantom: false
+  Label
+    id: left
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-right: 5
+    font: verdana-11px-rounded
+    color: #a8a8a8
+    text-auto-resize: true
+    text-offset: 0 -1
+    phantom: true
+
+TaskEmpty < UIWidget
+  height: 36
+  phantom: false
+  focusable: false
+  UIWidget
+    id: box
+    anchors.fill: parent
+    margin: 3 2 3 2
+    border-width: 1
+    border-color: #3a3a3a
+    background-color: #00000030
+    phantom: true
+  Label
+    id: text
+    anchors.centerIn: parent
+    font: verdana-11px-rounded
+    color: #6a6a6a
+    text-auto-resize: true
+    text-offset: 0 -1
+    text: Free task slot
+    phantom: true
+
 TaskEntry < UIWidget
   height: 36
   UICreature

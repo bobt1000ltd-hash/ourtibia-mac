@@ -488,7 +488,6 @@ MainWindow
       margin-right: 10
       height: 22
       max-length: 30
-      text-align: center
     UIItem
       id: tCoin
       anchors.top: tNameLabel.bottom
@@ -550,11 +549,20 @@ MainWindow
       width: 60
       text: Gift
       @onClick: modules.game_myotsstore.confirmTransfer()
-  // 14.10.2026 (Tobeto): the answer to a donation is a small window (no room in the bottom bar)
+  // 14.10.2026 (Tobeto): the answer to a donation is a small window (no room in the bottom bar);
+  // the shade behind it blocks the store (no click-through, no highlighted products)
+  UIWidget
+    id: donateShade
+    anchors.fill: parent
+    background-color: #000000a0
+    visible: false
   Panel
     id: donateInfo
     anchors.centerIn: products
-    size: 320 150
+    // 15.10.2026 (Tobeto): smaller, no "drag to move" tooltip
+    size: 260 96
+    phantom: false
+    focusable: true
     background-color: #2b2b2b
     border-width: 1
     border-color: #6a6a6a
@@ -567,6 +575,7 @@ MainWindow
       height: 18
       text: Respawn Fund
       text-align: center
+      phantom: false
       background-color: #3b3b3b
       color: #d8d8d8
     Label

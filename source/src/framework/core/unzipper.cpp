@@ -34,6 +34,8 @@ const int MAX_FILENAME = 512;
 const int READ_SIZE = 8192;
 const char dir_delimiter = '/';
 
+static void extractAll(unzFile zipfile, const std::filesystem::path& destinationFolder);
+
 void unzipper::extract(const char* fileBuffer, uint fileLength, std::string& destinationPath) {
     const std::filesystem::path destinationFolder { destinationPath };
     if (!std::filesystem::exists(destinationFolder)) {
@@ -48,6 +50,25 @@ void unzipper::extract(const char* fileBuffer, uint fileLength, std::string& des
     memcpy(unzmem.base, fileBuffer, unzmem.size);
     fill_memory_filefunc(&filefunc32, &unzmem);
     unzFile zipfile = unzOpen2(nullptr, &filefunc32);
+    if (!zipfile)
+        g_logger.fatal("Could not open zip buffer");
+    extractAll(zipfile, destinationFolder);
+}
+
+// OurTibia (15.10.2026): extract straight from a zip file on disk, so the
+// 300+ MB game data never has to be held in memory on a phone.
+void unzipper::extractFile(const std::string& zipPath, const std::string& destinationPath) {
+    const std::filesystem::path destinationFolder { destinationPath };
+    if (!std::filesystem::exists(destinationFolder)) {
+        std::filesystem::create_directories(destinationFolder);
+    }
+    unzFile zipfile = unzOpen64(zipPath.c_str());
+    if (!zipfile)
+        g_logger.fatal("Could not open {}", zipPath);
+    extractAll(zipfile, destinationFolder);
+}
+
+static void extractAll(unzFile zipfile, const std::filesystem::path& destinationFolder) {
 
     // Get info about the zip file
     unz_global_info global_info;
@@ -128,7 +149,7 @@ void unzipper::extract(const char* fileBuffer, uint fileLength, std::string& des
                 {
                     unzCloseCurrentFile( zipfile );
                     unzClose(zipfile);
-                    g_logger.fatal( &"error: " [ error] );
+                    g_logger.fatal("Zip read error: {}", error);
                 }
 
                 // Write data to file.

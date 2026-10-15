@@ -354,25 +354,9 @@ function create(player, outfitList, creatureMount, mountList, familiarList, wing
 
     -- OurTibia (04.10.2026): "showoff" - keep the bonus of one owned outfit
     -- while wearing another (server opcode 119).
-    pcall(function()
-        local panel = window.preview
-        local btn = g_ui.createWidget('Button', panel)
-        btn:setId('ourBonusOutfit')
-        btn:setHeight(20)
-        btn:setWidth(panel:getWidth() - 10)
-        btn:addAnchor(AnchorBottom, 'parent', AnchorBottom)
-        btn:addAnchor(AnchorHorizontalCenter, 'parent', AnchorHorizontalCenter)
-        btn:setMarginBottom(4)
-        btn:setText('Set as bonus outfit')
-        btn:setTooltip('Keep the bonus of the selected outfit and wear any other outfit you like (only the look changes, bonuses do not stack). Right click: back to the bonus of the worn outfit.')
-        btn.onClick = function()
-            if g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(119, 'set:' .. (tempOutfit.type or 0) .. ':' .. (tempOutfit.addons or 0)) end
-        end
-        btn.onMouseRelease = function(widget, pos, button)
-            if button == MouseRightButton and g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(119, 'clear'); return true end
-        end
-        if g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(119, 'get') end
-    end)
+    -- 15.10.2026 (Tobeto): the button sits in the lower left corner of "Configure", the bonus of the
+    -- selected outfit / mount is written above it; nothing is shown when it has no bonus.
+    pcall(ourCreateBonusPanel)
 
     previewCreature = window.preview.panel.creature
     previewCreature:setCreatureSize(128)
@@ -543,8 +527,7 @@ function create(player, outfitList, creatureMount, mountList, familiarList, wing
         end
     end
     previewCreature:getCreature():setDirection(2)
-    window.listSearch.search.onKeyPress = onFilterSearch
-    window.listSearch.onlyMine.onCheckChange = onFilterOnlyMine
+    window.listSearch.search.onTextChange = function() applyFilters() end
 end
 
 function destroy()
@@ -831,6 +814,8 @@ function onAppearanceChange(widget, selectedWidget)
 end
 
 function showPresets()
+    ourListMode = nil
+    pcall(ourUpdateBonusPanel)
     window.listSearch:hide()
     window.selectionList:hide()
     window.selectionScroll:hide()
@@ -944,6 +929,10 @@ function showOutfits()
     window.selectionList:show()
     window.selectionScroll:show()
     window.listSearch:show()
+    ourListMode = 'outfit'
+    ourApplyBonusIcons()
+    applyFilters()
+    ourUpdateBonusPanel()
 end
 
 function showMounts()
@@ -1006,9 +995,15 @@ function showMounts()
     window.selectionList:show()
     window.selectionScroll:show()
     window.listSearch:show()
+    ourListMode = 'mount'
+    ourApplyBonusIcons()
+    applyFilters()
+    ourUpdateBonusPanel()
 end
 
 function showFamiliars()
+    ourListMode = nil
+    pcall(ourUpdateBonusPanel)
     window.presetsList:hide()
     window.presetsScroll:hide()
     window.presetButtons:hide()
@@ -1611,6 +1606,7 @@ function onColorCheckChange(widget, selectedWidget)
 end
 
 function updatePreview()
+    pcall(ourUpdateBonusPanel)
     local direction = previewCreature:getDirection()
     local previewOutfit = table.copy(tempOutfit)
 
@@ -1750,41 +1746,31 @@ function rotate(value)
     end
 end
 
-function onFilterOnlyMine(self, checked)
-    addEvent(function()
-        local children = window.selectionList:getChildren()
-        for _, child in ipairs(children) do
-            if checked and (not child.state or child.state ~= 0) then
-                window.selectionList:focusChild(nil)
-                child:hide()
-            else
-                child:show()
-            end
-        end
-    end)
+-- 15.10.2026 (Tobeto): OWNED / BONUSES toggle buttons + the name search work together.
+function toggleFilter(btn)
+    btn:setOn(not btn:isOn())
+    applyFilters()
 end
 
-function onFilterSearch()
-    addEvent(function()
-        if not window then return end
-        local searchText = window.listSearch.search:getText():lower():trim()
-        local children = window.selectionList:getChildren()
-        if searchText:len() >= 1 then
-            for _, child in ipairs(children) do
-                local text = child.name:getText():lower()
-                if text:find(searchText) then
-                    child:show()
-                else
-                    child:hide()
-                end
-            end
-        else
-            for _, child in ipairs(children) do
-                child:show()
-            end
-        end
-    end)
+function applyFilters()
+    if not window then return end
+    local owned = window.listSearch.onlyMine:isOn()
+    local bonus = window.listSearch.onlyBonus:isOn()
+    local searchText = window.listSearch.search:getText():lower():trim()
+    local focused = window.selectionList:getFocusedChild()
+    for _, child in ipairs(window.selectionList:getChildren()) do
+        local visible = true
+        if owned and (not child.state or child.state ~= 0) then visible = false end
+        if bonus and not child.ourBonus then visible = false end
+        if visible and searchText:len() >= 1 and not child.name:getText():lower():find(searchText, 1, true) then visible = false end
+        child:setVisible(visible)
+        if not visible and child == focused then window.selectionList:focusChild(nil) end
+    end
 end
+
+-- kept for old callers
+function onFilterOnlyMine() applyFilters() end
+function onFilterSearch() applyFilters() end
 
 function saveSettings()
     if not g_resources.fileExists(settingsFile) then
@@ -1913,14 +1899,117 @@ function accept()
 end
 
 -- OurTibia (04.10.2026): current bonus outfit shown on the showoff button.
+-- 15.10.2026 (Tobeto): "bon:" parts = bonuses of every outfit / mount (JSON {o = {look = {3 stages}}, m = {look = text}}).
+OurOutfitBonus = OurOutfitBonus or nil
+ourBonusParts = {}
+ourBonusName = nil
 pcall(ProtocolGame.unregisterExtendedOpcode, 119)
 ProtocolGame.registerExtendedOpcode(119, function(protocol, opcode, buffer)
-    if not window then return end
-    local btn = window:recursiveGetChildById('ourBonusOutfit')
-    if not btn then return end
-    local name = buffer:match('^cur:%d+:%d+:(.+)$')
-    btn:setText(name and ('Bonus: ' .. name .. ' (set new)') or 'Set as bonus outfit')
+    local i, n, part = buffer:match('^bon:(%d+)/(%d+)|(.*)$')
+    if i then
+        i, n = tonumber(i), tonumber(n)
+        ourBonusParts[i] = part
+        for k = 1, n do if not ourBonusParts[k] then return end end
+        local text = table.concat(ourBonusParts, '', 1, n)
+        ourBonusParts = {}
+        local ok, data = pcall(json.decode, text)
+        if ok and type(data) == 'table' then
+            OurOutfitBonus = data
+            if window then pcall(ourApplyBonusIcons); pcall(applyFilters); pcall(ourUpdateBonusPanel) end
+        end
+        return
+    end
+    ourBonusName = buffer:match('^cur:%d+:%d+:(.+)$')
+    if window then pcall(ourUpdateBonusPanel) end
 end)
+
+function ourBonusOf(mode, id)
+    if not OurOutfitBonus or not id then return nil end
+    if mode == 'outfit' then return OurOutfitBonus.o and OurOutfitBonus.o[tostring(id)] end
+    if mode == 'mount' then return OurOutfitBonus.m and OurOutfitBonus.m[tostring(id)] end
+end
+
+function ourCreateBonusPanel()
+    local conf = window.configure
+    local btn = g_ui.createWidget('Button', window)
+    btn:setId('ourBonusOutfit')
+    btn:setHeight(20)
+    btn:addAnchor(AnchorBottom, 'configure', AnchorBottom)
+    btn:addAnchor(AnchorLeft, 'configure', AnchorLeft)
+    btn:addAnchor(AnchorRight, 'configure', AnchorRight)
+    btn:setMarginBottom(7)
+    btn:setMarginLeft(6)
+    btn:setMarginRight(6)
+    btn:setText('Set as bonus outfit')
+    btn:setTooltip('Keep the bonus of the selected outfit and wear any other outfit you like (only the look changes, bonuses do not stack). Right click: back to the bonus of the worn outfit.')
+    btn.onClick = function()
+        if g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(119, 'set:' .. (tempOutfit.type or 0) .. ':' .. (tempOutfit.addons or 0)) end
+    end
+    btn.onMouseRelease = function(widget, pos, button)
+        if button == MouseRightButton and g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(119, 'clear'); return true end
+    end
+    btn:hide()
+    local lbl = g_ui.createWidget('Label', window)
+    lbl:setId('ourBonusText')
+    lbl:addAnchor(AnchorBottom, 'ourBonusOutfit', AnchorTop)
+    lbl:addAnchor(AnchorLeft, 'configure', AnchorLeft)
+    lbl:addAnchor(AnchorRight, 'configure', AnchorRight)
+    lbl:setMarginBottom(5)
+    lbl:setMarginLeft(8)
+    lbl:setMarginRight(6)
+    lbl:setTextWrap(true)
+    lbl:setTextAutoResize(true)
+    lbl:setTextAlign(AlignTopLeft)
+    lbl:setColor('#d8c48a')
+    lbl:setFont('verdana-11px-rounded')
+    lbl:hide()
+    ourBonusName = nil
+    if g_game.isOnline() then
+        g_game.getProtocolGame():sendExtendedOpcode(119, 'get')
+        if not OurOutfitBonus then g_game.getProtocolGame():sendExtendedOpcode(119, 'bonuses') end
+    end
+end
+
+function ourApplyBonusIcons()
+    if not window or not ourListMode then return end
+    for _, child in ipairs(window.selectionList:getChildren()) do
+        local b = ourBonusOf(ourListMode, tonumber(child:getId()))
+        child.ourBonus = b and true or nil
+        if child.bonusIcon then
+            child.bonusIcon:setVisible(b ~= nil)
+            if b then
+                child.bonusIcon:setTooltip(type(b) == 'table' and ('Bonus (both addons): ' .. tostring(b[3])) or ('Bonus: ' .. tostring(b)))
+            end
+        end
+    end
+end
+
+local ADDON_STAGE = {[0] = {1, 'no addons'}, [1] = {2, 'one addon'}, [2] = {2, 'one addon'}, [3] = {3, 'both addons'}}
+function ourUpdateBonusPanel()
+    if not window then return end
+    local btn = window:getChildById('ourBonusOutfit')
+    local lbl = window:getChildById('ourBonusText')
+    if not btn or not lbl then return end
+    local text, showBtn
+    if ourListMode == 'outfit' then
+        local b = ourBonusOf('outfit', tempOutfit.type)
+        if b then
+            local st = ADDON_STAGE[tempOutfit.addons or 0] or ADDON_STAGE[0]
+            text = 'Bonus (' .. st[2] .. '):\n' .. tostring(b[st[1]] or '')
+            if (tempOutfit.addons or 0) ~= 3 then text = text .. '\n\nBoth addons:\n' .. tostring(b[3] or '') end
+            showBtn = true
+        end
+    elseif ourListMode == 'mount' then
+        local b = ourBonusOf('mount', tempOutfit.mount)
+        if b then text = 'Bonus while riding:\n' .. tostring(b) end
+    end
+    if text then lbl:setText(text); lbl:show() else lbl:hide() end
+    btn:setVisible(showBtn and true or false)
+    if showBtn then
+        btn:setText(ourBonusName and ('Bonus: ' .. ourBonusName) or 'Set as bonus outfit')
+    end
+    if not showBtn then lbl:setMarginBottom(-20) else lbl:setMarginBottom(5) end
+end
 
 -- 11.10.2026 (Tobeto): owned shaders arrive from the server (game_myotsstore
 -- forwards opcode 113 "o:"). They are listed under Appearance -> Shader.

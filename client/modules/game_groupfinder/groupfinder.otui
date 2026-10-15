@@ -140,7 +140,7 @@ MainWindow
     text-wrap: true
     font: verdana-11px-monochrome
     color: #b8b8b8
-    text: Six bosses for groups of 4 (1 Tank, 1 Healer, 2 DPS). Quick join, pick a group from the list, create your own (optionally with a password) or queue your whole party. Each boss once per day (reset 10:00), 15 minutes per attempt.
+    text: Seven bosses for groups of 4 (1 Tank, 1 Healer, 2 DPS). Quick join, pick a group from the list, create your own (optionally with a password) or queue your whole party. Each boss once per day (reset 10:00), 15 minutes per attempt.
 
   Panel
     id: list

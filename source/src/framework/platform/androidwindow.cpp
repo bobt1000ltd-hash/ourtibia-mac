@@ -28,6 +28,7 @@
 #include "framework/core/clock.h"
 #include <framework/core/eventdispatcher.h>
 #include <android/log.h>
+#include <algorithm>
 #define ALOGD(...) __android_log_print(ANDROID_LOG_DEBUG, "OTClientMobile", __VA_ARGS__)
 
 AndroidWindow& g_androidWindow = (AndroidWindow&) g_window;
@@ -463,6 +464,7 @@ void AndroidWindow::handleCmd(int32_t cmd) {
                 }
                 updateDisplayDensityFromSystem(g_androidManager.getScreenDensity());
                 queryGlSize();
+                clampDensityToScreen();
                 ALOGD("INIT_WINDOW: size=%dx%d, density=%.2f, visible=true", m_size.width(), m_size.height(), m_displayDensity);
                 m_visible = true;
             } else {
@@ -484,6 +486,7 @@ void AndroidWindow::handleCmd(int32_t cmd) {
         case APP_CMD_CONFIG_CHANGED:
             updateDisplayDensityFromSystem(g_androidManager.getScreenDensity());
             queryGlSize();
+            clampDensityToScreen();
             ALOGD("RESIZED/CONFIG_CHANGED: size=%dx%d, density=%.2f", m_size.width(), m_size.height(), m_displayDensity);
             break;
         default:
@@ -515,6 +518,17 @@ void AndroidWindow::updateDisplayDensityFromSystem(float screenDensity) {
     } else {
         m_displayDensity = m_baseDisplayDensity;
     }
+}
+
+// OurTibia (15.10.2026): the client windows are built for at least 960x540
+// logical pixels. A phone's system density (2.5-3.5) would leave ~390 px of
+// height, so the density is lowered until the screen gives 960x540.
+void AndroidWindow::clampDensityToScreen() {
+    if (m_size.width() <= 0 || m_size.height() <= 0) return;
+    const float w = std::max(m_size.width(), m_size.height());
+    const float h = std::min(m_size.width(), m_size.height());
+    const float maxDensity = std::max(1.f, std::min(w / 960.f, h / 540.f));
+    if (m_displayDensity > maxDensity) m_displayDensity = maxDensity;
 }
 
 void AndroidWindow::processNativeInputEvents() {

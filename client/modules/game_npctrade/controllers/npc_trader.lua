@@ -398,6 +398,14 @@ function controllerNpcTrader:stopEquippedImbuementsTracking()
     g_game.imbuementDurations(trackerOn)
 end
 
+function ourIsProtectedItem(item)
+    local ok, record = pcall(function()
+        local RF = modules.game_myotshud and modules.game_myotshud.RarityFrames
+        return RF and RF.record and RF.record(item)
+    end)
+    return ok and type(record) == 'table' and record.g == 1
+end
+
 function controllerNpcTrader:getSellQuantity(itemPtr)
     if not itemPtr then
         return 0
@@ -412,7 +420,9 @@ function controllerNpcTrader:getSellQuantity(itemPtr)
         local equippedCount = 0
         for i = 1, 10 do
             local item = player:getInventoryItem(i)
-            if item and item:getId() == id and item:getSubType() == subType then
+            -- OurTibia (14.10.2026): an equipped item with "Toggle protection" is not counted by
+            -- the server either - subtracting it hid unprotected copies in the backpack (count 0)
+            if item and item:getId() == id and item:getSubType() == subType and not ourIsProtectedItem(item) then
                 equippedCount = equippedCount + item:getCount()
             end
         end

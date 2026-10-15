@@ -14,16 +14,18 @@ SpellListLabel < Label
     color: #ffffff
 
 SpellInfoLabel < Label
-  width: 70
+  // 15.10.2026 (Tobeto): short names (Cast, Voc, CD, Magic, Mana) - more room for the values
+  width: 38
   font: verdana-11px-monochrome
   text-align: right
-  margin-left: 10
+  margin-left: 6
   margin-top: 5
 
 SpellInfoValueLabel < Label
   text-align: left
-  width: 190
-  margin-left: 10
+  width: 200
+  margin-left: 6
+  text-auto-resize: false
   margin-top: 5
 
 FilterButton < Button
@@ -31,6 +33,8 @@ FilterButton < Button
   @onClick: toggleFilter(self)
   margin-top: 5
   font: verdana-11px-monochrome
+  // 15.10.2026 (Tobeto): text in the middle of the button (same space above and below)
+  text-offset: 0 0
   color: #8f8f8f
   $on:
     color: #dfdfdf
@@ -38,7 +42,8 @@ FilterButton < Button
 MainWindow
   id: spelllistWindow
   !text: tr('Spell List')
-  size: 550 400
+  // 15.10.2026 (Tobeto): compact window - list, details and filters without empty space
+  size: 470 344
   @onEscape: hideSpelllist()
 
   TextEdit
@@ -47,9 +52,8 @@ MainWindow
     anchors.left: parent.left
     width: 210
     height: 20
-    text-align: center
-    placeholder: Search
-    placeholder-color: #8f8f8f
+    text-align: left
+    max-length: 24
     @onTextChange: updateSpelllist()
 
   TextList
@@ -126,14 +130,14 @@ MainWindow
     id: labelFormula
     anchors.left: spellList.right
     anchors.top: labelName.bottom
-    !text: tr('Formula') .. ':'
+    !text: tr('Cast') .. ':'
 
 
   SpellInfoLabel
     id: labelVocation
     anchors.left: spellList.right
     anchors.top: labelFormula.bottom
-    !text: tr('Vocation') .. ':'
+    !text: tr('Voc') .. ':'
 
   SpellInfoLabel
     id: labelGroup
@@ -152,19 +156,19 @@ MainWindow
     id: labelCooldown
     anchors.left: spellList.right
     anchors.top: labelGroup.bottom
-    !text: tr('Cooldown') .. ':'
+    !text: tr('CD') .. ':'
 
   SpellInfoLabel
     id: labelLevel
     anchors.left: spellList.right
     anchors.top: labelCooldown.bottom
-    !text: tr('Magic level') .. ':'
+    !text: tr('Magic') .. ':'
 
   SpellInfoLabel
     id: labelMana
     anchors.left: spellList.right
     anchors.top: labelLevel.bottom
-    !text: tr('Mana') .. ' / ' .. tr('Soul') .. ':'
+    !text: tr('Mana') .. ':'
 
   SpellInfoLabel
     id: labelPremium
@@ -240,8 +244,8 @@ MainWindow
     width: 70
     font: verdana-11px-monochrome
     !text: tr('Vocation')
-    margin-top: 30
-    margin-left: 20
+    margin-top: 14
+    margin-left: 18
 
   CheckBox
     id: vocationBoxAny
@@ -286,6 +290,7 @@ MainWindow
 
   CheckBox
     id: vocationBoxMonk
+    visible: false
     anchors.left: prev.left
     anchors.top: prev.bottom
     margin-top: 3
@@ -299,8 +304,8 @@ MainWindow
     width: 70
     font: verdana-11px-monochrome
     !text: tr('Group')
-    margin-top: 30
-    margin-left: 20
+    margin-top: 14
+    margin-left: 18
 
   CheckBox
     id: groupBoxAny

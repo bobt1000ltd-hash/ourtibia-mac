@@ -315,9 +315,7 @@ function showSkillsContextMenu(widget, mousePos, mouseButton)
     for _, choice in ipairs(menu:getChildren()) do
         local choiceId = choice:getId()
         if choiceId and choiceId ~= 'HorizontalSeparator' then
-            if choiceId == 'rowsHeader' or choiceId == 'barsHeader' then
-                -- section titles
-            elseif choiceId == 'resetExperienceCounter' then
+            if choiceId == 'resetExperienceCounter' then
                 choice.onClick = function()
                     onSkillsMenuAction(choiceId)
                     menu:destroy()
@@ -349,7 +347,8 @@ end
 
 -- 13.10.2026 (Tobeto): rows that can be hidden completely from the skills panel
 -- 14.10.2026 (Tobeto): HP / MP regen and speed moved to the Attributes tab
-local OUR_ROWS = {rowExperience = {'experience', 'xpGainRate'}, rowHealth = {'health'}, rowMana = {'mana'},
+local OUR_ROWS = {rowLevel = {'level'}, rowStamina = {'stamina'}, -- 14.10.2026 (Tobeto): every position in one list
+    rowExperience = {'experience', 'xpGainRate'}, rowHealth = {'health'}, rowMana = {'mana'},
     rowSoul = {'soul'}, rowCapacity = {'capacity'}, rowRegenTime = {'regenerationTime'},
     -- 13.10.2026 (Tobeto): skills and offline training can be hidden completely too
     rowOfflineTraining = {'offlineTraining'}, rowMagic = {'magiclevel'}, rowFist = {'skillId0'},
@@ -361,7 +360,11 @@ function ourApplyRowHides()
     for opt, ids in pairs(OUR_ROWS) do
         for _, id in ipairs(ids) do
             local w = skillsWindow:recursiveGetChildById(id)
-            if w and set['row_' .. opt] == false then w:setVisible(false) end
+            if w and set['row_' .. opt] == false then w:setVisible(false)
+            elseif w and set[id] == 1 and w:getChildById('percent') then
+                -- 14.10.2026 (Tobeto): "progress bars only" is gone - bars hidden with it come back
+                set[id] = 0; pcall(showPercentBar, w, true)
+            end
         end
     end
 end
@@ -1968,7 +1971,7 @@ function myotsAttributes(rows)
             local widget=g_ui.createWidget('OurAttributeRow',panel)
             local key=tostring(entry.key or 'unknown')
             widget:setId('attribute_'..key)
-            local short={critical='Critical chance',extradefense='Extra defense',lowdamage='Low HP damage',lowresist='Low HP resist',dodgephysical='Physical dodge',dodgemagic='Magic dodge',allskills='All skills',experience='Experience',potion='Potion bonus',hpregen='HP per tick',manaregen='Mana per tick',soulregen='Soul / 30s',speed='Bonus speed',speed_total='Speed',regen_hp='HP regen',regen_mana='Mana regen',resilience='PvP Mastery'}
+            local short={critical='Critical chance',extradefense='Extra defense',lowdamage='Low HP damage',lowresist='Low HP resist',dodgephysical='Physical dodge',dodgemagic='Magic dodge',allskills='All skills',experience='Experience',potion='Potion bonus',hpregen='HP per tick',manaregen='Mana per tick',soulregen='Soul regen',speed='Bonus speed',speed_total='Speed',regen_hp='HP regen',regen_mana='Mana regen',resilience='PvP Mastery'}
             local label=tostring(entry.label or entry.key or 'Unknown')
             local name=widget and widget:getChildById('name');if name then name:setText(short[key] or label) end
             local value=tonumber(entry.value) or 0

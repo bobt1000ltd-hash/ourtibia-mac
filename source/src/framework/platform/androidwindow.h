@@ -153,6 +153,7 @@ private:
     float m_baseDisplayDensity{ DEFAULT_DISPLAY_DENSITY };
     bool m_hasBaseDisplayDensity{ false };
 
+    void clampDensityToScreen();
     void updateDisplayDensityFromSystem(float screenDensity);
 };
 

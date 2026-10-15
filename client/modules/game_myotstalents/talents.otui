@@ -85,41 +85,34 @@ TalentTree < UIWidget
       font: verdana-11px-rounded
       text-auto-resize: true
       color: #ffd35a
+  // 15.10.2026 (Tobeto): the tree sits at the bottom of its column - the same space between the
+  // progress bar and the border, no empty gap above the bar
   Panel
     id: rows
-    anchors.top: header.bottom
+    anchors.bottom: capLine.top
     anchors.left: parent.left
     anchors.right: parent.right
     height: 270
-    margin-top: 6
     layout:
       type: verticalBox
       spacing: 2
   UIWidget
     id: capLine
-    anchors.top: rows.bottom
+    anchors.bottom: cap.top
     anchors.horizontalCenter: parent.horizontalCenter
     size: 2 10
     background-color: #806020
   UIWidget
     id: cap
-    anchors.top: capLine.bottom
+    anchors.bottom: capName.top
     anchors.horizontalCenter: parent.horizontalCenter
     size: 64 64
   Label
-    id: capRank
-    anchors.top: cap.bottom
-    anchors.horizontalCenter: parent.horizontalCenter
-    margin-top: 2
-    font: verdana-11px-rounded
-    text-auto-resize: true
-    color: #ffd35a
-  Label
     id: capName
-    anchors.top: capRank.bottom
+    anchors.bottom: bar.top
     anchors.left: parent.left
     anchors.right: parent.right
-    margin-top: 2
+    margin-bottom: 8
     height: 16
     text-align: center
     font: verdana-11px-rounded
@@ -146,108 +139,44 @@ TalentTree < UIWidget
 MainWindow
   id: myotsTalents
   text: Talent Trees
-  size: 990 560
+  // 14.10.2026 (Tobeto): no title line and no right panel - the points are in the bottom bar
+  size: 760 532
   @onEscape: modules.game_myotstalents.hide()
-  Label
-    id: title
-    anchors.top: parent.top
-    anchors.left: parent.left
-    anchors.right: parent.right
-    height: 18
-    text-align: center
-    font: verdana-11px-rounded
-    color: #ffe9a0
   Panel
     id: trees
-    anchors.top: title.bottom
-    anchors.left: parent.left
-    margin-top: 6
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
     size: 724 456
     layout:
       type: horizontalBox
       spacing: 8
-  Panel
-    id: side
-    anchors.top: trees.top
-    anchors.left: trees.right
-    anchors.right: parent.right
-    anchors.bottom: trees.bottom
-    margin-left: 8
-    background-color: #1a1a1aee
-    border-width: 1
-    border-color: #505050
-    Label
-      id: freeTitle
-      anchors.top: parent.top
-      anchors.left: parent.left
-      anchors.right: parent.right
-      margin: 10 8 0 8
-      text: Free talent points
-      text-align: center
-      color: #c8c8c8
-    Label
-      id: free
-      anchors.top: freeTitle.bottom
-      anchors.left: parent.left
-      anchors.right: parent.right
-      margin-top: 2
-      height: 30
-      text-align: center
-      font: Verdana Bold-13px
-      color: #ffd35a
-    Label
-      id: progress
-      anchors.top: free.bottom
-      anchors.left: parent.left
-      anchors.right: parent.right
-      margin: 4 6 0 6
-      height: 58
-      text-wrap: true
-      text-align: center
-      font: verdana-11px-monochrome
-      color: #b0b0b0
-    Label
-      id: bonusTitle
-      anchors.top: progress.bottom
-      anchors.left: parent.left
-      margin: 10 8 0 8
-      text: Active bonuses
-      color: #c8c8c8
-    Label
-      id: bonuses
-      anchors.top: bonusTitle.bottom
-      anchors.left: parent.left
-      anchors.right: parent.right
-      anchors.bottom: help.top
-      margin: 4 8 6 8
-      text-wrap: true
-      text-align: topLeft
-      font: verdana-11px-monochrome
-      color: #9fe09f
-    Label
-      id: help
-      anchors.left: parent.left
-      anchors.right: parent.right
-      anchors.bottom: parent.bottom
-      margin: 0 8 8 8
-      height: 110
-      text-wrap: true
-      text-align: bottomLeft
-      font: verdana-11px-monochrome
-      color: #8a8a8a
-      text: Click a talent to spend a point. Each row needs 4 more points in the same tree; the final perk needs 20. All three trees can be developed at the same time.
+  // 15.10.2026 (Tobeto): points, balance and buttons centred between the trees and the window bottom
   Panel
     id: bottom
+    anchors.top: trees.bottom
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.bottom: parent.bottom
-    height: 24
+    margin-top: 10
     Label
-      id: gold
+      id: free
       anchors.left: parent.left
       anchors.verticalCenter: parent.verticalCenter
-      width: 130
-      height: 20
+      width: 170
+      height: 22
+      text-align: center
+      font: verdana-11px-rounded
+      color: #ffd35a
+      background-color: #111111
+      border-width: 1
+      border-color: #6a5420
+    Label
+      id: gold
+      anchors.left: free.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 6
+      width: 120
+      height: 22
       text-align: center
       color: #f0d060
       background-color: #111111

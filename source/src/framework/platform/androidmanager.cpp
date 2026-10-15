@@ -22,6 +22,9 @@
 #ifdef ANDROID
 
 #include "androidmanager.h"
+#include <filesystem>
+#include <fstream>
+#include <vector>
 #include <framework/global.h>
 #include <framework/core/unzipper.h>
 #include <framework/core/resourcemanager.h>
@@ -114,33 +117,58 @@ void AndroidManager::setClipboardText(const std::string& text) {
     env->DeleteLocalRef(jText);
 }
 
-void AndroidManager::unZipAssetData() {
-    std::string destFolder = getAppBaseDir() + "/game_data/";
+// OurTibia (15.10.2026): the game data is extracted again whenever the APK
+// carries a different data.zip (data.stamp asset written by the build), so an
+// updated APK never runs with old modules. The asset is streamed to a file and
+// extracted from disk to keep memory use low on phones.
+static std::string readAssetText(AAssetManager* mgr, const char* name) {
+    AAsset* asset = AAssetManager_open(mgr, name, AASSET_MODE_STREAMING);
+    if (!asset) return {};
+    std::string out;
+    char buf[4096];
+    int n;
+    while ((n = AAsset_read(asset, buf, sizeof(buf))) > 0) out.append(buf, n);
+    AAsset_close(asset);
+    return out;
+}
 
+void AndroidManager::unZipAssetData() {
+    const std::string baseDir = getAppBaseDir();
+    const std::string destFolder = baseDir + "/game_data/";
+    AAssetManager* mgr = m_app->activity->assetManager;
+
+    std::string stamp = readAssetText(mgr, "data.stamp");
+    if (stamp.empty()) stamp = "none";
     const std::filesystem::path initLua { destFolder + "init.lua" };
-    if (std::filesystem::exists(initLua)) {
-        return;
+    const std::filesystem::path stampFile { destFolder + ".apkstamp" };
+    if (std::filesystem::exists(initLua) && std::filesystem::exists(stampFile)) {
+        std::ifstream in(stampFile);
+        std::string have((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+        if (have == stamp) return;
     }
 
-    AAsset* dataAsset = AAssetManager_open(
-            m_app->activity->assetManager,
-            "data.zip",
-            AASSET_MODE_BUFFER);
+    std::error_code ec;
+    std::filesystem::remove_all(destFolder, ec);
 
+    AAsset* dataAsset = AAssetManager_open(mgr, "data.zip", AASSET_MODE_STREAMING);
     if (!dataAsset) {
         g_logger.fatal("Failed to open data.zip from APK assets. Run setup_android_deps.sh to generate it.");
         return;
     }
-
-    auto dataFileLength = AAsset_getLength(dataAsset);
-    char* dataContent = (char *) malloc(dataFileLength + 1);
-    AAsset_read(dataAsset, dataContent, dataFileLength);
-    dataContent[dataFileLength] = '\0';
-
-    unzipper::extract(dataContent, dataFileLength, destFolder);
-
+    const std::string zipPath = baseDir + "/data_tmp.zip";
+    {
+        std::ofstream out(zipPath, std::ios::binary | std::ios::trunc);
+        std::vector<char> buf(1 << 20);
+        int n;
+        while ((n = AAsset_read(dataAsset, buf.data(), buf.size())) > 0) out.write(buf.data(), n);
+        if (!out.good()) g_logger.fatal("Not enough free space to unpack the game data.");
+    }
     AAsset_close(dataAsset);
-    free(dataContent);
+
+    unzipper::extractFile(zipPath, destFolder);
+    std::filesystem::remove(zipPath, ec);
+
+    std::ofstream(stampFile, std::ios::trunc) << stamp;
 }
 
 std::string AndroidManager::getAppBaseDir() {

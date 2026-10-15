@@ -294,6 +294,12 @@ function onGameStart()
     show()
     updateSidePanelButtons()
     applyMobileMargins()
+    -- OurTibia (15.10.2026): phones get a low chat panel (more map); the
+    -- player can still drag the splitter up
+    if g_platform.isMobile() and not mobileSplitterSet then
+        mobileSplitterSet = true
+        addEvent(function() bottomSplitter:setMarginBottom(160) end)
+    end
 end
 
 function onGameEnd()
@@ -841,7 +847,7 @@ function createThingMenu(menuPosition, lookThing, useThing, creatureThing)
         menu:addSeparator()
 
         if creatureThing:isLocalPlayer() then
-            menu:addOption(tr(g_game.getClientVersion() >= 1000 and "Customise Character" or "Set Outfit"), function()
+            menu:addOption(tr("Set Outfit"), function() -- 15.10.2026 (Tobeto): was "Customise Character"
                 g_game.requestOutfit()
             end)
 

@@ -274,7 +274,7 @@ function getSellQuantityLegacy(item)
         local localPlayer = g_game.getLocalPlayer()
         for i = 1, LAST_INVENTORY do
             local inventoryItem = localPlayer:getInventoryItem(i)
-            if inventoryItem and inventoryItem:getId() == item:getId() then
+            if inventoryItem and inventoryItem:getId() == item:getId() and not (ourIsProtectedItem and ourIsProtectedItem(inventoryItem)) then
                 removeAmount = removeAmount + inventoryItem:getCount()
             end
         end

@@ -22,7 +22,7 @@ UIWidget
 
   UIWidget
     id: shortcuts
-    size: 175 150
+    size: 175 205
     anchors.bottom: parent.bottom
     anchors.right: parent.right
     phantom: false
@@ -30,10 +30,39 @@ UIWidget
     visible: false
     background: #00000044
 
+    // OurTibia (15.10.2026): quick buttons - next target and chat on/off
+    UIWidget
+      id: quickIcons
+      focusable: false
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 55
+
+      GameAction
+        id: target
+        anchors.left: parent.left
+        anchors.top: parent.top
+        margin-left: 15
+        margin-top: 2
+        size: 64 52
+        @onSetup: self.image:setImageSource("/game_shortcuts/target")
+      GameAction
+        id: chat
+        anchors.right: parent.right
+        anchors.top: parent.top
+        margin-right: 15
+        margin-top: 2
+        size: 64 52
+        @onSetup: self.image:setImageSource("/images/game/mobile/chat")
+
     UIWidget
       id: shortcutIcons
       focusable: false
-      anchors.fill: parent
+      anchors.top: quickIcons.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
 
       GameAction
         id: attack

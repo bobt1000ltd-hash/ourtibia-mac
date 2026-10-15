@@ -39,21 +39,57 @@ local function nodeState(spent,need,rank,max)
 end
 local BORDER={max='#f0c040',partial='#40d040',open='#d8d8d8',locked='#3a3a3a'}
 
+-- 14.10.2026 (Tobeto): tooltip "Name (x/y)" + one bonus per line; Shift shows the details
+local function upFirst(t) return (t:gsub('^%l',string.upper)) end
+-- "Melee skill +1" / "+1% physical damage" -> sign, number, unit, name
+local function parsePart(part)
+  local name,sign,num,unit=part:match('^(.-)%s*([%+%-])([%d%.]+)(%%?)$')
+  if name and name~='' then return sign,tonumber(num),unit,name end
+  sign,num,unit,name=part:match('^([%+%-]?)([%d%.]+)(%%?)%s*(.*)$')
+  if num then return (sign=='' and '+' or sign),tonumber(num),unit,name end
+end
+local function fmtNum(v) if v==math.floor(v) then return tostring(math.floor(v)) end return (string.format('%.2f',v):gsub('0+$',''):gsub('%.$','')) end
+local function perLines(per,mult)
+  local out={}
+  for part in tostring(per or ''):gmatch('[^,]+') do
+    part=part:gsub('^%s+',''):gsub('%s+$','')
+    local sign,num,unit,name=parsePart(part)
+    if num then out[#out+1]=sign..fmtNum(num*(mult or 1))..unit..' '..upFirst(name)
+    elseif part~='' then out[#out+1]=upFirst(part) end
+  end
+  return out
+end
+local function attachTip(w,short,long)
+  w:setTooltip(short)
+  connect(w,{onHoverChange=function(self,hovered)
+    if self.ourTipEvent then removeEvent(self.ourTipEvent);self.ourTipEvent=nil end
+    if not hovered then return end
+    local shown=false
+    local function check()
+      self.ourTipEvent=nil
+      if not self:isHovered() then return end
+      local sh=g_keyboard.isShiftPressed()
+      -- 15.10.2026 (Tobeto): Shift switches the tooltip at once (the old one is hidden and the new one shown)
+      if sh~=shown then shown=sh;local t=sh and long or short;self:setTooltip(t);pcall(g_tooltip.hide);g_tooltip.display(t) end
+      self.ourTipEvent=scheduleEvent(check,100)
+    end
+    self.ourTipEvent=scheduleEvent(check,100)
+  end})
+end
+
 local function render()
   if not window or not data then return end
   local promoted=data.promoted
-  ui('title'):setText((data.vocation or '')..'  -  Level '..tostring(data.level or 0)..(promoted and '' or '  (get your promotion to unlock the trees)'))
-  ui('free'):setText(tostring(data.free or 0))
   local nextLevel=tonumber(data.nextLevel) or 20
-  ui('progress'):setText('Earned: '..tostring(data.earned or 0)..' points\nNext point at level '..nextLevel..'\n(1 point at level 20, then 1 every 10 levels)')
-  local totals=data.totals or {}
-  ui('bonuses'):setText(#totals>0 and table.concat(totals,'\n') or 'No talents chosen yet.')
+  -- 14.10.2026 (Tobeto): free and total points in the bottom bar (the right panel is gone)
+  ui('free'):setText('Talent points: '..tostring(data.free or 0)..' / '..tostring(data.earned or 0))
+  ui('free'):setTooltip('Free talent points / all points of your character.\nNext point at level '..nextLevel..' (1 point at level 20, then 1 every 10 levels).')
   ui('gold'):setText(money(data.gold)..' gp')
   ui('reset'):setText('Reset ('..money(data.resetCost)..' gp)')
   ui('reset'):setTooltip('Resets all talent points. Costs as much as all five blessings.\nOnly in a protection zone or out of combat.')
   local any=0;for _,v in ipairs(data.spent or {}) do any=any+(tonumber(v) or 0) end
   ui('reset'):setEnabled(any>0)
-  ui('status'):setText(promoted and '' or 'Talent trees unlock after the promotion (level 20).')
+  ui('status'):setText('')
   local holder=ui('trees');holder:destroyChildren()
   for ti,tree in ipairs(data.trees or {}) do
     local w=g_ui.createWidget('TalentTree',holder)
@@ -86,11 +122,21 @@ local function render()
         b:getChildById('rank'):setColor(st=='max' and '#ffd35a' or (rank>0 and '#7aff7a' or '#d0d0d0'))
         b:setBorderColor(BORDER[st])
         if st=='locked' then b:setOpacity(0.38) end
-        local tip=node.name..'  ('..rank..'/'..node.max..')\nPer rank: '..node.per
-        if st=='locked' then tip=tip..'\n\nLocked: needs '..need..' points in '..tree.name..' (you have '..spent..').'
-        elseif st=='max' then tip=tip..'\n\nMaximum rank.'
-        else tip=tip..'\n\nClick to spend a point.' end
-        b:setTooltip(tip)
+        local head=node.name..' ('..rank..'/'..node.max..')'
+        local short=head..'\n'..table.concat(perLines(node.per),'\n')..'\n\nPress Shift for more information.'
+        -- 15.10.2026 (Tobeto): Shift tooltip layout (name, points, each point, at max, unlock, action)
+        local long={head,rank..'/'..node.max..' points','','Each point adds:'}
+        for _,l in ipairs(perLines(node.per)) do long[#long+1]=l end
+        long[#long+1]='';long[#long+1]='At max points ('..node.max..'):'
+        for _,l in ipairs(perLines(node.per,node.max)) do long[#long+1]=l end
+        long[#long+1]=''
+        long[#long+1]=need>0 and ('Unlock: '..need..' points spent in '..tree.name..' (you have '..math.min(spent,need)..'/'..need..')') or 'Unlock: available from the start'
+        long[#long+1]=''
+        if not promoted then long[#long+1]='Talent trees unlock after the promotion.'
+        elseif st=='max' then long[#long+1]='Maximum rank.'
+        elseif st=='locked' then long[#long+1]='Locked - spend more points in this tree first.'
+        else long[#long+1]='Click to spend a point.' end
+        attachTip(b,short,table.concat(long,'\n'))
         b.onClick=function()
           if not promoted or st=='locked' or st=='max' then return end
           if (tonumber(data.free) or 0)<=0 then ui('status'):setText('No free talent points. Next point at level '..nextLevel..'.');return end
@@ -106,12 +152,15 @@ local function render()
     cw:setImageSource(CAPS)
     cw:setImageClip({x=(tonumber(cap.capIcon) or 0)*64,y=0,width=64,height=64})
     local capOpen=promoted and spent>=(tonumber(cap.need) or 20)
-    cw:setOpacity(capRank>0 and 1 or (capOpen and 0.9 or 0.3))
-    w:getChildById('capRank'):setText(capRank..'/1')
+    -- 14.10.2026 (Tobeto): no 0/1 - greyed out until it is active, full colour when active
+    cw:setOpacity(capRank>0 and 1 or 0.35)
     w:getChildById('capName'):setText(cap.name or '')
+    w:getChildById('capName'):setColor(capRank>0 and '#f0d080' or '#8a7a5a')
     w:getChildById('capLine'):setBackgroundColor(capOpen and '#e0b040' or '#403010')
-    cw:setTooltip((cap.name or '')..'  - final perk ('..capRank..'/1)\n'..'Bonus: '..(cap.per or '')..'\n\n'..
-      (capRank>0 and 'Unlocked.' or (capOpen and 'Click to unlock (1 point).' or ('Needs '..(cap.need or 20)..' points in '..tree.name..' (you have '..spent..').'))))
+    local capShort=(cap.name or '')..(capRank>0 and ' (active)' or '')..'\n'..table.concat(perLines(cap.per),'\n')..'\n\nPress Shift for more information.'
+    local capLong=(cap.name or '')..' - final perk of '..tree.name..'\n'..table.concat(perLines(cap.per),', ')..'\nUnlock: '..(cap.need or 20)..' points spent in '..tree.name..' (you have '..spent..'), costs 1 point\n'..
+      (capRank>0 and 'Active.' or (capOpen and 'Click to unlock it.' or (promoted and 'Not available yet.' or 'Talent trees unlock after the promotion.')))
+    attachTip(cw,capShort,capLong)
     cw.onClick=function()
       if capRank>0 or not capOpen then return end
       if (tonumber(data.free) or 0)<=0 then ui('status'):setText('No free talent points. Next point at level '..nextLevel..'.');return end
@@ -157,7 +206,8 @@ end
 function ourMarkButton()
   if not button then return end
   local free=tonumber(data and data.free) or 0
-  button:setTooltip('Talent Trees (Ctrl+I)'..(free>0 and ('\n'..free..' free talent point'..(free==1 and '' or 's')..' - click to spend') or ''))
+  local promo=data and data.promoted==false and '\nRequires the promotion (level 20).' or ''
+  button:setTooltip('Talent Trees (Ctrl+I)'..promo..(free>0 and ('\n'..free..' free talent point'..(free==1 and '' or 's')..' - click to spend') or ''))
   if free>0 then button:setBorderWidth(1);button:setBorderColor('#ffd35a');button:setImageColor('#ffe9a0')
   else button:setBorderWidth(0);button:setImageColor('#ffffff') end
 end
