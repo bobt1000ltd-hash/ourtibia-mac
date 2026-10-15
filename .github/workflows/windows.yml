@@ -1,0 +1,90 @@
+name: Windows client
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'source/src/**'
+      - 'source/CMakeLists.txt'
+      - 'source/vcpkg.json'
+      - '.github/workflows/windows.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: windows-client
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 180
+    env:
+      VCPKG_ROOT: C:\vcpkg-ot
+      VCPKG_DEFAULT_BINARY_CACHE: C:\vcpkg-cache
+      VCPKG_OVERLAY_PORTS: ${{ github.workspace }}\source\overlay-ports
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: vcpkg binary cache
+        uses: actions/cache@v4
+        with:
+          path: C:\vcpkg-cache
+          key: vcpkg-win-${{ hashFiles('source/vcpkg.json', 'source/overlay-ports/**', 'source/cmake/triplets/**') }}
+          restore-keys: vcpkg-win-
+
+      - name: vcpkg
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path C:\vcpkg-cache | Out-Null
+          git clone https://github.com/microsoft/vcpkg C:\vcpkg-ot
+          C:\vcpkg-ot\bootstrap-vcpkg.bat -disableMetrics
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Configure
+        shell: pwsh
+        working-directory: source
+        run: |
+          cmake --preset windows-release -DVCPKG_PLATFORM_TOOLSET=v143 -DOPTIONS_ENABLE_SCCACHE=OFF -DCMAKE_BUILD_TYPE=Release 2>&1 | Tee-Object -FilePath $env:RUNNER_TEMP\configure.log
+
+      - name: Build
+        shell: pwsh
+        working-directory: source
+        run: |
+          cmake --build build/windows-release --config Release 2>&1 | Tee-Object -FilePath $env:RUNNER_TEMP\build.log
+
+      - name: Collect
+        if: always()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path out | Out-Null
+          Get-ChildItem -Path source -Recurse -Filter *.exe -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch 'vcpkg|CMakeFiles' } | ForEach-Object { Copy-Item $_.FullName out\ }
+          if (Test-Path out\otclient.exe) { Rename-Item out\otclient.exe MyOTS.exe }
+          Copy-Item $env:RUNNER_TEMP\*.log out\ -ErrorAction SilentlyContinue
+          Get-ChildItem out
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: OurTibia-Windows
+          path: out/
+          retention-days: 14
+
+      - name: Results to branch results-windows
+        if: always()
+        shell: bash
+        run: |
+          R="$RUNNER_TEMP/res"; rm -rf "$R"; mkdir -p "$R"
+          cp out/* "$R/" 2>/dev/null || true
+          for f in "$R"/*.log; do [ -f "$f" ] && tail -c 400000 "$f" > "$f.tmp" && mv "$f.tmp" "$f"; done
+          (cd "$R" && sha256sum *.exe > sha256.txt 2>/dev/null || true)
+          echo "${{ job.status }}" > "$R/status.txt"
+          cd "$R"; git init -q -b results-windows
+          git config user.name "OurTibia build"; git config user.email "actions@github.com"
+          git add -A; git commit -q -m "Windows build ${{ github.run_id }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" "HEAD:refs/heads/results-windows"

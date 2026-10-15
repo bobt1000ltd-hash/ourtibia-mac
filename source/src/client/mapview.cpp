@@ -215,7 +215,13 @@ void MapView::drawLights() {
 
         const auto& map = m_floors[z].cachedVisibleTiles;
 
-        if (m_fadeType != FadeType::FADE_OUT || fadeLevel == 1.f) {
+        // OurTibia (15.10.2026): a floor that is still fading (in or out) must not shade the lights
+        // below it. Walking diagonally underground makes the floor above flicker between visible
+        // and hidden for a moment; its tiles used to cut the player's light off each time.
+        // Underground the floors above the camera only show up through holes and corners; letting
+        // them shade the lights made the player's light blink when stepping diagonally past them.
+        const bool shadesLights = fadeLevel == 1.f && !(cameraPosition.z > g_gameConfig.getMapSeaFloor() && z < cameraPosition.z);
+        if (shadesLights) {
             for (const auto& tile : map.shades) {
                 if (alwaysTransparent && tile->getPosition().isInRange(_camera, g_gameConfig.getTileTransparentFloorViewRange(), g_gameConfig.getTileTransparentFloorViewRange(), true))
                     continue;
