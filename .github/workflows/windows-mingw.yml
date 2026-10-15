@@ -60,6 +60,12 @@ jobs:
           if grep -q "MISSING utfcpp" out/packages.txt; then gh_cmake nemtrif/utfcpp utfcpp -DUTF8_TESTS=OFF -DUTF8_SAMPLES=OFF; fi
           if grep -q "MISSING parallel-hashmap" out/packages.txt; then gh_cmake greg7mdp/parallel-hashmap phmap -DPHMAP_BUILD_TESTS=OFF -DPHMAP_BUILD_EXAMPLES=OFF; fi
           if grep -q "MISSING libinih" out/packages.txt; then echo "inih missing - no INIReader"; fi
+          # the client still uses asio::io_service (removed in asio 1.33+): use the last asio that has it
+          if [ ! -f $P/include/asio/io_service.hpp ]; then
+            git clone -q --depth 1 -b asio-1-30-2 https://github.com/chriskohlhoff/asio.git /tmp/asio
+            rm -rf $P/include/asio $P/include/asio.hpp
+            cp -r /tmp/asio/asio/include/asio /tmp/asio/asio/include/asio.hpp $P/include/
+          fi
           if grep -q "MISSING cppcodec" out/packages.txt; then
             git clone -q --depth 1 https://github.com/tplgy/cppcodec.git /tmp/cppcodec
             cp -r /tmp/cppcodec/cppcodec $P/include/
