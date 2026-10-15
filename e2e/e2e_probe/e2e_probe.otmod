@@ -1,0 +1,10 @@
+Module
+  name: e2e_probe
+  description: CI only - reports the game state to the log (never shipped)
+  author: OurTibia
+  autoload: true
+  autoload-priority: 1000
+  sandboxed: true
+  scripts: [ e2e_probe ]
+  @onLoad: init()
+  @onUnload: terminate()

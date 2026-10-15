@@ -1,0 +1,136 @@
+name: Android end-to-end test
+
+# Takes the newest APK (branch results-android), points it at a throwaway local game server
+# (TFS 1.4.2, protocol 10.98, fresh test database on this runner) and plays it in the emulator:
+# login by touch, character list, entering the game, walking, screenshots and the game log.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'e2e/**'
+      - '.github/workflows/android-e2e.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-e2e
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: APK from results-android
+        run: |
+          git fetch -q --depth 1 origin results-android
+          mkdir -p out/test apk
+          git --work-tree=apk checkout FETCH_HEAD -- . 2>/dev/null || git archive FETCH_HEAD | tar -x -C apk
+          cat apk/OurTibia-Android.apk.part-* > out/orig.apk
+          (cd apk && cat sha256.txt) ; sha256sum out/orig.apk
+
+      - name: Test variant of the APK (local server, probe module)
+        run: |
+          W=$RUNNER_TEMP/apk; rm -rf $W; mkdir -p $W/x $W/d
+          cd $W/x && unzip -q $GITHUB_WORKSPACE/out/orig.apk
+          cd $W/d && unzip -q $W/x/assets/data.zip
+          sed -i 's|Servers_init = { \["ourtibia.com"\]|Servers_init = { ["127.0.0.1"]|' init.lua
+          grep -n "Servers_init = {" init.lua
+          rm -f update-url.txt
+          cp -r $GITHUB_WORKSPACE/e2e/e2e_probe modules/
+          rm -f $W/x/assets/data.zip; zip -q -r -9 $W/x/assets/data.zip .
+          echo "e2e-${{ github.run_id }}" > $W/x/assets/data.stamp
+          cd $W/x && rm -rf META-INF && zip -q -r -0 $W/unsigned.apk assets && zip -q -r $W/unsigned.apk . -x 'assets/*'
+          BT=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -1)
+          $BT/zipalign -f -p 4 $W/unsigned.apk $W/aligned.apk
+          keytool -genkeypair -keystore $W/e2e.jks -alias e2e -storepass e2etest -keypass e2etest -keyalg RSA -keysize 2048 -validity 100 -dname "CN=e2e" >/dev/null
+          $BT/apksigner sign --ks $W/e2e.jks --ks-pass pass:e2etest --out $GITHUB_WORKSPACE/out/e2e.apk $W/aligned.apk
+          $BT/apksigner verify $GITHUB_WORKSPACE/out/e2e.apk && ls -la $GITHUB_WORKSPACE/out
+
+      - name: Game server (TFS 1.4.2, test database)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq cmake build-essential libluajit-5.1-dev libmysqlclient-dev libboost-system-dev libboost-iostreams-dev libboost-filesystem-dev libboost-locale-dev libboost-date-time-dev libpugixml-dev libcrypto++-dev libfmt-dev > /dev/null
+          git clone -q --depth 1 -b v1.4.2 https://github.com/otland/forgottenserver.git $RUNNER_TEMP/tfs
+          cd $RUNNER_TEMP/tfs && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release > /dev/null && make -j$(nproc) 2>&1 | tail -3
+          cp tfs ..
+          sudo systemctl start mysql
+          mysql -uroot -proot -e "CREATE DATABASE forgottenserver"
+          mysql -uroot -proot forgottenserver < $RUNNER_TEMP/tfs/schema.sql
+          mysql -uroot -proot forgottenserver -e "INSERT INTO accounts (name,password,type,premium_ends_at,email,creation) VALUES ('e2etest',SHA1('e2epass'),1,0,'',0); INSERT INTO players (name,account_id,level,vocation,health,healthmax,experience,looktype,lookhead,lookbody,looklegs,lookfeet,town_id,conditions,cap,sex) VALUES ('E2e Knight',1,8,4,185,185,4200,128,78,69,58,76,1,'',470,1);"
+          cd $RUNNER_TEMP/tfs && cp config.lua.dist config.lua
+          sed -i 's/^mysqlUser = .*/mysqlUser = "root"/; s/^mysqlPass = .*/mysqlPass = "root"/; s/^mysqlDatabase = .*/mysqlDatabase = "forgottenserver"/; s/^ip = .*/ip = "127.0.0.1"/' config.lua
+          (setsid ./tfs > $GITHUB_WORKSPACE/out/test/tfs.log 2>&1 &)
+          for i in $(seq 1 120); do grep -q "Online" $GITHUB_WORKSPACE/out/test/tfs.log && break; sleep 1; done
+          tail -5 $GITHUB_WORKSPACE/out/test/tfs.log
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+
+      - name: Test script
+        run: |
+          cat > out/e2e.sh <<'EOS'
+          T=out/test
+          shot(){ adb exec-out screencap -p > $T/$1.png || true; }
+          e2e(){ adb logcat -d -s OTClientMobile:I | grep "\[E2E\]" | tail -1 >> $T/steps.txt; echo "-- $1" >> $T/steps.txt; }
+          adb reverse tcp:7171 tcp:7171; adb reverse tcp:7172 tcp:7172
+          adb install -r out/e2e.apk > $T/install.txt 2>&1 || true
+          adb logcat -c || true
+          adb shell am start -n com.ourtibia.client/com.otclient.MainActivity || true
+          sleep 120; shot 01_start
+          for i in 1 2 3 4 5 6; do adb logcat -d -s OTClientMobile:I | grep -q "e2e_probe\|\[E2E\]" && break; sleep 20; done
+          shot 02_login_screen; e2e "login screen"
+          # login by touch (2400x1080 landscape)
+          adb shell input tap 860 376; sleep 1; adb shell input text "e2etest"; sleep 1
+          adb shell input tap 860 444; sleep 1; adb shell input text "e2epass"; sleep 1
+          shot 03_typed
+          adb shell input keyevent 4; sleep 2; shot 04_keyboard_hidden
+          adb shell input tap 860 514; sleep 12; shot 05_after_login; e2e "after login tap"
+          adb shell input keyevent 66; sleep 15; shot 06_after_enter; e2e "after enter"
+          # still not in game: the probe logs in from code after 6 minutes
+          for i in $(seq 1 30); do adb logcat -d -s OTClientMobile:I | grep -q "\[E2E\] ONLINE" && break; sleep 10; done
+          shot 07_in_game; e2e "in game"
+          # walking: arrow keys, then taps on the map right/left/up of the character
+          for k in 22 22 20 21 19; do adb shell input keyevent $k; sleep 1.5; done
+          shot 08_after_keys; e2e "after arrow keys"
+          adb shell input tap 1400 540; sleep 4; e2e "tap right"
+          adb shell input tap 1000 540; sleep 4; e2e "tap left"
+          adb shell input tap 1200 380; sleep 4; e2e "tap up"
+          shot 09_after_taps
+          adb shell input swipe 1200 540 1500 540 600; sleep 4; e2e "swipe right"
+          shot 10_after_swipe
+          sleep 20; shot 11_end; e2e "end"
+          adb shell pidof com.ourtibia.client > $T/pid.txt || echo "PROCESS NOT RUNNING" > $T/pid.txt
+          adb logcat -d > $T/logcat.txt || true
+          adb logcat -d -s OTClientMobile:I > $T/game.log || true
+          grep "\[E2E\]" $T/game.log > $T/e2e.txt || true
+          EOS
+          chmod +x out/e2e.sh
+
+      - name: Play in the emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          target: google_apis
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: bash out/e2e.sh
+
+      - name: Results to branch results-android-e2e
+        if: always()
+        run: |
+          grep -i "logged in\|logged out" out/test/tfs.log > out/test/server_logins.txt || true
+          R="$RUNNER_TEMP/res"; rm -rf "$R"; mkdir -p "$R"
+          cp -r out/test "$R/" 2>/dev/null || true
+          cd "$R"; git init -q -b results-android-e2e
+          git config user.name "OurTibia build"; git config user.email "actions@github.com"
+          git add -A; git commit -q -m "Android e2e ${{ github.run_id }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" "HEAD:refs/heads/results-android-e2e"
