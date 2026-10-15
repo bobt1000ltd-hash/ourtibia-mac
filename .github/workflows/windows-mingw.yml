@@ -66,6 +66,9 @@ jobs:
             rm -rf $P/include/asio $P/include/asio.hpp
             cp -r /tmp/asio/asio/include/asio /tmp/asio/asio/include/asio.hpp $P/include/
           fi
+          mkdir -p $P/include/stduuid && cp /tmp/stduuid/include/uuid.h $P/include/stduuid/uuid.h
+          # the client includes <luajit/lua.hpp> (vcpkg layout); MSYS2 has include/luajit-2.1
+          if [ -d $P/include/luajit-2.1 ] && [ ! -f $P/include/luajit/lua.hpp ]; then mkdir -p $P/include/luajit && cp $P/include/luajit-2.1/* $P/include/luajit/; fi
           # single-header libraries from vcpkg.json that MSYS2 does not package
           git clone -q --depth 1 https://github.com/adamyaxley/Obfuscate.git /tmp/obf && cp /tmp/obf/obfuscate.h $P/include/
           git clone -q --depth 1 -b v4.1.0 https://github.com/bshoshany/thread-pool.git /tmp/btp && cp /tmp/btp/include/*.hpp $P/include/
