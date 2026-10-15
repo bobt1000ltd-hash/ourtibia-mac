@@ -3683,6 +3683,7 @@ OurItemInfo[23737]={n="minor stone of release",w=0.1}
 OurItemInfo[23738]={n="major stone of release",w=0.1}
 OurItemInfo[23739]={n="astral protector",w=0.1}
 OurItemInfo[23740]={n="rarity infuser",w=0.1}
+OurItemInfo[45970]={n="super rarity infuser",w=0.1}
 OurItemInfo[15703]={n="gnomish repair crystal",w=0.1} -- 15.10.2026: was named "super rarity infuser" (small purple crystal shown instead of the infuser)
 OurItemInfo[23741]={n="diamond arrow",b="Atk: 37",w=0.8}
 OurItemInfo[23742]={n="minor stone of lock",w=0.1}
