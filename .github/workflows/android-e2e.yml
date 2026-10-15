@@ -44,7 +44,7 @@ jobs:
           cp -r $GITHUB_WORKSPACE/e2e/e2e_probe modules/
           rm -f $W/x/assets/data.zip; zip -q -r -9 $W/x/assets/data.zip .
           echo "e2e-${{ github.run_id }}" > $W/x/assets/data.stamp
-          cd $W/x && rm -rf META-INF && zip -q -r -0 $W/unsigned.apk assets && zip -q -r $W/unsigned.apk . -x 'assets/*'
+          cd $W/x && rm -rf META-INF && zip -q -r -0 $W/unsigned.apk .   # everything stored: Android 11+ needs resources.arsc (and the .so) uncompressed
           BT=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -1)
           $BT/zipalign -f -p 4 $W/unsigned.apk $W/aligned.apk
           keytool -genkeypair -keystore $W/e2e.jks -alias e2e -storepass e2etest -keypass e2etest -keyalg RSA -keysize 2048 -validity 100 -dname "CN=e2e" >/dev/null
