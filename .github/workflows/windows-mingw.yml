@@ -96,26 +96,30 @@ jobs:
       - name: Collect (exe + the DLLs it needs)
         if: always()
         run: |
-          EXE=$(find source -maxdepth 3 -name "otclient.exe" -newer source/CMakeLists.txt | head -1)
-          [ -z "$EXE" ] && EXE=$(find source -name "*.exe" -not -path "*/CMakeFiles/*" | head -1)
-          echo "exe: $EXE"
-          if [ -n "$EXE" ]; then
+          set +e
+          EXE=source/otclient.exe
+          ls -la $EXE
+          if [ -f "$EXE" ]; then
             mkdir -p out/bin; cp "$EXE" out/bin/MyOTS.exe
             # copy every non-system DLL the exe needs (recursively)
             for i in 1 2 3 4 5; do
               for f in out/bin/*.exe out/bin/*.dll; do
-                ldd "$f" 2>/dev/null | awk '/\/ucrt64\//{print $3}'
-              done | sort -u | while read d; do cp -n "$d" out/bin/ 2>/dev/null; done
+                [ -f "$f" ] && ldd "$f" 2>/dev/null | awk '/ucrt64/{print $3}'
+              done | sort -u > /tmp/dlls.txt
+              while read d; do [ -f "$d" ] && [ ! -f "out/bin/$(basename "$d")" ] && cp "$d" out/bin/; done < /tmp/dlls.txt
             done
-            ls out/bin
-            (cd out && zip -q -r OurTibia-Windows-mingw.zip bin)
+            ls out/bin > out/files.txt
+            cat out/files.txt
+            (cd out && zip -q -r OurTibia-Windows-mingw.zip bin && sha256sum OurTibia-Windows-mingw.zip bin/MyOTS.exe > zip_sha256.txt)
           fi
+          exit 0
 
       - name: Results to branch results-windows-mingw
         if: always()
         run: |
           R="$RUNNER_TEMP/res"; rm -rf "$R"; mkdir -p "$R"
           cp out/*.txt out/*.log out/*.zip "$R/" 2>/dev/null || true
+          if [ -f "$R/OurTibia-Windows-mingw.zip" ]; then split -b 40m "$R/OurTibia-Windows-mingw.zip" "$R/OurTibia-Windows-mingw.zip.part-"; rm "$R/OurTibia-Windows-mingw.zip"; fi
           (cd "$R" && sha256sum *.zip > sha256.txt 2>/dev/null || true)
           echo "${{ job.status }}" > "$R/status.txt"
           cd "$R"; git init -q -b results-windows-mingw
