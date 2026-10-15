@@ -113,15 +113,17 @@ function Cyclopedia.loadMap()
     local dataMinimapFile = "/data" .. minimapFile
     local versionedMinimapFile = "/minimap" .. clientVersion .. ".otmm"
 
-    if g_resources.fileExists(dataMinimapFile) then
+    -- OurTibia (15.10.2026): with the OurTibia map file present only that file is loaded
+    local fullMap = g_resources.fileExists('/data/minimap/ourtibia1098.otmm')
+    if not fullMap and g_resources.fileExists(dataMinimapFile) then
         loaded = g_minimap.loadOtmm(dataMinimapFile)
     end
 
-    if not loaded and g_resources.fileExists(versionedMinimapFile) then
+    if not fullMap and not loaded and g_resources.fileExists(versionedMinimapFile) then
         loaded = g_minimap.loadOtmm(versionedMinimapFile)
     end
 
-    if not loaded and g_resources.fileExists(minimapFile) then
+    if not fullMap and not loaded and g_resources.fileExists(minimapFile) then
         loaded = g_minimap.loadOtmm(minimapFile)
     end
 

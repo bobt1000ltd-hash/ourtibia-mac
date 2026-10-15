@@ -103,8 +103,11 @@ function ourLoadMinimap()
     if ourMinimapLoaded then return end
     ourMinimapLoaded = true
     g_minimap.clean()
+    -- OurTibia (15.10.2026): the full map file only shows places players can reach, so an
+    -- older saved minimap (which still has the hidden places) is not loaded when it exists
+    local full = g_resources.fileExists('/data/minimap/ourtibia1098.otmm')
     if otmm then
-        if g_resources.fileExists('/minimap.otmm') then pcall(g_minimap.loadOtmm, '/minimap.otmm') end
+        if not full and g_resources.fileExists('/minimap.otmm') then pcall(g_minimap.loadOtmm, '/minimap.otmm') end
     elseif g_resources.fileExists('/minimap_1098.otcm') then
         pcall(g_map.loadOtcm, '/minimap_1098.otcm')
     end
