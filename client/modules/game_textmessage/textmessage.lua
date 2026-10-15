@@ -251,7 +251,21 @@ function displayMessage(mode, text)
         return
     end
 
-    if msgtype.consoleTab ~= nil and
+    -- 15.10.2026 (Tobeto): the boosted creatures go to Local Chat, one creature per line
+    local skipConsole = false
+    local boostedList = type(text) == 'string' and text:match("^Today's boosted creatures: (.+)%.$")
+    if boostedList and modules.game_console and modules.game_console.addText then
+        local tab = modules.game_console.getTab and modules.game_console.getTab('Local Chat')
+        local function add(line)
+            if tab then modules.game_console.addTabText(line, {color = '#ff6060'}, tab)
+            else modules.game_console.addText(line, {color = '#ff6060'}, 'Local Chat') end
+        end
+        pcall(add, "Today's boosted creatures:")
+        for part in (boostedList .. ', '):gmatch('(.-%)), ') do pcall(add, '  ' .. part) end
+        skipConsole = true
+    end
+
+    if not skipConsole and msgtype.consoleTab ~= nil and
         (msgtype.consoleOption == nil or modules.client_options.getOption(msgtype.consoleOption)) then
         if msgtype == MessageSettings.loot or msgtype == MessageSettings.valuableLoot then
             local lootColoredText = ItemsDatabase.setColorLootMessage(text)
