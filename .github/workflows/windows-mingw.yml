@@ -41,7 +41,7 @@ jobs:
       - name: Packages
         run: |
           mkdir -p out
-          for p in abseil-cpp protobuf luajit glew openal physfs libvorbis libogg openssl spdlog fmt inih libarchive freetype pugixml nlohmann-json asio parallel-hashmap cpp-httplib utfcpp zlib xz libpng stduuid ixwebsocket cppcodec gmp; do
+          for p in abseil-cpp protobuf luajit glew openal physfs libvorbis libogg openssl spdlog fmt libinih libarchive freetype pugixml nlohmann-json asio parallel-hashmap cpp-httplib utfcpp zlib xz libpng stduuid ixwebsocket cppcodec gmp; do
             if pacman -S --noconfirm --needed mingw-w64-ucrt-x86_64-$p > /dev/null 2>&1; then echo "OK $p"; else echo "MISSING $p"; fi
           done | tee out/packages.txt
 
@@ -52,6 +52,14 @@ jobs:
             git clone -q --depth 1 https://github.com/mariusbancila/stduuid.git /tmp/stduuid
             cmake -S /tmp/stduuid -B /tmp/stduuid/b -G Ninja -DCMAKE_INSTALL_PREFIX=$P -DUUID_BUILD_TESTS=OFF -DUUID_USING_CXX20_SPAN=ON && cmake --install /tmp/stduuid/b
           fi
+          gh_cmake() { # repo dir extra-args
+            git clone -q --depth 1 "https://github.com/$1.git" "/tmp/$2"
+            cmake -S "/tmp/$2" -B "/tmp/$2/b" -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$P "${@:3}" && cmake --build "/tmp/$2/b" && cmake --install "/tmp/$2/b"
+          }
+          if grep -q "MISSING cpp-httplib" out/packages.txt; then gh_cmake yhirose/cpp-httplib httplib -DHTTPLIB_REQUIRE_OPENSSL=OFF -DHTTPLIB_USE_OPENSSL_IF_AVAILABLE=OFF -DHTTPLIB_USE_BROTLI_IF_AVAILABLE=OFF -DHTTPLIB_USE_ZSTD_IF_AVAILABLE=OFF; fi
+          if grep -q "MISSING utfcpp" out/packages.txt; then gh_cmake nemtrif/utfcpp utfcpp -DUTF8_TESTS=OFF -DUTF8_SAMPLES=OFF; fi
+          if grep -q "MISSING parallel-hashmap" out/packages.txt; then gh_cmake greg7mdp/parallel-hashmap phmap -DPHMAP_BUILD_TESTS=OFF -DPHMAP_BUILD_EXAMPLES=OFF; fi
+          if grep -q "MISSING libinih" out/packages.txt; then echo "inih missing - no INIReader"; fi
           if grep -q "MISSING cppcodec" out/packages.txt; then
             git clone -q --depth 1 https://github.com/tplgy/cppcodec.git /tmp/cppcodec
             cp -r /tmp/cppcodec/cppcodec $P/include/
