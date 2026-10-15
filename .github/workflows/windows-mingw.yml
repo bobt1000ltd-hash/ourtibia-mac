@@ -66,6 +66,9 @@ jobs:
             rm -rf $P/include/asio $P/include/asio.hpp
             cp -r /tmp/asio/asio/include/asio /tmp/asio/asio/include/asio.hpp $P/include/
           fi
+          # single-header libraries from vcpkg.json that MSYS2 does not package
+          git clone -q --depth 1 https://github.com/adamyaxley/Obfuscate.git /tmp/obf && cp /tmp/obf/obfuscate.h $P/include/
+          git clone -q --depth 1 -b v4.1.0 https://github.com/bshoshany/thread-pool.git /tmp/btp && cp /tmp/btp/include/*.hpp $P/include/
           if grep -q "MISSING cppcodec" out/packages.txt; then
             git clone -q --depth 1 https://github.com/tplgy/cppcodec.git /tmp/cppcodec
             cp -r /tmp/cppcodec/cppcodec $P/include/
