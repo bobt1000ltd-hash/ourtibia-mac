@@ -63,7 +63,9 @@ jobs:
         run: |
           git clone -q https://github.com/LuaJIT/LuaJIT.git luajit-src
           (cd luajit-src && git checkout -q d0e88930ddde28ff662503f9f20facf34f7265aa)
-          OTCLIENT_ANDROID_ABIS="$ABIS" bash build_luajit_android.sh
+          mkdir -p "$GITHUB_WORKSPACE/out"
+          OTCLIENT_ANDROID_ABIS="$ABIS" bash -x build_luajit_android.sh > "$GITHUB_WORKSPACE/out/luajit.log" 2>&1 || { tail -60 "$GITHUB_WORKSPACE/out/luajit.log"; exit 1; }
+          tail -5 "$GITHUB_WORKSPACE/out/luajit.log"
 
       - name: Game data (website package + newest modules from client/)
         run: |
@@ -126,6 +128,18 @@ jobs:
           name: OurTibia-Android
           path: out/
           retention-days: 14
+
+      - name: Build logs to branch results-android-build
+        if: always()
+        run: |
+          R="$RUNNER_TEMP/blogs"; rm -rf "$R"; mkdir -p "$R"
+          cp out/*.log "$R/" 2>/dev/null || true
+          find source/android/app/.cxx -name "*.log" -size -5M 2>/dev/null | head -20 | while read f; do cp "$f" "$R/$(echo "$f" | tr '/' '_')"; done
+          echo "${{ job.status }}" > "$R/status.txt"
+          cd "$R"; git init -q -b results-android-build
+          git config user.name "OurTibia build"; git config user.email "actions@github.com"
+          git add -A; git commit -q -m "Android build logs ${{ github.run_id }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" "HEAD:refs/heads/results-android-build"
 
   emulator-test:
     needs: build
