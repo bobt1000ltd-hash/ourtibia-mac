@@ -54,31 +54,34 @@ TaskCard < UIWidget
     color: #ffffff
     background-color: #3a3a3a
     text: Task
+  // 15.10.2026 (Tobeto): long names wrap; kills "x / y" and the bar sit at the bottom of the picture
   Label
     id: name
     anchors.top: artBox.top
     anchors.left: artBox.right
-    anchors.right: header.left
-    margin: 2 4 0 8
-    height: 16
+    anchors.right: parent.right
+    margin: 1 6 0 8
+    height: 28
     font: verdana-11px-rounded
     color: #ffd35a
-  Label
-    id: kills
-    anchors.top: name.bottom
-    anchors.left: name.left
-    anchors.right: parent.right
-    margin: 4 6 0 0
-    height: 14
-    color: #d8d8d8
+    text-wrap: true
+    text-align: topLeft
   ProgressBar
     id: bar
-    anchors.top: kills.bottom
+    anchors.bottom: artBox.bottom
     anchors.left: name.left
     anchors.right: parent.right
-    margin: 4 8 0 0
+    margin: 0 8 0 0
     height: 8
     background-color: #3fbf3f
+  Label
+    id: kills
+    anchors.bottom: bar.top
+    anchors.left: name.left
+    anchors.right: parent.right
+    margin: 0 6 3 0
+    height: 14
+    color: #d8d8d8
   Panel
     id: rewards
     anchors.top: artBox.bottom
@@ -89,43 +92,6 @@ TaskCard < UIWidget
     background-color: #181818
     border-width: 1
     border-color: #2f2f2f
-    Label
-      id: exp
-      anchors.top: parent.top
-      anchors.left: parent.left
-      margin: 5 7 0 7
-      width: 92
-      color: #f0f0f0
-    Label
-      id: gold
-      anchors.top: parent.top
-      anchors.right: parent.right
-      margin: 5 7 0 0
-      width: 88
-      text-align: right
-      color: #f0d060
-    Label
-      id: tokens
-      anchors.top: exp.bottom
-      anchors.left: parent.left
-      margin: 3 7 0 7
-      width: 92
-      color: #9fd0ff
-    Label
-      id: points
-      anchors.top: gold.bottom
-      anchors.right: parent.right
-      margin: 3 7 0 0
-      width: 88
-      text-align: right
-      color: #ffd35a
-    Label
-      id: boss
-      anchors.top: tokens.bottom
-      anchors.left: parent.left
-      anchors.right: parent.right
-      margin: 3 7 0 7
-      color: #ffb050
   Button
     id: action
     anchors.left: parent.left
@@ -139,7 +105,7 @@ TaskCard < UIWidget
     anchors.bottom: parent.bottom
     margin: 0 6 6 0
     size: 58 22
-    text: Cancel
+    text: Pause
     visible: false
 
 ShopTile < UIButton
@@ -194,16 +160,25 @@ ShopTile < UIButton
     color: #ffd35a
     phantom: true
 
+// 15.10.2026 (Tobeto): Grizzly Adams in columns - picture, creatures, kills, rewards, button
 KitnRow < UIWidget
   height: 58
   background-color: #222222
   border-width: 1
   border-color: #3c3c3c
+  UIButton
+    id: pin
+    anchors.left: parent.left
+    anchors.top: parent.top
+    margin: 3 0 0 3
+    size: 12 12
+    image-source: /game_skills/pin
+    image-color: #5a5a5a
   UIWidget
     id: artBox
     anchors.left: parent.left
     anchors.verticalCenter: parent.verticalCenter
-    margin-left: 4
+    margin-left: 18
     size: 50 50
     background-color: #161616
     border-width: 1
@@ -213,55 +188,85 @@ KitnRow < UIWidget
     id: creature
     anchors.centerIn: artBox
     size: 46 46
+    phantom: true
   Label
     id: name
     anchors.top: parent.top
-    anchors.left: creature.right
-    anchors.right: action.left
-    margin-top: 4
-    margin-left: 6
+    anchors.left: artBox.right
+    margin-top: 6
+    margin-left: 8
+    width: 180
     height: 16
     font: verdana-11px-rounded
-    color: #f0f0f0
+    color: #ffd35a
   Label
-    id: kills
+    id: creatures
     anchors.top: name.bottom
     anchors.left: name.left
-    width: 160
+    width: 180
+    height: 28
+    text-wrap: true
+    text-align: topLeft
+    color: #a8a8a8
+  Label
+    id: kills
+    anchors.top: parent.top
+    anchors.left: name.right
+    margin-top: 14
+    margin-left: 8
+    width: 120
     height: 14
-    color: #c8c8c8
+    text-align: center
+    color: #d8d8d8
   ProgressBar
     id: bar
     anchors.top: kills.bottom
-    anchors.left: name.left
-    margin-top: 3
-    width: 160
+    anchors.left: kills.left
+    margin-top: 4
+    width: 120
     height: 8
-  Label
-    id: boss
-    anchors.top: name.bottom
+    background-color: #3fbf3f
+  Panel
+    id: rewards
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
     anchors.left: kills.right
     anchors.right: action.left
-    margin-left: 8
-    height: 28
-    text-wrap: true
-    color: #f0c060
+    margin: 4 8 4 10
   Button
     id: action
-    anchors.right: cancel.left
-    anchors.verticalCenter: parent.verticalCenter
-    margin-right: 4
-    width: 96
-    height: 22
-  Button
-    id: cancel
     anchors.right: parent.right
     anchors.verticalCenter: parent.verticalCenter
-    margin-right: 6
-    width: 54
-    height: 22
-    text: Cancel
-    visible: false
+    margin-right: 8
+    width: 104
+    height: 24
+
+KitnHeader < UIWidget
+  height: 18
+  background-color: #262626
+  Label
+    id: c1
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 76
+    text: Task
+    color: #c8a040
+  Label
+    id: c2
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 264
+    width: 120
+    text-align: center
+    text: Kills
+    color: #c8a040
+  Label
+    id: c3
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 394
+    text: Rewards
+    color: #c8a040
 
 MainWindow
   id: myotsTaskBoard
@@ -557,12 +562,19 @@ MainWindow
       anchors.top: parent.top
       anchors.left: parent.left
       anchors.right: parent.right
-      height: 32
-      text-wrap: true
-      color: #d8d8d8
+      height: 18
+      text-align: center
+      color: #ffd35a
+    KitnHeader
+      id: kitnHead
+      anchors.top: kitnInfo.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin-top: 2
+      margin-right: 14
     ScrollablePanel
       id: kitnList
-      anchors.top: kitnInfo.bottom
+      anchors.top: kitnHead.bottom
       anchors.left: parent.left
       anchors.right: kitnScroll.left
       anchors.bottom: parent.bottom
@@ -573,7 +585,7 @@ MainWindow
         spacing: 3
     VerticalScrollBar
       id: kitnScroll
-      anchors.top: kitnInfo.bottom
+      anchors.top: kitnHead.bottom
       anchors.bottom: parent.bottom
       margin-top: 4
       anchors.right: parent.right

@@ -54,8 +54,43 @@ local function setTab(name)
   if name=='grizzly' then request('kitn') elseif name=='shop' then request('shop') else request('state') end
 end
 
+-- 15.10.2026 (Tobeto): rewards as icon + number (tooltips explain)
+local function rewardCell(parent,x,y,kind,value,color,tip)
+  local cell=g_ui.createWidget('UIWidget',parent);cell:setSize({width=94,height=16});cell:setPhantom(false)
+  cell:addAnchor(AnchorTop,'parent',AnchorTop);cell:addAnchor(AnchorLeft,'parent',AnchorLeft);cell:setMarginTop(y);cell:setMarginLeft(x)
+  local icon
+  if kind=='exp' then icon=g_ui.createWidget('UIWidget',cell);icon:setImageSource('/images/myots/store/boost-experience');icon:setImageSmooth(true)
+  elseif kind=='boss' then icon=g_ui.createWidget('UIWidget',cell);icon:setImageSource('/images/game/skulls/skull_red')
+  else
+    icon=g_ui.createWidget('UIItem',cell);icon:setVirtual(true)
+    local ids={gold=3031,tokens=22721,points=22516,present=2856,boss=3114}
+    icon:setItemId(ids[kind] or 3031)
+    if kind=='gold' then pcall(function() icon:setShowCount(false) end);icon:setItemCount(100) end
+  end
+  icon:setPhantom(true);icon:setSize({width=16,height=16})
+  icon:addAnchor(AnchorLeft,'parent',AnchorLeft);icon:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
+  local l=g_ui.createWidget('Label',cell);l:setPhantom(true);l:setText(value);l:setColor(color);l:setTextAutoResize(true)
+  l:addAnchor(AnchorLeft,'parent',AnchorLeft);l:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);l:setMarginLeft(20)
+  cell:setTooltip(tip)
+  return cell
+end
+function ourRewards(r,t,tall)
+  r:destroyChildren()
+  r:setHeight(tall and 90 or 60)
+  local gap=tall and 26 or 18
+  local y0=tall and 8 or 4
+  rewardCell(r,6,y0,'exp',money(t.exp),'#f0f0f0','Experience')
+  rewardCell(r,104,y0,'gold',money(t.gold),'#f0d060','Gold (paid to your bank)')
+  rewardCell(r,6,y0+gap,'tokens',money(t.tokens),'#9fd0ff','Loyalty tokens (Task Shop, Loyalty store)')
+  rewardCell(r,104,y0+gap,'points',money(t.points),'#ffd35a','Task points (Task Shop)')
+  local rolls=tonumber(t.rolls) or 0
+  if rolls>0 then rewardCell(r,6,y0+gap*2,'present','x'..rolls,'#ffb050',rolls..' reward'..(rolls>1 and 's' or '')..' (Kill Tracker style): platinum / crystal coins,\nmagical stone fragments or forge stones - better for stronger monsters.') end
+  if t.boss then rewardCell(r,104,y0+gap*2,'boss','Boss entry','#ff9a7a','1 entry to '..title(t.boss)..' (Task Board -> Boss Access).') end
+end
+
 local function renderBoard()
   if not board or tab=='shop' then return end
+  pcall(g_tooltip.hide)
   local daily=tab=='daily'
   local list=daily and board.daily or board.weekly
   local cards=ui('cards');cards:destroyChildren()
@@ -67,37 +102,36 @@ local function renderBoard()
       -- 10.10.2026: the same cropped creature pictures as the wiki
       if (tonumber(o.type) or 0)>0 then OurTibiaArt.creature(c:getChildById('creature'),{type=o.type,head=o.head,body=o.body,legs=o.legs,feet=o.feet,addons=o.addons},t.name) end
       c:getChildById('name'):setText(t.display or title(t.name))
-      c:getChildById('kills'):setText('Kills: '..money(t.kills)..' / '..money(t.need))
+      c:getChildById('kills'):setText(money(t.kills)..' / '..money(t.need))
       c:getChildById('bar'):setPercent(math.floor(math.min(1,(tonumber(t.kills) or 0)/math.max(1,tonumber(t.need) or 1))*100))
-      local r=c:getChildById('rewards')
-      r:getChildById('exp'):setText(money(t.exp)..' exp')
-      r:getChildById('gold'):setText(money(t.gold)..' gp')
-      r:getChildById('tokens'):setText(t.tokens..' tokens')
-      r:getChildById('points'):setText(t.points..' task points')
-      local rw=(t.rolls or 0)>0 and ('+ '..t.rolls..' reward'..(t.rolls>1 and 's' or '')..' (coins / stones)') or ''
-      r:getChildById('boss'):setText(t.boss and ('Boss entry: '..title(t.boss)..((t.rolls or 0)>0 and ('  + '..t.rolls..' reward'..(t.rolls>1 and 's' or '')) or '')) or rw)
-      r:setTooltip('Reward: '..money(t.exp)..' experience, '..money(t.gold)..' gold (bank), '..t.tokens..' loyalty tokens, '..t.points..' task points'..(t.boss and (', 1 entry to '..title(t.boss)) or '')..'.\n'..((t.rolls or 0)>0 and (t.rolls..' Kill Tracker style reward'..(t.rolls>1 and 's' or '')..': platinum/crystal coins, magical stone fragments or forge stones - better for stronger monsters.') or ''))
+      ourRewards(c:getChildById('rewards'),t,not daily and tonumber(t.status)~=2)
       local action=c:getChildById('action');local cancel=c:getChildById('cancel')
       local status=tonumber(t.status)
       local tag=c:getChildById('header')
+      -- 15.10.2026 (Tobeto): no NEW / ACTIVE tags - the yellow frame shows an active task
+      tag:hide()
       if status==2 then
         action:setText('Completed');action:setEnabled(false);c:setBorderColor('#3fbf3f')
-        tag:setText('DONE');tag:setBackgroundColor('#2e7d32')
       elseif status==1 then
         action:setText('In Progress...');action:setEnabled(false);c:setBorderColor('#c8a040');c:setBackgroundColor('#2a2618')
-        tag:setText('ACTIVE');tag:setBackgroundColor('#8a6d1e')
-        if daily then cancel:show();action:setMarginRight(68);cancel.onClick=function() send('cancel:'..t.slot) end end
+        if daily then cancel:show();cancel:setText('Pause');action:setMarginRight(68)
+          cancel:setTooltip('Pause the task: the kills are kept, accept it again later to continue.')
+          cancel.onClick=function() send('pause:'..t.slot) end end
+      elseif status==3 then
+        action:setText('Resume Task ('..money(t.kills)..' / '..money(t.need)..')')
+        action:setEnabled((board.active or 0)+(board.done or 0)<3)
+        action.onClick=function() send('accept:'..t.slot) end
+        c:setBorderColor('#6a5a30')
       else
-        tag:setText('NEW');tag:setBackgroundColor('#3a4a6a')
         action:setText('Accept Task')
         action:setEnabled((board.active or 0)+(board.done or 0)<3)
         action.onClick=function() send('accept:'..t.slot) end
       end
-      -- 13.10.2026 (Tobeto): weekly tasks are always running - no "ACTIVE" tag and
-      -- no "In Progress" button; only finished ones are marked DONE.
+      -- 13.10.2026 (Tobeto): weekly tasks are always running - no accept button;
+      -- 15.10.2026: the reward field uses the free space
       if not daily then
         if status==2 then action:setText('Completed');action:setEnabled(false)
-        else action:hide();tag:setText('');tag:setPadding(0);tag:setBackgroundColor('#00000000');c:setBorderColor('#3c3c3c');c:setBackgroundColor('#222222') end
+        else action:hide();c:setBorderColor('#3c3c3c');c:setBackgroundColor('#222222') end
       end
     end
   end
@@ -250,39 +284,102 @@ end
 -- Grizzly Adams (Killing in the Name of), 07.10.2026: tasks complete by themselves and open a boss portal.
 local RANKS={[0]='none','Member','Huntsman','Ranger','Big Game Hunter','Trophy Hunter','Elite Hunter'}
 local function kitnSend(t) if g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(KITN_OPCODE,t) end end
+-- 15.10.2026 (Tobeto): every task is always running; finished ones are claimed here and
+-- start again. Pinned tasks stay on top (remembered per character).
+local ITEM_CID={[10305]=9388,[7393]=7393}
+local function kitnPins()
+  local key='ourKitnPins_'..tostring(g_game.getCharacterName())
+  local list=g_settings.getList(key) or {}
+  local set={};for _,v in ipairs(list) do set[tonumber(v)]=true end
+  return set,key
+end
+local function kitnTogglePin(id)
+  local set,key=kitnPins()
+  set[id]=not set[id] or nil
+  local out={};for k in pairs(set) do out[#out+1]=tostring(k) end
+  g_settings.setList(key,out)
+end
+local function kitnReward(parent,x,y,kind,value,color,tip)
+  local cell=g_ui.createWidget('UIWidget',parent);cell:setSize({width=78,height=16})
+  cell:addAnchor(AnchorTop,'parent',AnchorTop);cell:addAnchor(AnchorLeft,'parent',AnchorLeft);cell:setMarginTop(y);cell:setMarginLeft(x)
+  local icon
+  if kind=='exp' then icon=g_ui.createWidget('UIWidget',cell);icon:setImageSource('/images/myots/store/boost-experience');icon:setImageSmooth(true)
+  elseif kind=='boss' then icon=g_ui.createWidget('UIWidget',cell);icon:setImageSource('/images/game/skulls/skull_red')
+  else icon=g_ui.createWidget('UIItem',cell);icon:setVirtual(true)
+    if kind=='money' then icon:setItemId(3031);pcall(function() icon:setShowCount(false) end);icon:setItemCount(100)
+    elseif kind=='points' then icon:setItemId(22516)
+    elseif kind=='boss' then icon:setItemId(3114)
+    else icon:setItemId(ITEM_CID[value] or value) end
+  end
+  icon:setPhantom(true);icon:setSize({width=16,height=16})
+  icon:addAnchor(AnchorLeft,'parent',AnchorLeft);icon:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
+  if kind~='item' and kind~='boss' then
+    local l=g_ui.createWidget('Label',cell);l:setPhantom(true);l:setText(value);l:setColor(color);l:setTextAutoResize(true)
+    l:addAnchor(AnchorLeft,'parent',AnchorLeft);l:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);l:setMarginLeft(19)
+  else cell:setWidth(18) end
+  cell:setTooltip(tip)
+  return cell
+end
 local function renderKitn()
   if not kitn then return end
-  ui('kitnInfo'):setText('Kill the creatures of a task and it completes by itself: experience, gold, Paw and Fur points and - for boss tasks - the boss portal on the map opens for one fight. Active '..(kitn.active or 0)..'/'..(kitn.max or 3)..'   |   Paw and Fur points: '..(kitn.points or 0)..' ('..(RANKS[tonumber(kitn.rank) or 0] or '')..')')
+  pcall(g_tooltip.hide)
+  ui('kitnInfo'):setText('Rank: '..(RANKS[tonumber(kitn.rank) or 0] or '-')..'   |   Paw and Fur points: '..(kitn.points or 0))
   local list=ui('kitnList');list:destroyChildren()
+  local pins=kitnPins()
   local order={}
-  for _,t in ipairs(kitn.tasks or {}) do if t.status==1 then order[#order+1]=t end end
-  for _,t in ipairs(kitn.tasks or {}) do if t.status==0 then order[#order+1]=t end end
-  for _,t in ipairs(kitn.tasks or {}) do if t.status==2 then order[#order+1]=t end end
+  for _,t in ipairs(kitn.tasks or {}) do order[#order+1]=t end
+  table.sort(order,function(a,b)
+    local pa,pb=pins[a.id] and 1 or 0,pins[b.id] and 1 or 0
+    if pa~=pb then return pa>pb end
+    local ra,rb=a.ready and 1 or 0,b.ready and 1 or 0
+    if ra~=rb then return ra>rb end
+    local la,lb=a.locked and 1 or 0,b.locked and 1 or 0
+    if la~=lb then return la<lb end
+    return a.id<b.id end)
   for _,t in ipairs(order) do
     local r=g_ui.createWidget('KitnRow',list)
     local o=t.outfit or {}
-    if (tonumber(o.type) or 0)>0 then OurTibiaArt.creature(r:getChildById('creature'),{type=o.type,head=o.head,body=o.body,legs=o.legs,feet=o.feet,addons=o.addons},t.name) end
-    r:getChildById('name'):setText(title(t.name)..'   (level '..(t.level or 1)..'+, done '..(t.repeats or 0)..'/'..(t.maxRepeats or 3)..')')
+    if (tonumber(o.type) or 0)>0 then OurTibiaArt.creature(r:getChildById('creature'),{type=o.type,head=o.head,body=o.body,legs=o.legs,feet=o.feet,addons=o.addons},(t.creatures or {})[1] or t.name) end
+    r:getChildById('name'):setText(title(t.name))
+    local names={};for _,c in ipairs(t.creatures or {}) do names[#names+1]=title(c) end
+    local cr=r:getChildById('creatures');cr:setText(table.concat(names,', '))
+    cr:setTooltip(table.concat(names,', ')..(t.repeats and t.repeats>0 and ('\nCompleted '..t.repeats..' time'..(t.repeats>1 and 's' or '')) or ''))
     local kills=tonumber(t.kills) or 0
-    r:getChildById('kills'):setText(t.status==1 and ('Kills: '..money(kills)..' / '..money(t.need)) or ('Kills needed: '..money(t.need)))
-    r:getChildById('bar'):setPercent(t.status==1 and math.floor(math.min(1,kills/math.max(1,tonumber(t.need) or 1))*100) or 0)
-    local b=''
+    r:getChildById('kills'):setText(money(kills)..' / '..money(t.need))
+    r:getChildById('bar'):setPercent(math.floor(math.min(1,kills/math.max(1,tonumber(t.need) or 1))*100))
+    local rw=r:getChildById('rewards')
+    local n=0
+    local function slot() local col,row=n%2,math.floor(n/2);n=n+1;return col*82,2+row*20 end
+    for _,rv in ipairs(t.rewards or {}) do
+      local tip
+      if rv.k=='exp' then tip='Experience' elseif rv.k=='money' then tip='Gold (paid to your bank)' elseif rv.k=='points' then tip='Paw and Fur points (rank)'
+      elseif rv.k=='item' then tip=(rv.v==10305 and 'Holy Icon - the way into the Demon Oak quest (first completion only)' or 'Demon trophy') end
+      local val=rv.k=='item' and rv.v or money(rv.v)
+      local x,y=slot()
+      kitnReward(rw,x,y,rv.k,val,rv.k=='exp' and '#f0f0f0' or rv.k=='money' and '#f0d060' or '#ffd35a',tip)
+    end
     if t.boss then
-      b='Boss: '..title(t.boss)
-      if t.bossReady then b=b..' - portal OPEN' end
-      if t.bossPos then b=b..'\n'..t.bossPos[1]..', '..t.bossPos[2]..', '..t.bossPos[3] end
+      local tip='Boss: '..title(t.boss)..'\nAfter claiming the reward the boss portal opens for one fight'..(t.bossPos and (' ('..t.bossPos[1]..', '..t.bossPos[2]..', '..t.bossPos[3]..')') or '')..'.'
+      if t.bossReady then tip=tip..'\nThe portal is OPEN for you now.' end
+      local x,y=slot()
+      local b=kitnReward(rw,x,y,'boss',0,'#ff9a7a',tip)
+      if t.bossReady then b:setBorderWidth(1);b:setBorderColor('#3fbf3f') end
     end
-    r:getChildById('boss'):setText(b)
-    local a=r:getChildById('action');local c=r:getChildById('cancel')
-    if t.status==1 then
-      a:setText('In progress');a:setEnabled(false);r:setBorderColor('#c8a040')
-      c:show();c.onClick=function() kitnSend('cancel:'..t.id) end
-    elseif t.status==2 then
-      a:setText('Done');a:setEnabled(false);r:setBorderColor('#3fbf3f')
+    local a=r:getChildById('action')
+    if t.locked then
+      a:setText('Locked');a:setEnabled(false);a:setTooltip(t.locked)
+      r:setOpacity(0.75)
+      cr:setText(t.locked);cr:setColor('#ff9a7a')
+    elseif t.ready then
+      a:setText('Claim reward');a:setEnabled(true);a:setColor('#8fe08f');r:setBorderColor('#3fbf3f')
+      a.onClick=function() kitnSend('claim:'..t.id) end
     else
-      a:setText('Start task');a:setEnabled(t.canStart and true or false)
-      a.onClick=function() kitnSend('start:'..t.id) end
+      a:setText('In progress');a:setEnabled(false);r:setBorderColor('#5a4a20')
     end
+    local pin=r:getChildById('pin')
+    pin:setImageColor(pins[t.id] and '#44d040' or '#5a5a5a')
+    pin:setTooltip(pins[t.id] and 'Unpin this task' or 'Pin this task to the top of the list')
+    pin.onClick=function() kitnTogglePin(t.id);renderKitn() end
   end
   if kitn.message and kitn.message~='' then ui('status'):setText(kitn.message) end
 end
@@ -305,6 +402,17 @@ function init()
     local b=g_ui.createWidget('TaskTab',ui('tabs'));b:setText(t[2]);b.tabName=t[1];b:setWidth(164)
     b:getChildById('icon'):setItemId(t[3])
     b.onClick=function() setTab(t[1]) end
+    -- 15.10.2026 (Tobeto): icon + text centred together in the tab
+    local total=32+8+b:getTextSize().width
+    local left=math.max(4,math.floor((164-total)/2))
+    b:getChildById('icon'):setMarginLeft(left);b:setTextOffset({x=left+40,y=0})
+  end
+  -- 15.10.2026 (Tobeto): icons in the gold / tokens / task points counters
+  for _,f in ipairs({{'footGold',3031},{'footTokens',22721},{'footPoints',22516}}) do
+    local lbl=ui(f[1]);local ic=g_ui.createWidget('UIItem',lbl);ic:setVirtual(true);ic:setPhantom(true);ic:setSize({width=16,height=16})
+    ic:addAnchor(AnchorLeft,'parent',AnchorLeft);ic:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);ic:setMarginLeft(5)
+    ic:setItemId(f[2]);if f[2]==3031 then pcall(function() ic:setShowCount(false) end);ic:setItemCount(100) end
+    lbl:setTextOffset({x=9,y=0})
   end
   ProtocolGame.registerExtendedOpcode(OPCODE,receive)
   ProtocolGame.registerExtendedOpcode(KITN_OPCODE,receiveKitn)

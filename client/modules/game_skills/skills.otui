@@ -16,6 +16,16 @@ OurAttributeHeading < UIWidget
 
 OurAttributeRow < UIWidget
   height: 17
+  // 15.10.2026 (Tobeto): pin a stat to the Skills tab
+  UIWidget
+    id: pin
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    size: 10 10
+    image-source: /game_skills/pin
+    image-color: #6a6a6a
+    visible: false
+    phantom: false
   UIWidget
     id: icon
     anchors.left: parent.left
@@ -943,18 +953,22 @@ SkillsListSubMenu < PopupMenu
 
   SkillsSubMenuOption
     id: rowHealth
+    visible: false
     !text: tr('Hit Points')
 
   SkillsSubMenuOption
     id: rowMana
+    visible: false
     !text: tr('Mana')
 
   SkillsSubMenuOption
     id: rowSoul
+    visible: false
     !text: tr('Soul Points')
 
   SkillsSubMenuOption
     id: rowCapacity
+    visible: false
     !text: tr('Capacity')
 
   SkillsSubMenuOption

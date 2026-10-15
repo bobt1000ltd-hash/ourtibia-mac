@@ -73,7 +73,9 @@ g_app.hasUpdater = function()
 end
 
 -- setup logger
-g_logger.setLogFile(g_resources.getWorkDir() .. g_app.getCompactName() .. '.log')
+-- 15.10.2026: the log is called ourtibia.log (the settings folder keeps the old
+-- compact name so players keep their hotkeys and options)
+g_logger.setLogFile(g_resources.getWorkDir() .. 'ourtibia.log')
 g_logger.info("Operating system: " .. g_platform.getOSName())
 
 -- print first terminal message

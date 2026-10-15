@@ -1,5 +1,6 @@
+// 15.10.2026 (Tobeto): taller rows - room under the fragments / gold line
 ForgeRow < UIWidget
-  height: 32
+  height: 38
   background-color: #2b2b2bcc
   border-width: 1
   border-color: #1a1a1a
@@ -22,18 +23,18 @@ ForgeRow < UIWidget
     anchors.left: icon.right
     anchors.top: parent.top
     margin-left: 6
-    margin-top: 2
+    margin-top: 4
     color: #e8e8e8
     font: verdana-11px-rounded
     phantom: true
     text-auto-resize: true
   UIItem
     id: fragIcon
-    size: 11 11
+    size: 12 12
     anchors.left: icon.right
     anchors.bottom: parent.bottom
     margin-left: 6
-    margin-bottom: 2
+    margin-bottom: 5
     virtual: true
     phantom: true
   Label
@@ -68,13 +69,14 @@ ForgeHeader < Label
 MainWindow
   id: itemForgeWindow
   text: Item Forge
-  size: 580 420
+  // 15.10.2026 (Tobeto): more room for the recipe list and the details
+  size: 580 500
   @onEscape: self:hide()
   UIButton
     id: tabCraft
     anchors.top: parent.top
     anchors.left: parent.left
-    size: 275 30
+    size: 275 26
     text: Stone Crafting
     color: #ffffff
     background-color: #3a3a3a
@@ -84,7 +86,7 @@ MainWindow
     id: tabUpgrade
     anchors.top: parent.top
     anchors.right: parent.right
-    size: 275 30
+    size: 275 26
     text: Item Upgrading
     color: #ffffff
     background-color: #262626
@@ -126,7 +128,7 @@ MainWindow
         anchors.top: listHeader.bottom
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        step: 34
+        step: 40
         pixels-scroll: true
     ForgeBox
       id: detailBox

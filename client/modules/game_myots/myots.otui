@@ -1,6 +1,6 @@
 MainWindow
   id: myotsJournal
-  text: MyOTS | Character journal
+  text: OurTibia | Character journal
   size: 540 600
   @onEscape: modules.game_myots.hide()
 

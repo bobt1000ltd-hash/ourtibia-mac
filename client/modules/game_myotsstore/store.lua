@@ -23,9 +23,25 @@ local function send(text) if g_game.isOnline() then g_game.getProtocolGame():sen
 local function money(n) n=math.floor(tonumber(n) or 0);local s=tostring(n):reverse():gsub('(%d%d%d)','%1,'):reverse();return (s:gsub('^,','')) end
 local function ui(id) return window:recursiveGetChildById(id) end
 
+-- 15.10.2026 (Tobeto): outfits and mounts are pictures rendered from the sprites
+-- (looks/o<look>.png, m<look>.png): centred and never cut off (Copper Fly, Coralripper...)
+local function lookImage(prefix,look)
+  local path='/game_myotsstore/looks/'..prefix..tostring(look)
+  if look and g_resources.fileExists(path..'.png') then return path end
+end
 local function setArt(item,creature,icon,offer,big)
   item:hide();creature:hide();icon:hide()
+  if icon.ourBaseSize then icon:setSize(icon.ourBaseSize) end
   local art=offer.art or {}
+  local female=data and data.sex==0
+  local look=art.outfit and (female and art.outfit.female or art.outfit.male)
+  local pic=(art.mount and lookImage('m',art.mount)) or (art.outfit and not art.shader and lookImage('o',look))
+  if pic then
+    icon.ourBaseSize=icon.ourBaseSize or icon:getSize()
+    local s=math.max(icon.ourBaseSize.width,64)
+    icon:setSize({width=s,height=s});icon:setImageSource(pic);pcall(function() icon:setImageSmooth(false) end);icon:show()
+    return
+  end
   if art.item and art.item>0 then item:setItemId(art.item);item:show()
   elseif art.outfit then
     pcall(function() creature:setCenter(true) end) -- 15.10.2026: outfits centred like mounts
@@ -140,12 +156,17 @@ function refresh()
   end
   for _,b in ipairs(ui('tabs'):getChildren()) do b:setOn(b.tabName==category) end
 end
--- 15.10.2026 (Tobeto): bonus filter dropdown (max 7 rows, scrollable, grouped by kind)
+-- 15.10.2026 (Tobeto): bonus filter dropdown (max 10 rows, scrollable, grouped by kind)
+-- 15.10.2026 (Tobeto): groups only for real kinds (damage, resistance, skill...);
+-- Magic level is in Skill, "Absorb damage as mana" and "Max Mana" stay in the main list.
+local GROUP_KINDS={damage=true,resistance=true,skill=true,chance=true,leech=true,dodge=true}
 local function ourGroupLabels(labels)
   local byLast={}
   for _,l in ipairs(labels) do
     local first,last=l:match('^(.-)%s+(%S+)$')
-    if first and first~='' then byLast[last:lower()]=byLast[last:lower()] or {};table.insert(byLast[last:lower()],{label=l,short=first}) end
+    if l=='Magic level' then first,last='Magic level','skill' end
+    if l=='Reflect damage' then first=nil end
+    if first and first~='' and GROUP_KINDS[last:lower()] then byLast[last:lower()]=byLast[last:lower()] or {};table.insert(byLast[last:lower()],{label=l,short=first}) end
   end
   local entries,used={},{}
   for last,list in pairs(byLast) do
@@ -163,11 +184,14 @@ end
 function ourCloseBonusMenu()
   local m=rootWidget:getChildById('ourBonusMenuShade');if m then m:destroy() end
 end
-local ROWH,ROWS=20,7
-local function ourMenuList(shade,x,y,w,entries,onPick,onGroup)
+local ROWH,ROWS=20,10
+local function ourMenuList(shade,x,y,w,entries,onPick,onGroup,onPlain)
   local box=g_ui.createWidget('UIWidget',shade);box:setPhantom(false)
   box:setBackgroundColor('#1e1e1e');box:setBorderWidth(1);box:setBorderColor('#6a6a6a')
-  local n=math.min(ROWS,#entries);box:setSize({width=w,height=n*ROWH+4});box:setPosition({x=x,y=y})
+  local n=math.min(ROWS,#entries);box:setSize({width=w,height=n*ROWH+4})
+  -- keep the list on the screen
+  local r=rootWidget:getSize()
+  box:setPosition({x=math.min(x,r.width-w-2),y=math.min(y,r.height-(n*ROWH+4)-2)})
   local list=g_ui.createWidget('UIScrollArea',box);list:fill('parent');list:setMargin(2)
   list:setPaddingRight(#entries>ROWS and 12 or 0)
   local layout=UIVerticalLayout.create(list);list:setLayout(layout)
@@ -177,11 +201,23 @@ local function ourMenuList(shade,x,y,w,entries,onPick,onGroup)
     sb:setMargin(2);sb:setStep(ROWH);pcall(function() sb:setPixelsScroll(true) end)
     list:setVerticalScrollBar(sb)
   end
+  local textW=w-14-(#entries>ROWS and 12 or 0)
   for _,e in ipairs(entries) do
     local r=g_ui.createWidget('UIButton',list);r:setHeight(ROWH);r:setFont('verdana-11px-rounded')
-    r:setText(e.children and (e.text..'  >') or e.text);r:setTextAlign(AlignLeft);r:setTextOffset({x=6,y=0})
+    local text=e.children and (e.text..'  >') or e.text
+    r:setText(text)
+    -- long names: "..." and the full name in the tooltip
+    if r:getTextSize().width>textW then
+      local cut=e.text
+      repeat cut=cut:sub(1,-2);r:setText(cut..'...') until #cut<=1 or r:getTextSize().width<=textW
+      r:setTooltip(e.text)
+    end
+    r:setTextAlign(AlignLeft);r:setTextOffset({x=6,y=0})
     r:setColor((e.label and e.label==bonusPicks[1]) and '#ffd35a' or '#d8d8d8')
-    r.onHoverChange=function(self,h) self:setBackgroundColor(h and '#3a3a3a' or '#00000000');if h and e.children then onGroup(e,self) end end
+    r.onHoverChange=function(self,h)
+      self:setBackgroundColor(h and '#3a3a3a' or '#00000000')
+      if h and e.children then onGroup(e,self) elseif h and onPlain then onPlain() end
+    end
     r.onClick=function() if e.children then onGroup(e,r) else onPick(e) end end
   end
   return box
@@ -194,18 +230,32 @@ function ourOpenBonusMenu(bf,labels)
     ourCloseBonusMenu();return true
   end
   local entries=ourGroupLabels(labels)
-  local side
+  local side,sideRow,watch
+  local function closeSide()
+    if watch then removeEvent(watch);watch=nil end
+    if side then side:destroy();side=nil end;sideRow=nil
+  end
   local function pick(e)
+    closeSide()
     bonusPicks=e.none and {} or {e.label};ourCloseBonusMenu()
     scheduleEvent(function() buildLeft();refresh();ui('productScroll'):setValue(0) end,1)
   end
   local main
   local function group(e,row)
-    if side then side:destroy();side=nil end
+    if sideRow==row and side then return end
+    closeSide()
     local subs={};for _,c in ipairs(e.children) do subs[#subs+1]={text=c.short,label=c.label} end
-    side=ourMenuList(shade,main:getX()+main:getWidth()-1,row:getY()-2,130,subs,pick,function() end)
+    side=ourMenuList(shade,main:getX()+main:getWidth()-1,row:getY()-2,110,subs,pick,function() end)
+    sideRow=row
+    -- the side list stays open only while the mouse is on its group or on the list
+    watch=cycleEvent(function()
+      if not side or shade:isDestroyed() then return closeSide() end
+      local m=g_window.getMousePosition()
+      if not side:containsPoint(m) and not (sideRow and sideRow:containsPoint(m)) then closeSide() end
+    end,80)
   end
-  main=ourMenuList(shade,bf:getX(),bf:getY()+bf:getHeight(),bf:getWidth(),entries,pick,group)
+  main=ourMenuList(shade,bf:getX(),bf:getY()+bf:getHeight(),bf:getWidth(),entries,pick,group,closeSide)
+  shade.onDestroy=function() if watch then removeEvent(watch);watch=nil end end
   shade:raise()
 end
 function buildLeft()
@@ -231,14 +281,25 @@ function buildLeft()
   if SUBS[category] and not sub[category] then sub[category]=SUBS[category][1] end
   -- 14.10.2026 (Tobeto): typed text centred in the box and limited
   -- 15.10.2026 (Tobeto): text starts at the left like the search box of Set Outfit (cursor and text in one place)
-  local s=g_ui.createWidget('TextEdit',left);s:setHeight(22);s:setTooltip('Search product...');pcall(function() s:setMaxLength(20) end);s:setText(search)
-  pcall(function() s:setPlaceholder('Search products...') end)
-  s.onTextChange=function(_,t) search=t:lower();refresh() end
+  -- 15.10.2026 (Tobeto): text centred in the box (also the respawn fund field)
+  local s=g_ui.createWidget('TextEdit',left);s:setHeight(22);pcall(function() s:setMaxLength(20) end)
+  s:setTextAlign(AlignCenter)
+  if historyMode then
+    -- 15.10.2026 (Tobeto): in History the search looks through the transactions
+    s:setText(historySearch);s:setTooltip('Search the history: product, name, date, amount or balance')
+    pcall(function() s:setPlaceholder('Search history...') end)
+    s.onTextChange=function(_,t) historySearch=t:lower();renderHistory() end
+  else
+    s:setText(search);s:setTooltip('Search product...')
+    pcall(function() s:setPlaceholder('Search products...') end)
+    s.onTextChange=function(_,t) search=t:lower();refresh() end
+  end
+  if not historyMode then
   local sort=g_ui.createWidget('ComboBox',left);sort:setHeight(22)
   -- 15.10.2026 (Tobeto): Bonus Tier 1-3 only in Cosmetics
   if TIER_PRICE[sortMode] and category~='Cosmetics' then sortMode=SORTS[1] end
   for _,o in ipairs(SORTS) do if category=='Cosmetics' or not TIER_PRICE[o] then sort:addOption(o) end end
-  sort:setTextAlign(AlignCenter);sort:setTextOffset({x=-1,y=0}) -- 14.10.2026 (Tobeto): centred in the whole box, equal space above and below
+  sort:setTextAlign(AlignCenter);sort:setTextOffset({x=-9,y=0}) -- 15.10.2026 (Tobeto): centred in the box minus the arrow -- 14.10.2026 (Tobeto): centred in the whole box, equal space above and below
   sort:setCurrentOption(sortMode,true);sort.onOptionChange=function(_,t) sortMode=t;if historyMode then setHistory(false) end;refresh();ui('productScroll'):setValue(0) end
   -- the options of the list are centred too
   local press=sort.onMousePress
@@ -264,9 +325,9 @@ function buildLeft()
     matchAll=false
     local bf=g_ui.createWidget('ComboBox',left);bf:setId('ourBonusFilter');bf:setHeight(22)
     bf:setTooltip('Show only outfits and mounts with this bonus, the strongest first.')
-    local current=bonusPicks[1] or '+ Add bonus filter'
+    local current=bonusPicks[1] or '(none)'
     bf:addOption(current);bf:setCurrentOption(current,true)
-    bf:setTextAlign(AlignCenter);bf:setTextOffset({x=-1,y=0})
+    bf:setTextAlign(AlignCenter);bf:setTextOffset({x=-9,y=0})
     if bonusPicks[1] then bf:setColor('#ffd35a') end
     bf.onMousePress=function(self,mousePos,button)
       if button~=MouseLeftButton then return false end
@@ -275,21 +336,22 @@ function buildLeft()
   end
   local owned=g_ui.createWidget('CheckBox',left);owned:setText('Show Owned');owned:setChecked(showOwned);owned.onCheckChange=function(_,v) showOwned=v;refresh() end
   local afford=g_ui.createWidget('CheckBox',left);afford:setText('Can Afford');afford:setChecked(canAfford);afford.onCheckChange=function(_,v) canAfford=v;refresh() end
+  end -- not historyMode
   -- 13.10.2026 (Tobeto): global boosts as icons (like the boost bar in the game window)
   -- 14.10.2026 (Tobeto): "ACTIVE BOOSTS", bigger icons, 2 per row; inactive ones grey
   local offers={}
   for _,o in ipairs(data and data.products or {}) do if o.sub=='Boosts' and o.id~='allboosts' then offers[#offers+1]=o end end
   if #offers>0 then
     local title=g_ui.createWidget('Label',left);title:setText('ACTIVE BOOSTS');title:setColor('#c8a040');title:setHeight(16);title:setMarginTop(8);title:setTextAlign(AlignCenter)
-    local grid=g_ui.createWidget('UIWidget',left);grid:setHeight(math.ceil(#offers/2)*74)
-    local layout=UIGridLayout.create(grid);layout:setCellSize({width=76,height=70});layout:setCellSpacing(4);layout:setNumColumns(2);layout:setFlow(true);grid:setLayout(layout)
+    local grid=g_ui.createWidget('UIWidget',left);grid:setHeight(math.ceil(#offers/2)*68) -- 15.10.2026: a bit lower so the respawn fund keeps its place in every tab
+    local layout=UIGridLayout.create(grid);layout:setCellSize({width=76,height=64});layout:setCellSpacing(4);layout:setNumColumns(2);layout:setFlow(true);grid:setLayout(layout)
     for _,o in ipairs(offers) do
       local active
       for _,b in ipairs(data.boosts or {}) do local n=tostring(b.name or ''):lower();local on=o.name:lower() if n==on or on:find(n,1,true) or n:find(on,1,true) then active=b end end
-      local cell=g_ui.createWidget('UIButton',grid);cell:setSize({width=76,height=70})
+      local cell=g_ui.createWidget('UIButton',grid);cell:setSize({width=76,height=64})
       cell:setBackgroundColor(active and '#2d2a1c' or '#1a1a1a');cell:setBorderWidth(1);cell:setBorderColor(active and '#c8a040' or '#333333')
-      local icon=g_ui.createWidget('UIWidget',cell);icon:setSize({width=44,height=44});icon:setPhantom(true)
-      icon:addAnchor(AnchorTop,'parent',AnchorTop);icon:addAnchor(AnchorHorizontalCenter,'parent',AnchorHorizontalCenter);icon:setMarginTop(6)
+      local icon=g_ui.createWidget('UIWidget',cell);icon:setSize({width=38,height=38});icon:setPhantom(true)
+      icon:addAnchor(AnchorTop,'parent',AnchorTop);icon:addAnchor(AnchorHorizontalCenter,'parent',AnchorHorizontalCenter);icon:setMarginTop(5)
       local art=o.art or {};if art.icon then icon:setImageSource(art.icon);icon:setImageSmooth(true) end
       if active then icon:setOpacity(1) else icon:setOpacity(0.3);icon:setImageColor('#808080') end
       local lab=g_ui.createWidget('Label',cell);lab:setPhantom(true);lab:setFont('verdana-11px-rounded');lab:setColor(active and '#ffe08a' or '#6a6a6a')
@@ -300,6 +362,8 @@ function buildLeft()
     end
   end
   -- 14.10.2026 (Tobeto): respawn fund (every 1,000,000 gp = 1 hour of Spawn Boost for everyone)
+  -- 15.10.2026 (Tobeto): the respawn fund keeps its place at the bottom of the panel
+  local filler=g_ui.createWidget('UIWidget',left);filler:setId('ourFiller');filler:setPhantom(true);filler:setHeight(0)
   if data then
     local step=tonumber(data.fundStep) or 1000000;local fund=tonumber(data.fund) or 0
     -- 14.10.2026 (Tobeto): the [i] box stands next to the RESPAWN FUND title, the bar uses the whole row
@@ -342,7 +406,15 @@ function buildLeft()
       if n<1000 then showDonateInfo('Donate at least 1,000 gp.');return end
       if data and data.nonce then send('donate:'..data.nonce..':'..math.floor(n)) end
     end
+    amount:setTextAlign(AlignCenter)
   end
+  local function fit()
+    if not window or filler:isDestroyed() then return end
+    local used,count=0,0
+    for _,c in ipairs(left:getChildren()) do if c~=filler and c:isVisible() then used=used+c:getHeight()+c:getMarginTop()+c:getMarginBottom();count=count+1 end end
+    filler:setHeight(math.max(0,left:getHeight()-used-count*3-1))
+  end
+  fit();addEvent(fit)
 end
 function selectTab(name) category=name;search='';if TIER_PRICE[sortMode] and name~='Cosmetics' then sortMode=SORTS[1] end;setHistory(false);buildLeft();refresh();ui('productScroll'):setValue(0) end
 function setHistory(on)
@@ -365,21 +437,40 @@ function openConfirm(offer)
   local yes=ui('cYes')
   yes:setEnabled(offer.enabled and not offer.owned and balanceFor(offer)>=offer.price)
   yes:setText(offer.owned and 'Owned' or 'Yes')
+  -- 15.10.2026 (Tobeto): like the donate pop-up - dark shade behind, moved by the title
+  ourDraggable(c,ui('confirmTitle'))
+  c:breakAnchors();c:addAnchor(AnchorHorizontalCenter,'products',AnchorHorizontalCenter);c:addAnchor(AnchorVerticalCenter,'products',AnchorVerticalCenter)
+  pcall(g_tooltip.hide)
+  ui('donateShade'):show();ui('donateShade'):raise()
   c:show();c:raise()
 end
-function closeConfirm() ui('confirm'):hide();selected=nil end
+function closeConfirm()
+  ui('confirm'):hide();selected=nil
+  if not ui('donateInfo'):isVisible() then ui('donateShade'):hide() end
+end
+-- 15.10.2026 (Tobeto): store pop-ups (donate answer, purchase confirmation, transfer) are
+-- dragged by their title bar and can not leave the Game Store window
+function ourDraggable(box,title)
+  if title.ourDrag then return end
+  title.ourDrag=true;title:setDraggable(true);title:setPhantom(false)
+  title.onDragEnter=function(self,mousePos) box:breakAnchors();self.ourRef={x=mousePos.x-box:getX(),y=mousePos.y-box:getY()};return true end
+  title.onDragMove=function(self,mousePos)
+    if not self.ourRef then return true end
+    local r=window:getRect()
+    local x=math.max(r.x+2,math.min(mousePos.x-self.ourRef.x,r.x+r.width-box:getWidth()-2))
+    local y=math.max(r.y+20,math.min(mousePos.y-self.ourRef.y,r.y+r.height-box:getHeight()-2))
+    box:setPosition({x=x,y=y});return true
+  end
+  title.onDragLeave=function(self) self.ourRef=nil;return true end
+end
 function showDonateInfo(text)
   if not window then return end
   -- 14.10.2026 (Tobeto): only the answer (the achievement is in the [i] tooltip); the window
   -- is moved by its title bar and blocks the store behind it
   ui('dText'):setText(tostring(text))
   local box,title=ui('donateInfo'),ui('dTitle')
-  if not title.ourDrag then
-    title.ourDrag=true;title:setDraggable(true)
-    title.onDragEnter=function(self,mousePos) box:breakAnchors();self.ourRef={x=mousePos.x-box:getX(),y=mousePos.y-box:getY()};return true end
-    title.onDragMove=function(self,mousePos) if self.ourRef then box:setPosition({x=mousePos.x-self.ourRef.x,y=mousePos.y-self.ourRef.y}) end;return true end
-    title.onDragLeave=function(self) self.ourRef=nil;return true end
-  end
+  ourDraggable(box,title)
+  if not box:isVisible() then box:breakAnchors();box:addAnchor(AnchorHorizontalCenter,'products',AnchorHorizontalCenter);box:addAnchor(AnchorVerticalCenter,'products',AnchorVerticalCenter) end
   pcall(g_tooltip.hide)
   ui('donateShade'):show();ui('donateShade'):raise();box:show();box:raise();box:focus()
 end
@@ -420,13 +511,18 @@ function confirmTransfer()
   if amount>(data.coins or 0) then ui('tStatus'):setText('You do not have that many Premium Points.');return end
   send('transfer:'..data.nonce..':'..amount..':'..name);closeTransfer()
 end
+historySearch=''
 function history()
   closeConfirm();pcall(closeTransfer)
   setHistory(true)
+  buildLeft()
   for _,b in ipairs(ui('tabs'):getChildren()) do b:setOn(false) end
   local subtabs=ui('subtabs');subtabs:destroyChildren()
   local hint=g_ui.createWidget('Label',subtabs);hint:setText('Purchase history - pick a category above to go back to the offers')
   hint:setColor('#8a8a8a');hint:setWidth(500);hint:setTextOffset({x=4,y=4})
+  renderHistory()
+end
+function renderHistory()
   local list=ui('historyList');list:destroyChildren()
   local rows=data and data.history or {}
   -- 14.10.2026 (Tobeto): columns Date / Description / Amount / Balance; spending red, income green
@@ -452,6 +548,7 @@ function history()
   if #rows==0 then local l=g_ui.createWidget('Label',list);l:setText('No purchases yet.');l:setColor('#a0a0a0') end
   -- running balance for old rows without a saved one (coins only)
   local running=data and tonumber(data.coins) or nil
+  local shownCount=0
   for index,h in ipairs(rows) do
     local price=tonumber(h.price) or 0
     local tokens=h.currency=='tokens'
@@ -461,7 +558,11 @@ function history()
       bal=bal or running
       if running then running=running+price end
     end
-    local r=g_ui.createWidget('UIWidget',list);r:setHeight(18);r:setBackgroundColor(index%2==0 and '#1e1e1e' or '#00000000')
+    local amountStr=(price>0 and '-' or '+')..money(math.abs(price))
+    local hay=(os.date('%d.%m.%Y %H:%M',h.time)..' '..tostring(h.product)..' '..amountStr..' '..tostring(math.abs(price))..' '..(bal and money(bal) or '')..' '..(bal and tostring(bal) or '')..(tokens and ' tokens' or ' coins')):lower()
+    if historySearch=='' or hay:find(historySearch,1,true) then
+    shownCount=(shownCount or 0)+1
+    local r=g_ui.createWidget('UIWidget',list);r:setHeight(18);r:setBackgroundColor(shownCount%2==0 and '#1e1e1e' or '#00000000')
     cell(r,os.date('%d.%m.%Y %H:%M',h.time),6,DATE_W)
     local d=cell(r,tostring(h.product),DESC_X,descW);d:setTooltip(tostring(h.product))
     local change=-price
@@ -472,7 +573,9 @@ function history()
     icon:addAnchor(AnchorLeft,'parent',AnchorLeft);icon:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);icon:setMarginLeft(AMT_X+AMOUNT_W-20)
     icon:setItemId(tokens and 22721 or 22118);if not tokens then pcall(function() icon:setShowCount(false) end);icon:setItemCount(100) end
     cell(r,bal and (money(bal)..(tokens and ' tokens' or ' coins')) or '-',BAL_X,BAL_W-4,AlignRight,'#e8e8e8');lines(r)
+    end
   end
+  if #rows>0 and (shownCount or 0)==0 then local l=g_ui.createWidget('Label',list);l:setText('Nothing found.');l:setColor('#a0a0a0') end
 end
 local function receive(protocol,opcode,buffer)
   local i,total,piece=buffer:match('^(%d+)/(%d+)|(.*)$')
@@ -524,6 +627,13 @@ local function onCreatureAppear(c)
 end
 function hide() if window then window:hide();closeConfirm();pcall(closeTransfer);pcall(closeDonateInfo) end end
 function show() send('catalog');window:show();window:raise();window:focus() end
+-- 15.10.2026 (Tobeto): Set Outfit -> coin icon opens the store on that outfit / mount
+function openSearch(cat,text)
+  if not window then return end
+  category=cat or category;search=(text or ''):lower();setHistory(false)
+  if TIER_PRICE[sortMode] then sortMode=SORTS[1] end
+  show();buildLeft();refresh();pcall(function() ui('productScroll'):setValue(0) end)
+end
 function toggle() if window:isVisible() then hide() else show() end end
 function init()
   window=g_ui.displayUI('store');window:hide()

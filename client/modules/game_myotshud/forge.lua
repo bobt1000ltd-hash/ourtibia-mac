@@ -25,6 +25,9 @@ end
 local function send(data) if g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(OPCODE,json.encode(data)) end end
 local function money(n) n=math.floor(n or 0);local s=tostring(n):reverse():gsub('(%d%d%d)','%1,'):reverse();return (s:gsub('^,','')) end
 local function setItem(widget,clientId,count)
+ widget:setImageSource('')
+ -- 15.10.2026 (Tobeto): magical stone fragments get their own picture (the item looks like a small amethyst)
+ if state and clientId and clientId==state.fragcid then widget:setItem(nil);widget:setImageSource('/game_myotshud/images/fragments');return end
  if not clientId or clientId==0 then widget:setItem(nil);return end
  local item=Item.create(clientId,count or 1);widget:setItem(item)
 end
@@ -54,7 +57,7 @@ local function refreshDetails()
   box:getChildById('ingredientCount'):setText(r.need.count*n..'x '..r.need.name)
   box:getChildById('fragLabel'):setText(r.need.name..': '..r.need.count*n..' / '..(r.need.have or 0))
  else
-  setItem(box:getChildById('ingredientIcon'),state.fragcid,math.max(2,math.min(100,r.frag*n)))
+  setItem(box:getChildById("ingredientIcon"),state.fragcid,100)
   box:getChildById('ingredientCount'):setText(r.frag*n..'x magical stone fragment')
   box:getChildById('fragLabel'):setText('Fragments: '..r.frag*n..' / '..state.fragments)
  end
@@ -72,7 +75,7 @@ local function buildRecipes()
    setItem(row:getChildById('fragIcon'),r.need.cid,1)
    row:getChildById('frag'):setText(r.need.count)
   else
-   setItem(row:getChildById('fragIcon'),state.fragcid,math.max(2,math.min(100,r.frag)))
+   setItem(row:getChildById("fragIcon"),state.fragcid,100)
    row:getChildById('frag'):setText(r.frag)
   end
   row:getChildById('gold'):setText(money(r.gold)..' gp')

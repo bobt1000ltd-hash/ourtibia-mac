@@ -168,7 +168,8 @@ MainWindow
     id: labelMana
     anchors.left: spellList.right
     anchors.top: labelLevel.bottom
-    !text: tr('Mana') .. ':'
+    // 15.10.2026 (Tobeto): the value is mana / soul points - "Cost"
+    !text: tr('Cost') .. ':'
 
   SpellInfoLabel
     id: labelPremium

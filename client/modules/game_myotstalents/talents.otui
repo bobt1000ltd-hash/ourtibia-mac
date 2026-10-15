@@ -41,7 +41,8 @@ TalentRow < UIWidget
       spacing: 28
 
 TalentTree < UIWidget
-  size: 236 456
+  // 15.10.2026 (Tobeto): no gap between the header and the first talents
+  size: 236 432
   background-color: #1a1a1aee
   border-width: 1
   border-color: #505050
@@ -140,13 +141,13 @@ MainWindow
   id: myotsTalents
   text: Talent Trees
   // 14.10.2026 (Tobeto): no title line and no right panel - the points are in the bottom bar
-  size: 760 532
+  size: 760 508
   @onEscape: modules.game_myotstalents.hide()
   Panel
     id: trees
     anchors.top: parent.top
     anchors.horizontalCenter: parent.horizontalCenter
-    size: 724 456
+    size: 724 432
     layout:
       type: horizontalBox
       spacing: 8

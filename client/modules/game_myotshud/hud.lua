@@ -839,6 +839,8 @@ function init()
   section('products','Creature products','products',true)
   fields.products:setTooltip('Creature products (e.g. dragon scales) are looted automatically; they cannot be added to item slots.')
   fields.exclButton=button(c,'Excluded items',function() showLootExclusions() end)
+  -- 15.10.2026 (Tobeto): part of Creature products - indented under it
+  fields.exclButton:setMarginLeft(18);fields.exclButton:setWidth(148);fields.exclButton:setHeight(20)
   fields.exclButton:setTooltip('Items that are never auto-looted. Right-click an item -> Exclude from auto-loot.')
   section('items','Autoloot items','items',false)
   fields.items:setTooltip('Loot the items placed in the slots below. Click an empty slot, then click an item.')
@@ -849,7 +851,7 @@ function init()
     b.onClick=function() command('preset:'..number) end;fields['preset'..page]=b
   end
   fields.lootItems=g_ui.createWidget('LootSlotGrid',c)
-  local training=panel('myotsTrainer','Trainer',342,extra);c=content(training)
+  local training=panel('myotsTrainer','Trainer',400,extra);c=content(training)
   -- 07.10.2026: one toggle for the panel button and the top bar button
   toggleTrainer=function()
     trainer.enabled=not trainer.enabled;trainer.warned=nil;updateTrainerButton();saveTrainer()
@@ -857,17 +859,21 @@ function init()
     if trainer.enabled and g_game.isOnline() then pcall(train,g_game.getLocalPlayer()) end
   end
   trainerButton=button(c,'Trainer: OFF',function() toggleTrainer() end)
-  for _,entry in ipairs({{'mana','Mana Training','manaSpell','manaThreshold'}, {'runes','Rune Maker','runeSpell','runeThreshold'}}) do
+  -- 15.10.2026 (Tobeto): two separate groups, fields indented under their checkbox
+  for index,entry in ipairs({{'mana','Mana training','manaSpell','manaThreshold'}, {'runes','Rune maker','runeSpell','runeThreshold'}}) do
     local key,title,spellKey,thresholdKey=entry[1],entry[2],entry[3],entry[4]
+    local sep=g_ui.createWidget('HorizontalSeparator',c);sep:setMarginTop(index==1 and 4 or 6);sep:setMarginBottom(3)
     -- 05.10.2026: ticking Mana Training / Rune Maker switches the trainer on (players
     -- ticked the box and never pressed "Trainer: OFF", so nothing was cast).
     fields['train_'..key]=check(c,title,function(v)trainer[key]=v;if v and not loading then trainer.enabled=true;updateTrainerButton() end;saveTrainer()end)
-    fields[spellKey]=editable(g_ui.createWidget('TextEdit',c));fields[spellKey]:setHeight(22)
+    local spellLabel=g_ui.createWidget('HudSubLabel',c);spellLabel:setText('Spell')
+    fields[spellKey]=editable(g_ui.createWidget('HudField',c))
     fields[spellKey].onTextChange=function(_,v)if not loading then trainer[spellKey]=v;saveTrainer()end end
-    label(c,'Minimum mana (%)')
-    fields[thresholdKey]=editable(g_ui.createWidget('TextEdit',c));fields[thresholdKey]:setHeight(22)
+    local manaLabel=g_ui.createWidget('HudSubLabel',c);manaLabel:setText('Minimum mana (%)');manaLabel:setMarginTop(2)
+    fields[thresholdKey]=editable(g_ui.createWidget('HudField',c))
     fields[thresholdKey].onTextChange=function(_,v)if not loading then trainer[thresholdKey]=math.max(0,math.min(100,tonumber(v) or 90));saveTrainer()end end
   end
+  do local sep=g_ui.createWidget('HorizontalSeparator',c);sep:setMarginTop(6);sep:setMarginBottom(3) end
   fields.train_idle=check(c,'Anti-Idle',function(v)trainer.idle=v;saveTrainer()end)
   fields.train_food=check(c,'Auto-Eat Food',function(v)trainer.food=v;saveTrainer()end)
   fields.train_retarget=check(c,'Retarget dummy',function(v)trainer.retarget=v;saveTrainer()end)

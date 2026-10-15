@@ -59,21 +59,48 @@ local function perLines(per,mult)
   end
   return out
 end
+-- 15.10.2026 (Tobeto): own tooltip (like the item tooltip): it follows the mouse and
+-- switches to the details the moment Shift is pressed or released - no mouse move needed.
+local tipLabel
+local function tipPlace()
+  if not tipLabel then return end
+  local pos=g_window.getMousePosition();local ws=g_window.getSize();local sz=tipLabel:getSize()
+  local x=pos.x+12;local y=pos.y+12
+  if x+sz.width>ws.width-4 then x=pos.x-sz.width-4 end
+  if y+sz.height>ws.height-4 then y=math.max(0,ws.height-sz.height-4) end
+  tipLabel:setPosition({x=x,y=y})
+end
+local function tipShow(text)
+  if not tipLabel then
+    tipLabel=g_ui.createWidget('UILabel',rootWidget)
+    tipLabel:setBackgroundColor('#c0c0c0ff');tipLabel:setColor('#3f3f3fff')
+    tipLabel:setBorderColor('#4c4c4cff');tipLabel:setBorderWidth(1)
+    tipLabel:setTextAlign(AlignLeft);tipLabel:setTextOffset({x=5,y=3})
+    tipLabel:setPhantom(true);tipLabel:setFocusable(false)
+  end
+  tipLabel:setText(text)
+  local sz=tipLabel:getTextSize()
+  tipLabel:setSize({width=sz.width+12,height=sz.height+8})
+  tipLabel:show();tipLabel:raise();tipPlace()
+end
+local function tipHide() if tipLabel then tipLabel:hide() end end
 local function attachTip(w,short,long)
-  w:setTooltip(short)
+  w:setTooltip('')
+  w.ourTipShort=short;w.ourTipLong=long
+  if w.ourTipAttached then return end
+  w.ourTipAttached=true
   connect(w,{onHoverChange=function(self,hovered)
     if self.ourTipEvent then removeEvent(self.ourTipEvent);self.ourTipEvent=nil end
-    if not hovered then return end
-    local shown=false
+    if not hovered then tipHide();return end
+    local shown=nil
     local function check()
       self.ourTipEvent=nil
-      if not self:isHovered() then return end
+      if not self:isHovered() or not self:isVisible() then tipHide();return end
       local sh=g_keyboard.isShiftPressed()
-      -- 15.10.2026 (Tobeto): Shift switches the tooltip at once (the old one is hidden and the new one shown)
-      if sh~=shown then shown=sh;local t=sh and long or short;self:setTooltip(t);pcall(g_tooltip.hide);g_tooltip.display(t) end
-      self.ourTipEvent=scheduleEvent(check,100)
+      if sh~=shown then shown=sh;tipShow(sh and self.ourTipLong or self.ourTipShort) else tipPlace() end
+      self.ourTipEvent=scheduleEvent(check,40)
     end
-    self.ourTipEvent=scheduleEvent(check,100)
+    check()
   end})
 end
 
@@ -181,7 +208,7 @@ function reset()
   confirmBox=displayGeneralBox(tr('Reset talents'),'Reset all talent points for '..money(data.resetCost)..' gold?',
     {{text=tr('Yes'),callback=yes},{text=tr('No'),callback=no},anchor=AnchorHorizontalCenter},yes,no)
 end
-function hide() if window then window:hide() end end
+function hide() tipHide();if window then window:hide() end end
 function toggle()
   if window:isVisible() then hide();return end
   -- 07.10.2026: open at once with the last data, then refresh it (the window

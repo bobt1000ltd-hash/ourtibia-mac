@@ -910,6 +910,7 @@ function showOutfits()
         end
 
         button.name:setText(outfitData[2])
+        button.ourAddons = outfitData[3]
         if tempOutfit.type == outfitData[1] then
             focused = outfitData[1]
             configureAddons(outfitData[3])
@@ -930,6 +931,8 @@ function showOutfits()
     window.selectionScroll:show()
     window.listSearch:show()
     ourListMode = 'outfit'
+    ourAddStoreEntries('outfit')
+    ourSetBonusButton(true)
     ourApplyBonusIcons()
     applyFilters()
     ourUpdateBonusPanel()
@@ -996,6 +999,8 @@ function showMounts()
     window.selectionScroll:show()
     window.listSearch:show()
     ourListMode = 'mount'
+    ourAddStoreEntries('mount')
+    ourSetBonusButton(true)
     ourApplyBonusIcons()
     applyFilters()
     ourUpdateBonusPanel()
@@ -1115,6 +1120,25 @@ function showShaders()
     window.selectionList:show()
     window.selectionScroll:show()
     window.listSearch:show()
+    -- 15.10.2026 (Tobeto): shaders have no bonuses - only the OWNED toggle
+    ourListMode = 'shader'
+    ourSetBonusButton(false)
+    pcall(ourApplyBonusIcons)
+    applyFilters()
+end
+
+function ourSetBonusButton(visible)
+    if not window then return end
+    local ls = window.listSearch
+    ls.onlyBonus:setVisible(visible)
+    ls.onlyMine:removeAnchor(AnchorRight)
+    if visible then
+        ls.onlyMine:addAnchor(AnchorRight, 'parent', AnchorHorizontalCenter)
+        ls.onlyMine:setMarginRight(3)
+    else
+        ls.onlyMine:addAnchor(AnchorRight, 'parent', AnchorRight)
+        ls.onlyMine:setMarginRight(0)
+    end
 end
 
 function showHealthBars()
@@ -1755,13 +1779,17 @@ end
 function applyFilters()
     if not window then return end
     local owned = window.listSearch.onlyMine:isOn()
-    local bonus = window.listSearch.onlyBonus:isOn()
+    local bonus = window.listSearch.onlyBonus:isOn() and window.listSearch.onlyBonus:isVisible()
     local searchText = window.listSearch.search:getText():lower():trim()
     local focused = window.selectionList:getFocusedChild()
     for _, child in ipairs(window.selectionList:getChildren()) do
         local visible = true
-        if owned and (not child.state or child.state ~= 0) then visible = false end
+        -- shaders (and other lists) only contain what the player owns
+        local mine = (ourListMode ~= 'outfit' and ourListMode ~= 'mount') or (child.state ~= nil and child.state == 0)
+        if owned and not mine then visible = false end
         if bonus and not child.ourBonus then visible = false end
+        -- 15.10.2026 (Tobeto): OWNED + BONUSES = only outfits whose bonus is unlocked
+        if owned and bonus and child.ourBonusLocked then visible = false end
         if visible and searchText:len() >= 1 and not child.name:getText():lower():find(searchText, 1, true) then visible = false end
         child:setVisible(visible)
         if not visible and child == focused then window.selectionList:focusChild(nil) end
@@ -1869,6 +1897,15 @@ function accept()
         local index = ourShaderIndex[tempOutfit.shaders or ''] or 0
         g_game.getProtocolGame():sendExtendedOpcode(113, 'set:' .. index)
     end
+    -- 15.10.2026 (Tobeto): store outfits / mounts you do not own are only a preview
+    local p = g_game.getLocalPlayer()
+    local cur = p and p:getOutfit() or {}
+    local missing = ourStoreOnlySet.outfit[tempOutfit.type] or ourStoreOnlySet.mount[tempOutfit.mount or 0]
+    if ourStoreOnlySet.outfit[tempOutfit.type] then tempOutfit.type = cur.type; tempOutfit.addons = cur.addons end
+    if ourStoreOnlySet.mount[tempOutfit.mount or 0] then tempOutfit.mount = cur.mount end
+    if missing and modules.game_textmessage then
+        modules.game_textmessage.displayFailureMessage(missing .. ' is not yours yet - you can get it in the Game Store.')
+    end
     -- MyOTS: send the outfit (with the chosen mount) BEFORE the mount toggle;
     -- the server mounts the "current mount" and it is set by changeOutfit.
     g_game.changeOutfit(tempOutfit)
@@ -1915,11 +1952,17 @@ ProtocolGame.registerExtendedOpcode(119, function(protocol, opcode, buffer)
         local ok, data = pcall(json.decode, text)
         if ok and type(data) == 'table' then
             OurOutfitBonus = data
-            if window then pcall(ourApplyBonusIcons); pcall(applyFilters); pcall(ourUpdateBonusPanel) end
+            if window then
+                if ourListMode == 'outfit' or ourListMode == 'mount' then pcall(ourAddStoreEntries, ourListMode) end
+                pcall(ourApplyBonusIcons); pcall(applyFilters); pcall(ourUpdateBonusPanel)
+            end
         end
         return
     end
-    ourBonusName = buffer:match('^cur:%d+:%d+:(.+)$')
+    local look, addons, name = buffer:match('^cur:(%d+):(%d+):(.+)$')
+    ourBonusName = name
+    ourBonusLook = tonumber(look)
+    ourBonusAddons = tonumber(addons)
     if window then pcall(ourUpdateBonusPanel) end
 end)
 
@@ -1940,7 +1983,7 @@ function ourCreateBonusPanel()
     btn:setMarginBottom(7)
     btn:setMarginLeft(6)
     btn:setMarginRight(6)
-    btn:setText('Set as bonus outfit')
+    btn:setText('Set new bonus')
     btn:setTooltip('Keep the bonus of the selected outfit and wear any other outfit you like (only the look changes, bonuses do not stack). Right click: back to the bonus of the worn outfit.')
     btn.onClick = function()
         if g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(119, 'set:' .. (tempOutfit.type or 0) .. ':' .. (tempOutfit.addons or 0)) end
@@ -1949,12 +1992,43 @@ function ourCreateBonusPanel()
         if button == MouseRightButton and g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(119, 'clear'); return true end
     end
     btn:hide()
+    -- 15.10.2026 (Tobeto): the bonuses you have now - outfit and mount
+    local act = g_ui.createWidget('FlatPanel', conf)
+    act:setId('ourActive')
+    act:setHeight(46)
+    local title = g_ui.createWidget('Label', act)
+    title:setId('title')
+    title:addAnchor(AnchorTop, 'parent', AnchorTop)
+    title:addAnchor(AnchorLeft, 'parent', AnchorLeft)
+    title:addAnchor(AnchorRight, 'parent', AnchorRight)
+    title:setMarginTop(2)
+    title:setTextAlign(AlignCenter)
+    title:setFont('verdana-11px-rounded')
+    title:setColor('#d8c48a')
+    title:setText('Active bonuses')
+    for i, id in ipairs({'ourActOutfit', 'ourActMount'}) do
+        local c = g_ui.createWidget('UICreature', act)
+        c:setId(id)
+        c:setSize({width = 32, height = 32})
+        c:addAnchor(AnchorTop, 'title', AnchorBottom)
+        if i == 1 then
+            c:addAnchor(AnchorRight, 'parent', AnchorHorizontalCenter)
+            c:setMarginRight(6)
+        else
+            c:addAnchor(AnchorLeft, 'parent', AnchorHorizontalCenter)
+            c:setMarginLeft(6)
+        end
+        c:setPhantom(false)
+        pcall(function() c:setCenter(true) end)
+        c:setBorderWidth(1)
+        c:setBorderColor('#00000077')
+    end
     local lbl = g_ui.createWidget('Label', window)
     lbl:setId('ourBonusText')
-    lbl:addAnchor(AnchorBottom, 'ourBonusOutfit', AnchorTop)
+    lbl:addAnchor(AnchorTop, 'configure', AnchorTop)
     lbl:addAnchor(AnchorLeft, 'configure', AnchorLeft)
     lbl:addAnchor(AnchorRight, 'configure', AnchorRight)
-    lbl:setMarginBottom(5)
+    lbl:setMarginTop(4)
     lbl:setMarginLeft(8)
     lbl:setMarginRight(6)
     lbl:setTextWrap(true)
@@ -1964,26 +2038,127 @@ function ourCreateBonusPanel()
     lbl:setFont('verdana-11px-rounded')
     lbl:hide()
     ourBonusName = nil
+    ourBonusLook = nil
     if g_game.isOnline() then
         g_game.getProtocolGame():sendExtendedOpcode(119, 'get')
-        if not OurOutfitBonus then g_game.getProtocolGame():sendExtendedOpcode(119, 'bonuses') end
+        g_game.getProtocolGame():sendExtendedOpcode(119, 'bonuses')
     end
+end
+
+-- 15.10.2026 (Tobeto): star = the look has a bonus. Gold: not owned (what you
+-- would get) or owned and unlocked; grey: owned outfit without both addons.
+-- Coin icon: sold in the Game Store and not owned yet (click: open the store).
+function ourStoreOf(mode, id)
+    if not OurOutfitBonus or not id then return nil end
+    local t = mode == 'outfit' and OurOutfitBonus.so or (mode == 'mount' and OurOutfitBonus.sm)
+    return t and t[tostring(id)]
+end
+
+function ourOpenStoreFor(name)
+    local store = modules.game_myotsstore
+    if not store or not store.openSearch then return end
+    store.openSearch('Cosmetics', name or '')
+end
+
+-- 15.10.2026 (Tobeto): the server only lists what you own; the Game Store
+-- outfits / mounts you do not have yet are added (blue, coin icon).
+ourStoreOnlySet = {outfit = {}, mount = {}}
+function ourAddStoreEntries(mode)
+    if not window or not OurOutfitBonus then return end
+    local list = mode == 'outfit' and OurOutfitBonus.sl or OurOutfitBonus.sml
+    if type(list) ~= 'table' then return end
+    for _, e in ipairs(list) do
+        local look = tonumber(e[1])
+        if look and not window.selectionList:getChildById(tostring(look)) then
+            local button = g_ui.createWidget('SelectionButton', window.selectionList)
+            button:setId(look)
+            if mode == 'outfit' then
+                local outfit = table.copy(previewCreature:getCreature():getOutfit())
+                outfit.type = look; outfit.addons = 3; outfit.mount = 0
+                outfit.familiar = 0; outfit.auras = 0; outfit.wings = 0
+                outfit.shader = 'Outfit - Default'; outfit.healthBar = 0; outfit.effects = 0
+                button.outfit:setOutfit(outfit)
+                button.ourAddons = 3
+            else
+                button.outfit:setOutfit({type = look})
+            end
+            button.outfit:setCenter(true)
+            button.name:setText(tostring(e[2]))
+            button.state = statesOutft.store
+            button.ourStoreOnly = true
+            ourStoreOnlySet[mode][look] = tostring(e[2])
+            button:setImageSource('/images/ui/button-blue-qt')
+        end
+    end
+end
+
+function ourIsStoreOnly(mode, look)
+    if not window or not look then return false end
+    local w = window.selectionList:getChildById(tostring(look))
+    return w and w.ourStoreOnly and ourListMode == mode
 end
 
 function ourApplyBonusIcons()
     if not window or not ourListMode then return end
     for _, child in ipairs(window.selectionList:getChildren()) do
-        local b = ourBonusOf(ourListMode, tonumber(child:getId()))
+        local id = tonumber(child:getId())
+        local b = (ourListMode == 'outfit' or ourListMode == 'mount') and ourBonusOf(ourListMode, id) or nil
+        local mine = child.state ~= nil and child.state == 0
         child.ourBonus = b and true or nil
+        child.ourBonusLocked = nil
         if child.bonusIcon then
             child.bonusIcon:setVisible(b ~= nil)
             if b then
-                child.bonusIcon:setTooltip(type(b) == 'table' and ('Bonus (both addons): ' .. tostring(b[3])) or ('Bonus: ' .. tostring(b)))
+                local locked = ourListMode == 'outfit' and mine and (tonumber(child.ourAddons) or 0) ~= 3
+                child.ourBonusLocked = locked or nil
+                child.bonusIcon:setImageColor(locked and '#6a6a6a' or 'white')
+                local tip = type(b) == 'table' and ('Bonus (both addons): ' .. tostring(b[3])) or ('Bonus: ' .. tostring(b))
+                if locked then tip = tip .. '\nYou need both addons to unlock the full bonus.' end
+                child.bonusIcon:setTooltip(tip)
+            end
+        end
+        if child.storeIcon then
+            local price = (ourListMode == 'outfit' or ourListMode == 'mount') and ourStoreOf(ourListMode, id) or nil
+            local show = price ~= nil and not mine
+            child.storeIcon:setVisible(show)
+            if show then
+                local name = child.name:getText()
+                child.storeIcon:setTooltip(string.format('Available in the Game Store (%s coins).\nClick to open the store.', tostring(price)))
+                child.storeIcon.onClick = function() ourOpenStoreFor(name) end
             end
         end
     end
 end
 
+function ourUpdateActive()
+    local act = window and window.configure and window.configure:getChildById('ourActive')
+    if not act then return end
+    local p = g_game.getLocalPlayer()
+    if not p then return end
+    local cur = p:getOutfit()
+    local look = ourBonusLook or cur.type
+    local addons = ourBonusLook and (ourBonusAddons or 0) or (cur.addons or 0)
+    local o = act:getChildById('ourActOutfit')
+    local out = table.copy(cur)
+    out.type = look; out.addons = addons; out.mount = 0
+    o:setOutfit(out)
+    local b = ourBonusOf('outfit', look)
+    local st = ADDON_STAGE_TIP[addons] or 1
+    o:setTooltip(b and ('Outfit bonus' .. (ourBonusName and (' (' .. ourBonusName .. ')') or '') .. ':\n' .. tostring(b[st] or '')) or 'This outfit gives no bonus.')
+    local m = act:getChildById('ourActMount')
+    local mountLook = p:isMounted() and cur.mount or 0
+    if mountLook and mountLook > 0 then
+        m:setOutfit({type = mountLook})
+        m:show()
+        local mb = ourBonusOf('mount', mountLook)
+        m:setTooltip(mb and ('Mount bonus (while riding):\n' .. tostring(mb)) or 'This mount gives no bonus.')
+    else
+        m:setOutfit({type = 0})
+        m:setTooltip('No mount bonus - you are not riding.')
+    end
+end
+
+ADDON_STAGE_TIP = {[0] = 1, [1] = 2, [2] = 2, [3] = 3}
 local ADDON_STAGE = {[0] = {1, 'no addons'}, [1] = {2, 'one addon'}, [2] = {2, 'one addon'}, [3] = {3, 'both addons'}}
 function ourUpdateBonusPanel()
     if not window then return end
@@ -1995,20 +2170,36 @@ function ourUpdateBonusPanel()
         local b = ourBonusOf('outfit', tempOutfit.type)
         if b then
             local st = ADDON_STAGE[tempOutfit.addons or 0] or ADDON_STAGE[0]
-            text = 'Bonus (' .. st[2] .. '):\n' .. tostring(b[st[1]] or '')
-            if (tempOutfit.addons or 0) ~= 3 then text = text .. '\n\nBoth addons:\n' .. tostring(b[3] or '') end
+            if (tempOutfit.addons or 0) == 3 then
+                text = 'Both addons: ' .. tostring(b[3] or '')
+            else
+                text = (st[2]:gsub('^%l', string.upper)) .. ': ' .. tostring(b[st[1]] or '') .. '\nBoth addons: ' .. tostring(b[3] or '')
+            end
             showBtn = true
         end
     elseif ourListMode == 'mount' then
         local b = ourBonusOf('mount', tempOutfit.mount)
-        if b then text = 'Bonus while riding:\n' .. tostring(b) end
+        if b then text = 'While riding: ' .. tostring(b) end
+    end
+    -- 15.10.2026 (Tobeto): "Set new bonus" replaces the active bonus outfit
+    local activeLook = ourBonusLook
+    if not activeLook then
+        local p = g_game.getLocalPlayer()
+        activeLook = p and p:getOutfit().type
+    end
+    if showBtn and ourStoreOnlySet.outfit[tempOutfit.type] then
+        showBtn = false
+        text = (text or '') .. '\nGet it in the Game Store.'
+    end
+    if showBtn and activeLook == tempOutfit.type and (ourBonusLook == nil or ourBonusAddons == (tempOutfit.addons or 0)) then
+        showBtn = false
     end
     if text then lbl:setText(text); lbl:show() else lbl:hide() end
     btn:setVisible(showBtn and true or false)
-    if showBtn then
-        btn:setText(ourBonusName and ('Bonus: ' .. ourBonusName) or 'Set as bonus outfit')
-    end
-    if not showBtn then lbl:setMarginBottom(-20) else lbl:setMarginBottom(5) end
+    if showBtn then btn:setText('Set new bonus') end
+    pcall(ourUpdateActive)
+    local act = window.configure:getChildById('ourActive')
+    if act then lbl:setMarginTop(act:getY() + act:getHeight() - window.configure:getY() + 4) end
 end
 
 -- 11.10.2026 (Tobeto): owned shaders arrive from the server (game_myotsstore

@@ -353,8 +353,14 @@ local OUR_ROWS = {rowLevel = {'level'}, rowStamina = {'stamina'}, -- 14.10.2026 
     -- 13.10.2026 (Tobeto): skills and offline training can be hidden completely too
     rowOfflineTraining = {'offlineTraining'}, rowMagic = {'magiclevel'}, rowFist = {'skillId0'},
     rowMelee = {'skillId2'}, rowDistance = {'skillId4'}, rowShielding = {'skillId5'}, rowFishing = {'skillId6'}}
+-- 15.10.2026 (Tobeto): Hit Points, Mana, Soul Points and Capacity moved to the Attributes tab
+local OUR_MOVED = {'health', 'mana', 'soul', 'capacity'}
 function ourApplyRowHides()
     if not skillsWindow or not g_game.isOnline() then return end
+    for _, id in ipairs(OUR_MOVED) do
+        local w = skillsWindow:recursiveGetChildById(id)
+        if w then w:setVisible(false); w.myotsPreviousVisible = nil end
+    end
     local char = g_game.getCharacterName()
     local set = skillSettings and skillSettings[char] or {}
     for opt, ids in pairs(OUR_ROWS) do
@@ -852,6 +858,8 @@ function update()
 end
 
 function skillController:onGameStart()
+    ourPinSyncAsked=nil
+    scheduleEvent(function() pcall(ourRefreshPinned) end, 1500)
     skillsWindow:setupOnStart()
     scheduleEvent(function()
         local p = g_game.getProtocolGame()
@@ -1206,20 +1214,24 @@ function onLevelChange(localPlayer, value, percent)
 end
 
 function onHealthChange(localPlayer, health, maxHealth)
+    pcall(ourUpdateLive)
     setSkillValue('health', comma_value(health) .. ' / ' .. comma_value(maxHealth))
     checkAlert('health', health, maxHealth, 30)
 end
 
 function onManaChange(localPlayer, mana, maxMana)
+    pcall(ourUpdateLive)
     setSkillValue('mana', comma_value(mana) .. ' / ' .. comma_value(maxMana))
     checkAlert('mana', mana, maxMana, 30)
 end
 
 function onSoulChange(localPlayer, soul)
+    pcall(ourUpdateLive)
     setSkillValue('soul', soul)
 end
 
 function onFreeCapacityChange(localPlayer, freeCapacity)
+    pcall(ourUpdateLive)
     setSkillValue('capacity', comma_value(freeCapacity))
 end
 
@@ -1796,6 +1808,7 @@ function myotsTab(attributes)
         end
     end
     skillsWindow:recursiveGetChildById('myotsDetails'):setVisible(attributes)
+    pcall(ourRefreshPinned)
     if attributes then
         local panel=skillsWindow:recursiveGetChildById('myotsDetails')
         panel:destroyChildren()
@@ -1952,12 +1965,18 @@ function myotsAttributes(rows)
         myotsAttributesKey=nil
         scheduleEvent(function() myotsAttributes(myotsAttributesLast) end,10)
     end
+    -- 15.10.2026 (Tobeto): character values (live) on top of the list
+    local live={{section='Character'}}
+    for _,k in ipairs(OUR_LIVE_KEYS) do live[#live+1]={key=k,label=OUR_LIVE_LABEL[k],value=1,unit='',live=true,tip=OUR_LIVE_TIP[k]} end
+    local allRows={}
+    for _,e in ipairs(live) do allRows[#allRows+1]=e end
+    for _,e in ipairs(rows or {}) do allRows[#allRows+1]=e end
     local shownRows={}
     do
         local pendingHeading=nil
-        for _,entry in ipairs(rows or {}) do
+        for _,entry in ipairs(allRows) do
             if entry.section then pendingHeading=entry
-            elseif not onlyNonZero or (tonumber(entry.value) or 0)~=0 then
+            elseif not onlyNonZero or entry.live or (tonumber(entry.value) or 0)~=0 then
                 if pendingHeading then shownRows[#shownRows+1]=pendingHeading;pendingHeading=nil end
                 shownRows[#shownRows+1]=entry
             end
@@ -1971,6 +1990,14 @@ function myotsAttributes(rows)
             local widget=g_ui.createWidget('OurAttributeRow',panel)
             local key=tostring(entry.key or 'unknown')
             widget:setId('attribute_'..key)
+            if entry.live then
+                widget:getChildById('value'):setTextAutoResize(true)
+                widget:getChildById('name'):setText(entry.label)
+                widget:getChildById('name').myotsFull=entry.label
+                widget:setTooltip(entry.label..'\n'..(entry.tip or ''))
+                ourSetupPin(widget,key)
+                goto continue
+            end
             local short={critical='Critical chance',extradefense='Extra defense',lowdamage='Low HP damage',lowresist='Low HP resist',dodgephysical='Physical dodge',dodgemagic='Magic dodge',allskills='All skills',experience='Experience',potion='Potion bonus',hpregen='HP per tick',manaregen='Mana per tick',soulregen='Soul regen',speed='Bonus speed',speed_total='Speed',regen_hp='HP regen',regen_mana='Mana regen',resilience='PvP Mastery'}
             local label=tostring(entry.label or entry.key or 'Unknown')
             local name=widget and widget:getChildById('name');if name then name:setText(short[key] or label) end
@@ -1984,9 +2011,13 @@ function myotsAttributes(rows)
                 local icon=widget and widget:getChildById('icon');if icon then icon:setImageSource('/game_cyclopedia/images/bestiary/icons/monster-icon-'..tostring(entry.icon)..'-resist');icon:show() end
                 if name then name:setMarginLeft(14) end
             end
+            ourSetupPin(widget,key)
         end
+        ::continue::
     end
-    panel:setHeight(#(rows or {})*17+10)
+    pcall(ourUpdateLive)
+    pcall(ourRefreshPinned)
+    panel:setHeight(#allRows*17+10)
     local height=0;for _,w in ipairs(panel:getChildren())do height=height+w:getHeight()end;panel:setHeight(height)
     myotsFitAttributes()
     if not panel.myotsFitHooked then
@@ -2019,4 +2050,125 @@ function myotsFitAttributes()
             end
         end
     end
+end
+
+
+-- 15.10.2026 (Tobeto): live character rows and pinned attributes
+OUR_LIVE_KEYS={'live_hp','live_mana','live_soul','live_cap'}
+OUR_LIVE_LABEL={live_hp='Hit Points',live_mana='Mana',live_soul='Soul Points',live_cap='Capacity'}
+OUR_LIVE_TIP={live_hp='Your hit points now / maximum.',live_mana='Your mana now / maximum.',live_soul='Your soul points.',live_cap='Free capacity (oz).'}
+local function ourLiveText(key)
+    local p=g_game.getLocalPlayer()
+    if not p then return '-' end
+    if key=='live_hp' then return comma_value(p:getHealth())..' / '..comma_value(p:getMaxHealth()) end
+    if key=='live_mana' then return comma_value(p:getMana())..' / '..comma_value(p:getMaxMana()) end
+    if key=='live_soul' then return tostring(p:getSoul()) end
+    if key=='live_cap' then return comma_value(p:getFreeCapacity()) end
+    return '-'
+end
+local function ourAttrText(entry)
+    local key=tostring(entry.key or '')
+    if OUR_LIVE_LABEL[key] then return ourLiveText(key),'#ffffff' end
+    local value=tonumber(entry.value) or 0
+    local unit=tostring(entry.unit or '')
+    local text=unit:sub(1,2)==' /' and (string.format('%g',value)..unit) or (key=='speed_total' and string.format('%g',value)) or entry.unit=='%' and string.format('%.2f%%',value) or entry.unit=='x' and string.format('%gx',value) or entry.unit==' ms' and string.format('%g ms',value) or string.format('%+g',value)
+    return text,(value==0 and '#777777' or '#ffffff')
+end
+function ourUpdateLive()
+    if not skillsWindow then return end
+    for _,key in ipairs(OUR_LIVE_KEYS) do
+        for _,id in ipairs({'attribute_'..key,'pinned_'..key}) do
+            local w=skillsWindow:recursiveGetChildById(id)
+            if w then local v=w:getChildById('value');if v then v:setText(ourLiveText(key));v:setColor('#ffffff') end end
+        end
+    end
+end
+local function ourPins()
+    local list=g_settings.getList('ourPinnedAttrs') or {}
+    local set={};for _,k in ipairs(list) do set[k]=true end
+    return list,set
+end
+function ourTogglePin(key)
+    local list,set=ourPins()
+    local out={}
+    if set[key] then for _,k in ipairs(list) do if k~=key then out[#out+1]=k end end
+    else for _,k in ipairs(list) do out[#out+1]=k end;out[#out+1]=key end
+    g_settings.setList('ourPinnedAttrs',out)
+    -- pin icons of the attribute rows follow
+    if skillsWindow then
+        local panel=skillsWindow:recursiveGetChildById('myotsDetails')
+        if panel then for _,row in ipairs(panel:getChildren()) do if row.ourPinKey then ourPaintPin(row,false) end end end
+    end
+    ourRefreshPinned()
+end
+function ourPaintPin(row,hovered)
+    local pin=row:getChildById('pin');if not pin then return end
+    local _,set=ourPins()
+    local pinned=set[row.ourPinKey]
+    local show=pinned or hovered
+    pin:setVisible(show and true or false)
+    pin:setImageColor((pinned or pin:isHovered()) and '#44d040' or '#6a6a6a')
+    local shift=show and 12 or 0
+    local icon=row:getChildById('icon')
+    local name=row:getChildById('name')
+    if icon then icon:setMarginLeft(shift) end
+    if name then name:setMarginLeft((icon and icon:isVisible()) and (shift+14) or shift) end
+end
+function ourSetupPin(row,key)
+    row.ourPinKey=key
+    local pin=row:getChildById('pin')
+    if not pin then return end
+    row.onHoverChange=function(w,hovered) ourPaintPin(w,hovered) end
+    pin.onHoverChange=function(w,hovered)
+        local _,set=ourPins()
+        w:setTooltip(set[key] and 'Unpin it from the skills window' or 'Pin it to the skills window')
+        ourPaintPin(row,true)
+    end
+    pin.onClick=function() ourTogglePin(key);ourPaintPin(row,true);return true end
+    ourPaintPin(row,false)
+end
+function ourRefreshPinned()
+    if not skillsWindow then return end
+    local contents=skillsWindow:getChildById('contentsPanel')
+    if not contents then return end
+    local panel=contents:getChildById('ourPinned')
+    if not panel then
+        panel=g_ui.createWidget('Panel',contents)
+        panel:setId('ourPinned')
+        panel:setLayout(UIVerticalLayout.create(panel))
+    end
+    panel:destroyChildren()
+    local list=ourPins()
+    local byKey={}
+    for _,e in ipairs(myotsAttributesLast or {}) do if e.key then byKey[tostring(e.key)]=e end end
+    local n=0
+    if #list>0 then
+        local sep=g_ui.createWidget('HorizontalSeparator',panel);sep:setMarginTop(4);sep:setMarginBottom(3);sep:setHeight(2)
+    end
+    for _,key in ipairs(list) do
+        local entry=byKey[key] or (OUR_LIVE_LABEL[key] and {key=key,label=OUR_LIVE_LABEL[key],tip=OUR_LIVE_TIP[key]})
+        local row=g_ui.createWidget('OurAttributeRow',panel)
+        row:setId('pinned_'..key)
+        row:getChildById('value'):setTextAutoResize(true)
+        local label=entry and tostring(entry.label or key) or key
+        local short={critical='Critical chance',regen_hp='HP regen',regen_mana='Mana regen',speed_total='Speed'}
+        row:getChildById('name'):setText(short[key] or label)
+        if entry then
+            local text,color=ourAttrText(entry)
+            row:getChildById('value'):setText(text);row:getChildById('value'):setColor(color)
+            row:setTooltip(label..'\n'..tostring(entry.tip or ''))
+        else
+            row:getChildById('value'):setText('...')
+        end
+        ourSetupPin(row,key)
+        n=n+1
+    end
+    panel:setHeight(n>0 and (n*17+9) or 0)
+    panel:setVisible(n>0 and not myotsAttributesShown)
+    panel.myotsPreviousVisible=nil
+    if n>0 and not myotsAttributesLast and g_game.isOnline() and not ourPinSyncAsked then
+        ourPinSyncAsked=true
+        local protocol=g_game.getProtocolGame();if protocol then protocol:sendExtendedOpcode(107,'sync') end
+    end
+    updateHeight()
 end

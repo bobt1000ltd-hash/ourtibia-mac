@@ -27,11 +27,16 @@ HudLabel < Label
 HudButton < Button
   height: 23
   width: 166
-  font: verdana-11px-monochrome
+  font: verdana-11px-rounded
 
+// 15.10.2026 (Tobeto): Autolooting and Trainer use one font and colour;
+// the box is centred on the text line
 HudCheck < CheckBox
   height: 19
-  font: verdana-11px-monochrome
+  font: verdana-11px-rounded
+  color: #e8e8e8
+  image-rect: 0 3 12 12
+  text-offset: 18 0
 
 KillEntry < UIWidget
   height: 50
@@ -193,6 +198,8 @@ LootHeader < CheckBox
   font: verdana-11px-rounded
   color: #e8e8e8
   margin-top: 4
+  image-rect: 0 9 12 12
+  text-offset: 18 0
 
 LootMiniX < UIButton
   size: 11 11
@@ -447,3 +454,17 @@ TaskEntry < UIWidget
     color: #ffffff
     text-offset: 0 -1
     text-align: center
+
+// 15.10.2026 (Tobeto): label above a trainer field, indented under its checkbox
+HudSubLabel < Label
+  height: 15
+  font: verdana-11px-rounded
+  color: #c0c0c0
+  margin-left: 18
+
+HudField < TextEdit
+  height: 20
+  margin-left: 18
+  text-align: center
+  padding: 0 4 0 4
+  font: verdana-11px-rounded

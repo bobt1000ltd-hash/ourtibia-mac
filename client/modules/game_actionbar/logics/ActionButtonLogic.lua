@@ -931,7 +931,8 @@ function configureButtonMouseRelease(button)
             local buttonHasMulti = hasMultiActions(button.cache.multiActions)
             local hasMultiIcon = button.multiIcon and button.multiIcon:isVisible()
             local hasMultiActions = buttonHasMulti
-            if assignMultiAction then
+            -- 15.10.2026 (Tobeto): no Multi-Action in the assign menu
+            if false and assignMultiAction then
                 local panelOpen = multiPanel and not multiPanel:isDestroyed() and multiPanel.button == button
                 if panelOpen then
                     menu:addOption(tr('Close Multi-Action'), function()

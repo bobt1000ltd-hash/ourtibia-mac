@@ -2247,6 +2247,14 @@ function onTalk(name, level, mode, message, channelId, creaturePos)
             processedText = processedText:gsub("{([^}]+)}", "%1")
             staticMessage = processedText
             staticText:setColor(speaktype.color)
+        elseif staticMessage:find('{', 1, true) then
+            -- OurTibia (15.10.2026): NPCs also talk in Say/Yell mode (greetings,
+            -- barks); their {keywords} must not show braces on the map
+            local tile = g_map.getTile(creaturePos)
+            local speaker = tile and tile:getTopCreature()
+            if speaker and speaker:isNpc() then
+                staticMessage = staticMessage:gsub("{([^}]+)}", "%1")
+            end
         end
 
         staticText:addMessage(name, mode, staticMessage)
