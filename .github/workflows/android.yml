@@ -156,6 +156,37 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
 
+      - name: Emulator test script
+        run: |
+          mkdir -p out/test
+          cat > out/emu_test.sh <<'EOS'
+          mkdir -p out/test
+          adb install -r out/OurTibia-Android.apk > out/test/install.txt 2>&1 || (cat out/test/install.txt; adb install -r -t out/OurTibia-Android.apk >> out/test/install.txt 2>&1) || true
+          adb logcat -c || true
+          adb shell am start -n com.ourtibia.client/com.otclient.MainActivity || true
+          for t in 20 45 70 100 140 180; do
+            sleep 25
+            adb exec-out screencap -p > out/test/shot_${t}s.png || true
+            adb shell pidof com.ourtibia.client > /dev/null || echo "not running at ${t}s" >> out/test/screen.txt
+          done
+          # login with a made-up account: the live server must answer (proves network + protocol)
+          adb shell input tap 720 322 || true
+          sleep 1
+          adb shell input text "qatestnoacc" || true
+          adb shell input tap 744 412 || true
+          sleep 1
+          adb shell input text "qatest123" || true
+          adb shell input keyevent 66 || true
+          sleep 12
+          adb exec-out screencap -p > out/test/shot_login_try.png || true
+          adb shell wm size >> out/test/screen.txt || true
+          adb shell dumpsys window | grep -m3 -i "mCurrentFocus\|mFocusedApp" >> out/test/screen.txt || true
+          adb shell pidof com.ourtibia.client >> out/test/screen.txt || echo "PROCESS NOT RUNNING" >> out/test/screen.txt
+          adb logcat -d > out/test/logcat.txt || true
+          
+          EOS
+          chmod +x out/emu_test.sh
+
       - name: Test in the emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -165,30 +196,7 @@ jobs:
           profile: pixel_6
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: |
-            mkdir -p out/test
-            adb install -r out/OurTibia-Android.apk > out/test/install.txt 2>&1 || (cat out/test/install.txt; adb install -r -t out/OurTibia-Android.apk >> out/test/install.txt 2>&1) || true
-            adb logcat -c || true
-            adb shell am start -n com.ourtibia.client/com.otclient.MainActivity || true
-            for t in 20 45 70 100 140 180; do
-              sleep 25
-              adb exec-out screencap -p > out/test/shot_${t}s.png || true
-              adb shell pidof com.ourtibia.client > /dev/null || echo "not running at ${t}s" >> out/test/screen.txt
-            done
-            # login with a made-up account: the live server must answer (proves network + protocol)
-            adb shell input tap 720 322 || true
-            sleep 1
-            adb shell input text "qatestnoacc" || true
-            adb shell input tap 744 412 || true
-            sleep 1
-            adb shell input text "qatest123" || true
-            adb shell input keyevent 66 || true
-            sleep 12
-            adb exec-out screencap -p > out/test/shot_login_try.png || true
-            adb shell wm size > out/test/screen.txt || true
-            adb shell dumpsys window | grep -m3 -i "mCurrentFocus\|mFocusedApp" >> out/test/screen.txt || true
-            adb shell pidof com.ourtibia.client >> out/test/screen.txt || echo "PROCESS NOT RUNNING" >> out/test/screen.txt
-            adb logcat -d > out/test/logcat.txt || true
+          script: bash out/emu_test.sh
 
       - name: Results to branch results-android
         if: always()
