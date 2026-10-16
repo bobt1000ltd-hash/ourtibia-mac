@@ -59,7 +59,9 @@ void UIMap::draw(const DrawPoolType drawPane) {
         }, [this] {
             m_mapView->registerEvents();
         }, m_mapView->m_posInfo.rect, m_mapView->m_posInfo.srcRect,
-           m_mapView->getCameraPosition().z == g_gameConfig.getMapSeaFloor() ? Color(0xFFA54C27U) : Color::black);
+           // OurTibia (16.10.2026): black on every floor - the blue "sea" colour on floor 7 showed as
+           // blue squares at the edges of the screen while running (tiles not received yet)
+           Color::black);
 
         g_drawPool.preDraw(DrawPoolType::CREATURE_INFORMATION, [] {});
     } else if (drawPane == DrawPoolType::LIGHT) {

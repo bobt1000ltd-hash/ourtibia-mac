@@ -56,7 +56,7 @@ function B.redraw()
     label:addAnchor(AnchorBottom,'parent',AnchorBottom);label:addAnchor(AnchorHorizontalCenter,'parent',AnchorHorizontalCenter)
     label:setText(pct..'%');label:setTextAutoResize(true);label:setPhantom(true)
     local function f(n) local s=tostring(math.floor(n));while true do local k;s,k=s:gsub('^(%d+)(%d%d%d)','%1.%2');if k==0 then break end end;return s end
-    cell:setTooltip('Respawn fund: '..f(B.fund)..' / '..f(step)..' gold\nEvery full million starts 1 hour of Experience Boost\n(+10% exp) and Loot Boost (+30% loot) for everyone.\nDonate with !donate <amount>')
+    cell:setTooltip('Community Boost: '..f(B.fund)..' / '..f(step)..' gold\nEvery full million starts 1 hour of Experience Boost\n(+10% exp) and Loot Boost (+30% loot) for everyone.\nDonate with !donate <amount>')
   end
   if shown==0 then w:hide() else w:setWidth(shown*48+6);w:show();w:raise() end
 end

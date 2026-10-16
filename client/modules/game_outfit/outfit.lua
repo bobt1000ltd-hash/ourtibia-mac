@@ -1977,9 +1977,9 @@ function ourCreateBonusPanel()
     local btn = g_ui.createWidget('Button', window)
     btn:setId('ourBonusOutfit')
     btn:setHeight(20)
-    btn:addAnchor(AnchorBottom, 'configure', AnchorBottom)
-    btn:addAnchor(AnchorLeft, 'configure', AnchorLeft)
-    btn:addAnchor(AnchorRight, 'configure', AnchorRight)
+    btn:addAnchor(AnchorBottom, 'ourActivePanel', AnchorBottom)
+    btn:addAnchor(AnchorLeft, 'ourActivePanel', AnchorLeft)
+    btn:addAnchor(AnchorRight, 'ourActivePanel', AnchorRight)
     btn:setMarginBottom(7)
     btn:setMarginLeft(6)
     btn:setMarginRight(6)
@@ -1992,20 +1992,40 @@ function ourCreateBonusPanel()
         if button == MouseRightButton and g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(119, 'clear'); return true end
     end
     btn:hide()
-    -- 15.10.2026 (Tobeto): the bonuses you have now - outfit and mount
-    local act = g_ui.createWidget('FlatPanel', conf)
+    -- 16.10.2026 (Tobeto): "Configure" ends below the Mount box; "Active bonuses" is its own
+    -- panel below it, in the same style
+    local confRect = conf:getRect()
+    local bottomY = confRect.y + confRect.height
+    local mountW = conf:getChildById('mount')
+    local confH = mountW and (mountW:getRect().y + mountW:getHeight() - confRect.y + 7) or 107
+    conf:removeAnchor(AnchorBottom)
+    conf:setHeight(confH)
+    -- "Change Appearance" was anchored to the bottom of "Configure" - keep its full height
+    local app = window:getChildById('appearance')
+    if app then app:removeAnchor(AnchorBottom); app:addAnchor(AnchorBottom, 'separator', AnchorTop); app:setMarginBottom(5) end
+    local panel = g_ui.createWidget(conf:getStyleName() or 'MiniPanel', window)
+    panel:setId('ourActivePanel')
+    panel:setText('Active bonuses')
+    panel:addAnchor(AnchorTop, 'configure', AnchorBottom)
+    panel:addAnchor(AnchorLeft, 'configure', AnchorLeft)
+    panel:addAnchor(AnchorRight, 'configure', AnchorRight)
+    panel:setMarginTop(5)
+    panel:addAnchor(AnchorBottom, 'separator', AnchorTop)
+    panel:setMarginBottom(5)
+    -- the active outfit and mount (as before)
+    local act = g_ui.createWidget('UIWidget', panel)
     act:setId('ourActive')
-    act:setHeight(46)
-    local title = g_ui.createWidget('Label', act)
+    act:setHeight(36)
+    act:addAnchor(AnchorTop, 'parent', AnchorTop)
+    act:addAnchor(AnchorLeft, 'parent', AnchorLeft)
+    act:addAnchor(AnchorRight, 'parent', AnchorRight)
+    act:setMarginTop(24)
+    local title = g_ui.createWidget('UIWidget', act)
     title:setId('title')
+    title:setHeight(0)
     title:addAnchor(AnchorTop, 'parent', AnchorTop)
     title:addAnchor(AnchorLeft, 'parent', AnchorLeft)
     title:addAnchor(AnchorRight, 'parent', AnchorRight)
-    title:setMarginTop(2)
-    title:setTextAlign(AlignCenter)
-    title:setFont('verdana-11px-rounded')
-    title:setColor('#d8c48a')
-    title:setText('Active bonuses')
     for i, id in ipairs({'ourActOutfit', 'ourActMount'}) do
         local c = g_ui.createWidget('UICreature', act)
         c:setId(id)
@@ -2023,11 +2043,11 @@ function ourCreateBonusPanel()
         c:setBorderWidth(1)
         c:setBorderColor('#00000077')
     end
-    local lbl = g_ui.createWidget('Label', window)
+    local lbl = g_ui.createWidget('Label', panel)
     lbl:setId('ourBonusText')
-    lbl:addAnchor(AnchorTop, 'configure', AnchorTop)
-    lbl:addAnchor(AnchorLeft, 'configure', AnchorLeft)
-    lbl:addAnchor(AnchorRight, 'configure', AnchorRight)
+    lbl:addAnchor(AnchorTop, 'ourActive', AnchorBottom)
+    lbl:addAnchor(AnchorLeft, 'parent', AnchorLeft)
+    lbl:addAnchor(AnchorRight, 'parent', AnchorRight)
     lbl:setMarginTop(4)
     lbl:setMarginLeft(8)
     lbl:setMarginRight(6)
@@ -2112,8 +2132,8 @@ function ourApplyBonusIcons()
                 local locked = ourListMode == 'outfit' and mine and (tonumber(child.ourAddons) or 0) ~= 3
                 child.ourBonusLocked = locked or nil
                 child.bonusIcon:setImageColor(locked and '#6a6a6a' or 'white')
-                local tip = type(b) == 'table' and ('Bonus (both addons): ' .. tostring(b[3])) or ('Bonus: ' .. tostring(b))
-                if locked then tip = tip .. '\nYou need both addons to unlock the full bonus.' end
+                local tip = type(b) == 'table' and ('Bonus: ' .. tostring(b[3])) or ('Bonus: ' .. tostring(b))
+                if locked then tip = tip .. '\nLocked - get the full outfit first.' end
                 child.bonusIcon:setTooltip(tip)
             end
         end
@@ -2131,7 +2151,7 @@ function ourApplyBonusIcons()
 end
 
 function ourUpdateActive()
-    local act = window and window.configure and window.configure:getChildById('ourActive')
+    local act = window and window:recursiveGetChildById('ourActive')
     if not act then return end
     local p = g_game.getLocalPlayer()
     if not p then return end
@@ -2144,7 +2164,8 @@ function ourUpdateActive()
     o:setOutfit(out)
     local b = ourBonusOf('outfit', look)
     local st = ADDON_STAGE_TIP[addons] or 1
-    o:setTooltip(b and ('Outfit bonus' .. (ourBonusName and (' (' .. ourBonusName .. ')') or '') .. ':\n' .. tostring(b[st] or '')) or 'This outfit gives no bonus.')
+    -- 16.10.2026 (Tobeto): the bonus counts only for the full outfit (both addons)
+    o:setTooltip(b and (addons == 3 and ('Outfit bonus' .. (ourBonusName and (' (' .. ourBonusName .. ')') or '') .. ':\n' .. tostring(b[3] or '')) or 'This outfit gives a bonus only with both addons.') or 'This outfit gives no bonus.')
     local m = act:getChildById('ourActMount')
     local mountLook = p:isMounted() and cur.mount or 0
     if mountLook and mountLook > 0 then
@@ -2165,22 +2186,45 @@ function ourUpdateBonusPanel()
     local btn = window:getChildById('ourBonusOutfit')
     local lbl = window:getChildById('ourBonusText')
     if not btn or not lbl then return end
-    local text, showBtn
+    local text, showBtn, colored
+    -- 16.10.2026 (Tobeto): what you lose (red) and what you get (green) with the picked look
+    local function items(str)
+        local out = {}
+        for part in tostring(str or ''):gmatch('[^,]+') do part = part:gsub('^%s+', ''):gsub('%s+$', ''); if part ~= '' then out[#out + 1] = part end end
+        return out
+    end
+    local function diff(oldStr, newStr)
+        local parts = {}
+        local old, new = items(oldStr), items(newStr)
+        local same = table.concat(old, ',') == table.concat(new, ',')
+        if same then
+            for _, t in ipairs(new) do parts[#parts + 1] = '{' .. t .. ', #d8c48a}\n' end
+            return table.concat(parts)
+        end
+        for _, t in ipairs(old) do parts[#parts + 1] = '{- ' .. t .. ', #ff6060}\n' end
+        for _, t in ipairs(new) do parts[#parts + 1] = '{+ ' .. t .. ', #66dd44}\n' end
+        return table.concat(parts)
+    end
+    local p = g_game.getLocalPlayer()
+    local cur = p and p:getOutfit() or {}
     if ourListMode == 'outfit' then
         local b = ourBonusOf('outfit', tempOutfit.type)
+        local aLook = ourBonusLook or cur.type
+        local aAdd = ourBonusLook and (ourBonusAddons or 0) or (cur.addons or 0)
+        local ab = ourBonusOf('outfit', aLook)
+        local activeStr = (ab and aAdd == 3) and ab[3] or ''
         if b then
-            local st = ADDON_STAGE[tempOutfit.addons or 0] or ADDON_STAGE[0]
-            if (tempOutfit.addons or 0) == 3 then
-                text = 'Both addons: ' .. tostring(b[3] or '')
-            else
-                text = (st[2]:gsub('^%l', string.upper)) .. ': ' .. tostring(b[st[1]] or '') .. '\nBoth addons: ' .. tostring(b[3] or '')
-            end
-            showBtn = true
+            local newStr = (tempOutfit.addons or 0) == 3 and b[3] or ''
+            colored = diff(activeStr, newStr)
+            if (tempOutfit.addons or 0) ~= 3 then colored = colored .. '{Needs the full outfit., #a0a0a0}' end
+            showBtn = (tempOutfit.addons or 0) == 3
         end
     elseif ourListMode == 'mount' then
         local b = ourBonusOf('mount', tempOutfit.mount)
-        if b then text = 'While riding: ' .. tostring(b) end
+        local mb = (p and p:isMounted() and (cur.mount or 0) > 0) and ourBonusOf('mount', cur.mount) or nil
+        if b then colored = diff(mb or '', b) end
     end
+    if colored and colored ~= '' then text = colored end
     -- 15.10.2026 (Tobeto): "Set new bonus" replaces the active bonus outfit
     local activeLook = ourBonusLook
     if not activeLook then
@@ -2189,17 +2233,16 @@ function ourUpdateBonusPanel()
     end
     if showBtn and ourStoreOnlySet.outfit[tempOutfit.type] then
         showBtn = false
-        text = (text or '') .. '\nGet it in the Game Store.'
+        text = (text or '') .. '{Get it in the Game Store., #9fd0ff}'
     end
     if showBtn and activeLook == tempOutfit.type and (ourBonusLook == nil or ourBonusAddons == (tempOutfit.addons or 0)) then
         showBtn = false
     end
-    if text then lbl:setText(text); lbl:show() else lbl:hide() end
+    if text then pcall(function() lbl:setColoredText(text) end); lbl:show() else lbl:hide() end
     btn:setVisible(showBtn and true or false)
     if showBtn then btn:setText('Set new bonus') end
     pcall(ourUpdateActive)
-    local act = window.configure:getChildById('ourActive')
-    if act then lbl:setMarginTop(act:getY() + act:getHeight() - window.configure:getY() + 4) end
+    -- 16.10.2026: the label sits under the active outfit / mount in "Active bonuses"
 end
 
 -- 11.10.2026 (Tobeto): owned shaders arrive from the server (game_myotsstore

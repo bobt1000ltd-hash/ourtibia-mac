@@ -1,13 +1,21 @@
-WikiCard < Button
+// 16.10.2026 (Tobeto): dark cards like the Task Board
+WikiCard < UIButton
   size: 198 53
   padding: 2
+  background-color: #222222
   border-width: 1
-  border-color: #555555
+  border-color: #3c3c3c
+  color: #d8d8d8
   text-align: left
   text-offset: 57 0
   font: verdana-11px-monochrome
+  $hover:
+    background-color: #2a2a2a
+    border-color: #6a6a6a
+    color: #ffffff
   $pressed:
     text-offset: 58 1
+    border-color: #c8a040
   UIItem
     id: item
     anchors.left: parent.left
@@ -187,12 +195,23 @@ MainWindow
       anchors.top: heroName.bottom
       height: 20
       color: #b6b6b6
+  // 16.10.2026 (Tobeto): the filters sit in their own panel (style of "Configure" in Set Outfit)
+  MiniPanel
+    id: sideFrame
+    anchors.top: sidebar.top
+    anchors.left: sidebar.left
+    anchors.right: filterScroll.right
+    anchors.bottom: sidebar.bottom
+    margin: -25 -6 -6 -6
+    text: Filters
   ScrollablePanel
     id: sidebar
     anchors.left: parent.left
     anchors.top: tabs.bottom
     anchors.bottom: footer.top
-    margin-top: 10
+    margin-top: 35
+    margin-left: 6
+    margin-bottom: 6
     width: 185
     vertical-scrollbar: filterScroll
     layout:
@@ -200,8 +219,8 @@ MainWindow
       spacing: 3
     Label
       id: sidebarTitle
-      text: Filters
-      height: 22
+      height: 0
+      visible: false
     Label
       id: searchLabel
       text: Search
@@ -216,77 +235,88 @@ MainWindow
       height: 14
     ComboBox
       id: category
-      height: 23
+      text-offset: -15 0
+      height: 20
     Label
       id: sortLabel
       text: Sort by
       height: 14
     ComboBox
       id: sort
-      height: 23
+      text-offset: -15 0
+      height: 20
     Label
       id: directionLabel
       text: Sort mode
       height: 14
     ComboBox
       id: direction
-      height: 23
+      text-offset: -15 0
+      height: 20
     Label
       id: obtainingLabel
       text: Way of obtaining
       height: 14
     ComboBox
       id: obtaining
-      height: 23
+      text-offset: -15 0
+      height: 20
     Label
       id: resistanceLabel
       text: Resistance
       height: 14
     ComboBox
       id: resistance
-      height: 23
+      text-offset: -15 0
+      height: 20
     Label
       id: tierLabel
       text: Drop tier
       height: 14
     ComboBox
       id: tier
-      height: 23
+      text-offset: -15 0
+      height: 20
     Label
       id: weaponLabel
       text: Weapon type
       height: 14
     ComboBox
       id: weapon
-      height: 23
+      text-offset: -15 0
+      height: 20
     Label
       id: handsLabel
       text: Hands
       height: 14
     ComboBox
       id: hands
-      height: 23
+      text-offset: -15 0
+      height: 20
     Label
       id: elementLabel
       text: Damage element
       height: 14
     ComboBox
       id: element
-      height: 23
+      text-offset: -15 0
+      height: 20
     Label
       id: weaknessLabel
       text: Weak to
       height: 14
     ComboBox
       id: weakness
-      height: 23
+      text-offset: -15 0
+      height: 20
     Label
       id: spawnFilterLabel
       text: Spawn availability
       height: 14
     ComboBox
       id: spawnFilter
-      height: 23
+      text-offset: -15 0
+      height: 20
     Label
       id: minimumLabel
       text: Minimum selected stat
@@ -399,7 +429,7 @@ MainWindow
     anchors.right: parent.right
     anchors.top: tabs.bottom
     anchors.bottom: footer.top
-    margin-left: 20
+    margin-left: 27
     margin-top: 10
     Panel
       id: detailHeader
@@ -449,11 +479,13 @@ MainWindow
         spacing: 4
       ComboBox
         id: lootSort
+        text-offset: -15 0
         width: 110
         height: 20
         margin-top: 2
       ComboBox
         id: lootOrder
+        text-offset: -15 0
         width: 110
         height: 20
         margin-top: 2

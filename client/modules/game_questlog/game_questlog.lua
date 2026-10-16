@@ -555,6 +555,7 @@ function show()
     questLogController.ui:show()
     questLogController.ui:raise()
     questLogController.ui:focus()
+    pcall(function() UICheckBox.showComplete:getParent():getParent():setHeight(19); UICheckBox.showShidden:getParent():getParent():setHeight(18) end)
     if questLogButton then
         questLogButton:setOn(true)
     end
@@ -1291,6 +1292,14 @@ function questLogController:onInit()
     UIlabel.numberQuestHidden = questLogController:findWidget("#lblHiddenNumber")
     UICheckBox.showComplete = questLogController:findWidget("#checkboxShowComplete")
     UICheckBox.showShidden = questLogController:findWidget("#checkboxShowHidden")
+    -- 16.10.2026 (Tobeto): the two filters closer to each other than to the search box
+    local function ourTight()
+        pcall(function()
+            UICheckBox.showComplete:getParent():getParent():setHeight(19)
+            UICheckBox.showShidden:getParent():getParent():setHeight(18)
+        end)
+    end
+    ourTight(); scheduleEvent(ourTight, 50)
     UICheckBox.showInQuestTracker = questLogController.ui.panelQuestLineSelected.checkboxShowInQuestTracker
 
     questLogController:registerEvents(g_game, {

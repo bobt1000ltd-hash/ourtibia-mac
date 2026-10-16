@@ -630,10 +630,8 @@ local function cosmeticCards(list,isMount)
     local tip={e.name,'How to get: '..(e.how or '?'),''}
     if isMount then tip[#tip+1]='Bonus while riding: '..(e.bonus or '')
     else
-      tip[#tip+1]='Bonus while worn:'
-      tip[#tip+1]='  No addons: '..(e.stages and e.stages[1] or '')
-      tip[#tip+1]='  Addon 1 or 2: '..(e.stages and e.stages[2] or '')
-      tip[#tip+1]='  Both addons: '..(e.stages and e.stages[3] or '')
+      -- 16.10.2026 (Tobeto): the bonus counts only for the full outfit (both addons)
+      tip[#tip+1]='Bonus with the full outfit: '..(e.stages and e.stages[3] or '')
     end
     card:setTooltip(table.concat(tip,'\n'))
   end
@@ -642,8 +640,8 @@ local function filtered(list,source) local out={};for _,e in ipairs(list or {}) 
 pages['outfits']=function() pages['outfits/quest']() end
 pages['outfits/quest']=function()
   h1('Quest outfits')
-  body('Every outfit gives a unique bonus, but only the outfit you are wearing counts. The bonus grows with addons: 50% without addons, 75% with one addon and 100% with both. Harder outfits give more (up to a 60 HP value).')
-  note('Hover a card to see how to get the outfit and the bonus with no addons, one addon and both addons.')
+  body('Every outfit gives a unique bonus, but only the outfit you are wearing counts. The bonus counts only for the full outfit (both addons). Harder outfits give more (up to a 60 HP value).')
+  note('Hover a card to see how to get the outfit and its bonus.')
   if not data or not data.outfits then body('Loading...') return end
   cosmeticCards(filtered(data.outfits,'quest'),false)
 end

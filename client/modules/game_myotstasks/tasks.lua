@@ -2,7 +2,7 @@
 local OPCODE=115
 local window,board,shop,tab,selected,amount
 local parts={}
-local TABS={{'daily','Daily Tasks',2815},{'weekly','Weekly Tasks',2848},{'grizzly','Grizzly Adams',7397},{'shop','Task Shop',2472}}
+local TABS={{'daily','Daily Tasks',2815},{'weekly','Weekly Tasks',2848},{'grizzly','Grizzly Adams',5896},{'shop','Task Shop',2472}}
 local KITN_OPCODE=121
 local kitn,kparts=nil,{}
 local CATS={'Stat points','Potions','Runes','Stones'} -- OurTibia 02.10.2026: shaders (Cosmetics) removed from the shop
@@ -60,7 +60,7 @@ local function rewardCell(parent,x,y,kind,value,color,tip)
   cell:addAnchor(AnchorTop,'parent',AnchorTop);cell:addAnchor(AnchorLeft,'parent',AnchorLeft);cell:setMarginTop(y);cell:setMarginLeft(x)
   local icon
   if kind=='exp' then icon=g_ui.createWidget('UIWidget',cell);icon:setImageSource('/images/myots/store/boost-experience');icon:setImageSmooth(true)
-  elseif kind=='boss' then icon=g_ui.createWidget('UIWidget',cell);icon:setImageSource('/images/game/skulls/skull_red')
+  elseif kind=='boss' then icon=g_ui.createWidget('UIWidget',cell);icon:setImageSource('/game_myotstasks/boss_icon')
   else
     icon=g_ui.createWidget('UIItem',cell);icon:setVirtual(true)
     local ids={gold=3031,tokens=22721,points=22516,present=2856,boss=3114}
@@ -102,9 +102,11 @@ local function renderBoard()
       -- 10.10.2026: the same cropped creature pictures as the wiki
       if (tonumber(o.type) or 0)>0 then OurTibiaArt.creature(c:getChildById('creature'),{type=o.type,head=o.head,body=o.body,legs=o.legs,feet=o.feet,addons=o.addons},t.name) end
       c:getChildById('name'):setText(t.display or title(t.name))
-      c:getChildById('kills'):setText(money(t.kills)..' / '..money(t.need))
-      c:getChildById('bar'):setPercent(math.floor(math.min(1,(tonumber(t.kills) or 0)/math.max(1,tonumber(t.need) or 1))*100))
-      ourRewards(c:getChildById('rewards'),t,not daily and tonumber(t.status)~=2)
+      local k=tonumber(t.status)==2 and (tonumber(t.need) or 0) or (tonumber(t.kills) or 0) -- 16.10.2026: a finished task shows full kills
+      c:getChildById('kills'):setText(money(k)..' / '..money(t.need))
+      c:getChildById('bar'):setPercent(math.floor(math.min(1,k/math.max(1,tonumber(t.need) or 1))*100))
+      -- 16.10.2026 (Tobeto): the reward box keeps its normal size on weekly too
+      ourRewards(c:getChildById('rewards'),t,false)
       local action=c:getChildById('action');local cancel=c:getChildById('cancel')
       local status=tonumber(t.status)
       local tag=c:getChildById('header')
@@ -129,9 +131,11 @@ local function renderBoard()
       end
       -- 13.10.2026 (Tobeto): weekly tasks are always running - no accept button;
       -- 15.10.2026: the reward field uses the free space
+      -- 16.10.2026 (Tobeto): weekly shows a wide "In progress" bar like the daily board
       if not daily then
-        if status==2 then action:setText('Completed');action:setEnabled(false)
-        else action:hide();c:setBorderColor('#3c3c3c');c:setBackgroundColor('#222222') end
+        cancel:hide();action:setMarginRight(6);action:show();action:setEnabled(false)
+        if status==2 then action:setText('Completed')
+        else action:setText('In Progress...');c:setBorderColor('#c8a040');c:setBackgroundColor('#2a2618') end
       end
     end
   end
@@ -299,15 +303,17 @@ local function kitnTogglePin(id)
   local out={};for k in pairs(set) do out[#out+1]=tostring(k) end
   g_settings.setList(key,out)
 end
+local PAW_ITEM=5896 -- bear paw
+local RANK_AT={{10,'Huntsman'},{20,'Ranger'},{40,'Big Game Hunter'},{70,'Trophy Hunter'},{100,'Elite Hunter'}}
 local function kitnReward(parent,x,y,kind,value,color,tip)
-  local cell=g_ui.createWidget('UIWidget',parent);cell:setSize({width=78,height=16})
+  local cell=g_ui.createWidget('UIWidget',parent);cell:setSize({width=60,height=16})
   cell:addAnchor(AnchorTop,'parent',AnchorTop);cell:addAnchor(AnchorLeft,'parent',AnchorLeft);cell:setMarginTop(y);cell:setMarginLeft(x)
   local icon
   if kind=='exp' then icon=g_ui.createWidget('UIWidget',cell);icon:setImageSource('/images/myots/store/boost-experience');icon:setImageSmooth(true)
-  elseif kind=='boss' then icon=g_ui.createWidget('UIWidget',cell);icon:setImageSource('/images/game/skulls/skull_red')
+  elseif kind=='boss' then icon=g_ui.createWidget('UIWidget',cell);icon:setImageSource('/game_myotstasks/boss_icon')
   else icon=g_ui.createWidget('UIItem',cell);icon:setVirtual(true)
     if kind=='money' then icon:setItemId(3031);pcall(function() icon:setShowCount(false) end);icon:setItemCount(100)
-    elseif kind=='points' then icon:setItemId(22516)
+    elseif kind=='points' then icon:setItemId(PAW_ITEM) -- 16.10.2026: Paw and Fur points look different from task points
     elseif kind=='boss' then icon:setItemId(3114)
     else icon:setItemId(ITEM_CID[value] or value) end
   end
@@ -323,7 +329,27 @@ end
 local function renderKitn()
   if not kitn then return end
   pcall(g_tooltip.hide)
-  ui('kitnInfo'):setText('Rank: '..(RANKS[tonumber(kitn.rank) or 0] or '-')..'   |   Paw and Fur points: '..(kitn.points or 0))
+  -- 16.10.2026 (Tobeto): rank + points shown as a centred bar
+  do
+    local box=ui('kitnInfoInner');box:destroyChildren()
+    local pts=tonumber(kitn.points) or 0
+    local nxt;for _,r in ipairs(RANK_AT) do if pts<r[1] then nxt=r;break end end
+    local x=0
+    local function lbl(text,color,font)
+      local l=g_ui.createWidget('Label',box);l:setText(text);l:setColor(color);if font then l:setFont(font) end;l:setTextAutoResize(true)
+      l:addAnchor(AnchorLeft,'parent',AnchorLeft);l:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);l:setMarginLeft(x)
+      x=x+l:getTextSize().width;return l
+    end
+    lbl('Rank: ','#a8a8a8');lbl(RANKS[tonumber(kitn.rank) or 0] or '-','#ffd35a','verdana-11px-rounded')
+    x=x+14;local sep=g_ui.createWidget('UIWidget',box);sep:setSize({width=1,height=16});sep:setBackgroundColor('#4a4a4a')
+    sep:addAnchor(AnchorLeft,'parent',AnchorLeft);sep:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);sep:setMarginLeft(x);x=x+14
+    local ic=g_ui.createWidget('UIItem',box);ic:setVirtual(true);ic:setPhantom(true);ic:setSize({width=16,height=16});ic:setItemId(PAW_ITEM)
+    ic:addAnchor(AnchorLeft,'parent',AnchorLeft);ic:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);ic:setMarginLeft(x);x=x+20
+    lbl(money(pts),'#ffd35a','verdana-11px-rounded');lbl(' Paw and Fur points','#a8a8a8')
+    if nxt then x=x+10;lbl('(next rank: '..nxt[2]..' at '..nxt[1]..')','#7a7a7a') end
+    box:setWidth(x)
+    box:setTooltip('Paw and Fur points come from Grizzly Adams tasks and count towards the\n"Killing in the Name of..." quest ranks. They are NOT Task Shop points.')
+  end
   local list=ui('kitnList');list:destroyChildren()
   local pins=kitnPins()
   local order={}
@@ -341,35 +367,36 @@ local function renderKitn()
     local o=t.outfit or {}
     if (tonumber(o.type) or 0)>0 then OurTibiaArt.creature(r:getChildById('creature'),{type=o.type,head=o.head,body=o.body,legs=o.legs,feet=o.feet,addons=o.addons},(t.creatures or {})[1] or t.name) end
     r:getChildById('name'):setText(title(t.name))
-    local names={};for _,c in ipairs(t.creatures or {}) do names[#names+1]=title(c) end
-    local cr=r:getChildById('creatures');cr:setText(table.concat(names,', '))
-    cr:setTooltip(table.concat(names,', ')..(t.repeats and t.repeats>0 and ('\nCompleted '..t.repeats..' time'..(t.repeats>1 and 's' or '')) or ''))
+    local names={};for _,c in ipairs(t.creatures or {}) do names[#names+1]='- '..title(c) end
+    local cr=r:getChildById('creatures')
+    r:getChildById('info'):setTooltip('Monsters that count for this task:\n'..table.concat(names,'\n')..(t.repeats and t.repeats>0 and ('\n\nCompleted '..t.repeats..' time'..(t.repeats>1 and 's' or '')) or ''))
     local kills=tonumber(t.kills) or 0
     r:getChildById('kills'):setText(money(kills)..' / '..money(t.need))
     r:getChildById('bar'):setPercent(math.floor(math.min(1,kills/math.max(1,tonumber(t.need) or 1))*100))
     local rw=r:getChildById('rewards')
-    local n=0
-    local function slot() local col,row=n%2,math.floor(n/2);n=n+1;return col*82,2+row*20 end
+    -- 16.10.2026 (Tobeto): fixed columns (experience | gold | points | items + boss), no labels
+    local COLX={exp=0,money=66,points=132}
+    local extra=182
     for _,rv in ipairs(t.rewards or {}) do
       local tip
-      if rv.k=='exp' then tip='Experience' elseif rv.k=='money' then tip='Gold (paid to your bank)' elseif rv.k=='points' then tip='Paw and Fur points (rank)'
+      if rv.k=='exp' then tip='Experience: '..money(rv.v) elseif rv.k=='money' then tip='Gold (paid to your bank): '..money(rv.v)
+      elseif rv.k=='points' then tip='Paw and Fur points: '..money(rv.v)..'\n(count towards the "Killing in the Name of..." ranks, not the Task Shop)'
       elseif rv.k=='item' then tip=(rv.v==10305 and 'Holy Icon - the way into the Demon Oak quest (first completion only)' or 'Demon trophy') end
-      local val=rv.k=='item' and rv.v or money(rv.v)
-      local x,y=slot()
-      kitnReward(rw,x,y,rv.k,val,rv.k=='exp' and '#f0f0f0' or rv.k=='money' and '#f0d060' or '#ffd35a',tip)
+      local val=rv.k=='item' and rv.v or short(rv.v)
+      local x=COLX[rv.k];if not x then x=extra;extra=extra+20 end
+      kitnReward(rw,x,17,rv.k,val,rv.k=='exp' and '#f0f0f0' or rv.k=='money' and '#f0d060' or '#ffd35a',tip)
     end
     if t.boss then
       local tip='Boss: '..title(t.boss)..'\nAfter claiming the reward the boss portal opens for one fight'..(t.bossPos and (' ('..t.bossPos[1]..', '..t.bossPos[2]..', '..t.bossPos[3]..')') or '')..'.'
       if t.bossReady then tip=tip..'\nThe portal is OPEN for you now.' end
-      local x,y=slot()
-      local b=kitnReward(rw,x,y,'boss',0,'#ff9a7a',tip)
+      local b=kitnReward(rw,extra,17,'boss',0,'#ff9a7a',tip)
       if t.bossReady then b:setBorderWidth(1);b:setBorderColor('#3fbf3f') end
     end
     local a=r:getChildById('action')
     if t.locked then
       a:setText('Locked');a:setEnabled(false);a:setTooltip(t.locked)
       r:setOpacity(0.75)
-      cr:setText(t.locked);cr:setColor('#ff9a7a')
+      cr:setText(t.locked);cr:setTooltip(t.locked);cr:show()
     elseif t.ready then
       a:setText('Claim reward');a:setEnabled(true);a:setColor('#8fe08f');r:setBorderColor('#3fbf3f')
       a.onClick=function() kitnSend('claim:'..t.id) end

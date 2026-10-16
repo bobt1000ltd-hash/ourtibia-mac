@@ -117,9 +117,10 @@
 }
 
 /* 15.10.2026 (Tobeto): the two filters closer to the centre, the counters are in their text */
+/* 16.10.2026 (Tobeto): both filters on the left (box and text), close to each other */
 .filter-table .col1 {
   width: 100%;
-  text-align: center;
+  text-align: left;
 }
 
 .filter-table .col2 {
@@ -136,4 +137,10 @@
 #checkboxShowComplete, #checkboxShowHidden {
   width: 150px;
   --text-auto-resize: false;
+}
+#checkboxShowComplete {
+  margin-left: 6px;
+}
+#checkboxShowHidden {
+  margin-left: 6px;
 }

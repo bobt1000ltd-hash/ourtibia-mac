@@ -57,12 +57,13 @@ end
 function offerTooltip(offer)
   local head=offer.name..'\n'..offer.price..(offer.currency=='tokens' and ' loyalty tokens' or ' coins')
   if offer.category=='Cosmetics' and type(offer.bonus)=='table' and #offer.bonus>0 then
-    local lines={head,'',offer.sub=='Mounts' and 'Bonus while riding:' or 'Bonus while worn (both addons):'}
+    local lines={head,'',offer.sub=='Mounts' and 'Bonus while riding:' or 'Bonus while worn:'}
     for _,b in ipairs(offer.bonus) do lines[#lines+1]=tostring(b.t or (b.l..' '..tostring(b.v))) end
     return table.concat(lines,'\n')
   end
   return head..'\n\n'..(offer.description or '')
 end
+OUR_SHORT_LABELS={['Mana per regeneration tick']='Mana regen',['HP per regeneration tick']='HP regen'}
 local function balanceFor(offer) return offer.currency=='tokens' and (data.tokens or 0) or (data.coins or 0) end
 
 local function bonusOf(offer,label)
@@ -77,6 +78,9 @@ local function matches(offer)
   if TIER_PRICE[sortMode] then
     if offer.category~='Cosmetics' or offer.price~=TIER_PRICE[sortMode] then return false end
     if search~='' and not offer.name:lower():find(search,1,true) then return false end
+    -- 16.10.2026 (Tobeto): both filters together - bonus tier AND the picked bonus AND the sub-category
+    if sub[category] and offer.sub~=sub[category] then return false end
+    if picked() and pickScore(offer)==0 then return false end
     return true
   end
   if search~='' then
@@ -86,10 +90,12 @@ local function matches(offer)
   end
   if category=='Featured' then return false end
   if offer.category~=category then return false end
+  -- 16.10.2026 (Tobeto): a picked bonus no longer shows all sub-categories (Mounts / Outfits / Retro)
+  if sub[category] and offer.sub~=sub[category] then return false end
   if category=='Cosmetics' and picked() then
     local n=pickScore(offer)
     if n==0 or (matchAll and n<#bonusPicks) then return false end
-  elseif sub[category] and offer.sub~=sub[category] then return false end
+  end
   if not showOwned and offer.owned then return false end
   if canAfford and balanceFor(offer)<offer.price then return false end
   return true
@@ -155,6 +161,10 @@ function refresh()
     tile.onClick=function() openConfirm(offer) end
   end
   for _,b in ipairs(ui('tabs'):getChildren()) do b:setOn(b.tabName==category) end
+  -- 16.10.2026 (Tobeto): the scroll bar sometimes kept the length of the previous list - measure
+  -- it again after the new tiles were laid out
+  local function rescroll() if window and not panel:isDestroyed() then pcall(function() panel:updateScrollBars() end) end end
+  addEvent(rescroll);scheduleEvent(rescroll,60)
 end
 -- 15.10.2026 (Tobeto): bonus filter dropdown (max 10 rows, scrollable, grouped by kind)
 -- 15.10.2026 (Tobeto): groups only for real kinds (damage, resistance, skill...);
@@ -251,7 +261,9 @@ function ourOpenBonusMenu(bf,labels)
     watch=cycleEvent(function()
       if not side or shade:isDestroyed() then return closeSide() end
       local m=g_window.getMousePosition()
-      if not side:containsPoint(m) and not (sideRow and sideRow:containsPoint(m)) then closeSide() end
+      -- 16.10.2026 (Tobeto): crossing the scroll bar of the main list (on the way to the side list) keeps it open
+      local onBar=main and main:containsPoint(m) and m.x>=main:getX()+main:getWidth()-16 and sideRow and m.y>=sideRow:getY()-ROWH and m.y<=sideRow:getY()+2*ROWH
+      if not side:containsPoint(m) and not (sideRow and sideRow:containsPoint(m)) and not onBar then closeSide() end
     end,80)
   end
   main=ourMenuList(shade,bf:getX(),bf:getY()+bf:getHeight(),bf:getWidth(),entries,pick,group,closeSide)
@@ -283,7 +295,8 @@ function buildLeft()
   -- 15.10.2026 (Tobeto): text starts at the left like the search box of Set Outfit (cursor and text in one place)
   -- 15.10.2026 (Tobeto): text centred in the box (also the respawn fund field)
   local s=g_ui.createWidget('TextEdit',left);s:setHeight(22);pcall(function() s:setMaxLength(20) end)
-  s:setTextAlign(AlignCenter)
+  -- 16.10.2026 (Tobeto): the text appears where the cursor blinks (the centred text and the left cursor did not match)
+  s:setTextAlign(AlignLeft)
   if historyMode then
     -- 15.10.2026 (Tobeto): in History the search looks through the transactions
     s:setText(historySearch);s:setTooltip('Search the history: product, name, date, amount or balance')
@@ -326,8 +339,19 @@ function buildLeft()
     local bf=g_ui.createWidget('ComboBox',left);bf:setId('ourBonusFilter');bf:setHeight(22)
     bf:setTooltip('Show only outfits and mounts with this bonus, the strongest first.')
     local current=bonusPicks[1] or '(none)'
-    bf:addOption(current);bf:setCurrentOption(current,true)
+    -- 16.10.2026 (Tobeto): a long bonus name fits in the box ("..." + the full name in the tooltip)
+    local shown=current
+    bf:addOption(shown);bf:setCurrentOption(shown,true)
     bf:setTextAlign(AlignCenter);bf:setTextOffset({x=-9,y=0})
+    addEvent(function()
+      if bf:isDestroyed() or bf:getWidth()<60 then return end
+      local maxW=bf:getWidth()-30
+      if bf:getTextSize().width>maxW then
+        local cut=current
+        repeat cut=cut:sub(1,-2);bf:setText(cut..'...') until #cut<=1 or bf:getTextSize().width<=maxW
+        bf:setTooltip(current..'\n\nShow only outfits and mounts with this bonus, the strongest first.')
+      end
+    end)
     if bonusPicks[1] then bf:setColor('#ffd35a') end
     bf.onMousePress=function(self,mousePos,button)
       if button~=MouseLeftButton then return false end
@@ -368,12 +392,12 @@ function buildLeft()
     local step=tonumber(data.fundStep) or 1000000;local fund=tonumber(data.fund) or 0
     -- 14.10.2026 (Tobeto): the [i] box stands next to the RESPAWN FUND title, the bar uses the whole row
     local trow=g_ui.createWidget('UIWidget',left);trow:setHeight(16);trow:setMarginTop(8)
-    local title=g_ui.createWidget('Label',trow);title:setId('fundTitle');title:setText('RESPAWN FUND');title:setColor('#c8a040');title:setTextAutoResize(true)
+    local title=g_ui.createWidget('Label',trow);title:setId('fundTitle');title:setText('COMMUNITY BOOST');title:setColor('#c8a040');title:setTextAutoResize(true)
     title:addAnchor(AnchorHorizontalCenter,'parent',AnchorHorizontalCenter);title:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);title:setMarginLeft(-10)
     local info=g_ui.createWidget('Label',trow);info:setId('fundInfo');info:setPhantom(false);info:setSize({width=16,height=16});info:setText('i');info:setTextAlign(AlignCenter)
     info:setFont('verdana-11px-rounded');info:setTextOffset({x=0,y=-2});info:setColor('#c8c8c8');info:setBackgroundColor('#0a0a0a');info:setBorderWidth(1);info:setBorderColor('#4a4a4a')
     info:addAnchor(AnchorLeft,'fundTitle',AnchorRight);info:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);info:setMarginLeft(5)
-    info:setTooltip('Respawn fund: '..money(fund)..' / '..money(step)..' gp.\nEvery 1,000,000 gp donated by the players starts 1 hour of Experience Boost (+10% experience) and Loot Boost (+30% loot chance) for everyone.\nDonating 1,000,000 gp in total gives the achievement "Areas of Effect" (Hall of Legends).\n\nYour lifetime donations: '..money(tonumber(data.fundMine) or 0)..' gp')
+    info:setTooltip('Community Boost: '..money(fund)..' / '..money(step)..' gp.\nEvery 1,000,000 gp donated by the players starts 1 hour of Experience Boost (+10% experience) and Loot Boost (+30% loot chance) for everyone.\nDonating 1,000,000 gp in total gives the achievement "Areas of Effect" (Hall of Legends).\n\nYour lifetime donations: '..money(tonumber(data.fundMine) or 0)..' gp')
     local row=g_ui.createWidget('UIWidget',left);row:setHeight(36)
     local gold=g_ui.createWidget('UIItem',row);gold:setVirtual(true);gold:setPhantom(true);gold:setSize({width=32,height=32})
     gold:addAnchor(AnchorLeft,'parent',AnchorLeft);gold:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
@@ -400,13 +424,13 @@ function buildLeft()
     end
     local btn=g_ui.createWidget('Button',donateRow);btn:setText('Donate');btn:setHeight(22);btn:setTextOffset({x=0,y=1})
     btn:addAnchor(AnchorLeft,'prev',AnchorRight);btn:addAnchor(AnchorRight,'parent',AnchorRight);btn:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);btn:setMarginLeft(4)
-    btn:setTooltip('Donate gold (backpack first, then bank) to the respawn fund. At least 1,000 gp, in whole thousands.')
+    btn:setTooltip('Donate gold (backpack first, then bank) to the Community Boost. At least 1,000 gp, in whole thousands.')
     btn.onClick=function()
       local n=tonumber(amount:getText()) or 0
       if n<1000 then showDonateInfo('Donate at least 1,000 gp.');return end
       if data and data.nonce then send('donate:'..data.nonce..':'..math.floor(n)) end
     end
-    amount:setTextAlign(AlignCenter)
+    amount:setTextAlign(AlignLeft) -- 16.10.2026 (Tobeto): the text appears where the cursor blinks
   end
   local function fit()
     if not window or filler:isDestroyed() then return end
@@ -584,12 +608,19 @@ local function receive(protocol,opcode,buffer)
   local ok,result=pcall(json.decode,table.concat(parts));parts={}
   if not ok or type(result)~='table' then return end
   data=result
+  -- 16.10.2026 (Tobeto): short names of the regeneration bonuses
+  for _,o in ipairs(data.products or {}) do for _,b in ipairs(o.bonus or {}) do
+    for long,short in pairs(OUR_SHORT_LABELS) do
+      if b.l then b.l=b.l:gsub(long,short) end
+      if b.t then b.t=b.t:gsub(long,short) end
+    end
+  end end
   ui('coins'):setText(money(data.coins)..' coins');ui('gold'):setText(money(data.gold)..' gp');ui('tokens'):setText(money(data.tokens)..' tokens')
   for _,b in ipairs({{'coinsBox',22118,money(data.coins)..' coins','#ffd35a'},{'goldBox',3043,money(data.gold)..' gp','#e8e8e8'},{'tokensBox',22721,money(data.tokens)..' tokens','#9fd0ff'}}) do
     local box=ui(b[1]);box:getChildById('icon'):setItemId(b[2]);if b[2]~=22721 then local ic=box:getChildById('icon');pcall(function() ic:setShowCount(false) end);ic:setItemCount(100) end;box:getChildById('value'):setText(b[3]);box:getChildById('value'):setColor(b[4])
   end
   local msg=data.message or ''
-  if msg:lower():find('donat',1,true) or msg:lower():find('respawn fund',1,true) then showDonateInfo(msg);msg='' end
+  if msg:lower():find('donat',1,true) or msg:lower():find('respawn fund',1,true) or msg:lower():find('community boost',1,true) then showDonateInfo((msg:gsub('[Rr]espawn [Ff]und','Community Boost')));msg='' end
   ui('status'):setText(msg)
   buildLeft();refresh()
   if selected then

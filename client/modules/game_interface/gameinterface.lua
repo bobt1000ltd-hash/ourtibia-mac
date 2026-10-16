@@ -1127,7 +1127,10 @@ function processMouseAction(menuPosition, mouseButton, autoWalkPos, lookThing, u
     -- item menu with "Weapon Proficiency" instead of using it.
     if mouseButton == MouseRightButton and keyboardModifiers == KeyboardNoModifier and useThing and not creatureThing
         and useThing.isItem and useThing:isItem() and modules.game_myotsprof and modules.game_myotsprof.isWeapon
-        and modules.game_myotsprof.isWeapon(useThing:getId()) then
+        and modules.game_myotsprof.isWeapon(useThing:getId())
+        -- 16.10.2026 (Tobeto): only in the inventory / backpacks - a weapon on the ground is used
+        -- (or picked up) like every other item with classic controls
+        and useThing:getPosition() and useThing:getPosition().x == 65535 then
         createThingMenu(menuPosition, lookThing, useThing, creatureThing)
         return true
     end

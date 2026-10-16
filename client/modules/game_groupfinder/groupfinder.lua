@@ -23,9 +23,57 @@ local function send(text) if g_game.isOnline() then g_game.getProtocolGame():sen
 local function ui(id) return window and window:recursiveGetChildById(id) end
 local function num(n) n = math.floor(tonumber(n) or 0); local s = tostring(n):reverse():gsub('(%d%d%d)', '%1,'):reverse(); return (s:gsub('^,', '')) end
 local function clock(sec) sec = math.max(0, math.floor(tonumber(sec) or 0)); return string.format('%d:%02d', math.floor(sec / 60), sec % 60) end
-local function stars(n) return string.rep('*', tonumber(n) or 0) end
+local function hms(sec) sec = math.max(0, math.floor(tonumber(sec) or 0)); return string.format('%d:%02d:%02d', math.floor(sec / 3600), math.floor(sec % 3600 / 60), sec % 60) end
+local receivedAt = 0
+local tickEvent
+local dialog
+
+-- 16.10.2026 (Tobeto): difficulty as a bar of pips instead of '*'
+local DIFF_COLORS = {'#5fbf4f', '#9fcf3f', '#d8d040', '#e8a830', '#e87a30', '#e04a30', '#c02a5a'}
+local function drawPips(panel, stars, size, gap)
+  panel:destroyChildren()
+  local level = math.max(1, math.min(7, (tonumber(stars) or 4) - 3))
+  for k = 1, 7 do
+    local p = g_ui.createWidget('UIWidget', panel)
+    p:setSize({width = size, height = panel:getHeight()}); p:setPhantom(true)
+    p:addAnchor(AnchorTop, 'parent', AnchorTop); p:addAnchor(AnchorLeft, 'parent', AnchorLeft); p:setMarginLeft((k - 1) * (size + gap))
+    p:setBackgroundColor(k <= level and DIFF_COLORS[level] or '#2c2c2c')
+    p:setBorderWidth(1); p:setBorderColor(k <= level and '#00000060' or '#3a3a3a')
+  end
+  panel:setTooltip('Difficulty ' .. level .. ' / 7')
+end
+local function cooldownLeft() return math.max(0, (tonumber(data and data.resetIn) or 0) - math.floor((g_clock.millis() - receivedAt) / 1000)) end
+
+local function introChip(parent, x, title, value)
+  local c = g_ui.createWidget('GFInfoChip', parent)
+  c:addAnchor(AnchorLeft, 'parent', AnchorLeft); c:addAnchor(AnchorVerticalCenter, 'parent', AnchorVerticalCenter); c:setMarginLeft(x)
+  local a = g_ui.createWidget('Label', c); a:setText(title); a:setColor('#a0a0a0'); a:setTextAutoResize(true)
+  a:addAnchor(AnchorLeft, 'parent', AnchorLeft); a:addAnchor(AnchorVerticalCenter, 'parent', AnchorVerticalCenter); a:setMarginLeft(10)
+  local b = g_ui.createWidget('Label', c); b:setText(value); b:setColor('#ffd35a'); b:setFont('verdana-11px-rounded'); b:setTextAutoResize(true)
+  b:addAnchor(AnchorLeft, 'prev', AnchorRight); b:addAnchor(AnchorVerticalCenter, 'parent', AnchorVerticalCenter); b:setMarginLeft(5)
+  local w = 10 + a:getTextSize().width + 5 + b:getTextSize().width + 10
+  c:setWidth(w)
+  return w
+end
+local function renderIntro()
+  local box = ui('introInner'); if not box or box.built then return end
+  box.built = true
+  local x = 0
+  x = x + introChip(box, x, 'Group size:', 'up to 4 players') + 10
+  x = x + introChip(box, x, 'Fight time:', math.floor((tonumber(data.limit) or 900) / 60) .. ' minutes') + 10
+  x = x + introChip(box, x, 'Cooldown resets:', 'at server save')
+  box:setWidth(x)
+end
 
 -- ------------------------------------------------------------------ render
+local function updateCooldowns()
+  if not window or not data then return end
+  local left = cooldownLeft()
+  for i, b in ipairs(data.bosses or {}) do
+    local w = ui('list'):getChildById('boss' .. i)
+    if w and b.done then w:getChildById('cooldown'):setText('Defeated - ' .. hms(left)) end
+  end
+end
 local function renderList()
   local list = ui('list'); list:destroyChildren()
   for i, b in ipairs(data.bosses or {}) do
@@ -34,17 +82,21 @@ local function renderList()
     local o = b.look or {}
     w:getChildById('creature'):setOutfit({type = o.type, head = o.head or 0, body = o.body or 0, legs = o.legs or 0, feet = o.feet or 0, addons = o.addons or 0})
     w:getChildById('name'):setText(b.name)
-    w:getChildById('info'):setText('Level ' .. b.level .. '+   ' .. num(b.hp) .. ' HP   ' .. stars(b.stars))
-    local st = w:getChildById('status')
-    if b.done then st:setText('Defeated today'); st:setColor('#60d060')
-    elseif (tonumber(b.busy) or 0) > 0 then st:setText('Arena occupied (' .. clock(b.busy) .. ')'); st:setColor('#e0a040')
-    elseif (data.level or 0) < b.level then st:setText('Requires level ' .. b.level); st:setColor('#a05050')
-    else
-      local q = b.queue or {}
-      st:setText(string.format('Queue: T %d  H %d  D %d', q.tank or 0, q.healer or 0, q.dps or 0)); st:setColor('#a0a0a0')
+    w:getChildById('info'):setText('Level ' .. b.level .. '+')
+    drawPips(w:getChildById('pips'), b.stars, 12, 3)
+    local low = (data.level or 0) < b.level
+    if low then
+      w:setOpacity(0.45); w:getChildById('info'):setColor('#e06060')
+      w:setTooltip('Your level is too low (' .. b.level .. ' needed).')
+    end
+    if b.done then
+      w:getChildById('creature'):setOpacity(0.4); w:getChildById('name'):setColor('#8a8a8a')
+      w:getChildById('cooldown'):show()
+      w:setTooltip('You defeated ' .. b.name .. ' today. The cooldown resets at the server save.')
     end
     w.onFocusChange = function(widget, focused) if focused then selected = i; modules.game_groupfinder.renderDetails() end end
   end
+  updateCooldowns()
   local w = list:getChildById('boss' .. selected)
   if w then w:focus() end
 end
@@ -56,37 +108,25 @@ function renderDetails()
   local o = b.look or {}
   ui('bigCreature'):setOutfit({type = o.type, head = o.head or 0, body = o.body or 0, legs = o.legs or 0, feet = o.feet or 0, addons = o.addons or 0})
   ui('bossName'):setText(b.name)
-  ui('bossTitle'):setText(b.title or '')
-  ui('bossStats'):setText('Level ' .. b.level .. '+   Health ' .. num(b.hp) .. ' (the same for any group size)\nItem tier: ' .. stars(b.stars) .. ' (' .. b.stars .. ')   Time limit: ' .. clock(data.limit or 900))
-  ui('bossDesc'):setText(b.desc or '')
-  local mech = {}
-  for _, m in ipairs(b.mechanics or {}) do mech[#mech + 1] = '- ' .. m end
-  ui('mechanics'):setText(table.concat(mech, '\n'))
-  local panel = ui('rewards'); panel:destroyChildren()
-  for _, cid in ipairs(b.rewards or {}) do local it = g_ui.createWidget('GFRewardItem', panel); it:setItemId(cid); it:setTooltip('Unidentified, tier ' .. b.stars) end
-  for k, cid in ipairs(b.extras or {}) do local it = g_ui.createWidget('GFRewardItem', panel); it:setItemId(cid); it:setTooltip(({'Magical stone fragments', b.major and 'Major upgrade stones' or 'Minor upgrade stones', 'Rarity Infuser', 'Astral Protector'})[k]) end
-  local frag = b.frag or {0, 0}
-  local stonesTxt = (b.stones and (b.stones[1] .. '-' .. b.stones[2]) or '') .. ' ' .. (b.major and 'major' or 'minor') .. ' stones'
-  ui('rewardsText'):setText('1-2 items of the set (unidentified, ' .. b.stars .. ' stars), ' .. frag[1] .. '-' .. frag[2] .. ' fragments, ' .. stonesTxt ..
-    ', Rarity Infuser ' .. (b.infuser or 0) .. '%, Astral Protector ' .. (b.protector or 0) .. '%. Only players alive in the arena get rewards.')
-  -- roles
-  local allowed = data.roles or {}
-  if role and not allowed[role] then role = nil end
-  if not role then for _, r in ipairs({'tank', 'healer', 'dps'}) do if allowed[r] then role = role or r end end end
-  for r, id in pairs({tank = 'roleTank', dps = 'roleDps', healer = 'roleHealer'}) do
-    local w = ui(id)
-    w:setEnabled(allowed[r] == true)
-    w:setOn(role == r); w:setChecked(role == r)
-    w:setTooltip(allowed[r] and ('Join as ' .. w:getText()) or (r == 'tank' and 'Only knights can be tanks.' or (r == 'healer' and allowed.dps and 'Paladins can only join as DPS.') or 'Knights can only join as Tank.'))
+  ui('bossStats'):setText('Level ' .. b.level .. '+     Health ' .. num(b.hp))
+  ui('bossStats'):setColor((data.level or 0) < b.level and '#e06060' or '#d0d0d0')
+  drawPips(ui('bigPips'), b.stars, 20, 3)
+  local mp = ui('mechanics'); mp:destroyChildren()
+  for _, m in ipairs(b.mechanics or {}) do
+    local c = g_ui.createWidget('GFMechanic', mp); c:setText(m); c:setWidth(c:getTextSize().width + 18)
+    local tip = data.mtips and data.mtips[m]
+    if tip then c:setTooltip(tip) end
   end
+  local panel = ui('rewards'); panel:destroyChildren()
+  for _, cid in ipairs(b.rewards or {}) do local it = g_ui.createWidget('GFRewardItem', panel); it:setItemId(cid); it:setTooltip('Unidentified item') end
+  for k, cid in ipairs(b.extras or {}) do local it = g_ui.createWidget('GFRewardItem', panel); it:setItemId(cid); it:setTooltip(({'Magical stone fragments', b.major and 'Major upgrade stones' or 'Minor upgrade stones', 'Rarity Infuser', 'Astral Protector'})[k]) end
   local lobby = data.lobby
-  local join = ui('joinButton')
-  join:setEnabled(not b.done and (data.level or 0) >= b.level and not (lobby and lobby.state == 'fight') and role ~= nil)
-  join:setText(lobby and lobby.boss == selected and lobby.state == 'open' and 'Change role' or 'Quick join')
   local canAct = not b.done and (data.level or 0) >= b.level and not (lobby and lobby.state == 'fight')
-  ui('createButton'):setEnabled(canAct and role ~= nil)
+  local join = ui('joinButton')
+  join:setEnabled(canAct and next(data.roles or {}) ~= nil)
+  ui('createButton'):setEnabled(canAct and next(data.roles or {}) ~= nil)
   ui('partyButton'):setEnabled(canAct)
-  -- 04.10.2026: every group waiting for this boss, pick the one you want
+  -- every group waiting for this boss
   local gp = ui('groups'); gp:destroyChildren()
   local shown, more = 0, 0
   for _, g in ipairs(data.groups or {}) do
@@ -104,16 +144,17 @@ function renderDetails()
         local tag = g.premade and '[Party] ' or (g.locked and '[Locked] ' or '')
         row:getChildById('text'):setText(tag .. #(g.members or {}) .. '/4  ' .. table.concat(names, ', '))
         row:setTooltip('Leader: ' .. leaderName .. '\nTank ' .. count.tank .. '/1, Healer ' .. count.healer .. '/1, DPS ' .. count.dps .. '/2' ..
-          (g.locked and '\nLocked: type the password into the password field before you join.' or '') ..
+          (g.locked and '\nLocked: you will be asked for the password.' or '') ..
           (g.premade and '\nA party group - it is closed.' or ''))
         if g.locked then row:getChildById('text'):setColor('#e0c070') end
         local mine = lobby and lobby.id == g.id
         local btn = row:getChildById('joinGroup')
-        local free = role and #(g.members or {}) < 4 and (count[role] or 0) < (role == 'dps' and 2 or 1)
-        btn:setEnabled(not mine and not g.premade and g.state == 'open' and canAct and free and true or false)
+        btn:setEnabled(not mine and not g.premade and g.state == 'open' and canAct and #(g.members or {}) < 4 and true or false)
         btn:setText(mine and 'Yours' or 'Join')
-        local id = g.id
-        btn.onClick = function() if role then send('joinid:' .. id .. ':' .. role .. ':' .. password()) end end
+        local id, locked = g.id, g.locked
+        btn.onClick = function()
+          askRole({title = 'Join the group', password = locked, needPassword = locked, taken = count}, function(r, pw) send('joinid:' .. id .. ':' .. r .. ':' .. pw) end)
+        end
       end
     end
   end
@@ -126,7 +167,7 @@ function renderDetails()
     row:getChildById('text'):setText('... and ' .. more .. ' more group(s). Quick join picks the oldest one with a free slot.')
     row:getChildById('text'):setColor('#808080'); row:getChildById('joinGroup'):hide()
   end
-  -- group
+  -- own group
   local slots = ui('slots'); slots:destroyChildren()
   if lobby then
     local lb = data.bosses[lobby.boss] or {}
@@ -147,33 +188,89 @@ function renderDetails()
       local s = g_ui.createWidget('GFSlot', slots); s:getChildById('name'):setText('- free -'); s:getChildById('name'):setColor('#606060')
     end
     ui('leaveButton'):setEnabled(true)
+    ui('roleButton'):setEnabled(lobby.state == 'open')
     ui('startButton'):setEnabled(lobby.leader and lobby.state == 'open')
     ui('startButton'):setTooltip(lobby.leader and 'Start the fight (ready check / agreement of the group)' or 'Only the group leader can start.')
   else
-    ui('groupState'):setText('Choose a boss and a role, then join the queue.')
+    ui('groupState'):setText('Choose a boss, then join or create a group.')
     ui('leaveButton'):setEnabled(false)
+    ui('roleButton'):setEnabled(false)
     ui('startButton'):setEnabled(false)
   end
 end
 
+-- ------------------------------------------------------------------ role dialog
+function closeDialog() if dialog then dialog:destroy(); dialog = nil end end
+function askRole(opt, callback)
+  closeDialog()
+  dialog = g_ui.createWidget('GFRoleDialog', rootWidget)
+  dialog:setText(opt.title or 'Choose your role')
+  local allowed = data and data.roles or {}
+  local taken = opt.taken or {}
+  local pick = (role and allowed[role]) and role or nil
+  local buttons = {}
+  local function refresh()
+    for r, w in pairs(buttons) do w:setChecked(pick == r); w:setOn(pick == r) end
+    dialog:getChildById('ok'):setEnabled(pick ~= nil)
+  end
+  for _, r in ipairs({'tank', 'healer', 'dps'}) do
+    local w = dialog:getChildById(r); buttons[r] = w
+    local full = (taken[r] or 0) >= (r == 'dps' and 2 or 1)
+    w:setEnabled(allowed[r] == true and not full)
+    if not allowed[r] then w:setTooltip(r == 'tank' and 'Only knights can be tanks.' or (r == 'healer' and 'Paladins can only join as DPS.') or 'Knights can only join as Tank.')
+    elseif full then w:setTooltip('This role is already taken in the group.') end
+    if pick == r and not w:isEnabled() then pick = nil end
+    w.onClick = function() pick = r; refresh() end
+  end
+  if not pick then for _, r in ipairs({'tank', 'healer', 'dps'}) do if buttons[r]:isEnabled() then pick = r; break end end end
+  local pw = dialog:getChildById('password')
+  local showPw = opt.password and true or false
+  dialog:getChildById('pwLabel'):setVisible(showPw); pw:setVisible(showPw)
+  if opt.needPassword then dialog:getChildById('pwLabel'):setText('Password:') end
+  if not showPw then dialog:setHeight(dialog:getHeight() - 30) end
+  dialog:getChildById('note'):setText(opt.note or '')
+  local function ok()
+    if not pick then return end
+    local text = (pw:getText() or ''):gsub('[^%w]', ''):sub(1, 16)
+    role = pick; g_settings.set('groupfinder_role', pick)
+    closeDialog(); callback(pick, text)
+  end
+  dialog:getChildById('ok').onClick = ok
+  dialog:getChildById('cancel').onClick = closeDialog
+  dialog.onEnter = ok
+  dialog.onEscape = closeDialog
+  refresh()
+  dialog:raise(); dialog:focus()
+  if showPw then pw:focus() end
+end
+
+local function tick()
+  tickEvent = nil
+  if not window or not window:isVisible() then return end
+  updateCooldowns()
+  tickEvent = scheduleEvent(tick, 1000)
+end
 local function render()
   if not window or not data then return end
+  renderIntro()
   renderList()
   renderDetails()
+  if not tickEvent then tickEvent = scheduleEvent(tick, 1000) end
 end
 
 -- ------------------------------------------------------------------ actions
-function pickRole(r) role = r; g_settings.set('groupfinder_role', r); renderDetails() end
-function password()
-  local e = ui('passwordEdit'); local t = e and e:getText() or ''
-  return (t:gsub('[^%w]', ''):sub(1, 16))
+function join() askRole({title = 'Quick join'}, function(r) send('join:' .. selected .. ':' .. r) end) end
+function create() askRole({title = 'Create a group', password = true}, function(r, pw) send('create:' .. selected .. ':' .. r .. ':' .. pw) end) end
+function changeRole()
+  local l = data and data.lobby; if not l then return end
+  local taken = {tank = 0, healer = 0, dps = 0}
+  for _, m in ipairs(l.members or {}) do if not m.me then taken[m.role] = (taken[m.role] or 0) + 1 end end
+  askRole({title = 'Change your role', taken = taken}, function(r) send('join:' .. l.boss .. ':' .. r) end)
 end
-function join() if role then send('join:' .. selected .. ':' .. role) end end
-function create() if role then send('create:' .. selected .. ':' .. role .. ':' .. password()) end end
 function joinParty() send('party:' .. selected) end
 function leave() send('leave') end
 function start() send('start') end
-function hide() if window then window:hide() end; send('close') end
+function hide() closeDialog(); if tickEvent then removeEvent(tickEvent); tickEvent = nil end; if window then window:hide() end; send('close') end
 function toggle()
   if window:isVisible() then hide() else send('open') end
 end
@@ -300,17 +397,18 @@ local function receive(protocol, opcode, buffer)
   if result.kind ~= 'groupfinder' then return end
   local wasFight = data and data.lobby and data.lobby.state == 'fight'
   data = result
+  receivedAt = g_clock.millis()
   -- the fight started: get the window out of the way
   if not wasFight and data.lobby and data.lobby.state == 'fight' and window:isVisible() then window:hide() end
   if data.lobby and data.lobby.boss and result.open then selected = data.lobby.boss end
-  if result.open then render(); window:show(); fitToScreen(window, 800, 760); window:raise(); window:focus()
+  if result.open then render(); window:show(); fitToScreen(window, 800, 640); window:raise(); window:focus()
   elseif window:isVisible() then render() end
   if button then
     local l = data.lobby
-    button:setTooltip(l and ('Group Finder - in a group (' .. #l.members .. '/4)') or 'Group Finder - Daily Bosses (Ctrl+F)')
+    button:setTooltip(l and ('Group Finder (Ctrl+F)\nIn a group (' .. #l.members .. '/4)') or 'Group Finder (Ctrl+F)')
   end
 end
-local function onGameEnd() closePrompt(); clearOverlay(); if window then window:hide() end; data = nil end
+local function onGameEnd() closePrompt(); clearOverlay(); closeDialog(); if window then window:hide() end; data = nil end
 
 function init()
   window = g_ui.displayUI('groupfinder'); window:hide()

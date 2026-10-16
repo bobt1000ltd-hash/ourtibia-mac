@@ -71,6 +71,7 @@ MyStatRow < UIWidget
     anchors.top: parent.top
     size: 14 14
     text: +
+    text-offset: 0 -2
 
 SkillFirstWidget < UIWidget
 
@@ -275,6 +276,7 @@ MiniWindow
         size: 14 14
         padding: 0
         text: +
+        text-offset: 0 -2
         !tooltip: modules.game_skills.myotsAddTip
         @onClick: modules.game_skills.myotsAllocate('str')
 
@@ -304,6 +306,7 @@ MiniWindow
         size: 14 14
         padding: 0
         text: +
+        text-offset: 0 -2
         !tooltip: modules.game_skills.myotsAddTip
         @onClick: modules.game_skills.myotsAllocate('dex')
 
@@ -333,6 +336,7 @@ MiniWindow
         size: 14 14
         padding: 0
         text: +
+        text-offset: 0 -2
         !tooltip: modules.game_skills.myotsAddTip
         @onClick: modules.game_skills.myotsAllocate('int')
 
@@ -362,6 +366,7 @@ MiniWindow
         size: 14 14
         padding: 0
         text: +
+        text-offset: 0 -2
         !tooltip: modules.game_skills.myotsAddTip
         @onClick: modules.game_skills.myotsAllocate('con')
 
@@ -391,6 +396,7 @@ MiniWindow
         size: 14 14
         padding: 0
         text: +
+        text-offset: 0 -2
         !tooltip: modules.game_skills.myotsAddTip
         @onClick: modules.game_skills.myotsAllocate('wil')
 
@@ -420,6 +426,7 @@ MiniWindow
         size: 14 14
         padding: 0
         text: +
+        text-offset: 0 -2
         !tooltip: modules.game_skills.myotsAddTip
         @onClick: modules.game_skills.myotsAllocate('luck')
 
@@ -1019,4 +1026,9 @@ SkillsListSubMenu < PopupMenu
   SkillsSubMenuOption
     id: rowFishing
     !text: tr('Fishing')
+
+  // 16.10.2026 (Tobeto): Cooking can be hidden too
+  SkillsSubMenuOption
+    id: rowCooking
+    !text: tr('Cooking')
 

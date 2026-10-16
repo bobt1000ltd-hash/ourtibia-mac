@@ -560,7 +560,7 @@ MainWindow
     id: donateInfo
     anchors.centerIn: products
     // 15.10.2026 (Tobeto): smaller, no "drag to move" tooltip
-    size: 260 96
+    size: 260 118
     phantom: false
     focusable: true
     background-color: #2b2b2b
@@ -573,7 +573,7 @@ MainWindow
       anchors.left: parent.left
       anchors.right: parent.right
       height: 18
-      text: Respawn Fund
+      text: Community Boost
       text-align: center
       phantom: false
       background-color: #3b3b3b

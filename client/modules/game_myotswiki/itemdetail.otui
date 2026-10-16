@@ -12,8 +12,9 @@ Panel
     anchors.left: parent.left
     anchors.right: parent.right
     height: 56
+    background-color: #1c1c1c
     border-width: 1
-    border-color: #111111
+    border-color: #3c3c3c
     UIItem
       id: icon
       anchors.left: parent.left
@@ -33,21 +34,16 @@ Panel
       height: 42
       text-wrap: true
       font: verdana-11px-monochrome
-  Panel
+  // 16.10.2026 (Tobeto): "Item details", "Buy from" and "Sell to" in the "Configure" panel style
+  MiniPanel
     id: base
     anchors.top: summary.bottom
     anchors.left: parent.left
     anchors.bottom: parent.bottom
     margin-top: 6
     width: 198
-    border-width: 1
-    border-color: #111111
-    Label
-      text: Item details
-      anchors.top: parent.top
-      anchors.left: parent.left
-      margin: 8
-      height: 24
+    padding: 0
+    text: Item details
     Button
       id: trackButton
       anchors.left: parent.left
@@ -74,7 +70,7 @@ Panel
       anchors.right: parent.right
       anchors.bottom: profButton.top
       margin: 8
-      margin-top: 40
+      margin-top: 30
       text-wrap: true
       font: verdana-11px-monochrome
   Panel
@@ -85,8 +81,9 @@ Panel
     margin-left: 6
     margin-top: 6
     height: 245
+    background-color: #1a1a1a
     border-width: 1
-    border-color: #111111
+    border-color: #3c3c3c
     Button
       id: dropTab
       anchors.verticalCenter: sourceOrder.verticalCenter
@@ -107,6 +104,7 @@ Panel
       @onClick: modules.game_myotswiki.setSourceTab('quest')
     ComboBox
       id: sourceFilter
+      text-offset: -15 0
       anchors.top: parent.top
       anchors.right: sourceSort.left
       margin-top: 5
@@ -114,6 +112,7 @@ Panel
       width: 106
     ComboBox
       id: sourceSort
+      text-offset: -15 0
       anchors.top: parent.top
       anchors.right: sourceOrder.left
       margin-top: 5
@@ -121,6 +120,7 @@ Panel
       width: 106
     ComboBox
       id: sourceOrder
+      text-offset: -15 0
       anchors.top: parent.top
       anchors.right: parent.right
       margin-top: 5
@@ -147,29 +147,32 @@ Panel
       margin-top: 5
       step: 55
       pixels-scroll: true
-  Label
-    id: buyTitle
-    text: Buy from
+  MiniPanel
+    id: buyFrame
     anchors.top: obtaining.bottom
-    anchors.left: obtaining.left
-    margin-top: 8
-    height: 24
-  Label
-    id: sellTitle
-    text: Sell to
-    anchors.top: obtaining.bottom
-    anchors.right: parent.right
-    width: 302
-    margin-top: 8
-    height: 24
-  ScrollablePanel
-    id: buy
-    anchors.top: buyTitle.bottom
     anchors.left: obtaining.left
     anchors.bottom: parent.bottom
-    width: 298
-    border-width: 1
-    border-color: #111111
+    margin-top: 8
+    width: 318
+    padding: 0
+    text: Buy from
+  MiniPanel
+    id: sellFrame
+    anchors.top: obtaining.bottom
+    anchors.left: buyFrame.right
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-top: 8
+    margin-left: 6
+    padding: 0
+    text: Sell to
+  ScrollablePanel
+    id: buy
+    anchors.top: buyFrame.top
+    anchors.left: buyFrame.left
+    anchors.right: buyScroll.left
+    anchors.bottom: buyFrame.bottom
+    margin: 25 2 6 6
     vertical-scrollbar: buyScroll
     layout:
       type: verticalBox
@@ -177,18 +180,18 @@ Panel
   VerticalScrollBar
     id: buyScroll
     step: 48
-    anchors.top: buyTitle.bottom
-    anchors.left: buy.right
-    anchors.bottom: parent.bottom
+    anchors.top: buyFrame.top
+    anchors.right: buyFrame.right
+    anchors.bottom: buyFrame.bottom
+    margin: 25 6 6 0
     pixels-scroll: true
   ScrollablePanel
     id: sell
-    anchors.top: sellTitle.bottom
-    anchors.left: sellTitle.left
+    anchors.top: sellFrame.top
+    anchors.left: sellFrame.left
     anchors.right: sellScroll.left
-    anchors.bottom: parent.bottom
-    border-width: 1
-    border-color: #111111
+    anchors.bottom: sellFrame.bottom
+    margin: 25 2 6 6
     vertical-scrollbar: sellScroll
     layout:
       type: verticalBox
@@ -196,7 +199,8 @@ Panel
   VerticalScrollBar
     id: sellScroll
     step: 48
-    anchors.top: sellTitle.bottom
-    anchors.right: parent.right
-    anchors.bottom: parent.bottom
+    anchors.top: sellFrame.top
+    anchors.right: sellFrame.right
+    anchors.bottom: sellFrame.bottom
+    margin: 25 6 6 0
     pixels-scroll: true

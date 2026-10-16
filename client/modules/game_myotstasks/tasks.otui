@@ -166,11 +166,12 @@ KitnRow < UIWidget
   background-color: #222222
   border-width: 1
   border-color: #3c3c3c
+  // 16.10.2026 (Tobeto): a few pixels from the top border
   UIButton
     id: pin
     anchors.left: parent.left
     anchors.top: parent.top
-    margin: 3 0 0 3
+    margin: 5 0 0 4
     size: 12 12
     image-source: /game_skills/pin
     image-color: #5a5a5a
@@ -178,7 +179,7 @@ KitnRow < UIWidget
     id: artBox
     anchors.left: parent.left
     anchors.verticalCenter: parent.verticalCenter
-    margin-left: 18
+    margin-left: 20
     size: 50 50
     background-color: #161616
     border-width: 1
@@ -189,32 +190,52 @@ KitnRow < UIWidget
     anchors.centerIn: artBox
     size: 46 46
     phantom: true
+  // 16.10.2026 (Tobeto): only the task name; the monsters are in the [i] tooltip
   Label
     id: name
     anchors.top: parent.top
     anchors.left: artBox.right
-    margin-top: 6
+    margin-top: 12
     margin-left: 8
-    width: 180
-    height: 16
+    width: 106
+    height: 30
+    text-wrap: true
+    text-align: topLeft
     font: verdana-11px-rounded
     color: #ffd35a
+  UIWidget
+    id: info
+    anchors.top: parent.top
+    anchors.left: name.right
+    margin-top: 12
+    margin-left: 2
+    size: 13 13
+    text: i
+    text-align: center
+    font: verdana-11px-rounded
+    color: #c8c8c8
+    background-color: #2e2e2e
+    border-width: 1
+    border-color: #5a5a5a
+    $hover:
+      color: #ffffff
+      border-color: #c8a040
   Label
     id: creatures
     anchors.top: name.bottom
     anchors.left: name.left
-    width: 180
-    height: 28
-    text-wrap: true
-    text-align: topLeft
-    color: #a8a8a8
+    width: 120
+    height: 12
+    font: small-9px
+    color: #ff9a7a
+    visible: false
   Label
     id: kills
     anchors.top: parent.top
-    anchors.left: name.right
+    anchors.left: info.right
     margin-top: 14
     margin-left: 8
-    width: 120
+    width: 104
     height: 14
     text-align: center
     color: #d8d8d8
@@ -223,7 +244,7 @@ KitnRow < UIWidget
     anchors.top: kills.bottom
     anchors.left: kills.left
     margin-top: 4
-    width: 120
+    width: 104
     height: 8
     background-color: #3fbf3f
   Panel
@@ -232,7 +253,7 @@ KitnRow < UIWidget
     anchors.bottom: parent.bottom
     anchors.left: kills.right
     anchors.right: action.left
-    margin: 4 8 4 10
+    margin: 4 6 4 12
   Button
     id: action
     anchors.right: parent.right
@@ -248,15 +269,15 @@ KitnHeader < UIWidget
     id: c1
     anchors.left: parent.left
     anchors.verticalCenter: parent.verticalCenter
-    margin-left: 76
+    margin-left: 78
     text: Task
     color: #c8a040
   Label
     id: c2
     anchors.left: parent.left
     anchors.verticalCenter: parent.verticalCenter
-    margin-left: 264
-    width: 120
+    margin-left: 207
+    width: 104
     text-align: center
     text: Kills
     color: #c8a040
@@ -264,7 +285,7 @@ KitnHeader < UIWidget
     id: c3
     anchors.left: parent.left
     anchors.verticalCenter: parent.verticalCenter
-    margin-left: 394
+    margin-left: 323
     text: Rewards
     color: #c8a040
 
@@ -557,20 +578,28 @@ MainWindow
     margin-top: 8
     margin-bottom: 6
     visible: false
-    Label
+    // 16.10.2026 (Tobeto): rank and Paw and Fur points in a centred bar
+    Panel
       id: kitnInfo
       anchors.top: parent.top
       anchors.left: parent.left
       anchors.right: parent.right
-      height: 18
-      text-align: center
-      color: #ffd35a
+      height: 28
+      background-color: #1c1c1c
+      border-width: 1
+      border-color: #3e3e3e
+      Panel
+        id: kitnInfoInner
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: 400
     KitnHeader
       id: kitnHead
       anchors.top: kitnInfo.bottom
       anchors.left: parent.left
       anchors.right: parent.right
-      margin-top: 2
+      margin-top: 6
       margin-right: 14
     ScrollablePanel
       id: kitnList
@@ -635,11 +664,19 @@ MainWindow
     Label
       id: status
       anchors.left: footPoints.right
-      anchors.right: bossButton.left
+      anchors.right: trackerButton.left
       anchors.verticalCenter: parent.verticalCenter
       margin-left: 6
       margin-right: 6
       color: #a8e0a8
+    Button
+      id: trackerButton
+      anchors.right: bossButton.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 4
+      width: 90
+      text: Task Tracker
+      @onClick: if modules.game_myotshud and modules.game_myotshud.showTaskTracker then modules.game_myotshud.showTaskTracker() end
     Button
       id: bossButton
       anchors.right: closeButton.left

@@ -127,7 +127,36 @@ function skillController:onInit()
         if type(rows) == 'table' then myotsAttributes(rows) end
     end)
     setupUIButtons()
+    pcall(ourPinTabs)
     skillsWindow:setup()
+end
+
+-- 16.10.2026 (Tobeto): "Skills" / "Attributes" and "Only non-zero values" stay at the top,
+-- only the rows scroll
+function ourPinTabs()
+    local tabs = skillsWindow:recursiveGetChildById('myotsTabs')
+    local contents = skillsWindow:getChildById('contentsPanel')
+    if not tabs or not contents then return end
+    tabs:setParent(skillsWindow); tabs:breakAnchors()
+    tabs:addAnchor(AnchorTop, 'miniwindowHeader', AnchorBottom)
+    tabs:addAnchor(AnchorLeft, 'parent', AnchorLeft)
+    tabs:addAnchor(AnchorRight, 'miniwindowScrollBar', AnchorLeft)
+    tabs:setMarginTop(3); tabs:setMarginLeft(8); tabs:setMarginRight(6)
+    local nz = g_ui.createWidget('CheckBox', skillsWindow)
+    nz:setId('myotsNonZero'); nz:setText('Only non-zero values'); nz:setHeight(18); nz:setColor('#c0c0c0')
+    nz:setFocusable(false); nz:setTooltip('Hide the attributes you do not have (value 0).')
+    nz:addAnchor(AnchorTop, 'myotsTabs', AnchorBottom)
+    nz:addAnchor(AnchorLeft, 'parent', AnchorLeft)
+    nz:addAnchor(AnchorRight, 'miniwindowScrollBar', AnchorLeft)
+    nz:setMarginLeft(8); nz:setMarginRight(6)
+    nz:hide()
+    ourTabsOffset()
+end
+function ourTabsOffset()
+    local contents = skillsWindow and skillsWindow:getChildById('contentsPanel')
+    local nz = skillsWindow and skillsWindow:getChildById('myotsNonZero')
+    if not contents then return end
+    contents:setMarginTop(3 + 20 + 3 + ((nz and nz:isVisible()) and 18 or 0))
 end
 
 function skillController:onTerminate()
@@ -352,7 +381,7 @@ local OUR_ROWS = {rowLevel = {'level'}, rowStamina = {'stamina'}, -- 14.10.2026 
     rowSoul = {'soul'}, rowCapacity = {'capacity'}, rowRegenTime = {'regenerationTime'},
     -- 13.10.2026 (Tobeto): skills and offline training can be hidden completely too
     rowOfflineTraining = {'offlineTraining'}, rowMagic = {'magiclevel'}, rowFist = {'skillId0'},
-    rowMelee = {'skillId2'}, rowDistance = {'skillId4'}, rowShielding = {'skillId5'}, rowFishing = {'skillId6'}}
+    rowMelee = {'skillId2'}, rowDistance = {'skillId4'}, rowShielding = {'skillId5'}, rowFishing = {'skillId6'}, rowCooking = {'skillCooking'}}
 -- 15.10.2026 (Tobeto): Hit Points, Mana, Soul Points and Capacity moved to the Attributes tab
 local OUR_MOVED = {'health', 'mana', 'soul', 'capacity'}
 function ourApplyRowHides()
@@ -1021,6 +1050,9 @@ function updateHeight()
         if header then
             maximumHeight = maximumHeight + header:getMarginTop() + header:getHeight()
         end
+        -- 16.10.2026: the pinned tabs (and the non-zero box) above the rows
+        local contents = skillsWindow:getChildById('contentsPanel')
+        if contents then maximumHeight = maximumHeight + math.max(0, contents:getMarginTop() - 2) end
     else
         maximumHeight = 390
     end
@@ -1808,6 +1840,8 @@ function myotsTab(attributes)
         end
     end
     skillsWindow:recursiveGetChildById('myotsDetails'):setVisible(attributes)
+    local nz = skillsWindow:getChildById('myotsNonZero'); if nz then nz:setVisible(attributes) end
+    pcall(ourTabsOffset)
     pcall(ourRefreshPinned)
     if attributes then
         local panel=skillsWindow:recursiveGetChildById('myotsDetails')
@@ -1953,12 +1987,9 @@ function myotsAttributes(rows)
     -- 11.10.2026: the tall panel took the focus on the first click and the scroll
     -- area then scrolled to its bottom ("ensure visible") instead of toggling.
     panel:setFocusable(false)
-    local toggle=g_ui.createWidget('CheckBox',panel)
-    toggle:setFocusable(false)
-    toggle:setText('Only non-zero values')
-    toggle:setHeight(18)
-    toggle:setColor('#c0c0c0')
-    toggle:setTooltip('Hide the attributes you do not have (value 0).')
+    -- 16.10.2026 (Tobeto): the checkbox is pinned above the list (ourPinTabs)
+    local toggle=skillsWindow:getChildById('myotsNonZero') or g_ui.createWidget('CheckBox',panel)
+    toggle.onCheckChange=nil
     toggle:setChecked(onlyNonZero)
     toggle.onCheckChange=function(widget,checked)
         g_settings.set('myotsAttrNonZero',checked)
@@ -2031,9 +2062,9 @@ end
 -- no longer run into each other: the value gets the width it needs and the
 -- name is shortened with "..." when it does not fit (full name in the tooltip).
 local myotsAbbrev={['Physical penetration']='Physical pen.',['Elemental penetration']='Elemental pen.',['Double attack chance']='Double attack',['Multi shot chance']='Multi shot',['Paralyze chance']='Paralyze',['Attack mana cost']='Attack spell cost',['Support mana cost']='Support spell cost',['Conjure mana cost']='Conjure spell cost'}
-function myotsFitAttributes()
+function myotsFitAttributes(panel)
     if not skillsWindow then return end
-    local panel=skillsWindow:recursiveGetChildById('myotsDetails')
+    panel=panel or skillsWindow:recursiveGetChildById('myotsDetails')
     if not panel or not panel:isVisible() then return end
     for _,row in ipairs(panel:getChildren()) do
         local name=row.getChildById and row:getChildById('name')
@@ -2153,6 +2184,17 @@ function ourRefreshPinned()
         local label=entry and tostring(entry.label or key) or key
         local short={critical='Critical chance',regen_hp='HP regen',regen_mana='Mana regen',speed_total='Speed'}
         row:getChildById('name'):setText(short[key] or label)
+        -- 16.10.2026 (Tobeto): long names end with "..." (full name in the tooltip)
+        row:getChildById('name').myotsFull=short[key] or label
+        -- right click: unpin (one pinned row was hard to unpin with the small pin)
+        row.onMouseRelease=function(w,pos,button)
+            if button==MouseRightButton then
+                local menu=g_ui.createWidget('PopupMenu');menu:setGameMenu(true)
+                menu:addOption('Unpin',function() ourTogglePin(key) end)
+                menu:display(pos);return true
+            end
+            return false
+        end
         if entry then
             local text,color=ourAttrText(entry)
             row:getChildById('value'):setText(text);row:getChildById('value'):setColor(color)
@@ -2165,6 +2207,7 @@ function ourRefreshPinned()
     end
     panel:setHeight(n>0 and (n*17+9) or 0)
     panel:setVisible(n>0 and not myotsAttributesShown)
+    if n>0 then scheduleEvent(function() if not panel:isDestroyed() then myotsFitAttributes(panel) end end,1) end
     panel.myotsPreviousVisible=nil
     if n>0 and not myotsAttributesLast and g_game.isOnline() and not ourPinSyncAsked then
         ourPinSyncAsked=true

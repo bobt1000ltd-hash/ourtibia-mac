@@ -7,7 +7,8 @@ UIWidget
     anchors.right: parent.right
     anchors.top: parent.top
 
-    height: 60
+    // 16.10.2026 (Tobeto): only Floor Fading is left in this box
+    height: 22
   
     // 14.10.2026 (owner): brightness is fixed for everybody - lights on, ambient 40%
     OptionCheckBox
@@ -28,9 +29,12 @@ UIWidget
         local value = modules.client_options.getOption('ambientLight')
         self:setText(string.format('Ambient light: %s%%', value))
 
+    // 16.10.2026 (Tobeto): removed from the options (the setting itself stays)
     OptionScaleScroll
       id: shadowFloorIntensity
       anchors.top: prev.bottom
+      visible: false
+      height: 0
       &minimumScrollValue: 0
       &maximumScrollValue: 100
       &scrollSize: 21
@@ -40,7 +44,7 @@ UIWidget
 
     OptionScaleScroll
       id: floorFading
-      anchors.top: prev.bottom
+      anchors.fill: parent
       &minimumScrollValue: 0
       &maximumScrollValue: 1000
       &scrollSize: 21

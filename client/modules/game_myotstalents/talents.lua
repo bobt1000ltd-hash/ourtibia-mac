@@ -185,8 +185,14 @@ local function render()
     w:getChildById('capName'):setColor(capRank>0 and '#f0d080' or '#8a7a5a')
     w:getChildById('capLine'):setBackgroundColor(capOpen and '#e0b040' or '#403010')
     local capShort=(cap.name or '')..(capRank>0 and ' (active)' or '')..'\n'..table.concat(perLines(cap.per),'\n')..'\n\nPress Shift for more information.'
-    local capLong=(cap.name or '')..' - final perk of '..tree.name..'\n'..table.concat(perLines(cap.per),', ')..'\nUnlock: '..(cap.need or 20)..' points spent in '..tree.name..' (you have '..spent..'), costs 1 point\n'..
-      (capRank>0 and 'Active.' or (capOpen and 'Click to unlock it.' or (promoted and 'Not available yet.' or 'Talent trees unlock after the promotion.')))
+    -- 16.10.2026 (Tobeto): the same Shift layout as the other perks
+    local capLongT={(cap.name or '')..(capRank>0 and ' (active)' or ''),(capRank>0 and 1 or 0)..'/1 point','','Final perk of '..tree.name..':'}
+    for _,l in ipairs(perLines(cap.per)) do capLongT[#capLongT+1]=l end
+    capLongT[#capLongT+1]=''
+    capLongT[#capLongT+1]='Unlock: '..(cap.need or 20)..' points spent in '..tree.name..' (you have '..math.min(spent,tonumber(cap.need) or 20)..'/'..(cap.need or 20)..'), costs 1 point'
+    capLongT[#capLongT+1]=''
+    capLongT[#capLongT+1]=capRank>0 and 'Active.' or (capOpen and 'Click to unlock it.' or (promoted and 'Locked - spend more points in this tree first.' or 'Talent trees unlock after the promotion.'))
+    local capLong=table.concat(capLongT,'\n')
     attachTip(cw,capShort,capLong)
     cw.onClick=function()
       if capRank>0 or not capOpen then return end
@@ -233,7 +239,7 @@ end
 function ourMarkButton()
   if not button then return end
   local free=tonumber(data and data.free) or 0
-  local promo=data and data.promoted==false and '\nRequires the promotion (level 20).' or ''
+  local promo=data and data.promoted==false and '\nRequires promotion' or ''
   button:setTooltip('Talent Trees (Ctrl+I)'..promo..(free>0 and ('\n'..free..' free talent point'..(free==1 and '' or 's')..' - click to spend') or ''))
   if free>0 then button:setBorderWidth(1);button:setBorderColor('#ffd35a');button:setImageColor('#ffe9a0')
   else button:setBorderWidth(0);button:setImageColor('#ffffff') end

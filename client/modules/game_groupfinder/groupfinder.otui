@@ -1,3 +1,5 @@
+// 16.10.2026 (Tobeto): name, level and a difficulty bar; greyed out when the level is too
+// low or the boss was defeated today (the cooldown is shown on top)
 GFBossEntry < UIWidget
   height: 58
   background-color: #1c1c1cdd
@@ -13,7 +15,7 @@ GFBossEntry < UIWidget
     id: creature
     anchors.left: parent.left
     anchors.verticalCenter: parent.verticalCenter
-    margin-left: 2
+    margin-left: 4
     size: 52 52
     phantom: true
   Label
@@ -21,8 +23,7 @@ GFBossEntry < UIWidget
     anchors.left: creature.right
     anchors.top: parent.top
     anchors.right: parent.right
-    margin-left: 4
-    margin-top: 5
+    margin: 7 6 0 8
     font: verdana-11px-rounded
     color: #f0d080
     phantom: true
@@ -30,19 +31,42 @@ GFBossEntry < UIWidget
     id: info
     anchors.left: name.left
     anchors.top: name.bottom
-    anchors.right: parent.right
-    margin-top: 2
+    margin-top: 3
+    width: 70
     font: verdana-11px-monochrome
     color: #b0b0b0
     phantom: true
-  Label
-    id: status
+  Panel
+    id: pips
     anchors.left: name.left
     anchors.top: info.bottom
-    anchors.right: parent.right
-    margin-top: 2
-    font: verdana-11px-monochrome
+    margin-top: 4
+    size: 104 8
     phantom: true
+  Label
+    id: cooldown
+    anchors.fill: parent
+    text-align: center
+    font: verdana-11px-rounded
+    color: #ffffff
+    background-color: #000000a0
+    phantom: true
+    visible: false
+
+GFMechanic < Label
+  height: 20
+  text-align: center
+  font: verdana-11px-rounded
+  color: #ff8a8a
+  background-color: #2a1616
+  border-width: 1
+  border-color: #5a2a2a
+
+GFInfoChip < UIWidget
+  height: 24
+  background-color: #222222
+  border-width: 1
+  border-color: #3e3e3e
 
 GFRoleButton < UIButton
   size: 92 30
@@ -119,7 +143,7 @@ GFGroupRow < UIWidget
     text: Join
 
 GFRewardItem < UIItem
-  size: 34 34
+  size: 32 32
   virtual: true
   border-width: 1
   border-color: #3a3a3a
@@ -128,31 +152,37 @@ GFRewardItem < UIItem
 MainWindow
   id: groupFinder
   text: Group Finder - Daily Bosses
-  size: 800 760
+  size: 800 640
   @onEscape: modules.game_groupfinder.hide()
 
-  Label
+  // 16.10.2026 (Tobeto): the long description became a small info bar
+  Panel
     id: intro
     anchors.top: parent.top
     anchors.left: parent.left
     anchors.right: parent.right
-    height: 30
-    text-wrap: true
-    font: verdana-11px-monochrome
-    color: #b8b8b8
-    text: Seven bosses for groups of 4 (1 Tank, 1 Healer, 2 DPS). Quick join, pick a group from the list, create your own (optionally with a password) or queue your whole party. Each boss once per day (reset 10:00), 15 minutes per attempt.
+    height: 34
+    background-color: #181818
+    border-width: 1
+    border-color: #3a3a3a
+    Panel
+      id: introInner
+      anchors.top: parent.top
+      anchors.bottom: parent.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      width: 600
 
   Panel
     id: list
     anchors.top: intro.bottom
     anchors.left: parent.left
     anchors.bottom: parent.bottom
-    margin-top: 4
+    margin-top: 8
     margin-bottom: 30
-    width: 256
+    width: 262
     layout:
       type: verticalBox
-      spacing: 4
+      spacing: 5
 
   Panel
     id: details
@@ -160,176 +190,140 @@ MainWindow
     anchors.left: list.right
     anchors.right: parent.right
     anchors.bottom: parent.bottom
-    margin-top: 4
+    margin-top: 8
     margin-left: 8
     margin-bottom: 30
     background-color: #141414cc
     border-width: 1
     border-color: #3a3a3a
 
-    UICreature
-      id: bigCreature
+    UIWidget
+      id: bigBox
       anchors.top: parent.top
       anchors.left: parent.left
-      margin: 6
+      margin: 10 0 0 10
+      size: 80 80
+      background-color: #1c1c1c
+      border-width: 1
+      border-color: #303030
+    UICreature
+      id: bigCreature
+      anchors.centerIn: bigBox
       size: 76 76
+      phantom: true
     Label
       id: bossName
-      anchors.top: parent.top
-      anchors.left: bigCreature.right
+      anchors.top: bigBox.top
+      anchors.left: bigBox.right
       anchors.right: parent.right
       margin-top: 8
-      margin-left: 8
+      margin-left: 12
       font: verdana-11px-rounded
       color: #f0d080
     Label
-      id: bossTitle
+      id: bossStats
       anchors.top: bossName.bottom
       anchors.left: bossName.left
       anchors.right: parent.right
-      margin-top: 2
-      font: verdana-11px-monochrome
-      color: #c0a070
-    Label
-      id: bossStats
-      anchors.top: bossTitle.bottom
-      anchors.left: bossName.left
-      anchors.right: parent.right
-      margin-top: 4
+      margin-top: 6
       font: verdana-11px-monochrome
       color: #d0d0d0
     Label
-      id: bossDesc
-      anchors.top: bigCreature.bottom
-      anchors.left: parent.left
-      anchors.right: parent.right
-      margin: 4 8 0 8
-      height: 30
-      text-wrap: true
+      id: diffLabel
+      anchors.top: bossStats.bottom
+      anchors.left: bossName.left
+      margin-top: 8
+      text: Difficulty
+      text-auto-resize: true
       font: verdana-11px-monochrome
-      color: #b8b8b8
+      color: #a0a0a0
+    Panel
+      id: bigPips
+      anchors.verticalCenter: diffLabel.verticalCenter
+      anchors.left: diffLabel.right
+      margin-left: 8
+      size: 160 10
+
     Label
+      id: mechTitle
+      anchors.top: bigBox.bottom
+      anchors.left: parent.left
+      margin: 12 10 0 10
+      font: verdana-11px-rounded
+      color: #f0d080
+      text: Mechanics
+      text-auto-resize: true
+    Panel
       id: mechanics
-      anchors.top: bossDesc.bottom
+      anchors.top: mechTitle.bottom
       anchors.left: parent.left
       anchors.right: parent.right
-      margin: 4 8 0 8
-      height: 62
-      text-wrap: true
-      font: verdana-11px-monochrome
-      color: #e8a0a0
+      margin: 5 10 0 10
+      height: 22
+      layout:
+        type: horizontalBox
+        spacing: 5
+        fit-children: false
+
     Label
       id: rewardsTitle
       anchors.top: mechanics.bottom
       anchors.left: parent.left
-      margin: 4 8 0 8
+      margin: 8 10 0 10
       font: verdana-11px-rounded
       color: #f0d080
-      text: Rewards (rolled for every player separately)
+      text: Rewards
       text-auto-resize: true
     Panel
       id: rewards
       anchors.top: rewardsTitle.bottom
       anchors.left: parent.left
       anchors.right: parent.right
-      margin: 4 8 0 8
+      margin: 5 10 0 10
       height: 38
       layout:
         type: grid
-        cell-size: 34 34
-        cell-spacing: 3
+        cell-size: 32 32
+        cell-spacing: 4
         flow: true
-    Label
-      id: rewardsText
+
+    Panel
+      id: actions
       anchors.top: rewards.bottom
       anchors.left: parent.left
       anchors.right: parent.right
-      margin: 2 8 0 8
+      margin: 12 10 0 10
       height: 30
-      text-wrap: true
-      font: verdana-11px-monochrome
-      color: #a8c8a8
-
-    Label
-      id: roleTitle
-      anchors.top: rewardsText.bottom
-      anchors.left: parent.left
-      margin: 6 8 0 8
-      font: verdana-11px-rounded
-      color: #f0d080
-      text: Your role
-      text-auto-resize: true
-    GFRoleButton
-      id: roleTank
-      anchors.top: roleTitle.bottom
-      anchors.left: parent.left
-      margin: 4 8 0 8
-      text: Tank
-      @onClick: modules.game_groupfinder.pickRole('tank')
-    GFRoleButton
-      id: roleDps
-      anchors.top: roleTank.top
-      anchors.left: roleTank.right
-      margin-left: 6
-      text: DPS
-      @onClick: modules.game_groupfinder.pickRole('dps')
-    GFRoleButton
-      id: roleHealer
-      anchors.top: roleTank.top
-      anchors.left: roleDps.right
-      margin-left: 6
-      text: Healer
-      @onClick: modules.game_groupfinder.pickRole('healer')
-    Button
-      id: joinButton
-      anchors.top: roleTank.top
-      anchors.right: parent.right
-      margin-right: 8
-      size: 120 30
-      text: Quick join
-      @onClick: modules.game_groupfinder.join()
-
-    Label
-      id: pwLabel
-      anchors.top: roleTank.bottom
-      anchors.left: parent.left
-      margin: 10 8 0 8
-      font: verdana-11px-monochrome
-      color: #c0c0c0
-      text: Password:
-      text-auto-resize: true
-    TextEdit
-      id: passwordEdit
-      anchors.verticalCenter: pwLabel.verticalCenter
-      anchors.left: pwLabel.right
-      margin-left: 6
-      size: 110 20
-      max-length: 16
-      tooltip: Optional. Create a private group with this password, or type the password of a locked group before you join it.
-    Button
-      id: createButton
-      anchors.verticalCenter: pwLabel.verticalCenter
-      anchors.left: passwordEdit.right
-      margin-left: 8
-      size: 110 22
-      text: Create group
-      tooltip: Make a new group of your own (locked if you typed a password).
-      @onClick: modules.game_groupfinder.create()
-    Button
-      id: partyButton
-      anchors.verticalCenter: pwLabel.verticalCenter
-      anchors.left: createButton.right
-      margin-left: 6
-      size: 110 22
-      text: Join as party
-      tooltip: Party leader only: queue your whole party (max 4 players) as one closed group.
-      @onClick: modules.game_groupfinder.joinParty()
+      Button
+        id: joinButton
+        anchors.left: parent.left
+        anchors.top: parent.top
+        size: 150 28
+        text: Quick join
+        tooltip: Join the oldest group that has a free place for your role (or start a new one).
+        @onClick: modules.game_groupfinder.join()
+      Button
+        id: createButton
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        size: 150 28
+        text: Create group
+        tooltip: Make a new group of your own (you can set a password).
+        @onClick: modules.game_groupfinder.create()
+      Button
+        id: partyButton
+        anchors.right: parent.right
+        anchors.top: parent.top
+        size: 150 28
+        text: Join as party
+        tooltip: Party leader only: queue your whole party (max 4 players) as one closed group.
+        @onClick: modules.game_groupfinder.joinParty()
 
     Label
       id: groupsTitle
-      anchors.top: pwLabel.bottom
+      anchors.top: actions.bottom
       anchors.left: parent.left
-      margin: 12 8 0 8
+      margin: 12 10 0 10
       font: verdana-11px-rounded
       color: #f0d080
       text: Groups waiting for this boss
@@ -339,7 +333,7 @@ MainWindow
       anchors.top: groupsTitle.bottom
       anchors.left: parent.left
       anchors.right: parent.right
-      margin: 4 8 0 8
+      margin: 5 10 0 10
       height: 104
       layout:
         type: verticalBox
@@ -349,7 +343,7 @@ MainWindow
       id: groupTitle
       anchors.top: groups.bottom
       anchors.left: parent.left
-      margin: 8 8 0 8
+      margin: 10 10 0 10
       font: verdana-11px-rounded
       color: #f0d080
       text: Your group
@@ -360,6 +354,7 @@ MainWindow
       anchors.left: groupTitle.right
       anchors.right: parent.right
       margin-left: 8
+      margin-right: 10
       font: verdana-11px-monochrome
       color: #b0b0b0
     Panel
@@ -367,7 +362,7 @@ MainWindow
       anchors.top: groupTitle.bottom
       anchors.left: parent.left
       anchors.right: parent.right
-      margin: 4 8 0 8
+      margin: 5 10 0 10
       height: 112
       layout:
         type: verticalBox
@@ -389,6 +384,15 @@ MainWindow
     text: Leave group
     @onClick: modules.game_groupfinder.leave()
   Button
+    id: roleButton
+    anchors.bottom: parent.bottom
+    anchors.right: leaveButton.left
+    margin-right: 6
+    size: 110 22
+    text: Change role
+    tooltip: Change your role in the group (1 tank and 1 healer per group).
+    @onClick: modules.game_groupfinder.changeRole()
+  Button
     id: closeButton
     anchors.bottom: parent.bottom
     anchors.left: parent.left
@@ -399,8 +403,69 @@ MainWindow
     id: footer
     anchors.bottom: parent.bottom
     anchors.left: closeButton.right
-    anchors.right: leaveButton.left
+    anchors.right: roleButton.left
     margin: 0 8 4 8
     font: verdana-11px-monochrome
     color: #9a9a9a
     text: Rewards go to the reward chest in any town temple.
+
+// 16.10.2026 (Tobeto): the role (and an optional password) is asked when you create or join
+GFRoleDialog < MainWindow
+  size: 340 158
+  text: Choose your role
+  GFRoleButton
+    id: tank
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 6
+    text: Tank
+  GFRoleButton
+    id: healer
+    anchors.top: tank.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    text: Healer
+  GFRoleButton
+    id: dps
+    anchors.top: tank.top
+    anchors.right: parent.right
+    text: DPS
+  Label
+    id: pwLabel
+    anchors.top: tank.bottom
+    anchors.left: parent.left
+    margin-top: 16
+    font: verdana-11px-monochrome
+    color: #c0c0c0
+    text: Password (optional):
+    text-auto-resize: true
+  TextEdit
+    id: password
+    anchors.verticalCenter: pwLabel.verticalCenter
+    anchors.left: pwLabel.right
+    anchors.right: parent.right
+    margin-left: 8
+    height: 20
+    max-length: 16
+  Label
+    id: note
+    anchors.top: pwLabel.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 8
+    height: 14
+    text-align: center
+    font: verdana-11px-monochrome
+    color: #ff9a7a
+  Button
+    id: cancel
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    size: 80 22
+    text: Cancel
+  Button
+    id: ok
+    anchors.bottom: parent.bottom
+    anchors.right: cancel.left
+    margin-right: 6
+    size: 80 22
+    text: OK

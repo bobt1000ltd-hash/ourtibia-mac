@@ -121,6 +121,9 @@ local function restoreMap()
 end
 local tabs={{'items','Items & Loot'},{'monsters','Bestiary'},{'bosses','Bosstiary'},{'knowledge','Knowledge'},{'map','Map & Spawns'}}
 local function ui(id) return window:recursiveGetChildById(id) end
+-- 16.10.2026 (Tobeto): the sidebar title is the caption of its framed panel
+local function sideTitle(t) local f=ui('sideFrame');if f then f:setText(t) end end
+local function sideFrame(v) local f=ui('sideFrame');if f then f:setVisible(v) end end
 local function title(s) return (s:gsub('(%a)([%w\']*)',function(a,b)return a:upper()..b end)) end
 local function list(value) return type(value)=='table' and value or {} end
 local function number(n) return tostring(n or 0):reverse():gsub('(%d%d%d)','%1,'):reverse():gsub('^,','') end
@@ -203,7 +206,7 @@ local function grid(columns)
 end
 local function resetView()
   if itemPage then itemPage:hide() end;ui('sidebar'):show();ui('right'):show()
-  ui('detailHero'):hide();ui('sidebar'):setMarginTop(10);ui('right'):setMarginTop(10)
+  ui('detailHero'):hide();ui('sidebar'):setMarginTop(35);ui('right'):setMarginTop(10);sideFrame(true)
   ui('mapBrowser'):hide();ui('sidebar'):show();ui('filterScroll'):show();ui('lootControls'):hide();ui('descriptionScroll'):hide();ui('scrollbar'):show()
   ui('cards'):destroyChildren();ui('detailTabs'):destroyChildren()
   ui('itemPortrait'):hide();ui('portrait'):hide()
@@ -215,7 +218,7 @@ local function resetView()
   filterVisibility(true)
   ui('stats'):setWidth(185);ui('sidebarTitle'):setWidth(185)
   ui('cards'):setMarginTop(0);ui('scrollbar'):setMarginTop(0)
-  ui('sidebarTitle'):setText('Filters');grid(3)
+  sideTitle('Filters');grid(3)
 end
 function hide() restoreMap();if window then window:hide() end end
 function show() if g_game.isOnline() then if #ui('cards'):getChildren()==0 and tab~='knowledge' then changeTab('items',true)end;window:show();window:raise();window:focus() end end
@@ -271,7 +274,7 @@ function renderItemSources()
   if #rows==0 then local w=g_ui.createWidget('Label',panel);w:setText(sourceTab=='quest' and 'No known quest' or 'No known drops');w:setSize({width=190,height=30}) end
 end
 function renderItemPage(row)
-  ui('sidebar'):hide();ui('right'):hide();ui('filterScroll'):hide();itemPage:show()
+  ui('sidebar'):hide();ui('right'):hide();ui('filterScroll'):hide();sideFrame(false);itemPage:show()
   local icon=detailUI('icon');local cid=tonumber(row.cid) or 0
   local prof=detailUI('profButton')
   if prof then
@@ -315,7 +318,8 @@ function renderItemPage(row)
       w:setText(title(merchant.name)..'     '..number(merchant.price)..' gp');art(w,npc or {name=merchant.name})
       if npc then w.onClick=function()changeTab('map');selected=npc;locate() end end
     end
-    if #rows==0 then local w=g_ui.createWidget('Label',panel);w:setText(group[1]=='buy' and 'No known seller' or 'No known buyer');w:setHeight(40) end
+    -- 16.10.2026 (Tobeto): padding so the text does not touch the border
+    if #rows==0 then local w=g_ui.createWidget('Label',panel);w:setText(group[1]=='buy' and 'No known seller' or 'No known buyer');w:setHeight(28);w:setMarginLeft(8);w:setMarginTop(6);w:setColor('#9a9a9a') end
   end
 end
 
@@ -323,7 +327,7 @@ function renderDetail(mode)
   local row=selected;if not row then return end
   resetView();detailMode=mode or 'loot';ui('address'):setText('wiki://'..tab..'/'..row.name:gsub(' ','_'))
   filterVisibility(false)
-  ui('sidebarTitle'):setText('Details')
+  sideTitle('Details')
   -- 07.10.2026: the arrows switch to the previous / next entry of the list
   local at;for i,r in ipairs(filtered) do if r==row then at=i;break end end
   ui('page'):setText(title(row.name)..(at and ('   ('..at..' / '..#filtered..')') or ''));ui('previousPage'):setEnabled(at~=nil and at>1);ui('nextPage'):setEnabled(at~=nil and at<#filtered)
@@ -331,7 +335,7 @@ function renderDetail(mode)
     renderItemPage(row)
     return
   end
-  ui('stats'):hide();ui('statRows'):show();ui('sidebarTitle'):setText('Monster details')
+  ui('stats'):hide();ui('statRows'):show();sideTitle('Monster details')
   local stats=ui('statRows')
   heading(stats,'Base stats')
   statRow(stats,'Hitpoints',number(row.hp),'hitpoints')
@@ -343,7 +347,7 @@ function renderDetail(mode)
     statRow(stats,title(element),(resist>0 and '+' or '')..resist..'%',element..'-resist',resist>0 and '#ef6666' or resist<0 and '#70d878' or '#888888')
   end
   ui('locate'):show()
-  ui('detailHero'):show();ui('sidebar'):setMarginTop(80);ui('right'):setMarginTop(80)
+  ui('detailHero'):show();ui('sidebar'):setMarginTop(105);ui('right'):setMarginTop(80)
   ui('heroName'):setText(title(row.name)..(row.taskBoss and '  [Task boss]' or ''))
   ui('heroSpawns'):setText(#list(row.spawns)>0 and #list(row.spawns)..' spawn locations' or 'No fixed spawns')
   OurTibiaArt.creature(ui('heroPortrait'),row.outfit,row.name)
@@ -587,14 +591,22 @@ function locate()
   resetView();ui('cards'):hide();ui('worldmap'):show();ui('mapControls'):show()
   filterVisibility(false)
   ui('sidebar'):hide();ui('filterScroll'):hide();ui('scrollbar'):hide();ui('mapBrowser'):show();mapList()
-  ui('sidebarTitle'):setText('OurTibia map')
+  sideTitle('OurTibia map')
   ui('stats'):setText(title(selected.name)..'\n\n'..#(selected.spawns or {selected})..' known locations\n\nDrag to move the map.\nMouse wheel to zoom.\nUse arrows to switch locations.');mapIndex=1;mapStep(0);ui('page'):setText('Map & Spawns')
 end
 function renderPage()
   restoreMap()
   resetView();selected=nil;detailMode=nil;ui('address'):setText('wiki://'..tab)
   ui('stats'):hide()
-  grid((tab=='monsters' or tab=='bosses') and 2 or 3)
+  local columns=(tab=='monsters' or tab=='bosses') and 2 or 3
+  grid(columns)
+  -- 16.10.2026 (Tobeto): as many rows as fit in the panel (no empty space at the bottom)
+  local h=ui('cards'):getHeight()
+  if h and h>100 then
+    local first0=(page-1)*pageSize
+    pageSize=math.max(1,math.floor((h+3)/58))*columns
+    page=math.floor(first0/pageSize)+1
+  end
   local first=(page-1)*pageSize+1
   for index=first,math.min(first+pageSize-1,#filtered) do
     local row=filtered[index];local subtitle=row.shortinfo or row.category or row.race or ''
@@ -671,7 +683,7 @@ function changeTab(name,reset)
     if tab~='knowledge' then remember() end
     restoreMap();tab='knowledge';clearMarkers()
     if itemPage then itemPage:hide() end
-    for _,id in ipairs({'sidebar','filterScroll','right','mapBrowser','detailHero','previousPage','nextPage','page'}) do ui(id):hide() end
+    for _,id in ipairs({'sidebar','sideFrame','filterScroll','right','mapBrowser','detailHero','previousPage','nextPage','page'}) do ui(id):hide() end
     ui('knowledge'):show();ui('address'):setText('wiki://knowledge/home')
     WikiKnowledge.open(window)
     return

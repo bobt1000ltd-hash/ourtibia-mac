@@ -14,6 +14,16 @@ function toggleFullscreen()
 end
 local function statusMessage(text) if modules.game_textmessage and modules.game_textmessage.displayStatusMessage then modules.game_textmessage.displayStatusMessage(text) end end
 local function content(window) return window:getChildById('contentsPanel') end
+-- 16.10.2026 (Tobeto): the ON / OFF button stays at the top while the rest of the window scrolls
+local function pinTop(window,btn)
+  local c=content(window)
+  btn:setParent(window);btn:breakAnchors()
+  btn:addAnchor(AnchorTop,'miniwindowHeader',AnchorBottom)
+  btn:addAnchor(AnchorLeft,'parent',AnchorLeft)
+  btn:addAnchor(AnchorRight,'miniwindowScrollBar',AnchorLeft)
+  btn:setMarginTop(3);btn:setMarginLeft(8);btn:setMarginRight(6)
+  c:setMarginTop(2+btn:getHeight()+5)
+end
 local function label(parent,text)
   local w=g_ui.createWidget('HudLabel',parent);w:setText(text);return w
 end
@@ -32,6 +42,8 @@ local function panel(id,title,height,parent)
   w:setup();windows[id]=w;return w
 end
 local function toggle(w) if w:isVisible() then w:close() else w:open() end end
+-- 16.10.2026 (Tobeto): Task Board -> 'Task Tracker' button
+function showTaskTracker() local w=windows and windows.myotsTasks;if w then if not w:isVisible() then w:open() end;pcall(function() w:raise() end) end end
 -- 13.10.2026 (Tobeto): Autolooting and Trainer cannot be stretched past their contents
 function ourCapPanels()
   for _,id in ipairs({'myotsLoot','myotsTrainer'}) do
@@ -100,7 +112,7 @@ local function updateTrainerButton()
   trainerButton:setText(trainer.enabled and 'Trainer: ON' or 'Trainer: OFF')
   trainerButton:setColor(trainer.enabled and '#66dd44' or '#ff5555')
   -- 07.10.2026: no setOn - the icon has no 'on' frame and looked broken
-  if buttons[4] then pcall(function() buttons[4]:setTooltip(trainer.enabled and 'Trainer window (trainer: ON)' or 'Trainer window (trainer: OFF)') end) end
+  if buttons[4] then pcall(function() buttons[4]:setTooltip('Trainer') end) end
 end
 function showDaily()
   -- Task Board (game_myotstasks) replaces the old single daily task window.
@@ -133,34 +145,35 @@ local function drawKills()
     -- 11.10.2026 (Tobeto): click a monster -> its wiki page
     do local monsterName=r.name;row.onClick=function() local w=modules.game_myotswiki;if w and w.showMonster then w.showMonster(monsterName) end end end
     row:setTooltip(string.format('%s: %d/8 stars\nBonus: +%d%% damage, +%d%% loot against this monster.\nEach new star: one reward (coins, fragments or upgrade stones).',r.name,r.stars,r.stars,r.stars*2))
-    local stars=row:getChildById('stars')
-    if stars then
-      stars:destroyChildren()
-      for starIndex=1,8 do
-        local star=g_ui.createWidget('KillStar',stars)
-        star:setImageSource(starIndex<=r.stars and '/images/game/prey/prey_star' or '/images/game/prey/prey_nostar')
+    -- 16.10.2026 (Tobeto): stage lines (left: still to do, right: done) around the bar
+    local function lines(panel,count,color,fromRight)
+      panel:destroyChildren()
+      for k=1,count do
+        local l=g_ui.createWidget('KillStage',panel);l:setBackgroundColor(color)
+        l:addAnchor(AnchorTop,'parent',AnchorTop)
+        if fromRight then l:addAnchor(AnchorRight,'parent',AnchorRight);l:setMarginRight((k-1)*4)
+        else l:addAnchor(AnchorLeft,'parent',AnchorLeft);l:setMarginLeft((k-1)*4) end
       end
     end
+    lines(row:getChildById('stagesLeft'),8-r.stars,'#6a6a6a',false)
+    lines(row:getChildById('stagesRight'),r.stars,'#e0b040',true)
     local progress=row:getChildById('killProgress')
-    if progress then
-      -- 11.10.2026: the server sends the milestones of this monster (fewer kills for rare spawns)
-      local previous=tonumber(r.prev)
-      if not previous then
-        previous=0
-        for _,milestone in ipairs(type(r.milestones)=='table' and r.milestones or {100,200,400,1000,2000,4000,8000,20000}) do
-          if r.kills>=milestone then previous=milestone else break end
-        end
+    -- 11.10.2026: the server sends the milestones of this monster (fewer kills for rare spawns)
+    local previous=tonumber(r.prev)
+    if not previous then
+      previous=0
+      for _,milestone in ipairs(type(r.milestones)=='table' and r.milestones or {100,200,400,1000,2000,4000,8000,20000}) do
+        if r.kills>=milestone then previous=milestone else break end
       end
-      local span=math.max(1,(r.target or 20000)-previous)
-      progress:setPercent(math.max(0,math.min(100,math.floor((r.kills-previous)*100/span))))
-      progress:setTooltip(string.format('%g / %d kills to next milestone',r.kills,r.target or 20000))
     end
-    local killCount=row:getChildById('killCount')
-    if progress then progress:setText(string.format('%g / %d',math.floor(r.kills*100)/100,r.target)) end
-    if killCount then killCount:setText('') end
+    local span=math.max(1,(r.target or 20000)-previous)
+    progress:setPercent(r.stars>=8 and 100 or math.max(0,math.min(100,math.floor((r.kills-previous)*100/span))))
+    local k=math.floor(r.kills);local ks=tostring(k):reverse():gsub('(%d%d%d)','%1,'):reverse():gsub('^,','')
+    progress:setText(ks)
     local monster=refs and refs.monsters and refs.monsters[r.name]
     OurTibiaArt.creature(row:getChildById('outfit'),monster and monster.outfit,r.name)
-    row:setTooltip(string.format('%g / %d kills to the next star - click to open the wiki page',math.floor(r.kills*100)/100,r.target))
+    row:setTooltip(r.stars>=8 and string.format('%s: all 8 stages done (%g kills)\nBonus: +8%% damage, +16%% loot against this monster.\nClick to open the wiki page.',r.name,math.floor(r.kills*100)/100)
+      or string.format('%s: stage %d / 8 - %g / %d kills\nBonus now: +%d%% damage, +%d%% loot against this monster.\nEach finished stage: one reward (coins, fragments or upgrade stones).\nClick to open the wiki page.',r.name,r.stars+1,math.floor(r.kills*100)/100,r.target,r.stars,r.stars*2))
   end
   if #(state.recent or {})==0 then label(c,'Hunt to track your first kills.') end
 end
@@ -303,24 +316,37 @@ drawStateInner=function()
       for _,t in ipairs(list) do if type(t)=='table' and t.done then fin[#fin+1]=t else act[#act+1]=t end end
       return act,fin
     end
+    -- 16.10.2026 (Tobeto): a finished task takes its slot until the server save; all done ->
+    -- "Tasks complete". Weekly: the closest to completion first, finished ones are hidden.
+    local function doneNote()
+      local e=g_ui.createWidget('TaskEmpty',rows)
+      e:getChildById('text'):setText('Tasks complete');e:getChildById('text'):setColor('#8ac88a')
+      e:setTooltip('All tasks are done - new ones after the reset.')
+    end
     local dAct,dFin=split(daily)
     header('Daily','#5fc06a',tb.dailyLeft,false)
     for _,t in ipairs(dAct) do entry(t,'#2f8f3a') end
-    -- 15.10.2026 (Tobeto): 3 places - empty ones show that another task can be taken
-    for _=#dAct+1,3 do
+    local freeSlots=math.max(0,3-#dAct-#dFin)
+    for _=1,freeSlots do
       local e=g_ui.createWidget('TaskEmpty',rows)
       e:setTooltip('Click to open the Task Board and take a task')
       e.onClick=function() showDaily() end
       e.onHoverChange=function(self,h) local b=self:getChildById('box');b:setBorderColor(h and '#7a7a7a' or '#3a3a3a');self:getChildById('text'):setColor(h and '#c8c8c8' or '#6a6a6a') end
     end
-    for _,t in ipairs(dFin) do entry(t,'#2f8f3a') end
+    if #dFin>=3 then doneNote() end
     local wAct,wFin=split(weekly)
+    table.sort(wAct,function(a,b)
+      local pa=(tonumber(a.kills) or 0)/math.max(1,tonumber(a.need) or 1)
+      local pb=(tonumber(b.kills) or 0)/math.max(1,tonumber(b.need) or 1)
+      return pa>pb
+    end)
     header('Weekly','#a07ad8',tb.weeklyLeft,true)
     for _,t in ipairs(wAct) do entry(t,'#7a4fb0') end
-    for _,t in ipairs(wFin) do entry(t,'#7a4fb0') end
+    if #wAct==0 and #wFin>0 then doneNote() end
+    local dFinShown,wFinShown=#dFin>=3 and 1 or 0,(#wAct==0 and #wFin>0) and 1 or 0
     ourTaskTimersTick()
     fields.dailyStatus:setVisible(false);fields.dailyStatus:setHeight(0)
-    local h=24+(math.max(3,#dAct)+#dFin+#weekly)*36+40
+    local h=24+(#dAct+freeSlots+dFinShown+#wAct+wFinShown)*36+40
     if tasksWindow and tasksWindow:getHeight()<math.min(h+30,260) then tasksWindow:setHeight(math.min(h+30,260)) end
   else
     fields.dailyStatus:setVisible(true)
@@ -402,7 +428,13 @@ ourLootEmpty={}
 local glowState,glowEvent=nil,nil
 function ourLootDragGlow(force)
   local ok,drag=pcall(function() return g_ui.getDraggingWidget() end)
-  local dragging=ok and drag and drag.currentDragThing and true or false
+  -- 16.10.2026 (Tobeto): only for items that can be picked up (not a chair, a creature or a wall)
+  local thing=ok and drag and drag.currentDragThing
+  local dragging=false
+  if thing then
+    local okp,pick=pcall(function() return thing:isItem() and thing:isPickupable() end)
+    dragging=okp and pick and true or false
+  end
   local key=tostring(dragging)
   for _,row in ipairs(ourLootEmpty) do if not row:isDestroyed() and row:isHovered() then key=key..tostring(row) end end
   if not force and key==glowState then return end
@@ -832,6 +864,7 @@ function init()
     b.onClick=function() on=not on;paint();command('loot:enabled:'..(on and 1 or 0)) end
     fields.enabled={setChecked=function(_,v) on=v and true or false;paint() end,isChecked=function() return on end}
     paint()
+    pinTop(loot,b)
   end
   section('gold','Autoloot gold','gold',false)
   fields.convert=check(c,'Auto conversion',function(v)command('loot:convert:'..(v and 1 or 0))end)
@@ -840,7 +873,7 @@ function init()
   fields.products:setTooltip('Creature products (e.g. dragon scales) are looted automatically; they cannot be added to item slots.')
   fields.exclButton=button(c,'Excluded items',function() showLootExclusions() end)
   -- 15.10.2026 (Tobeto): part of Creature products - indented under it
-  fields.exclButton:setMarginLeft(18);fields.exclButton:setWidth(148);fields.exclButton:setHeight(20)
+  fields.exclButton:setMarginLeft(18);fields.exclButton:setWidth(148);fields.exclButton:setHeight(20);fields.exclButton:setTextOffset({x=0,y=-1})
   fields.exclButton:setTooltip('Items that are never auto-looted. Right-click an item -> Exclude from auto-loot.')
   section('items','Autoloot items','items',false)
   fields.items:setTooltip('Loot the items placed in the slots below. Click an empty slot, then click an item.')
@@ -859,6 +892,7 @@ function init()
     if trainer.enabled and g_game.isOnline() then pcall(train,g_game.getLocalPlayer()) end
   end
   trainerButton=button(c,'Trainer: OFF',function() toggleTrainer() end)
+  pinTop(training,trainerButton)
   -- 15.10.2026 (Tobeto): two separate groups, fields indented under their checkbox
   for index,entry in ipairs({{'mana','Mana training','manaSpell','manaThreshold'}, {'runes','Rune maker','runeSpell','runeThreshold'}}) do
     local key,title,spellKey,thresholdKey=entry[1],entry[2],entry[3],entry[4]
@@ -868,10 +902,18 @@ function init()
     fields['train_'..key]=check(c,title,function(v)trainer[key]=v;if v and not loading then trainer.enabled=true;updateTrainerButton() end;saveTrainer()end)
     local spellLabel=g_ui.createWidget('HudSubLabel',c);spellLabel:setText('Spell')
     fields[spellKey]=editable(g_ui.createWidget('HudField',c))
+    pcall(function() fields[spellKey]:setMaxLength(30) end) -- 16.10.2026 (Tobeto): limit
     fields[spellKey].onTextChange=function(_,v)if not loading then trainer[spellKey]=v;saveTrainer()end end
     local manaLabel=g_ui.createWidget('HudSubLabel',c);manaLabel:setText('Minimum mana (%)');manaLabel:setMarginTop(2)
     fields[thresholdKey]=editable(g_ui.createWidget('HudField',c))
-    fields[thresholdKey].onTextChange=function(_,v)if not loading then trainer[thresholdKey]=math.max(0,math.min(100,tonumber(v) or 90));saveTrainer()end end
+    pcall(function() fields[thresholdKey]:setMaxLength(3) end)
+    -- 16.10.2026 (Tobeto): numbers only, 0 - 100
+    fields[thresholdKey].onTextChange=function(w,v)
+      local d=v:gsub('%D','')
+      if tonumber(d) and tonumber(d)>100 then d='100' end
+      if d~=v then w:setText(d);pcall(function() w:setCursorPos(#d) end);return end
+      if not loading then trainer[thresholdKey]=math.max(0,math.min(100,tonumber(d) or 90));saveTrainer() end
+    end
   end
   do local sep=g_ui.createWidget('HorizontalSeparator',c);sep:setMarginTop(6);sep:setMarginBottom(3) end
   fields.train_idle=check(c,'Anti-Idle',function(v)trainer.idle=v;saveTrainer()end)
@@ -888,13 +930,13 @@ function init()
   -- 07.10.2026: 40x20 option images (same size as the other buttons, no artefact when held);
   -- Trainer and Autoloot buttons open their windows again after closing them.
   buttons[5]=modules.client_topmenu.addRightGameButton('myotsKillTracker','Kill Tracker','/images/options/bestiaryTracker',function() if windows.myotsKills then toggle(windows.myotsKills) end end)
-  buttons[4]=modules.client_topmenu.addRightGameButton('myotsTrainerToggle','Trainer (mana training / rune maker)','/images/options/cooldowns',function() if windows.myotsTrainer then toggle(windows.myotsTrainer) end end)
+  buttons[4]=modules.client_topmenu.addRightGameButton('myotsTrainerToggle','Trainer','/images/options/cooldowns',function() if windows.myotsTrainer then toggle(windows.myotsTrainer) end end)
   -- 14.10.2026 (owner): the Task Tracker window can be opened again with its own button
   buttons[7]=modules.client_topmenu.addRightGameButton('myotsTaskTracker','Task Tracker','/images/options/button_taskboard',function() if windows.myotsTasks then toggle(windows.myotsTasks) end end)
-  buttons[6]=modules.client_topmenu.addRightGameButton('myotsAutolootWindow','Autoloot (auto-looting settings)','/images/options/myots_autoloot',function() if windows.myotsLoot then toggle(windows.myotsLoot) end end)
+  buttons[6]=modules.client_topmenu.addRightGameButton('myotsAutolootWindow','Autolooting','/images/options/myots_autoloot',function() if windows.myotsLoot then toggle(windows.myotsLoot) end end)
   -- 04.10.2026: F11 no longer toggles fullscreen (free for hotkeys); use the button.
   -- OurTibia (03.10.2026): the Game Panels button became the Group Finder; the panels window was removed on 04.10.2026.
-  buttons[2]=modules.client_topmenu.addRightGameButton('groupFinder','Group Finder - Daily Bosses (Ctrl+F)','/images/topbuttons/myots_groupfinder',function() if modules.game_groupfinder then modules.game_groupfinder.toggle() end end)
+  buttons[2]=modules.client_topmenu.addRightGameButton('groupFinder','Group Finder (Ctrl+F)','/images/topbuttons/myots_groupfinder',function() if modules.game_groupfinder then modules.game_groupfinder.toggle() end end)
   ProtocolGame.registerExtendedOpcode(102,onPacket)
   ItemForge.init()
   DpsMeter.init()
