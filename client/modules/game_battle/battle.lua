@@ -2034,11 +2034,12 @@ function attackNext(previous)
     local nextElement = nil
 
     local mainInstance = BattleListManager.instances[0]
-    if not mainInstance or not mainInstance.panel then
-        return
+    -- OurTibia (17.10.2026): the hotkey also works when the battle list is closed
+    -- (a closed list is not updated, so the creatures on screen are used instead)
+    local window = mainInstance and mainInstance.window
+    if not mainInstance or not mainInstance.panel or (window and not window:isVisible()) then
+        return attackNextOnScreen(previous)
     end
-
-    local children = mainInstance.panel:getChildren()
 
     for _, battleButton in pairs(mainInstance.panel:getChildren()) do
         -- OurTibia (05.10.2026): NPCs cannot be attacked - skip them
@@ -2077,8 +2078,43 @@ function attackNext(previous)
     elseif firstElement then
         g_game.attack(firstElement.creature)
     else
-        return false
+        return attackNextOnScreen(previous)
     end
+    return true
+end
+
+-- OurTibia (17.10.2026): next/previous target from the creatures on screen, nearest first
+function attackNextOnScreen(previous)
+    local player = g_game.getLocalPlayer()
+    if not player then return false end
+    local pos = player:getPosition()
+    if not pos then return false end
+    local list = {}
+    for _, c in ipairs(g_map.getSpectators(pos, false)) do
+        if c ~= player and not c:isLocalPlayer() and not c:isNpc() and c:getHealthPercent() > 0 then
+            local cp = c:getPosition()
+            if cp and cp.z == pos.z and math.abs(cp.x - pos.x) <= 7 and math.abs(cp.y - pos.y) <= 5 then
+                local master = c.getMasterId and c:getMasterId() or 0
+                if master ~= player:getId() and (c:isMonster() or (c:isPlayer() and (c.getShield == nil or c:getShield() == 0))) then
+                    list[#list + 1] = {c = c, d = math.max(math.abs(cp.x - pos.x), math.abs(cp.y - pos.y))}
+                end
+            end
+        end
+    end
+    if #list == 0 then return false end
+    table.sort(list, function(a, b)
+        if a.c:isMonster() ~= b.c:isMonster() then return a.c:isMonster() end
+        if a.d ~= b.d then return a.d < b.d end
+        return a.c:getId() < b.c:getId()
+    end)
+    local current = g_game.getAttackingCreature()
+    local index = 0
+    for i, e in ipairs(list) do if current and e.c:getId() == current:getId() then index = i end end
+    local pick
+    if index == 0 then pick = list[1]
+    elseif previous then pick = list[index - 1] or list[#list]
+    else pick = list[index + 1] or list[1] end
+    g_game.attack(pick.c)
     return true
 end
 
