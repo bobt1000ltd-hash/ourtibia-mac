@@ -171,7 +171,8 @@ local function drawKills()
     local k=math.floor(r.kills);local ks=tostring(k):reverse():gsub('(%d%d%d)','%1,'):reverse():gsub('^,','')
     progress:setText(ks)
     local monster=refs and refs.monsters and refs.monsters[r.name]
-    OurTibiaArt.creature(row:getChildById('outfit'),monster and monster.outfit,r.name)
+    -- 16.10.2026: the server sends the outfit (new monsters are not in hud.json)
+    OurTibiaArt.creature(row:getChildById('outfit'),(type(r.outfit)=='table' and (tonumber(r.outfit.type) or 0)+(tonumber(r.outfit.typeex) or 0)>0) and r.outfit or (monster and monster.outfit),r.name)
     row:setTooltip(r.stars>=8 and string.format('%s: all 8 stages done (%g kills)\nBonus: +8%% damage, +16%% loot against this monster.\nClick to open the wiki page.',r.name,math.floor(r.kills*100)/100)
       or string.format('%s: stage %d / 8 - %g / %d kills\nBonus now: +%d%% damage, +%d%% loot against this monster.\nEach finished stage: one reward (coins, fragments or upgrade stones).\nClick to open the wiki page.',r.name,r.stars+1,math.floor(r.kills*100)/100,r.target,r.stars,r.stars*2))
   end
@@ -307,7 +308,7 @@ drawStateInner=function()
       bar:setPercent(math.max(0,math.min(100,math.floor(kills*100/need))))
       bar:setText(string.format('%d / %d',kills,need))
       local monster=refs and refs.monsters and refs.monsters[tostring(t.name or ''):lower()]
-      OurTibiaArt.creature(row:getChildById('outfit'),monster and monster.outfit,tostring(t.name or ''))
+      OurTibiaArt.creature(row:getChildById('outfit'),(type(t.outfit)=='table' and (tonumber(t.outfit.type) or 0)+(tonumber(t.outfit.typeex) or 0)>0) and t.outfit or (monster and monster.outfit),tostring(t.name or ''))
     end
     ourTaskTimers={}
     -- active tasks first, finished ones at the bottom of their list
