@@ -22,6 +22,24 @@
 
 #pragma once
 
+#include <atomic>
+#include <cstdint>
+
 #ifdef CRASH_HANDLER
 void installCrashHandler();
 #endif
+
+// OurTibia (16.10.2026): a small ring of the last server packets (opcode + time) and
+// "breadcrumbs" from the client, written into crashreport.log when the client crashes.
+namespace CrashTrail
+{
+    struct Entry { int64_t ms; int32_t kind; int32_t value; };
+    inline constexpr uint32_t Size = 128;
+    inline Entry entries[Size] {};
+    inline std::atomic<uint32_t> next { 0 };
+    inline void push(int32_t kind, int32_t value, int64_t ms)
+    {
+        const uint32_t i = next.fetch_add(1, std::memory_order_relaxed) % Size;
+        entries[i] = Entry { ms, kind, value };
+    }
+}

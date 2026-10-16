@@ -30,6 +30,7 @@
 #include "localplayer.h"
 #include "protocolgame.h"
 #include "protocolcodes.h"
+#include <framework/platform/crashhandler.h>
 #include "luavaluecasts_client.h"
 #include "map.h"
 #include "mapview.h"
@@ -52,6 +53,7 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
     try {
         while (!msg->eof()) {
             opcode = msg->getU8();
+            CrashTrail::push(1, opcode, stdext::millis()); // OurTibia: last packets for crashreport.log
             AutoStat s(STATS_PACKETS, fmt::format("{} (0x{:02X})", opcode, opcode));
 
             // must be > so extended will be enabled before GameStart.

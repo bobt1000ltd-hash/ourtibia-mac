@@ -52,12 +52,21 @@ function hideDeadPlayer()
     -- character without a tile could crash the client (Frostweaver, PvP death).
 end
 
+-- 16.10.2026: every step of the death flow goes to the log (ourtibia.log), so a crash
+-- report shows how far the client got (Frostweaver: crash after death).
+local function step(text) pcall(function() g_logger.info('[death] ' .. text) end) end
 function display(deathType, penalty)
+    step('death packet: type ' .. tostring(deathType) .. ', penalty ' .. tostring(penalty))
     pcall(function() modules.game_containers.ourRememberContainers() end)
+    step('containers remembered')
     hideDeadPlayer()
+    step('player hidden')
     displayDeadMessage()
+    step('message shown')
     openWindow(deathType, penalty)
+    step('death window open')
     scheduleReconnect()
+    step('reconnect scheduled (auto: ' .. tostring(g_settings.getBoolean('autoReconnect')) .. ')')
 end
 
 function displayDeadMessage()
@@ -94,6 +103,7 @@ function openWindow(deathType, penalty)
     local cancelButton = deathController.ui:getChildById('buttonCancel')
 
     local okFunc = function()
+        step('ok clicked - login again')
         CharacterList.doLogin()
         deathController.ui = destroyWindows()
     end
@@ -114,6 +124,7 @@ function scheduleReconnect()
         return
     end
     deathController:scheduleEvent(function()
+        step('auto reconnect')
         deathController.ui = destroyWindows()
         g_game.cancelLogin()
         CharacterList.doLogin()

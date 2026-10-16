@@ -1928,9 +1928,9 @@ function myotsStats(buffer)
             pct(math.min(50,10+value*0.016))..' Minimum Hit (Max. 50%)',
             '+ '..num(value*0.012)..' Armor'},'\n'),
           dex=table.concat({
-            '+ '..pct(math.min(30,value*0.06))..' Attack Speed (Max. 30%)',
-            '+ '..pct(math.min(50,value*0.064))..' Enemy Armor ignored (Max. 50%)',
-            '+ '..pct(math.min(15,value*0.028))..' Enemy Physical Resistance ignored (Max. 15%)'},'\n'),
+            '+ '..pct(math.min(35,value*0.035))..' Attack Speed (Max. 35%)', -- 16.10.2026: max at 1000
+            '+ '..pct(math.min(50,value*0.05))..' Enemy Armor ignored (Max. 50%)',
+            '+ '..pct(math.min(15,value*0.015))..' Enemy Physical Resistance ignored (Max. 15%)'},'\n'),
           int=table.concat({
             '+ '..pct(value*magic)..' Magic Damage',
             '+ '..pct(value*0.035)..' Healing Power',

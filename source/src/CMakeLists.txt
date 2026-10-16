@@ -1124,3 +1124,10 @@ else()
           RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/"
   )
 endif()
+
+# OurTibia (16.10.2026): crash reports (crashreport.log + crash.dmp) in the MinGW Windows build too,
+# plus a linker map to turn the module offsets from crashreport.log into function names.
+if(WIN32 AND NOT MSVC AND NOT ANDROID AND NOT WASM)
+  target_compile_definitions(otclient_core PRIVATE CRASH_HANDLER)
+  target_link_options(${PROJECT_NAME} PRIVATE "-Wl,-Map=${CMAKE_BINARY_DIR}/MyOTS.map")
+endif()

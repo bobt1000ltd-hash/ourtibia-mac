@@ -101,6 +101,8 @@ jobs:
           ls -la $EXE
           if [ -f "$EXE" ]; then
             mkdir -p out/bin; cp "$EXE" out/bin/MyOTS.exe
+            # crash reports: the linker map turns module offsets into function names
+            [ -f source/build-mingw/MyOTS.map ] && (cd source/build-mingw && zip -q -9 ../../out/MyOTS.map.zip MyOTS.map)
             # copy every non-system DLL the exe needs (recursively)
             for i in 1 2 3 4 5; do
               for f in out/bin/*.exe out/bin/*.dll; do
