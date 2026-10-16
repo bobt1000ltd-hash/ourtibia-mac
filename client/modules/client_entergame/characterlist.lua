@@ -484,6 +484,26 @@ local function onLoginWait(message, time)
     resendWaitEvent = scheduleEvent(resendWait, time * 1000)
 end
 
+-- OurTibia (16.10.2026): with auto reconnect on, a failed reconnect (server restarting, saving or
+-- offline) tries again every 10 seconds instead of stopping at the error box
+local function retryAutoReconnectLater()
+    if not g_settings.getBoolean('autoReconnect') then
+        return
+    end
+    removeAutoReconnectEvent()
+    autoReconnectEvent = scheduleEvent(function()
+        autoReconnectEvent = nil
+        if not g_settings.getBoolean('autoReconnect') or g_game.isOnline() then
+            return
+        end
+        if errorBox then
+            errorBox:destroy()
+            errorBox = nil
+        end
+        CharacterList.showAgain()
+    end, 10000)
+end
+
 function onGameLoginError(message)
     CharacterList.destroyLoadBox()
     errorBox = displayErrorBox(tr('Login Error'), message)
@@ -491,6 +511,7 @@ function onGameLoginError(message)
         errorBox = nil
         CharacterList.showAgain()
     end
+    retryAutoReconnectLater()
 end
 
 function onGameSessionEnd(reason)
@@ -507,6 +528,7 @@ function onGameConnectionError(message, code)
         errorBox = nil
         CharacterList.showAgain()
     end
+    retryAutoReconnectLater()
 end
 
 function onGameUpdateNeeded(signature)
