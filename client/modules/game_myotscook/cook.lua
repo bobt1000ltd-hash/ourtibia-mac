@@ -49,7 +49,7 @@ local function refreshDetails()
     local w = g_ui.createWidget('CookIngredient', box)
     setItem(w:getChildById('icon'), i.cid, i.n)
     local t = w:getChildById('text')
-    t:setText(i.n * n .. 'x ' .. i.name .. '\n(' .. (i.have or 0) .. ')')
+    t:setText(i.n * n .. 'x ' .. i.name .. ' (' .. (i.have or 0) .. ')')
     t:setColor((i.have or 0) >= i.n * n and '#c8e8c8' or '#ff8080')
   end
   ui('canLabel'):setText(lvlOk and ('You can cook: ' .. can) or 'Your cooking level is too low.')

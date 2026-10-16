@@ -51,8 +51,10 @@ CookIngredient < UIWidget
   Label
     id: text
     anchors.left: icon.right
+    anchors.right: parent.right
     anchors.verticalCenter: parent.verticalCenter
-    margin-left: 6
+    margin-left: 5
+    text-wrap: true
     text-auto-resize: true
 
 CookBox < UIWidget
@@ -70,7 +72,7 @@ CookHeader < Label
 MainWindow
   id: cookingWindow
   text: Cooking
-  size: 620 520
+  size: 720 560
   @onEscape: self:hide()
   Label
     id: skillText
@@ -177,18 +179,27 @@ MainWindow
       margin: 8 8 0 8
       text: Ingredients:
       color: #dcdcdc
-    UIWidget
+    ScrollablePanel
       id: ingredients
       anchors.top: ingredientsLabel.bottom
       anchors.left: parent.left
-      anchors.right: parent.right
+      anchors.right: ingScroll.left
       anchors.bottom: quantityLabel.top
-      margin: 4 8 4 8
+      margin: 4 2 6 8
+      vertical-scrollbar: ingScroll
       layout:
         type: grid
-        cell-size: 160 34
+        cell-size: 196 34
         cell-spacing: 2
         flow: true
+    VerticalScrollBar
+      id: ingScroll
+      anchors.top: ingredients.top
+      anchors.bottom: ingredients.bottom
+      anchors.right: parent.right
+      margin-right: 4
+      step: 36
+      pixels-scroll: true
     Label
       id: quantityLabel
       anchors.bottom: canLabel.top

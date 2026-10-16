@@ -65,9 +65,12 @@ local function refreshDetails()
   box:getChildById('ingredientCount'):setText(r.frag*n..'x magical stone fragment')
   box:getChildById('fragLabel'):setText('Fragments: '..r.frag*n..' / '..state.fragments)
  end
+ -- 16.10.2026: several ingredients - the list starts at the top of the icon (centred it ran into the title)
+ local ic=box:getChildById('ingredientCount');ic:breakAnchors();ic:addAnchor(AnchorLeft,'ingredientIcon',AnchorRight)
+ if r.needs then ic:addAnchor(AnchorTop,'ingredientIcon',AnchorTop) else ic:addAnchor(AnchorVerticalCenter,'ingredientIcon',AnchorVerticalCenter) end
  if r.needs then
   local parts={};for _,x in ipairs(r.needs) do parts[#parts+1]=(x.count*n)..'x '..x.name..' ('..(x.have or 0)..')' end
-  box:getChildById('ingredientCount'):setText(table.concat(parts,'\n'))
+  ic:setText(table.concat(parts,'\n'))
   box:getChildById('fragLabel'):setText(r.locked or '')
  end
  box:getChildById('goldLabel'):setText('Gold: '..money(r.gold*n)..' / '..money(state.gold))
