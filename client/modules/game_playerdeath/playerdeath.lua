@@ -48,7 +48,8 @@ function hideDeadPlayer()
         outfit.type = 0; outfit.auxType = 0; outfit.mount = 0
         player:setOutfit(outfit)
     end)
-    pcall(function() g_map.removeThing(player) end)
+    -- 16.10.2026: the local player is no longer removed from the map (g_map.removeThing) - a
+    -- character without a tile could crash the client (Frostweaver, PvP death).
 end
 
 function display(deathType, penalty)
