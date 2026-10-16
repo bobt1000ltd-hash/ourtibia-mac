@@ -1,0 +1,36 @@
+The Forgotten Server - Version v1.4.2
+Git SHA1 31d6e85 dated 2022-05-08T20:27:14-04:00
+
+Compiled with GNU C++ version 11.4.0
+Compiled on Oct 16 2026 18:02:11 for platform x64
+Linked with LuaJIT 2.1.0-beta3 for Lua support
+
+A server developed by The Forgotten Server Team
+Visit our forum for updates, support, and resources: https://otland.net/.
+
+>> Loading config
+>> Loading RSA key 
+>> Establishing database connection...WARNING: MYSQL_OPT_RECONNECT is deprecated and will be removed in a future version.
+ MySQL 8.0.46
+>> Running database manager
+WARNING: MYSQL_OPT_RECONNECT is deprecated and will be removed in a future version.
+> Updating database to version 29 (account storages)
+> Database has been updated to version 30.
+>> Loading vocations
+>> Loading items
+>> Loading script systems
+>> Using LuaJIT 2.1.0-beta3
+>> Loading lua libs
+>> Loading lua scripts
+>> Loading monsters
+>> Loading lua monsters
+>> Loading outfits
+>> Checking world type... PVP
+>> Loading map
+> Map size: 2048x2048.
+> Map loading time: 0.086 seconds.
+>> Initializing gamestate
+>> Loaded all modules, server starting up...
+>> Forgotten Server Online!
+
+E2e Knight has logged in.

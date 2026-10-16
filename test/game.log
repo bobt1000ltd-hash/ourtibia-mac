@@ -1,0 +1,194 @@
+--------- beginning of main
+--------- beginning of system
+--------- beginning of kernel
+10-16 18:04:17.270  3065  3169 I OTClientMobile: Application started at Oct 16 2026 18:04:17
+10-16 18:04:29.659  3065  3169 I OTClientMobile: GPU Android Emulator OpenGL ES Translator (Google SwiftShader)
+10-16 18:04:29.660  3065  3169 I OTClientMobile: OpenGL OpenGL ES 3.0 (OpenGL ES 3.0 SwiftShader 4.0.0.1)
+10-16 18:04:29.778  3065  3169 I OTClientMobile: Operating system: 
+10-16 18:04:29.778  3065  3169 I OTClientMobile: OurTibia 4.x rev 0.000 (desenv) built on Oct 16 2026 for arch x64
+10-16 18:04:32.947  3065  3169 I OTClientMobile: Unable to find module 'game_bot' required by 'client_mods'
+10-16 18:04:34.166  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:34.378  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:34.433  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:36.218  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:41.222  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:46.163  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:51.201  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:56.190  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:01.170  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:06.165  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:11.238  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:16.212  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:21.172  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:26.210  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:31.206  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:36.214  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:41.185  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:46.166  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:51.179  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:56.219  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:01.181  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:06.174  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:11.172  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:16.189  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:21.211  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:26.181  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:31.174  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:36.165  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:41.179  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:46.189  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:51.172  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:56.173  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:07:01.182  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:07:06.167  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:07:11.175  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:07:16.207  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:07:16.759  3065  3169 I OTClientMobile: [E2E] GAME START
+10-16 18:07:16.879  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:17.665  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:17.764  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:18.802  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:18.898  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:18.993  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:19.092  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:19.583  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:19.682  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:19.860  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:19.964  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:20.454  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:20.551  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:20.832  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:20.902  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:21.091  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:21.198  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 6 fps 12
+10-16 18:07:21.199  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:21.288  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:21.388  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:21.488  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:21.577  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:21.858  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:21.948  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:22.049  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:22.150  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:22.238  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:22.336  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:22.432  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:22.525  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:22.632  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:22.729  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:23.201  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:23.303  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:23.591  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:23.696  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:23.888  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:23.985  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:24.084  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:24.195  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:24.301  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:24.511  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:24.600  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:24.699  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:24.794  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:24.900  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:25.007  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:25.102  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:25.281  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:25.377  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:25.473  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:25.567  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:25.852  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:25.948  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:26.138  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:26.234  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 6 fps 11
+10-16 18:07:26.235  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:26.324  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:26.790  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:26.886  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:26.988  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:27.088  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:27.194  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:27.291  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:27.387  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:27.490  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:27.673  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:27.767  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:27.867  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:27.964  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:28.357  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:28.450  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:28.635  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:28.733  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:29.019  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:29.119  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:29.214  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:29.603  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:29.703  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:30.021  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:30.111  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:30.204  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:30.305  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:30.400  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:30.504  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:30.599  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:30.699  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:30.799  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:30.913  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:31.011  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:31.105  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:31.200  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 6 fps 11
+10-16 18:07:31.201  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:31.298  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:31.403  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:31.499  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:31.881  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:31.999  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:32.124  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:32.323  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:32.446  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:32.879  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:32.980  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:33.084  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:33.281  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:33.387  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:33.496  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:33.598  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:33.697  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:33.902  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:34.036  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:34.337  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:34.458  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:34.590  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:34.683  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:34.782  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:35.002  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:35.108  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:35.631  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:35.741  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:35.840  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:36.050  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:36.158  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:36.254  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 6 fps 11
+10-16 18:07:36.260  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:36.368  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:36.459  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:36.575  3065  3169 I OTClientMobile: Invalid thing type client id 0 in category 4
+10-16 18:07:41.226  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 5 fps 13
+10-16 18:07:46.167  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:07:51.182  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,117,7 hp 185/185 creatures 1 windows 5 fps 11
+10-16 18:07:56.191  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,117,7 hp 185/185 creatures 1 windows 5 fps 11
+10-16 18:08:01.177  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 12
+10-16 18:08:06.265  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 12
+10-16 18:08:11.179  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 13
+10-16 18:08:16.226  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:08:21.192  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:08:26.186  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:08:31.236  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,120,7 hp 185/185 creatures 2 windows 5 fps 12
+10-16 18:08:36.167  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 12
+10-16 18:08:41.198  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:08:46.225  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:08:51.176  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 10
+10-16 18:08:56.188  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 12
+10-16 18:09:01.193  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:09:06.226  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:09:11.198  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 13
+10-16 18:09:16.199  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 12

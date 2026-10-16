@@ -1,0 +1,61 @@
+10-16 18:04:34.166  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:34.378  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:34.433  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:36.218  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:41.222  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:46.163  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:51.201  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:04:56.190  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:01.170  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:06.165  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:11.238  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:16.212  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:21.172  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:26.210  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:31.206  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:36.214  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:41.185  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:46.166  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:51.179  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:05:56.219  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:01.181  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:06.174  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:11.172  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:16.189  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:21.211  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:26.181  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:31.174  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:36.165  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:41.179  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:46.189  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:51.172  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:06:56.173  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:07:01.182  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:07:06.167  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:07:11.175  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:07:16.207  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+10-16 18:07:16.759  3065  3169 I OTClientMobile: [E2E] GAME START
+10-16 18:07:21.198  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 6 fps 12
+10-16 18:07:26.234  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 6 fps 11
+10-16 18:07:31.200  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 6 fps 11
+10-16 18:07:36.254  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 6 fps 11
+10-16 18:07:41.226  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 5 fps 13
+10-16 18:07:46.167  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:07:51.182  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,117,7 hp 185/185 creatures 1 windows 5 fps 11
+10-16 18:07:56.191  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,117,7 hp 185/185 creatures 1 windows 5 fps 11
+10-16 18:08:01.177  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 12
+10-16 18:08:06.265  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 12
+10-16 18:08:11.179  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 13
+10-16 18:08:16.226  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:08:21.192  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:08:26.186  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:08:31.236  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,120,7 hp 185/185 creatures 2 windows 5 fps 12
+10-16 18:08:36.167  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 12
+10-16 18:08:41.198  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:08:46.225  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:08:51.176  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 10
+10-16 18:08:56.188  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 12
+10-16 18:09:01.193  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:09:06.226  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 11
+10-16 18:09:11.198  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 13
+10-16 18:09:16.199  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 12

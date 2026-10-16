@@ -1,0 +1,26 @@
+10-16 18:06:26.181  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+-- login screen
+10-16 18:07:11.175  3065  3169 I OTClientMobile: [E2E] OFFLINE charlist=false
+-- after login tap
+10-16 18:07:31.200  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 6 fps 11
+-- after enter
+10-16 18:07:36.254  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 6 fps 11
+-- in game
+10-16 18:07:46.167  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 95,117,7 hp 185/185 creatures 2 windows 5 fps 11
+-- windows closed
+10-16 18:07:51.182  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,117,7 hp 185/185 creatures 1 windows 5 fps 11
+-- joystick right
+10-16 18:08:01.177  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 12
+-- joystick down
+10-16 18:08:21.192  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 11
+-- after arrow keys
+10-16 18:08:26.186  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 98,120,7 hp 185/185 creatures 2 windows 5 fps 11
+-- tap right
+10-16 18:08:31.236  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,120,7 hp 185/185 creatures 2 windows 5 fps 12
+-- tap left
+10-16 18:08:36.167  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 12
+-- tap up
+10-16 18:08:46.225  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 11
+-- swipe right
+10-16 18:09:16.199  3065  3169 I OTClientMobile: [E2E] ONLINE E2e Knight pos 97,119,7 hp 185/185 creatures 2 windows 5 fps 12
+-- end
