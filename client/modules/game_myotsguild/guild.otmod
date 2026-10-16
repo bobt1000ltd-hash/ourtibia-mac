@@ -1,0 +1,8 @@
+Module
+  name: game_myotsguild
+  description: Guild Management (guild achievements, buffs, members, bank, browse)
+  sandboxed: true
+  scripts: [ guild ]
+  dependencies: [ game_interface ]
+  @onLoad: init()
+  @onUnload: terminate()

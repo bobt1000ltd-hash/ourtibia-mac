@@ -194,10 +194,10 @@ MainWindow
         flow: true
     VerticalScrollBar
       id: ingScroll
-      anchors.top: ingredients.top
-      anchors.bottom: ingredients.bottom
+      anchors.top: ingredientsLabel.bottom
+      anchors.bottom: quantityLabel.top
       anchors.right: parent.right
-      margin-right: 4
+      margin: 4 4 6 0
       step: 36
       pixels-scroll: true
     Label

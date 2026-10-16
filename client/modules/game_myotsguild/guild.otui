@@ -1,0 +1,711 @@
+// OurTibia (16.10.2026): Guild Management window. Server: data/scripts/myots/95_guilds.lua, opcode 140.
+GuildBox < UIWidget
+  background-color: #1e1e1eee
+  border-width: 1
+  border-color: #5a5a5a
+
+GuildHeader < Label
+  height: 15
+  background-color: #3b3b3b
+  color: #d8c070
+  text-align: center
+  font: verdana-11px-rounded
+
+GuildTab < Button
+  height: 24
+  width: 104
+
+GuildRow < UIWidget
+  height: 22
+  background-color: #2b2b2bcc
+  border-width: 1
+  border-color: #1a1a1a
+  focusable: true
+  $hover:
+    background-color: #3a3a3acc
+  $focus:
+    background-color: #4a4a4a
+    border-color: #8a8a8a
+  UIWidget
+    id: dot
+    size: 8 8
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 6
+    phantom: true
+  Label
+    id: name
+    anchors.left: dot.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 6
+    width: 170
+    color: #e8e8e8
+    phantom: true
+  Label
+    id: info
+    anchors.left: name.right
+    anchors.verticalCenter: parent.verticalCenter
+    width: 200
+    color: #a8a8a8
+    phantom: true
+  Label
+    id: right
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-right: 6
+    width: 190
+    text-align: right
+    color: #d8c070
+    phantom: true
+
+AchRow < UIWidget
+  height: 40
+  background-color: #2b2b2bcc
+  border-width: 1
+  border-color: #1a1a1a
+  focusable: true
+  $hover:
+    background-color: #3a3a3acc
+  $focus:
+    background-color: #4a4a4a
+    border-color: #8a8a8a
+  Label
+    id: name
+    anchors.left: parent.left
+    anchors.top: parent.top
+    margin-left: 6
+    margin-top: 3
+    width: 210
+    color: #e8e8e8
+    font: verdana-11px-rounded
+    phantom: true
+  Label
+    id: stars
+    anchors.right: parent.right
+    anchors.top: parent.top
+    margin-right: 6
+    margin-top: 3
+    width: 70
+    text-align: right
+    color: #f0c040
+    phantom: true
+  ProgressBar
+    id: bar
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin: 0 6 4 6
+    height: 13
+    background-color: #2f7a2f
+    phantom: true
+
+BuffCell < UIWidget
+  height: 56
+  background-color: #262626ee
+  border-width: 1
+  border-color: #3c3c3c
+  UIItem
+    id: icon
+    size: 32 32
+    anchors.left: parent.left
+    anchors.top: parent.top
+    margin: 3
+    virtual: true
+    border-width: 1
+    border-color: #555555
+  Label
+    id: name
+    anchors.left: icon.right
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-left: 5
+    margin-top: 4
+    font: verdana-11px-rounded
+  Label
+    id: level
+    anchors.left: icon.right
+    anchors.top: name.bottom
+    anchors.right: parent.right
+    margin-left: 5
+    margin-top: 2
+    color: #cfcfcf
+  Label
+    id: value
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    anchors.right: buy.left
+    margin-left: 5
+    margin-bottom: 4
+    color: #90e090
+  Button
+    id: buy
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin: 0 4 3 0
+    size: 44 18
+    text: +1
+
+GuildColumn < GuildBox
+  GuildHeader
+    id: title
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+  ScrollablePanel
+    id: list
+    anchors.top: title.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin: 3
+    layout:
+      type: verticalBox
+      spacing: 3
+
+MainWindow
+  id: guildWindow
+  text: Guild Management
+  size: 780 580
+  @onEscape: self:hide()
+
+  GuildBox
+    id: topBox
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 38
+    Label
+      id: guildName
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin: 3 8 0 8
+      font: verdana-11px-rounded
+      color: #f0d060
+      text-auto-resize: true
+    Label
+      id: guildLine
+      anchors.top: guildName.bottom
+      anchors.left: parent.left
+      margin: 2 8 0 8
+      color: #a8a8a8
+      text-auto-resize: true
+
+  GuildBox
+    id: tabs
+    anchors.top: topBox.bottom
+    anchors.left: parent.left
+    anchors.bottom: noticeBox.top
+    margin-top: 6
+    margin-bottom: 6
+    width: 116
+    GuildTab
+      id: tabOverview
+      anchors.top: parent.top
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 6
+      text: Overview
+    GuildTab
+      id: tabMembers
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 4
+      text: Members
+    GuildTab
+      id: tabAchievements
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 4
+      text: Achievements
+    GuildTab
+      id: tabBuffs
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 4
+      text: Buffs
+    GuildTab
+      id: tabBrowse
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 4
+      text: Browse
+    GuildTab
+      id: tabMine
+      anchors.bottom: parent.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-bottom: 6
+      text: My guild
+
+  UIWidget
+    id: content
+    anchors.top: tabs.top
+    anchors.left: tabs.right
+    anchors.right: parent.right
+    anchors.bottom: tabs.bottom
+    margin-left: 6
+
+    // ------------------------------------------------------------ overview
+    UIWidget
+      id: pageOverview
+      anchors.fill: parent
+      GuildBox
+        id: infoBox
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: 120
+        GuildHeader
+          id: infoHeader
+          anchors.top: parent.top
+          anchors.left: parent.left
+          anchors.right: parent.right
+          text: Guild
+        Label
+          id: infoText
+          anchors.top: infoHeader.bottom
+          anchors.left: parent.left
+          anchors.right: parent.right
+          margin: 6 8 0 8
+          text-wrap: true
+          text-auto-resize: true
+          color: #dcdcdc
+      GuildBox
+        id: bankBox
+        anchors.top: infoBox.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin-top: 6
+        height: 64
+        GuildHeader
+          id: bankHeader
+          anchors.top: parent.top
+          anchors.left: parent.left
+          anchors.right: parent.right
+          text: Guild bank
+        Label
+          id: bankText
+          anchors.top: bankHeader.bottom
+          anchors.left: parent.left
+          margin: 6 8 0 8
+          color: #f0d060
+          text-auto-resize: true
+        TextEdit
+          id: depositAmount
+          anchors.top: bankText.bottom
+          anchors.left: parent.left
+          margin: 4 8 0 8
+          width: 140
+          height: 20
+          placeholder: amount of gold
+        Button
+          id: depositButton
+          anchors.verticalCenter: depositAmount.verticalCenter
+          anchors.left: depositAmount.right
+          margin-left: 6
+          size: 130 20
+          text: Deposit (from bank)
+        Label
+          id: balanceText
+          anchors.verticalCenter: depositAmount.verticalCenter
+          anchors.left: depositButton.right
+          margin-left: 8
+          color: #a8a8a8
+          text-auto-resize: true
+      GuildBox
+        id: bonusBox
+        anchors.top: bankBox.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        margin-top: 6
+        GuildHeader
+          id: bonusHeader
+          anchors.top: parent.top
+          anchors.left: parent.left
+          anchors.right: parent.right
+          text: Active guild bonuses (every member)
+        ScrollablePanel
+          id: bonusList
+          anchors.top: bonusHeader.bottom
+          anchors.left: parent.left
+          anchors.right: bonusScroll.left
+          anchors.bottom: parent.bottom
+          margin: 4
+          vertical-scrollbar: bonusScroll
+          layout:
+            type: grid
+            cell-size: 290 16
+            flow: true
+        VerticalScrollBar
+          id: bonusScroll
+          anchors.top: bonusHeader.bottom
+          anchors.right: parent.right
+          anchors.bottom: parent.bottom
+          step: 16
+          pixels-scroll: true
+
+    // ------------------------------------------------------------ no guild
+    UIWidget
+      id: pageNone
+      anchors.fill: parent
+      GuildBox
+        id: createBox
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: 110
+        GuildHeader
+          id: createHeader
+          anchors.top: parent.top
+          anchors.left: parent.left
+          anchors.right: parent.right
+          text: Found a guild
+        Label
+          id: createText
+          anchors.top: createHeader.bottom
+          anchors.left: parent.left
+          anchors.right: parent.right
+          margin: 6 8 0 8
+          text-wrap: true
+          text-auto-resize: true
+          color: #dcdcdc
+        TextEdit
+          id: createName
+          anchors.top: createText.bottom
+          anchors.left: parent.left
+          margin: 8 8 0 8
+          width: 240
+          height: 20
+          max-length: 25
+          placeholder: guild name
+        Button
+          id: createButton
+          anchors.verticalCenter: createName.verticalCenter
+          anchors.left: createName.right
+          margin-left: 6
+          size: 120 20
+          text: Found guild
+      GuildBox
+        id: inviteBox
+        anchors.top: createBox.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        margin-top: 6
+        GuildHeader
+          id: invHeader
+          anchors.top: parent.top
+          anchors.left: parent.left
+          anchors.right: parent.right
+          text: Invitations
+        ScrollablePanel
+          id: inviteList
+          anchors.top: invHeader.bottom
+          anchors.left: parent.left
+          anchors.right: parent.right
+          anchors.bottom: parent.bottom
+          margin: 4
+          layout:
+            type: verticalBox
+            spacing: 2
+
+    // ------------------------------------------------------------ members
+    UIWidget
+      id: pageMembers
+      anchors.fill: parent
+      GuildBox
+        id: memberBox
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: memberActions.top
+        margin-bottom: 6
+        GuildHeader
+          id: memberHeader
+          anchors.top: parent.top
+          anchors.left: parent.left
+          anchors.right: parent.right
+          text: Members
+        ScrollablePanel
+          id: memberList
+          anchors.top: memberHeader.bottom
+          anchors.left: parent.left
+          anchors.right: memberScroll.left
+          anchors.bottom: parent.bottom
+          margin: 3
+          vertical-scrollbar: memberScroll
+          layout:
+            type: verticalBox
+            spacing: 2
+        VerticalScrollBar
+          id: memberScroll
+          anchors.top: memberHeader.bottom
+          anchors.right: parent.right
+          anchors.bottom: parent.bottom
+          step: 24
+          pixels-scroll: true
+      GuildBox
+        id: memberActions
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: 62
+        Button
+          id: promoteButton
+          anchors.top: parent.top
+          anchors.left: parent.left
+          margin: 6 6 0 6
+          size: 96 20
+          text: Promote
+        Button
+          id: demoteButton
+          anchors.top: parent.top
+          anchors.left: prev.right
+          margin: 6 6 0 0
+          size: 96 20
+          text: Demote
+        Button
+          id: kickButton
+          anchors.top: parent.top
+          anchors.left: prev.right
+          margin: 6 6 0 0
+          size: 96 20
+          text: Remove
+        Button
+          id: leaveButton
+          anchors.top: parent.top
+          anchors.right: parent.right
+          margin: 6 6 0 0
+          size: 110 20
+          text: Leave guild
+        TextEdit
+          id: inviteName
+          anchors.bottom: parent.bottom
+          anchors.left: parent.left
+          margin: 0 6 8 6
+          width: 200
+          height: 20
+          placeholder: character name
+        Button
+          id: inviteButton
+          anchors.verticalCenter: inviteName.verticalCenter
+          anchors.left: inviteName.right
+          margin-left: 6
+          size: 96 20
+          text: Invite
+        TextEdit
+          id: motdText
+          anchors.verticalCenter: inviteName.verticalCenter
+          anchors.left: inviteButton.right
+          anchors.right: motdButton.left
+          margin-left: 12
+          margin-right: 6
+          height: 20
+          max-length: 200
+          placeholder: guild message
+        Button
+          id: motdButton
+          anchors.verticalCenter: inviteName.verticalCenter
+          anchors.right: parent.right
+          margin-right: 6
+          size: 80 20
+          text: Set MOTD
+
+    // ------------------------------------------------------------ achievements
+    UIWidget
+      id: pageAchievements
+      anchors.fill: parent
+      Label
+        id: catLabel
+        anchors.top: parent.top
+        anchors.left: parent.left
+        margin-top: 4
+        text: Category
+        color: #dcdcdc
+        text-auto-resize: true
+      ComboBox
+        id: category
+        anchors.verticalCenter: catLabel.verticalCenter
+        anchors.left: catLabel.right
+        margin-left: 6
+        width: 140
+      Label
+        id: pointsLabel
+        anchors.verticalCenter: catLabel.verticalCenter
+        anchors.right: parent.right
+        color: #f0d060
+        text-auto-resize: true
+      GuildBox
+        id: achBox
+        anchors.top: category.bottom
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        margin-top: 6
+        width: 330
+        ScrollablePanel
+          id: achList
+          anchors.top: parent.top
+          anchors.left: parent.left
+          anchors.right: achScroll.left
+          anchors.bottom: parent.bottom
+          margin: 3
+          vertical-scrollbar: achScroll
+          layout:
+            type: verticalBox
+            spacing: 2
+        VerticalScrollBar
+          id: achScroll
+          anchors.top: parent.top
+          anchors.right: parent.right
+          anchors.bottom: parent.bottom
+          step: 42
+          pixels-scroll: true
+      GuildBox
+        id: achDetail
+        anchors.top: achBox.top
+        anchors.left: achBox.right
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        margin-left: 6
+        GuildHeader
+          id: achDetailHeader
+          anchors.top: parent.top
+          anchors.left: parent.left
+          anchors.right: parent.right
+          text: Achievement
+        ScrollablePanel
+          id: achDetailPanel
+          anchors.top: achDetailHeader.bottom
+          anchors.left: parent.left
+          anchors.right: achDetailScroll.left
+          anchors.bottom: parent.bottom
+          margin: 6
+          vertical-scrollbar: achDetailScroll
+          layout:
+            type: verticalBox
+            spacing: 1
+        VerticalScrollBar
+          id: achDetailScroll
+          anchors.top: achDetailHeader.bottom
+          anchors.right: parent.right
+          anchors.bottom: parent.bottom
+          step: 16
+          pixels-scroll: true
+
+    // ------------------------------------------------------------ buffs
+    UIWidget
+      id: pageBuffs
+      anchors.fill: parent
+      Label
+        id: buffInfo
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        margin-top: 2
+        text-align: center
+        text-wrap: true
+        text-auto-resize: true
+        color: #f0d060
+      GuildColumn
+        id: col1
+        anchors.top: buffInfo.bottom
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        margin-top: 6
+        width: 210
+      GuildColumn
+        id: col2
+        anchors.top: col1.top
+        anchors.left: col1.right
+        anchors.bottom: parent.bottom
+        margin-left: 6
+        width: 210
+      GuildColumn
+        id: col3
+        anchors.top: col1.top
+        anchors.left: col2.right
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        margin-left: 6
+
+    // ------------------------------------------------------------ browse
+    UIWidget
+      id: pageBrowse
+      anchors.fill: parent
+      TextEdit
+        id: searchText
+        anchors.top: parent.top
+        anchors.left: parent.left
+        width: 220
+        height: 20
+        placeholder: search guild
+      Button
+        id: searchButton
+        anchors.verticalCenter: searchText.verticalCenter
+        anchors.left: searchText.right
+        margin-left: 6
+        size: 80 20
+        text: Search
+      Button
+        id: viewButton
+        anchors.verticalCenter: searchText.verticalCenter
+        anchors.right: parent.right
+        size: 110 20
+        text: View guild
+      GuildBox
+        id: browseBox
+        anchors.top: searchText.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        margin-top: 6
+        ScrollablePanel
+          id: browseList
+          anchors.top: parent.top
+          anchors.left: parent.left
+          anchors.right: browseScroll.left
+          anchors.bottom: parent.bottom
+          margin: 3
+          vertical-scrollbar: browseScroll
+          layout:
+            type: verticalBox
+            spacing: 2
+        VerticalScrollBar
+          id: browseScroll
+          anchors.top: parent.top
+          anchors.right: parent.right
+          anchors.bottom: parent.bottom
+          step: 24
+          pixels-scroll: true
+
+  GuildBox
+    id: noticeBox
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: closeButton.top
+    margin-bottom: 6
+    height: 24
+    Label
+      id: noticeTitle
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 8
+      text: GUILD NOTICE
+      color: #d8c070
+      text-auto-resize: true
+    Label
+      id: noticeText
+      anchors.left: noticeTitle.right
+      anchors.right: parent.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 16
+      margin-right: 8
+      color: #dcdcdc
+      text: Guild messages and action results appear here.
+
+  Button
+    id: closeButton
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    size: 80 22
+    text: Close
+    @onClick: self:getParent():hide()

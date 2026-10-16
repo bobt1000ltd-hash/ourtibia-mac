@@ -1,6 +1,6 @@
 -- OurTibia (16.10.2026): Cooking window. Server: data/scripts/myots/70_cooking.lua, opcode 130.
--- Every recipe is known; you only need the cooking level and the ingredients, next to a fire
--- (crafting station, oven, campfire or cauldron). The cooking skill is also shown in Skills.
+-- Every recipe is known; you only need the cooking level and the ingredients (no fire needed)
+-- (anywhere, out of a fight - 16.10.2026). The cooking skill is also shown in Skills.
 local OPCODE = 130
 local window, button, state, selected
 local skill = {level = 10, percent = 0}
@@ -91,7 +91,7 @@ local function render()
   ui('skillText'):setText('Cooking level ' .. state.level)
   ui('skillBar'):setPercent(state.percent or 0)
   ui('skillBar'):setTooltip((state.percent or 0) .. '% to the next level')
-  ui('fireText'):setText(state.near and 'You are next to a fire - you can cook.' or 'Stand next to a crafting station, an oven, a campfire or a cauldron to cook.')
+  ui('fireText'):setText(state.near and 'You can cook anywhere while you are out of a fight.' or 'You are in a fight - wait until the battle sign is gone to cook.')
   ui('fireText'):setColor(state.near and '#90e090' or '#e0a060')
   buildList(); renderActive(); updateSkillRow()
 end
