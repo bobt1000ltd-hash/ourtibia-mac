@@ -500,7 +500,7 @@ ACH_DATA = {
 }
 -- 10.10.2026: how OurTibia's own mechanics give an achievement (shown in the tooltip)
 local HOW={
- ["Areas of Effect"]="Donate 1,000,000 gold in total to the respawn fund: type !donate <amount> (gold from backpack or bank, !donate alone shows the fund). Every full 1,000,000 gold in the fund gives everyone 1 hour of faster respawns.",
+ ["Areas of Effect"]="Donate 1,000,000 gold in total to the respawn fund: type !donate <amount> (gold from backpack or bank, !donate alone shows the fund). Every full 1,000,000 gold in the fund gives everyone 1 hour of Experience Boost and Loot Boost.",
  ["A Study in Scarlett"]="Cobra Bastion: step on the stone tile in front of the arena wall (level 150, once per 20 hours) and defeat Scarlett Etzel.",
  ["Avid Spectral Reader"]="Not available yet: it needs Oberon's quest content that is not on OurTibia.",
  ["Banebringers' Bane"]="Bewitched event (every weekend, Friday 18:00 - Sunday 18:00, witches' cauldron east of Venore): earn 300 favour points by bringing ingredients (!bewitched).",

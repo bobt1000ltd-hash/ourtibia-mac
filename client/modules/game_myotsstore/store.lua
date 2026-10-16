@@ -361,7 +361,7 @@ function buildLeft()
       cell.onClick=function() openConfirm(o) end
     end
   end
-  -- 14.10.2026 (Tobeto): respawn fund (every 1,000,000 gp = 1 hour of Spawn Boost for everyone)
+  -- 14.10.2026 (Tobeto): respawn fund (every 1,000,000 gp = 1 hour of Experience + Loot Boost for everyone; Spawn Boost until 16.10.2026)
   -- 15.10.2026 (Tobeto): the respawn fund keeps its place at the bottom of the panel
   local filler=g_ui.createWidget('UIWidget',left);filler:setId('ourFiller');filler:setPhantom(true);filler:setHeight(0)
   if data then
@@ -373,7 +373,7 @@ function buildLeft()
     local info=g_ui.createWidget('Label',trow);info:setId('fundInfo');info:setPhantom(false);info:setSize({width=16,height=16});info:setText('i');info:setTextAlign(AlignCenter)
     info:setFont('verdana-11px-rounded');info:setTextOffset({x=0,y=-2});info:setColor('#c8c8c8');info:setBackgroundColor('#0a0a0a');info:setBorderWidth(1);info:setBorderColor('#4a4a4a')
     info:addAnchor(AnchorLeft,'fundTitle',AnchorRight);info:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);info:setMarginLeft(5)
-    info:setTooltip('Respawn fund: '..money(fund)..' / '..money(step)..' gp.\nEvery 1,000,000 gp donated by the players starts 1 hour of Spawn Boost (10% faster respawns) for everyone.\nDonating 1,000,000 gp in total gives the achievement "Areas of Effect" (Hall of Legends).\n\nYour lifetime donations: '..money(tonumber(data.fundMine) or 0)..' gp')
+    info:setTooltip('Respawn fund: '..money(fund)..' / '..money(step)..' gp.\nEvery 1,000,000 gp donated by the players starts 1 hour of Experience Boost (+10% experience) and Loot Boost (+30% loot chance) for everyone.\nDonating 1,000,000 gp in total gives the achievement "Areas of Effect" (Hall of Legends).\n\nYour lifetime donations: '..money(tonumber(data.fundMine) or 0)..' gp')
     local row=g_ui.createWidget('UIWidget',left);row:setHeight(36)
     local gold=g_ui.createWidget('UIItem',row);gold:setVirtual(true);gold:setPhantom(true);gold:setSize({width=32,height=32})
     gold:addAnchor(AnchorLeft,'parent',AnchorLeft);gold:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
