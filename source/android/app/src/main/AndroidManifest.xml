@@ -14,6 +14,13 @@
     <!-- Allow make internet connections -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- OurTibia (16.10.2026): stay connected in the background (KeepAliveService) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:allowBackup="true"
         android:requestLegacyExternalStorage="true"
@@ -29,7 +36,8 @@
 
         <activity
             android:name="com.otclient.MainActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|screenLayout|smallestScreenSize|uiMode|density|navigation"
+            android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:exported="true" >
 
@@ -42,6 +50,16 @@
                 android:name="android.app.lib_name"
                 android:value="otclient" />
         </activity>
+
+        <service
+            android:name="com.otclient.KeepAliveService"
+            android:exported="false"
+            android:stopWithTask="true"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Keeps the online game session connected while the app is in the background" />
+        </service>
     </application>
 
-</manifest>
+</manifest>

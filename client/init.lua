@@ -150,6 +150,7 @@ local function loadModules()
     g_modules.ensureModuleLoaded('game_myotsmarket')
     g_modules.ensureModuleLoaded('game_myotscook') -- 16.10.2026: cooking
     g_modules.ensureModuleLoaded('game_myotsguild') -- 16.10.2026: guild management
+    g_modules.ensureModuleLoaded('game_myotsmobile') -- 16.10.2026: phone interface
 
     -- mods 1000-9999
     g_modules.autoLoadModules(9999)

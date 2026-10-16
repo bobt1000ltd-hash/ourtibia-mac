@@ -435,8 +435,11 @@ void AndroidWindow::handleNativeEvents() {
     int events;
     struct android_poll_source* source;
 
-    // If not visible, block until we get an event; if visible, don't block.
-    while ((ALooper_pollOnce(m_visible ? 0 : -1, nullptr, &events, (void**)&source)) >= 0) {
+    // OurTibia (16.10.2026): never block while the app is in the background. Blocking (-1) froze
+    // the whole main loop - network included - so the server logged the character out as soon as
+    // the player switched to another app or turned the screen off. Wait at most 30 ms instead
+    // (the main loop also sleeps 10 ms per frame while invisible).
+    while ((ALooper_pollOnce(m_visible ? 0 : 30, nullptr, &events, (void**)&source)) >= 0) {
         if (source != nullptr) {
             source->process(m_app, source);
         }

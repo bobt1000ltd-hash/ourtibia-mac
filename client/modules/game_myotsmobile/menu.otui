@@ -1,0 +1,59 @@
+// OurTibia (16.10.2026): phone menu - every game button in one big grid
+UIWidget
+  id: mobileMenu
+  anchors.fill: parent
+  background-color: #000000a8
+  focusable: true
+  visible: false
+
+  UIWidget
+    id: box
+    anchors.centerIn: parent
+    width: 820
+    height: 470
+    background-color: #161616f4
+    border-width: 2
+    border-color: #8a7038
+
+    Label
+      id: title
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 30
+      text-align: center
+      font: verdana-11px-rounded
+      color: #f0d060
+      text: Menu
+      background-color: #2a2418
+
+    Button
+      id: closeButton
+      anchors.top: parent.top
+      anchors.right: parent.right
+      margin: 3 4 0 0
+      size: 60 24
+      text: Close
+
+    ScrollablePanel
+      id: grid
+      anchors.top: title.bottom
+      anchors.left: parent.left
+      anchors.right: gridScroll.left
+      anchors.bottom: parent.bottom
+      margin: 8 6 8 10
+      vertical-scrollbar: gridScroll
+      layout:
+        type: grid
+        cell-size: 92 70
+        cell-spacing: 6
+        flow: true
+
+    VerticalScrollBar
+      id: gridScroll
+      anchors.top: title.bottom
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin: 8 4 8 0
+      step: 76
+      pixels-scroll: true

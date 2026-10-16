@@ -1,6 +1,10 @@
 package com.otclient
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -45,10 +49,18 @@ class MainActivity : GameActivity() {
         }
 
         hideSystemBars()
+
+        // OurTibia (16.10.2026): keep the connection alive in the background
+        if (Build.VERSION.SDK_INT >= 33 &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            try { requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 71) } catch (_: Exception) { }
+        }
+        KeepAliveService.start(this)
     }
 
     override fun onResume() {
         super.onResume()
+        KeepAliveService.start(this)
         androidManager.nativeSetAudioEnabled(true)
     }
 
@@ -58,6 +70,7 @@ class MainActivity : GameActivity() {
     }
 
     override fun onDestroy() {
+        if (isFinishing) KeepAliveService.stop(this)
         androidManager.nativeSetAudioEnabled(false)
         super.onDestroy()
     }

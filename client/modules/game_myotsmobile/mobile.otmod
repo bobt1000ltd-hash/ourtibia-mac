@@ -1,0 +1,8 @@
+Module
+  name: game_myotsmobile
+  description: OurTibia phone interface (menu, chat toggle, windows that fit the screen)
+  sandboxed: true
+  scripts: [ mobile ]
+  dependencies: [ game_interface, client_topmenu ]
+  @onLoad: init()
+  @onUnload: terminate()

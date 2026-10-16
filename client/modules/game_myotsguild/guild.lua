@@ -282,6 +282,7 @@ end
 
 function toggle()
   if not window then return end
+  if not g_game.isOnline() then window:hide() return end
   if window:isVisible() then window:hide() return end
   window:show(); window:raise(); window:focus()
   send({a = 'state', defs = #defs == 0 and 1 or nil})

@@ -53,7 +53,8 @@ local function addButton(id, description, icon, callback, panel, toggle, front)
     button:setId(id)
     button:setTooltip(description)
     if toggle then
-        button:setIcon(resolvepath(icon, 3))
+        button.iconPath = resolvepath(icon, 3) -- read by game_myotsmobile (no getIcon in Lua)
+        button:setIcon(button.iconPath)
     else
         button:setText(description)
     end

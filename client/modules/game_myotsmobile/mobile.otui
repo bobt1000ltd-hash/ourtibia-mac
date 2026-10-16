@@ -1,0 +1,56 @@
+// OurTibia (16.10.2026): phone interface - see mobile.lua
+MobileBarButton < UIButton
+  size: 46 40
+  margin-right: 4
+  background-color: #1c1c1cd8
+  border-width: 1
+  border-color: #6a5a30
+  $pressed:
+    background-color: #3a3220e8
+  $on:
+    border-color: #f0c040
+  UIWidget
+    id: icon
+    size: 26 26
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    margin-top: 2
+    phantom: true
+  Label
+    id: label
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-bottom: 1
+    text-align: center
+    font: verdana-11px-rounded
+    color: #e0d0a0
+    phantom: true
+
+MobileMenuCell < UIButton
+  size: 92 70
+  background-color: #262626f0
+  border-width: 1
+  border-color: #4a4a4a
+  $pressed:
+    background-color: #4a4024f0
+    border-color: #f0c040
+  UIWidget
+    id: icon
+    size: 36 36
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    margin-top: 6
+    phantom: true
+  Label
+    id: label
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin: 0 2 5 2
+    text-align: center
+    text-wrap: true
+    text-auto-resize: true
+    font: verdana-11px-rounded
+    color: #e8e8e8
+    phantom: true
