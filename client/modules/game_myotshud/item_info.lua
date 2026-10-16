@@ -8702,18 +8702,18 @@ OurItemInfo[45993]={n="exquisite bluegill feast",w=2.5,b="+1.5% mana leech for 6
 OurItemInfo[45994]={n="lionfish meal",w=2.5,b="+4 mana per regeneration tick for 10 minutes. Cooking level 20."}
 OurItemInfo[45995]={n="exquisite lionfish meal",w=2.5,b="+8 mana per regeneration tick for 10 minutes. Cooking level 40."}
 OurItemInfo[45996]={n="exquisite lionfish feast",w=2.5,b="+16 mana per regeneration tick for 10 minutes. Cooking level 70."}
-OurItemInfo[45997]={n="baked lionfish",w=2.5,b="Restores 600 mana. Cooking level 60."}
+OurItemInfo[45997]={n="baked lionfish",w=2.5,b="+24 mana per regeneration tick for 10 minutes. Cooking level 60."}
 OurItemInfo[45998]={n="breaded trout",w=2.5,b="+3 distance fighting for 120 minutes. Cooking level 55."}
 OurItemInfo[45999]={n="salty breaded trout",w=2.5,b="+3 melee skills for 120 minutes. Cooking level 55."}
 OurItemInfo[46000]={n="sweet puffer meal",w=2.5,b="+10 speed for 60 minutes. Cooking level 25."}
 OurItemInfo[46001]={n="exquisite sweet puffer meal",w=2.5,b="+30 speed for 60 minutes. Cooking level 50."}
-OurItemInfo[46002]={n="exquisite sweet puffer feast",w=2.5,b="+50 speed for 60 minutes. Cooking level 85."}
+OurItemInfo[46002]={n="exquisite sweet puffer feast",w=2.5,b="+50 speed, no slowdown when walking under water for 60 minutes. Cooking level 85."}
 OurItemInfo[46003]={n="sweet maris feast",w=2.5,b="+4% physical damage, +4% holy damage for 120 minutes. Cooking level 50."}
 OurItemInfo[46004]={n="spicy maris feast",w=2.5,b="+4% fire, ice, energy and earth damage for 120 minutes. Cooking level 50."}
 OurItemInfo[46005]={n="tangy maris feast",w=2.5,b="+3% resistance to all damage for 120 minutes. Cooking level 50."}
-OurItemInfo[46006]={n="baked maris feast",w=2.5,b="+2% physical dodge, +2% magic dodge for 120 minutes. Cooking level 50."}
+OurItemInfo[46006]={n="baked maris feast",w=2.5,b="+5% resistance to all damage, +4% damage of all kinds for 120 minutes. Cooking level 50."}
 OurItemInfo[46007]={n="batfish meal",w=2.5,b="+20% skill progress for 60 minutes. Cooking level 35."}
 OurItemInfo[46008]={n="exquisite batfish meal",w=2.5,b="+5% experience for 60 minutes. Cooking level 65."}
 OurItemInfo[46009]={n="exquisite batfish feast",w=2.5,b="+10% experience, +20% skill progress for 60 minutes. Cooking level 75."}
-OurItemInfo[46010]={n="barbel feast",w=2.5,b="Restores 2500 health, +10% resistance to all damage for 10 seconds. Cooking level 80."}
-OurItemInfo[46011]={n="exquisite barbel feast",w=2.5,b="Restores 5000 health, +25% resistance to all damage for 10 seconds. Cooking level 90."}
+OurItemInfo[46010]={n="barbel feast",w=2.5,b="Restores 2500 health, +10% resistance to all damage for 10 seconds (cooldown 30 seconds). Cooking level 80."}
+OurItemInfo[46011]={n="exquisite barbel feast",w=2.5,b="Restores 5000 health, +25% resistance to all damage for 10 seconds (cooldown 30 seconds). Cooking level 90."}
