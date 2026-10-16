@@ -39,7 +39,11 @@ local function maxCraft(r)
  local byGold=r.gold>0 and math.floor(state.gold/r.gold) or 100
  -- 11.10.2026: recipes made of other items (Super Rarity Infuser: 10 Rarity Infusers)
  local byNeed=r.need and math.floor((tonumber(r.need.have) or 0)/math.max(1,tonumber(r.need.count) or 1)) or 100
- return math.max(0,math.min(100,byFrag,byGold,byNeed))
+ -- 16.10.2026: fishing rods - several ingredients and a fishing level
+ local byNeeds=100
+ for _,n in ipairs(r.needs or {}) do byNeeds=math.min(byNeeds,math.floor((tonumber(n.have) or 0)/math.max(1,tonumber(n.count) or 1))) end
+ if r.locked then return 0 end
+ return math.max(0,math.min(100,byFrag,byGold,byNeed,byNeeds))
 end
 local function refreshDetails()
  local r=recipe(selected);local box=window:recursiveGetChildById('detailBox')
@@ -61,8 +65,13 @@ local function refreshDetails()
   box:getChildById('ingredientCount'):setText(r.frag*n..'x magical stone fragment')
   box:getChildById('fragLabel'):setText('Fragments: '..r.frag*n..' / '..state.fragments)
  end
+ if r.needs then
+  local parts={};for _,x in ipairs(r.needs) do parts[#parts+1]=(x.count*n)..'x '..x.name..' ('..(x.have or 0)..')' end
+  box:getChildById('ingredientCount'):setText(table.concat(parts,'\n'))
+  box:getChildById('fragLabel'):setText(r.locked or '')
+ end
  box:getChildById('goldLabel'):setText('Gold: '..money(r.gold*n)..' / '..money(state.gold))
- box:getChildById('canCraftLabel'):setText('You can craft: '..can)
+ box:getChildById('canCraftLabel'):setText(r.locked and 'Your fishing skill is too low.' or ('You can craft: '..can))
  box:getChildById('craftButton'):setEnabled(can>=n and can>0)
 end
 local function buildRecipes()

@@ -578,6 +578,19 @@ MiniWindow
         image-source: /images/icons/icon_fishing
         image-size: 9 9
       SkillPercentPanel
+
+    // 16.10.2026: cooking skill (game_myotscook, server 70_cooking.lua)
+    SkillButton
+      id: skillCooking
+      SkillNameLabel
+        !text: tr('Cooking')
+      SkillValueLabel
+        text: 10
+      ImageSkill
+        image-source: /images/icons/icon_cooking
+        image-size: 9 9
+      SkillPercentPanel
+        background-color: #c07020
       margin-bottom: 5
         
     HorizontalSeparator

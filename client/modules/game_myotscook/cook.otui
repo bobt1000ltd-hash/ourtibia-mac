@@ -1,0 +1,260 @@
+// OurTibia (16.10.2026): Cooking window. Server: data/scripts/myots/70_cooking.lua, opcode 130.
+CookRow < UIWidget
+  height: 36
+  background-color: #2b2b2bcc
+  border-width: 1
+  border-color: #1a1a1a
+  focusable: true
+  $hover:
+    background-color: #3a3a3acc
+  $focus:
+    background-color: #4a4a4a
+    border-color: #8a8a8a
+  UIItem
+    id: icon
+    size: 32 32
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 2
+    virtual: true
+    phantom: true
+  Label
+    id: name
+    anchors.left: icon.right
+    anchors.top: parent.top
+    margin-left: 6
+    margin-top: 3
+    color: #e8e8e8
+    font: verdana-11px-rounded
+    phantom: true
+    text-auto-resize: true
+  Label
+    id: info
+    anchors.left: icon.right
+    anchors.bottom: parent.bottom
+    margin-left: 6
+    margin-bottom: 3
+    color: #9a9a9a
+    phantom: true
+    text-auto-resize: true
+
+CookIngredient < UIWidget
+  height: 34
+  UIItem
+    id: icon
+    size: 32 32
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    virtual: true
+    border-width: 1
+    border-color: #4a4a4a
+  Label
+    id: text
+    anchors.left: icon.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 6
+    text-auto-resize: true
+
+CookBox < UIWidget
+  background-color: #1e1e1eee
+  border-width: 1
+  border-color: #5a5a5a
+
+CookHeader < Label
+  height: 13
+  background-color: #3b3b3b
+  color: #bdbdbd
+  text-align: center
+  font: verdana-11px-rounded
+
+MainWindow
+  id: cookingWindow
+  text: Cooking
+  size: 620 520
+  @onEscape: self:hide()
+  Label
+    id: skillText
+    anchors.top: parent.top
+    anchors.left: parent.left
+    color: #f0d060
+    text-auto-resize: true
+  ProgressBar
+    id: skillBar
+    anchors.top: parent.top
+    anchors.left: skillText.right
+    anchors.right: parent.right
+    margin-left: 10
+    height: 14
+    background-color: #c07020
+  Label
+    id: fireText
+    anchors.top: skillBar.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 4
+    text-auto-resize: true
+  CookBox
+    id: listBox
+    anchors.top: fireText.bottom
+    anchors.left: parent.left
+    anchors.bottom: activeBox.top
+    margin-top: 4
+    margin-bottom: 6
+    width: 260
+    CookHeader
+      id: listHeader
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      text: Recipes (all known)
+    ScrollablePanel
+      id: dishes
+      anchors.top: listHeader.bottom
+      anchors.left: parent.left
+      anchors.right: dishScroll.left
+      anchors.bottom: parent.bottom
+      margin: 3
+      vertical-scrollbar: dishScroll
+      layout:
+        type: verticalBox
+        spacing: 2
+    VerticalScrollBar
+      id: dishScroll
+      anchors.top: listHeader.bottom
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      step: 38
+      pixels-scroll: true
+  CookBox
+    id: detailBox
+    anchors.top: listBox.top
+    anchors.left: listBox.right
+    anchors.right: parent.right
+    anchors.bottom: listBox.bottom
+    margin-left: 6
+    CookHeader
+      id: detailHeader
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      text: Recipe
+    UIItem
+      id: detailIcon
+      size: 32 32
+      anchors.top: detailHeader.bottom
+      anchors.left: parent.left
+      margin: 8
+      virtual: true
+    Label
+      id: detailName
+      anchors.top: detailIcon.top
+      anchors.left: detailIcon.right
+      anchors.right: parent.right
+      margin-left: 6
+      color: #ffffff
+    Label
+      id: detailDesc
+      anchors.top: detailName.bottom
+      anchors.left: detailIcon.right
+      anchors.right: parent.right
+      margin-left: 6
+      margin-right: 6
+      color: #8fd88f
+      text-wrap: true
+      text-auto-resize: true
+    Label
+      id: detailLevel
+      anchors.top: detailDesc.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 8 8 0 8
+      color: #dcdcdc
+      text-auto-resize: true
+    Label
+      id: ingredientsLabel
+      anchors.top: detailLevel.bottom
+      anchors.left: parent.left
+      margin: 8 8 0 8
+      text: Ingredients:
+      color: #dcdcdc
+    UIWidget
+      id: ingredients
+      anchors.top: ingredientsLabel.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: quantityLabel.top
+      margin: 4 8 4 8
+      layout:
+        type: grid
+        cell-size: 160 34
+        cell-spacing: 2
+        flow: true
+    Label
+      id: quantityLabel
+      anchors.bottom: canLabel.top
+      anchors.left: parent.left
+      margin: 0 8 6 8
+      text: Quantity:
+      color: #dcdcdc
+    HorizontalScrollBar
+      id: quantity
+      anchors.verticalCenter: quantityLabel.verticalCenter
+      anchors.left: quantityLabel.right
+      anchors.right: quantityValue.left
+      margin-left: 6
+      margin-right: 6
+      minimum: 1
+      maximum: 1
+      step: 1
+    Label
+      id: quantityValue
+      anchors.verticalCenter: quantityLabel.verticalCenter
+      anchors.right: parent.right
+      margin-right: 8
+      width: 24
+      text: 1
+      text-align: right
+    Label
+      id: canLabel
+      anchors.bottom: cookButton.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 0 8 6 8
+      color: #dcdcdc
+    Button
+      id: cookButton
+      anchors.bottom: parent.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 6
+      height: 26
+      text: Cook
+  CookBox
+    id: activeBox
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: closeButton.top
+    margin-bottom: 6
+    height: 74
+    CookHeader
+      id: activeHeader
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      text: Active meals
+    Label
+      id: activeText
+      anchors.top: activeHeader.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 4 8 0 8
+      text-wrap: true
+      text-auto-resize: true
+      color: #c8e8c8
+  Button
+    id: closeButton
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    width: 80
+    text: Close
+    @onClick: self:getParent():hide()

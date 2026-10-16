@@ -148,6 +148,7 @@ local function loadModules()
     g_modules.ensureModuleLoaded('game_myotsdamage')
     g_modules.ensureModuleLoaded('game_groupfinder')
     g_modules.ensureModuleLoaded('game_myotsmarket')
+    g_modules.ensureModuleLoaded('game_myotscook') -- 16.10.2026: cooking
 
     -- mods 1000-9999
     g_modules.autoLoadModules(9999)
