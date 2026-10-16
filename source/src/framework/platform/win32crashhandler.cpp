@@ -32,7 +32,7 @@
 #if defined(WIN32) && defined(CRASH_HANDLER)
 
 #include <windows.h>
-#include <dbghelp.h>
+#include <imagehlp.h> // not dbghelp.h: the MSVC unity build mixes it with another imagehlp.h user
 
 #include <atomic>
 #include <cstdio>
