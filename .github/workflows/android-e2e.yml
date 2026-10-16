@@ -96,6 +96,12 @@ jobs:
           # still not in game: the probe logs in from code after 6 minutes
           for i in $(seq 1 30); do adb logcat -d -s OTClientMobile:I | grep -q "\[E2E\] ONLINE" && break; sleep 10; done
           shot 07_in_game; e2e "in game"
+          # a new character gets the outfit window first: close it (Cancel), then Escape for anything else
+          adb shell input tap 1676 932; sleep 2; adb shell input keyevent 111; sleep 2; shot 07b_closed; e2e "windows closed"
+          # walking with the on-screen joystick (bottom left): hold right, then down
+          adb shell input swipe 130 966 250 966 2500; sleep 3; e2e "joystick right"
+          adb shell input swipe 130 966 130 1060 2500; sleep 3; e2e "joystick down"
+          shot 07c_after_joystick
           # walking: arrow keys, then taps on the map right/left/up of the character
           for k in 22 22 20 21 19; do adb shell input keyevent $k; sleep 1.5; done
           shot 08_after_keys; e2e "after arrow keys"
