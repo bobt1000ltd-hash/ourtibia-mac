@@ -104,15 +104,13 @@ BuffCell < UIWidget
   background-color: #262626ee
   border-width: 1
   border-color: #3c3c3c
-  UIItem
+  UIWidget
     id: icon
     size: 32 32
     anchors.left: parent.left
     anchors.top: parent.top
     margin: 3
-    virtual: true
-    border-width: 1
-    border-color: #555555
+    phantom: true
   Label
     id: name
     anchors.left: icon.right

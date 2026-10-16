@@ -212,7 +212,7 @@ local function renderBuffs()
       if b.col == c then
         local lvl = (g.buffs or {})[b.key] or 0
         local cell = g_ui.createWidget('BuffCell', list)
-        if tonumber(b.icon) and tonumber(b.icon) > 0 then cell:getChildById('icon'):setItem(Item.create(b.icon, 1)) end
+        cell:getChildById('icon'):setImageSource('/images/game/guild/' .. tostring(b.icon or b.key))
         cell:getChildById('name'):setText(b.name); cell:getChildById('name'):setColor(colors[c])
         cell:getChildById('level'):setText(('Level %d / %d'):format(math.min(lvl, cap), cap))
         local per = tonumber(b.per) or 0
