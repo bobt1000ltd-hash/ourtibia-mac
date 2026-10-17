@@ -1075,6 +1075,11 @@ int ThingType::getExactHeight()
     getTexture(0);
     const int frameIndex = getTextureIndex(0, 0, 0, 0);
 
+    // OurTibia (17.10.2026): crash on login (crashreport: Creature::internalDraw -> getExactHeight,
+    // creature with a shader drawn before its texture was loaded) - no texture data yet: 0, not cached
+    if (m_textureData.empty() || frameIndex < 0 || static_cast<size_t>(frameIndex) >= m_textureData[0].pos.size())
+        return 0;
+
     const auto& textureDataPos = m_textureData[0].pos[frameIndex];
     const Size& size = textureDataPos.originRects.size() - textureDataPos.offsets.toSize();
     return m_exactHeight = size.height();
