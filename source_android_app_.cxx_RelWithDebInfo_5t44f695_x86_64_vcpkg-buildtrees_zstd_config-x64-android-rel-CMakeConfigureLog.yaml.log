@@ -1,0 +1,1643 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:200 (message)"
+      - "CMakeLists.txt:36 (project)"
+    message: |
+      The target system is: Android - 1 - x86_64
+      The host system is: Linux - 6.17.0-1022-azure - x86_64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:36 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang 
+      Build flags: -g;-DANDROID;-fdata-sections;-ffunction-sections;-funwind-tables;-fstack-protector-strong;-no-canonical-prefixes;-D_FORTIFY_SOURCE=2;-Wformat;-Werror=format-security;-fPIC
+      Id flags: -c;--target=x86_64-none-linux-android28 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+      
+      The C compiler identification is Clang, found in:
+        /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/3.31.6/CompilerIdC/CMakeCCompilerId.o
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:1250 (message)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineASMCompiler.cmake:135 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:36 (project)"
+    message: |
+      Checking whether the ASM compiler is GNU using "--version" did not match "(GNU assembler)|(GCC)|(Free Software Foundation)":
+      Android (13065274, +pgo, +bolt, +lto, +mlgo, based on r547379) clang version 20.0.0 (https://android.googlesource.com/toolchain/llvm-project b718bcaf8c198c82f3021447d943401e3ab5bd54)
+      Target: x86_64-unknown-linux-gnu
+      Thread model: posix
+      InstalledDir: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:1250 (message)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineASMCompiler.cmake:135 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:36 (project)"
+    message: |
+      Checking whether the ASM compiler is AppleClang using "--version" did not match "(Apple (clang|LLVM) version)":
+      Android (13065274, +pgo, +bolt, +lto, +mlgo, based on r547379) clang version 20.0.0 (https://android.googlesource.com/toolchain/llvm-project b718bcaf8c198c82f3021447d943401e3ab5bd54)
+      Target: x86_64-unknown-linux-gnu
+      Thread model: posix
+      InstalledDir: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:1237 (message)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineASMCompiler.cmake:135 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:36 (project)"
+    message: |
+      Checking whether the ASM compiler is Clang using "--version" matched "(clang version)":
+      Android (13065274, +pgo, +bolt, +lto, +mlgo, based on r547379) clang version 20.0.0 (https://android.googlesource.com/toolchain/llvm-project b718bcaf8c198c82f3021447d943401e3ab5bd54)
+      Target: x86_64-unknown-linux-gnu
+      Thread model: posix
+      InstalledDir: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:36 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ 
+      Build flags: -g;-DANDROID;-fdata-sections;-ffunction-sections;-funwind-tables;-fstack-protector-strong;-no-canonical-prefixes;-D_FORTIFY_SOURCE=2;-Wformat;-Werror=format-security;-frtti;-fexceptions;-fPIC
+      Id flags: -c;--target=x86_64-none-linux-android28 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.o"
+      
+      The CXX compiler identification is Clang, found in:
+        /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/3.31.6/CompilerIdCXX/CMakeCXXCompilerId.o
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:36 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-SZaL1l"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-SZaL1l"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat  -fPIC  "
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-SZaL1l'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_bc4db
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot   -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat  -fPIC    -fPIE   -v -MD -MT CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o -c /usr/local/share/cmake-3.31/Modules/CMakeCCompilerABI.c
+        Android (13065274, +pgo, +bolt, +lto, +mlgo, based on r547379) clang version 20.0.0 (https://android.googlesource.com/toolchain/llvm-project b718bcaf8c198c82f3021447d943401e3ab5bd54)
+        Target: x86_64-none-linux-android28
+        Thread model: posix
+        InstalledDir: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin
+         (in-process)
+         "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang" -cc1 -triple x86_64-none-linux-android28 -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=non-leaf -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu x86-64 -target-feature +sse4.2 -target-feature +popcnt -target-feature +cx16 -tune-cpu generic -debug-info-kind=constructor -dwarf-version=4 -debugger-tuning=gdb -fdebug-compilation-dir=/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-SZaL1l -v -ffunction-sections -fdata-sections -fcoverage-compilation-dir=/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-SZaL1l -resource-dir /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20 -dependency-file CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o -sys-header-deps -D ANDROID -D _FORTIFY_SOURCE=2 -isysroot /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -internal-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include -internal-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include -internal-externc-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android -internal-externc-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include -internal-externc-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -Wformat -ferror-limit 19 -femulated-tls -stack-protector 2 -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o -x c /usr/local/share/cmake-3.31/Modules/CMakeCCompilerABI.c
+        clang -cc1 version 20.0.0 based upon LLVM 20.0.0 default target x86_64-unknown-linux-gnu
+        ignoring nonexistent directory "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include"
+        ignoring nonexistent directory "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include
+         /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android
+         /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include
+        End of search list.
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat  -fPIC -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments     -v CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o -o cmTC_bc4db   && :
+        Android (13065274, +pgo, +bolt, +lto, +mlgo, based on r547379) clang version 20.0.0 (https://android.googlesource.com/toolchain/llvm-project b718bcaf8c198c82f3021447d943401e3ab5bd54)
+        Target: x86_64-none-linux-android28
+        Thread model: posix
+        InstalledDir: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin
+         "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/ld.lld" --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -z now -z relro -z max-page-size=16384 --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -pie -dynamic-linker /system/bin/linker64 -o cmTC_bc4db /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtbegin_dynamic.o -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64 -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28 -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --no-undefined-version --fatal-warnings --no-undefined CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a -l:libunwind.a -ldl -lc /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a -l:libunwind.a -ldl /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtend_android.o
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:182 (message)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:36 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include]
+          add: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android]
+          add: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+        end of search list found
+        collapse include dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include]
+        collapse include dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android]
+        collapse include dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+        implicit include dirs: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:36 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
+        ignore line: [Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-SZaL1l']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/local/bin/ninja -v cmTC_bc4db]
+        ignore line: [[1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot   -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat  -fPIC    -fPIE   -v -MD -MT CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o -c /usr/local/share/cmake-3.31/Modules/CMakeCCompilerABI.c]
+        ignore line: [Android (13065274  +pgo  +bolt  +lto  +mlgo  based on r547379) clang version 20.0.0 (https://android.googlesource.com/toolchain/llvm-project b718bcaf8c198c82f3021447d943401e3ab5bd54)]
+        ignore line: [Target: x86_64-none-linux-android28]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin]
+        ignore line: [ (in-process)]
+        ignore line: [ "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang" -cc1 -triple x86_64-none-linux-android28 -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=non-leaf -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu x86-64 -target-feature +sse4.2 -target-feature +popcnt -target-feature +cx16 -tune-cpu generic -debug-info-kind=constructor -dwarf-version=4 -debugger-tuning=gdb -fdebug-compilation-dir=/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-SZaL1l -v -ffunction-sections -fdata-sections -fcoverage-compilation-dir=/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-SZaL1l -resource-dir /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20 -dependency-file CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o -sys-header-deps -D ANDROID -D _FORTIFY_SOURCE=2 -isysroot /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -internal-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include -internal-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include -internal-externc-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android -internal-externc-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include -internal-externc-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -Wformat -ferror-limit 19 -femulated-tls -stack-protector 2 -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o -x c /usr/local/share/cmake-3.31/Modules/CMakeCCompilerABI.c]
+        ignore line: [clang -cc1 version 20.0.0 based upon LLVM 20.0.0 default target x86_64-unknown-linux-gnu]
+        ignore line: [ignoring nonexistent directory "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include"]
+        ignore line: [ignoring nonexistent directory "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include]
+        ignore line: [ /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android]
+        ignore line: [ /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+        ignore line: [End of search list.]
+        ignore line: [[2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat  -fPIC -Wl --build-id=sha1 -Wl --no-rosegment -Wl --no-undefined-version -Wl --fatal-warnings -Wl --no-undefined -Qunused-arguments     -v CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o -o cmTC_bc4db   && :]
+        ignore line: [Android (13065274  +pgo  +bolt  +lto  +mlgo  based on r547379) clang version 20.0.0 (https://android.googlesource.com/toolchain/llvm-project b718bcaf8c198c82f3021447d943401e3ab5bd54)]
+        ignore line: [Target: x86_64-none-linux-android28]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin]
+        link line: [ "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/ld.lld" --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -z now -z relro -z max-page-size=16384 --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -pie -dynamic-linker /system/bin/linker64 -o cmTC_bc4db /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtbegin_dynamic.o -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64 -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28 -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --no-undefined-version --fatal-warnings --no-undefined CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a -l:libunwind.a -ldl -lc /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a -l:libunwind.a -ldl /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtend_android.o]
+          arg [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/ld.lld] ==> ignore
+          arg [--sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot] ==> ignore
+          arg [-znow] ==> ignore
+          arg [-zrelro] ==> ignore
+          arg [-zmax-page-size=16384] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/system/bin/linker64] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_bc4db] ==> ignore
+          arg [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtbegin_dynamic.o] ==> obj [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtbegin_dynamic.o]
+          arg [-L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64] ==> dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64]
+          arg [-L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28] ==> dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28]
+          arg [-L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android] ==> dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android]
+          arg [-L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib] ==> dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib]
+          arg [--build-id=sha1] ==> ignore
+          arg [--no-rosegment] ==> ignore
+          arg [--no-undefined-version] ==> ignore
+          arg [--fatal-warnings] ==> ignore
+          arg [--no-undefined] ==> ignore
+          arg [CMakeFiles/cmTC_bc4db.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a] ==> lib [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a]
+          arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+          arg [-ldl] ==> lib [dl]
+          arg [-lc] ==> lib [c]
+          arg [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a] ==> lib [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a]
+          arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+          arg [-ldl] ==> lib [dl]
+          arg [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtend_android.o] ==> obj [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtend_android.o]
+        linker tool for 'C': /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/ld.lld
+        remove lib [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a]
+        remove lib [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a]
+        collapse library dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64]
+        collapse library dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28]
+        collapse library dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android]
+        collapse library dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib]
+        implicit libs: [-l:libunwind.a;dl;c;-l:libunwind.a;dl]
+        implicit objs: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtbegin_dynamic.o;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtend_android.o]
+        implicit dirs: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:36 (project)"
+    message: |
+      Running the C compiler's linker: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/ld.lld" "-v"
+      LLD 20.0.0 (/mnt/disks/build-disk/src/android/llvm-r547379-release/out/llvm-project/llvm b718bcaf8c198c82f3021447d943401e3ab5bd54) (compatible with GNU linkers)
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:36 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-aX75pa"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-aX75pa"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_CXX_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -frtti -fexceptions  -fPIC  "
+      CMAKE_CXX_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-aX75pa'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_dc45b
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot   -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -frtti -fexceptions  -fPIC    -fPIE   -v -MD -MT CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake-3.31/Modules/CMakeCXXCompilerABI.cpp
+        Android (13065274, +pgo, +bolt, +lto, +mlgo, based on r547379) clang version 20.0.0 (https://android.googlesource.com/toolchain/llvm-project b718bcaf8c198c82f3021447d943401e3ab5bd54)
+        Target: x86_64-none-linux-android28
+        Thread model: posix
+        InstalledDir: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin
+         (in-process)
+         "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++" -cc1 -triple x86_64-none-linux-android28 -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=non-leaf -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu x86-64 -target-feature +sse4.2 -target-feature +popcnt -target-feature +cx16 -tune-cpu generic -debug-info-kind=constructor -dwarf-version=4 -debugger-tuning=gdb -fdebug-compilation-dir=/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-aX75pa -v -ffunction-sections -fdata-sections -fcoverage-compilation-dir=/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-aX75pa -resource-dir /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20 -dependency-file CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -D ANDROID -D _FORTIFY_SOURCE=2 -isysroot /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -internal-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1 -internal-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include -internal-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include -internal-externc-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android -internal-externc-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include -internal-externc-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -Wformat -fdeprecated-macro -ferror-limit 19 -femulated-tls -stack-protector 2 -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o -x c++ /usr/local/share/cmake-3.31/Modules/CMakeCXXCompilerABI.cpp
+        clang -cc1 version 20.0.0 based upon LLVM 20.0.0 default target x86_64-unknown-linux-gnu
+        ignoring nonexistent directory "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include"
+        ignoring nonexistent directory "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1
+         /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include
+         /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android
+         /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include
+        End of search list.
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -frtti -fexceptions  -fPIC -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments     -v CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_dc45b   && :
+        Android (13065274, +pgo, +bolt, +lto, +mlgo, based on r547379) clang version 20.0.0 (https://android.googlesource.com/toolchain/llvm-project b718bcaf8c198c82f3021447d943401e3ab5bd54)
+        Target: x86_64-none-linux-android28
+        Thread model: posix
+        InstalledDir: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin
+         "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/ld.lld" --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -z now -z relro -z max-page-size=16384 --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -pie -dynamic-linker /system/bin/linker64 -o cmTC_dc45b /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtbegin_dynamic.o -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64 -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28 -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --no-undefined-version --fatal-warnings --no-undefined CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o -lc++ -lm /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a -l:libunwind.a -ldl -lc /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a -l:libunwind.a -ldl /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtend_android.o
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:182 (message)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:36 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1]
+          add: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include]
+          add: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android]
+          add: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+        end of search list found
+        collapse include dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1]
+        collapse include dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include]
+        collapse include dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android]
+        collapse include dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+        implicit include dirs: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:36 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
+        ignore line: [Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-aX75pa']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/local/bin/ninja -v cmTC_dc45b]
+        ignore line: [[1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot   -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -frtti -fexceptions  -fPIC    -fPIE   -v -MD -MT CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake-3.31/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Android (13065274  +pgo  +bolt  +lto  +mlgo  based on r547379) clang version 20.0.0 (https://android.googlesource.com/toolchain/llvm-project b718bcaf8c198c82f3021447d943401e3ab5bd54)]
+        ignore line: [Target: x86_64-none-linux-android28]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin]
+        ignore line: [ (in-process)]
+        ignore line: [ "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++" -cc1 -triple x86_64-none-linux-android28 -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=non-leaf -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu x86-64 -target-feature +sse4.2 -target-feature +popcnt -target-feature +cx16 -tune-cpu generic -debug-info-kind=constructor -dwarf-version=4 -debugger-tuning=gdb -fdebug-compilation-dir=/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-aX75pa -v -ffunction-sections -fdata-sections -fcoverage-compilation-dir=/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-aX75pa -resource-dir /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20 -dependency-file CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -D ANDROID -D _FORTIFY_SOURCE=2 -isysroot /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -internal-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1 -internal-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include -internal-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include -internal-externc-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android -internal-externc-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include -internal-externc-isystem /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -Wformat -fdeprecated-macro -ferror-limit 19 -femulated-tls -stack-protector 2 -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o -x c++ /usr/local/share/cmake-3.31/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [clang -cc1 version 20.0.0 based upon LLVM 20.0.0 default target x86_64-unknown-linux-gnu]
+        ignore line: [ignoring nonexistent directory "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include"]
+        ignore line: [ignoring nonexistent directory "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1]
+        ignore line: [ /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/include]
+        ignore line: [ /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android]
+        ignore line: [ /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+        ignore line: [End of search list.]
+        ignore line: [[2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -frtti -fexceptions  -fPIC -Wl --build-id=sha1 -Wl --no-rosegment -Wl --no-undefined-version -Wl --fatal-warnings -Wl --no-undefined -Qunused-arguments     -v CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_dc45b   && :]
+        ignore line: [Android (13065274  +pgo  +bolt  +lto  +mlgo  based on r547379) clang version 20.0.0 (https://android.googlesource.com/toolchain/llvm-project b718bcaf8c198c82f3021447d943401e3ab5bd54)]
+        ignore line: [Target: x86_64-none-linux-android28]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin]
+        link line: [ "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/ld.lld" --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -z now -z relro -z max-page-size=16384 --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -pie -dynamic-linker /system/bin/linker64 -o cmTC_dc45b /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtbegin_dynamic.o -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64 -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28 -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android -L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --no-undefined-version --fatal-warnings --no-undefined CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o -lc++ -lm /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a -l:libunwind.a -ldl -lc /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a -l:libunwind.a -ldl /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtend_android.o]
+          arg [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/ld.lld] ==> ignore
+          arg [--sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot] ==> ignore
+          arg [-znow] ==> ignore
+          arg [-zrelro] ==> ignore
+          arg [-zmax-page-size=16384] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/system/bin/linker64] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_dc45b] ==> ignore
+          arg [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtbegin_dynamic.o] ==> obj [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtbegin_dynamic.o]
+          arg [-L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64] ==> dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64]
+          arg [-L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28] ==> dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28]
+          arg [-L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android] ==> dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android]
+          arg [-L/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib] ==> dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib]
+          arg [--build-id=sha1] ==> ignore
+          arg [--no-rosegment] ==> ignore
+          arg [--no-undefined-version] ==> ignore
+          arg [--fatal-warnings] ==> ignore
+          arg [--no-undefined] ==> ignore
+          arg [CMakeFiles/cmTC_dc45b.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lc++] ==> lib [c++]
+          arg [-lm] ==> lib [m]
+          arg [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a] ==> lib [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a]
+          arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+          arg [-ldl] ==> lib [dl]
+          arg [-lc] ==> lib [c]
+          arg [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a] ==> lib [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a]
+          arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+          arg [-ldl] ==> lib [dl]
+          arg [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtend_android.o] ==> obj [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtend_android.o]
+        linker tool for 'CXX': /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/ld.lld
+        remove lib [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a]
+        remove lib [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/libclang_rt.builtins-x86_64-android.a]
+        collapse library dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64]
+        collapse library dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28]
+        collapse library dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android]
+        collapse library dir [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib] ==> [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib]
+        implicit libs: [c++;m;-l:libunwind.a;dl;c;-l:libunwind.a;dl]
+        implicit objs: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtbegin_dynamic.o;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28/crtend_android.o]
+        implicit dirs: [/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/lib/clang/20/lib/linux/x86_64;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/28;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android;/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "/usr/local/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:36 (project)"
+    message: |
+      Running the CXX compiler's linker: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/ld.lld" "-v"
+      LLD 20.0.0 (/mnt/disks/build-disk/src/android/llvm-r547379-release/out/llvm-project/llvm b718bcaf8c198c82f3021447d943401e3ab5bd54) (compatible with GNU linkers)
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:19 (CHECK_C_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:68 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test C_FLAG_WALL"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-cxuqGk"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-cxuqGk"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC  "
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "C_FLAG_WALL"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-cxuqGk'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_85bff
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DC_FLAG_WALL  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC    -fPIE   -Wall -MD -MT CMakeFiles/cmTC_85bff.dir/src.c.o -MF CMakeFiles/cmTC_85bff.dir/src.c.o.d -o CMakeFiles/cmTC_85bff.dir/src.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-cxuqGk/src.c
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_85bff.dir/src.c.o -o cmTC_85bff  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCXXCompilerFlag.cmake:55 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:25 (CHECK_CXX_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:68 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test CXX_FLAG_WALL"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-6b8IPL"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-6b8IPL"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_CXX_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC  "
+      CMAKE_CXX_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "CXX_FLAG_WALL"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-6b8IPL'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_e971b
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DCXX_FLAG_WALL  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC    -fPIE   -Wall -MD -MT CMakeFiles/cmTC_e971b.dir/src.cxx.o -MF CMakeFiles/cmTC_e971b.dir/src.cxx.o.d -o CMakeFiles/cmTC_e971b.dir/src.cxx.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-6b8IPL/src.cxx
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_e971b.dir/src.cxx.o -o cmTC_e971b  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:19 (CHECK_C_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:70 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test C_FLAG_WEXTRA"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-RZBd2B"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-RZBd2B"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall"
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "C_FLAG_WEXTRA"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-RZBd2B'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_20ef3
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DC_FLAG_WEXTRA  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall  -fPIE   -Wextra -MD -MT CMakeFiles/cmTC_20ef3.dir/src.c.o -MF CMakeFiles/cmTC_20ef3.dir/src.c.o.d -o CMakeFiles/cmTC_20ef3.dir/src.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-RZBd2B/src.c
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_20ef3.dir/src.c.o -o cmTC_20ef3  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCXXCompilerFlag.cmake:55 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:25 (CHECK_CXX_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:70 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test CXX_FLAG_WEXTRA"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-RapjXP"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-RapjXP"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_CXX_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall"
+      CMAKE_CXX_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "CXX_FLAG_WEXTRA"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-RapjXP'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_021e5
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DCXX_FLAG_WEXTRA  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall  -fPIE   -Wextra -MD -MT CMakeFiles/cmTC_021e5.dir/src.cxx.o -MF CMakeFiles/cmTC_021e5.dir/src.cxx.o.d -o CMakeFiles/cmTC_021e5.dir/src.cxx.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-RapjXP/src.cxx
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_021e5.dir/src.cxx.o -o cmTC_021e5  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:19 (CHECK_C_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:71 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test C_FLAG_WUNDEF"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-4V927x"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-4V927x"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra"
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "C_FLAG_WUNDEF"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-4V927x'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_43f91
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DC_FLAG_WUNDEF  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra  -fPIE   -Wundef -MD -MT CMakeFiles/cmTC_43f91.dir/src.c.o -MF CMakeFiles/cmTC_43f91.dir/src.c.o.d -o CMakeFiles/cmTC_43f91.dir/src.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-4V927x/src.c
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_43f91.dir/src.c.o -o cmTC_43f91  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCXXCompilerFlag.cmake:55 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:25 (CHECK_CXX_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:71 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test CXX_FLAG_WUNDEF"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-KkfvgN"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-KkfvgN"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_CXX_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra"
+      CMAKE_CXX_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "CXX_FLAG_WUNDEF"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-KkfvgN'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_d513d
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DCXX_FLAG_WUNDEF  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra  -fPIE   -Wundef -MD -MT CMakeFiles/cmTC_d513d.dir/src.cxx.o -MF CMakeFiles/cmTC_d513d.dir/src.cxx.o.d -o CMakeFiles/cmTC_d513d.dir/src.cxx.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-KkfvgN/src.cxx
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_d513d.dir/src.cxx.o -o cmTC_d513d  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:19 (CHECK_C_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:72 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test C_FLAG_WSHADOW"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-x5t6ly"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-x5t6ly"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef"
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "C_FLAG_WSHADOW"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-x5t6ly'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_5d6d9
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DC_FLAG_WSHADOW  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef  -fPIE   -Wshadow -MD -MT CMakeFiles/cmTC_5d6d9.dir/src.c.o -MF CMakeFiles/cmTC_5d6d9.dir/src.c.o.d -o CMakeFiles/cmTC_5d6d9.dir/src.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-x5t6ly/src.c
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_5d6d9.dir/src.c.o -o cmTC_5d6d9  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCXXCompilerFlag.cmake:55 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:25 (CHECK_CXX_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:72 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test CXX_FLAG_WSHADOW"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-ZdMn3D"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-ZdMn3D"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_CXX_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef"
+      CMAKE_CXX_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "CXX_FLAG_WSHADOW"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-ZdMn3D'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_9650a
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DCXX_FLAG_WSHADOW  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef  -fPIE   -Wshadow -MD -MT CMakeFiles/cmTC_9650a.dir/src.cxx.o -MF CMakeFiles/cmTC_9650a.dir/src.cxx.o.d -o CMakeFiles/cmTC_9650a.dir/src.cxx.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-ZdMn3D/src.cxx
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_9650a.dir/src.cxx.o -o cmTC_9650a  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:19 (CHECK_C_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:73 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test C_FLAG_WCAST_ALIGN"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-miPgzx"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-miPgzx"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow"
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "C_FLAG_WCAST_ALIGN"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-miPgzx'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_4e15f
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DC_FLAG_WCAST_ALIGN  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow  -fPIE   -Wcast-align -MD -MT CMakeFiles/cmTC_4e15f.dir/src.c.o -MF CMakeFiles/cmTC_4e15f.dir/src.c.o.d -o CMakeFiles/cmTC_4e15f.dir/src.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-miPgzx/src.c
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_4e15f.dir/src.c.o -o cmTC_4e15f  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCXXCompilerFlag.cmake:55 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:25 (CHECK_CXX_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:73 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test CXX_FLAG_WCAST_ALIGN"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-9zOFaD"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-9zOFaD"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_CXX_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wshadow"
+      CMAKE_CXX_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "CXX_FLAG_WCAST_ALIGN"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-9zOFaD'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_e1e70
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DCXX_FLAG_WCAST_ALIGN  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wshadow  -fPIE   -Wcast-align -MD -MT CMakeFiles/cmTC_e1e70.dir/src.cxx.o -MF CMakeFiles/cmTC_e1e70.dir/src.cxx.o.d -o CMakeFiles/cmTC_e1e70.dir/src.cxx.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-9zOFaD/src.cxx
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_e1e70.dir/src.cxx.o -o cmTC_e1e70  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:19 (CHECK_C_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:74 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test C_FLAG_WCAST_QUAL"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-tXnGNu"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-tXnGNu"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align"
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "C_FLAG_WCAST_QUAL"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-tXnGNu'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_3af2c
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DC_FLAG_WCAST_QUAL  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align  -fPIE   -Wcast-qual -MD -MT CMakeFiles/cmTC_3af2c.dir/src.c.o -MF CMakeFiles/cmTC_3af2c.dir/src.c.o.d -o CMakeFiles/cmTC_3af2c.dir/src.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-tXnGNu/src.c
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_3af2c.dir/src.c.o -o cmTC_3af2c  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCXXCompilerFlag.cmake:55 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:25 (CHECK_CXX_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:74 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test CXX_FLAG_WCAST_QUAL"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-SDMI2t"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-SDMI2t"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_CXX_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align"
+      CMAKE_CXX_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "CXX_FLAG_WCAST_QUAL"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-SDMI2t'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_7366b
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DCXX_FLAG_WCAST_QUAL  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align  -fPIE   -Wcast-qual -MD -MT CMakeFiles/cmTC_7366b.dir/src.cxx.o -MF CMakeFiles/cmTC_7366b.dir/src.cxx.o.d -o CMakeFiles/cmTC_7366b.dir/src.cxx.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-SDMI2t/src.cxx
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_7366b.dir/src.cxx.o -o cmTC_7366b  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:19 (CHECK_C_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:75 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test C_FLAG_WSTRICT_PROTOTYPES"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-9dDGYb"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-9dDGYb"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual"
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "C_FLAG_WSTRICT_PROTOTYPES"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-9dDGYb'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_733d9
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DC_FLAG_WSTRICT_PROTOTYPES  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual  -fPIE   -Wstrict-prototypes -MD -MT CMakeFiles/cmTC_733d9.dir/src.c.o -MF CMakeFiles/cmTC_733d9.dir/src.c.o.d -o CMakeFiles/cmTC_733d9.dir/src.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-9dDGYb/src.c
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_733d9.dir/src.c.o -o cmTC_733d9  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckLinkerFlag.cmake:37 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckLinkerFlag.cmake:44 (cmake_check_linker_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:41 (CHECK_LINKER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:92 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test LD_FLAG_Z_NOEXECSTACK"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-AMdcHa"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-AMdcHa"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes"
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "LD_FLAG_Z_NOEXECSTACK"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-AMdcHa'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_ffd65
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DLD_FLAG_Z_NOEXECSTACK  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes  -fPIE -MD -MT CMakeFiles/cmTC_ffd65.dir/src.c.o -MF CMakeFiles/cmTC_ffd65.dir/src.c.o.d -o CMakeFiles/cmTC_ffd65.dir/src.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-AMdcHa/src.c
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments        "-z noexecstack" CMakeFiles/cmTC_ffd65.dir/src.c.o -o cmTC_ffd65  -latomic -lm && :
+        FAILED: [code=1] cmTC_ffd65 
+        : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments        "-z noexecstack" CMakeFiles/cmTC_ffd65.dir/src.c.o -o cmTC_ffd65  -latomic -lm && :
+        clang: error: unknown argument: '-z noexecstack'
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:19 (CHECK_C_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:95 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test C_FLAG_QUNUSED_ARGUMENTS"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-StZRPg"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-StZRPg"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes"
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "C_FLAG_QUNUSED_ARGUMENTS"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-StZRPg'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_4ce78
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DC_FLAG_QUNUSED_ARGUMENTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes  -fPIE   -Qunused-arguments -MD -MT CMakeFiles/cmTC_4ce78.dir/src.c.o -MF CMakeFiles/cmTC_4ce78.dir/src.c.o.d -o CMakeFiles/cmTC_4ce78.dir/src.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-StZRPg/src.c
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_4ce78.dir/src.c.o -o cmTC_4ce78  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCXXCompilerFlag.cmake:55 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:25 (CHECK_CXX_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:95 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test CXX_FLAG_QUNUSED_ARGUMENTS"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-g7Wiiu"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-g7Wiiu"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_CXX_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual"
+      CMAKE_CXX_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "CXX_FLAG_QUNUSED_ARGUMENTS"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-g7Wiiu'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_8d656
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DCXX_FLAG_QUNUSED_ARGUMENTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual  -fPIE   -Qunused-arguments -MD -MT CMakeFiles/cmTC_8d656.dir/src.cxx.o -MF CMakeFiles/cmTC_8d656.dir/src.cxx.o.d -o CMakeFiles/cmTC_8d656.dir/src.cxx.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-g7Wiiu/src.cxx
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_8d656.dir/src.cxx.o -o cmTC_8d656  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:19 (CHECK_C_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:96 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test C_FLAG_WA_NOEXECSTACK"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-yaBGYn"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-yaBGYn"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -Qunused-arguments"
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "C_FLAG_WA_NOEXECSTACK"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-yaBGYn'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_f8ead
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DC_FLAG_WA_NOEXECSTACK  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -Qunused-arguments  -fPIE   -Wa,--noexecstack -MD -MT CMakeFiles/cmTC_f8ead.dir/src.c.o -MF CMakeFiles/cmTC_f8ead.dir/src.c.o.d -o CMakeFiles/cmTC_f8ead.dir/src.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-yaBGYn/src.c
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -Qunused-arguments -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_f8ead.dir/src.c.o -o cmTC_f8ead  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCXXCompilerFlag.cmake:55 (cmake_check_compiler_flag)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:25 (CHECK_CXX_COMPILER_FLAG)"
+      - "CMakeModules/AddZstdCompilationFlags.cmake:96 (EnableCompilerFlag)"
+      - "CMakeLists.txt:61 (ADD_ZSTD_COMPILATION_FLAGS)"
+    checks:
+      - "Performing Test CXX_FLAG_WA_NOEXECSTACK"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-QYHRh3"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-QYHRh3"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_CXX_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Qunused-arguments"
+      CMAKE_CXX_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "CXX_FLAG_WA_NOEXECSTACK"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-QYHRh3'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_91d39
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DCXX_FLAG_WA_NOEXECSTACK  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Qunused-arguments  -fPIE   -Wa,--noexecstack -MD -MT CMakeFiles/cmTC_91d39.dir/src.cxx.o -MF CMakeFiles/cmTC_91d39.dir/src.cxx.o.d -o CMakeFiles/cmTC_91d39.dir/src.cxx.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-QYHRh3/src.cxx
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -frtti -fexceptions  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Qunused-arguments -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_91d39.dir/src.cxx.o -o cmTC_91d39  -latomic -lm && :
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "/usr/local/share/cmake-3.31/Modules/FindThreads.cmake:97 (CHECK_C_SOURCE_COMPILES)"
+      - "/usr/local/share/cmake-3.31/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "/home/runner/work/ourtibia-mac/vcpkg/scripts/buildsystems/vcpkg.cmake:939 (_find_package)"
+      - "CMakeLists.txt:146 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-mBn8bG"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-mBn8bG"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -Qunused-arguments -Wa,--noexecstack"
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-mBn8bG'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_0a4f4
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DCMAKE_HAVE_LIBC_PTHREAD  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -Qunused-arguments -Wa,--noexecstack  -fPIE -MD -MT CMakeFiles/cmTC_0a4f4.dir/src.c.o -MF CMakeFiles/cmTC_0a4f4.dir/src.c.o.d -o CMakeFiles/cmTC_0a4f4.dir/src.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-mBn8bG/src.c
+        FAILED: [code=1] CMakeFiles/cmTC_0a4f4.dir/src.c.o 
+        /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DCMAKE_HAVE_LIBC_PTHREAD  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -Qunused-arguments -Wa,--noexecstack  -fPIE -MD -MT CMakeFiles/cmTC_0a4f4.dir/src.c.o -MF CMakeFiles/cmTC_0a4f4.dir/src.c.o.d -o CMakeFiles/cmTC_0a4f4.dir/src.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-mBn8bG/src.c
+        /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-mBn8bG/src.c:13:3: error: call to undeclared function 'pthread_cancel'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+           13 |   pthread_cancel(thread);
+              |   ^
+        /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-mBn8bG/src.c:13:3: note: did you mean 'pthread_once'?
+        /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/pthread.h:250:5: note: 'pthread_once' declared here
+          250 | int pthread_once(pthread_once_t* _Nonnull __once, void (* _Nonnull __init_routine)(void));
+              |     ^
+        1 error generated.
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/FindThreads.cmake:136 (try_compile)"
+      - "/usr/local/share/cmake-3.31/Modules/FindThreads.cmake:169 (_threads_check_flag_pthread)"
+      - "/home/runner/work/ourtibia-mac/vcpkg/scripts/buildsystems/vcpkg.cmake:939 (_find_package)"
+      - "CMakeLists.txt:146 (find_package)"
+    checks:
+      - "Check if compiler accepts -pthread"
+    directories:
+      source: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-hCCrHm"
+      binary: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-hCCrHm"
+    cmakeVariables:
+      ANDROID_ABI: "x86_64"
+      ANDROID_ARM_MODE: "thumb"
+      ANDROID_CPP_FEATURES: "rtti exceptions"
+      ANDROID_PIE: "TRUE"
+      ANDROID_PLATFORM: "android-28"
+      ANDROID_STL: "c++_shared"
+      ANDROID_TOOLCHAIN: "clang"
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_COMPILER_TARGET: "x86_64-none-linux-android28"
+      CMAKE_C_FLAGS: "-g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -Qunused-arguments -Wa,--noexecstack"
+      CMAKE_C_FLAGS_DEBUG: "-fno-limit-debug-info   "
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    "
+      CMAKE_MODULE_PATH: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/src/v1.5.7-bb6cae2b2e.clean/build/cmake/CMakeModules"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+      VCPKG_CHAINLOAD_TOOLCHAIN_FILE: "/home/runner/work/ourtibia-mac/vcpkg/scripts/toolchains/android.cmake"
+      VCPKG_CRT_LINKAGE: "dynamic"
+      VCPKG_CXX_FLAGS: ""
+      VCPKG_CXX_FLAGS_DEBUG: ""
+      VCPKG_CXX_FLAGS_RELEASE: ""
+      VCPKG_C_FLAGS: ""
+      VCPKG_C_FLAGS_DEBUG: ""
+      VCPKG_C_FLAGS_RELEASE: ""
+      VCPKG_INSTALLED_DIR: "/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg_installed"
+      VCPKG_LINKER_FLAGS: ""
+      VCPKG_LINKER_FLAGS_DEBUG: ""
+      VCPKG_LINKER_FLAGS_RELEASE: ""
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_ARCHITECTURE: "x64"
+      VCPKG_TARGET_TRIPLET: "x64-android"
+      Z_VCPKG_ROOT_DIR: "/home/runner/work/ourtibia-mac/vcpkg"
+    buildResult:
+      variable: "THREADS_HAVE_PTHREAD_ARG"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-hCCrHm'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_e94e3
+        [1/2] /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot   -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -Qunused-arguments -Wa,--noexecstack  -fPIE -MD -MT CMakeFiles/cmTC_e94e3.dir/CheckForPthreads.c.o -MF CMakeFiles/cmTC_e94e3.dir/CheckForPthreads.c.o.d -o CMakeFiles/cmTC_e94e3.dir/CheckForPthreads.c.o -c /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/zstd/x64-android-rel/CMakeFiles/CMakeScratch/TryCompile-hCCrHm/CheckForPthreads.c
+        [2/2] : && /usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=x86_64-none-linux-android28 --sysroot=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -fPIC   -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -Qunused-arguments -Wa,--noexecstack -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments CMakeFiles/cmTC_e94e3.dir/CheckForPthreads.c.o -o cmTC_e94e3  -pthread  -latomic -lm && :
+        
+      exitCode: 0
+...
