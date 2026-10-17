@@ -82,7 +82,7 @@ OfferRow < UIButton
     anchors.left: item.right
     anchors.top: parent.top
     margin: 3 0 0 6
-    width: 210
+    width: 175
     height: 14
     color: #ffffff
     phantom: true
@@ -91,7 +91,7 @@ OfferRow < UIButton
     anchors.left: name.left
     anchors.top: name.bottom
     margin-top: 2
-    width: 210
+    width: 175
     height: 14
     color: #a8a8a8
     phantom: true
@@ -116,7 +116,7 @@ OfferRow < UIButton
     anchors.left: price.right
     anchors.verticalCenter: parent.verticalCenter
     margin-left: 10
-    width: 100
+    width: 150
     color: #c8c8c8
     phantom: true
   Label
@@ -444,7 +444,7 @@ MainWindow
         anchors.top: oCaption.bottom
         anchors.left: parent.left
         margin: 4 0 0 40
-        width: 210
+        width: 175
         text: Item
         color: #909090
       Label
@@ -468,7 +468,7 @@ MainWindow
         anchors.left: hPrice.right
         anchors.verticalCenter: hName.verticalCenter
         margin-left: 10
-        width: 100
+        width: 150
         text: Seller
         color: #909090
       Label

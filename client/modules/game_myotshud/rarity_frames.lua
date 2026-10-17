@@ -238,6 +238,9 @@ local function onRemoveItem(container,slot)
   local list=shiftUp(F.quick[view],slot);table.sort(list,function(a,b) return a.z<b.z end);F.quick[view]=list
  end
  applyAll()
+ -- 17.10.2026: the container window empties its last slot after this signal and an empty
+ -- slot gets no onItemChange - apply once more so no frame stays on an empty slot
+ addEvent(applyAll)
 end
 -- An add is the other way round: the layout comes AFTER the insert. Records of
 -- the items behind the new one are taken from their old slot (one up), so the
