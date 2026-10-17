@@ -1,0 +1,4 @@
+Physical size: 1080x2400
+  mCurrentFocus=Window{8c629c2 u0 com.ourtibia.client/com.otclient.MainActivity}
+  mFocusedApp=ActivityRecord{a73da80 u0 com.ourtibia.client/com.otclient.MainActivity t9}
+5064
