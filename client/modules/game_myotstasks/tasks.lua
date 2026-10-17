@@ -140,6 +140,16 @@ local function renderBoard()
     end
   end
   ui('unlock'):setVisible((tonumber(board.rows) or 2)<3)
+  -- 17.10.2026 (Tobeto): weekly tasks start at level 20
+  local wl=ui('weeklyLocked')
+  if not wl then
+    wl=g_ui.createWidget('Label',cards:getParent());wl:setId('weeklyLocked');wl:setPhantom(true)
+    wl:addAnchor(AnchorTop,'parent',AnchorTop);wl:addAnchor(AnchorLeft,'parent',AnchorLeft);wl:addAnchor(AnchorRight,'parent',AnchorRight)
+    wl:setMarginTop(140);wl:setTextAlign(AlignCenter);wl:setColor('#ffd35a');wl:setHeight(40)
+  end
+  local locked=(not daily) and tonumber(board.weeklyLevel)
+  wl:setVisible(locked and true or false)
+  if locked then wl:setText('Weekly tasks unlock at level '..locked..'.\nYour first weekly tasks are rolled when you reach it.');ui('unlock'):hide() end
   if daily then
     ui('active'):show();ui('reroll'):show();ui('rerollPremium'):show()
     ui('active'):setText('Active '..(board.active or 0)..'/3')

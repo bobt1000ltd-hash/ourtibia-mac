@@ -1001,7 +1001,7 @@ function showMounts()
     window.listSearch:show()
     ourListMode = 'mount'
     ourAddStoreEntries('mount')
-    ourSetBonusButton(true)
+    ourSetBonusButton(false) -- 17.10.2026 (Tobeto): no BONUSES filter for mounts
     ourApplyBonusIcons()
     applyFilters()
     ourUpdateBonusPanel()
@@ -1824,8 +1824,8 @@ function applyFilters()
         local mine = (ourListMode ~= 'outfit' and ourListMode ~= 'mount') or (child.state ~= nil and child.state == 0)
         if owned and not mine then visible = false end
         if bonus and not child.ourBonus then visible = false end
-        -- 15.10.2026 (Tobeto): OWNED + BONUSES = only outfits whose bonus is unlocked
-        if owned and bonus and child.ourBonusLocked then visible = false end
+        -- 17.10.2026 (Tobeto): BONUSES hides outfits that are not full (bonus still locked)
+        if bonus and child.ourBonusLocked then visible = false end
         if visible and searchText:len() >= 1 and not child.name:getText():lower():find(searchText, 1, true) then visible = false end
         child:setVisible(visible)
         if not visible and child == focused then window.selectionList:focusChild(nil) end

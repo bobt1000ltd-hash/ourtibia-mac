@@ -656,6 +656,9 @@ local function trimWords(words) return ((words or ''):lower():gsub('^%s+',''):gs
 local function spell(words,p)
   words=trimWords(words);if words=='' then return nil end
   for _,s in pairs(refs.spells or {}) do if trimWords(s.words)==words then
+    -- 17.10.2026 (Tobeto): the trainer only checks that the spell exists - the server decides the rest
+    -- (catalog values like level / magic level / soul could be wrong and blocked spells you can cast)
+    do return s end
     if p:getLevel()<(s.level or 0) or p:getMagicLevel()<(s.magiclevel or 0) or p:getMana()<(s.mana or 0) or p:getSoul()<(s.soul or 0) then
       -- 17.10.2026: say exactly what is missing
       local miss={}
@@ -667,8 +670,8 @@ local function spell(words,p)
     end
     return s
   end end
-  -- 02.10.2026: spells missing from the catalog (or typed differently) are still
-  -- cast; the server decides if it is possible.
+  -- spells missing from the client catalog (it has only part of the spells) are still cast;
+  -- the server decides if it is possible
   return {words=words}
 end
 -- Rune spells (adori/adevo/adito/adana/adeta/adura...) need a blank rune;
