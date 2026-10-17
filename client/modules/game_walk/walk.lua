@@ -648,10 +648,20 @@ function WalkController:onGameEnd()
 end
 
 --- Utility functions for binding and unbinding keys.
+-- 18.10.2026 (owner): letter keys (WASD / QEZC) walk only with Chat Off. While the chat line is
+-- open (Chat On, or the one-message chat after Enter) typing "exori" must not step north-east.
+local function letterBlocked(key)
+    if not key:match('^%a$') and not key:match('^Control%+%a$') then return false end
+    local c = modules.game_console
+    local ok, typing = pcall(function() return c and c.isChatEnabled and c.isChatEnabled() end)
+    return ok and typing or false
+end
+
 function bindWalkKey(key, dir, widget)
     local gameRootPanel = widget or modules.game_interface.getRootPanel()
 
     g_keyboard.bindKeyDown(key, function()
+        if letterBlocked(key) then return end
         g_keyboard.setKeyDelay(key, 1)
         changeWalkDir(dir)
     end, gameRootPanel, true)
@@ -661,14 +671,14 @@ function bindWalkKey(key, dir, widget)
         changeWalkDir(dir, true)
     end, gameRootPanel, true)
 
-    g_keyboard.bindKeyPress(key, function() smartWalk(dir) end, gameRootPanel)
+    g_keyboard.bindKeyPress(key, function() if letterBlocked(key) then return end smartWalk(dir) end, gameRootPanel)
 end
 
 function bindTurnKey(key, dir, widget)
     local gameRootPanel = widget or modules.game_interface.getRootPanel()
 
-    g_keyboard.bindKeyDown(key, function() turn(dir, false) end, gameRootPanel)
-    g_keyboard.bindKeyPress(key, function() turn(dir, true) end, gameRootPanel)
+    g_keyboard.bindKeyDown(key, function() if letterBlocked(key) then return end turn(dir, false) end, gameRootPanel)
+    g_keyboard.bindKeyPress(key, function() if letterBlocked(key) then return end turn(dir, true) end, gameRootPanel)
     g_keyboard.bindKeyUp(key, function()
         local player = g_game.getLocalPlayer()
         -- OurTibia (02.10.2026): no extra walk lock after releasing a turn key.

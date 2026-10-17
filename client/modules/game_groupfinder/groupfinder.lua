@@ -157,7 +157,16 @@ function renderDetails()
   for k, cid in ipairs(b.rewards or {}) do
     local it = g_ui.createWidget('GFRewardItem', panel); it:setItemId(cid)
     local nm = (b.rewardNames or {})[k]
-    it:setTooltip(nm and (nm:gsub('^%l', string.upper) .. '\n(drops unidentified)') or 'Unidentified item')
+    -- 18.10.2026 (owner): the tier of the dropped item is shown (tooltip + a small T badge)
+    local tier = tonumber(b.stars) or 0
+    local tierText = tier > 0 and ('Tier ' .. tier .. ', ') or ''
+    it:setTooltip(nm and (nm:gsub('^%l', string.upper) .. '\n(' .. tierText .. 'drops unidentified)') or ('Unidentified item' .. (tier > 0 and ('\nTier ' .. tier) or '')))
+    if tier > 0 then
+      local badge = g_ui.createWidget('Label', it)
+      badge:setText('T' .. tier); badge:setPhantom(true); badge:setFont('verdana-11px-rounded'); badge:setColor('#ffd35a')
+      badge:addAnchor(AnchorBottom, 'parent', AnchorBottom); badge:addAnchor(AnchorRight, 'parent', AnchorRight)
+      badge:setMarginRight(1); badge:setMarginBottom(0); badge:setTextAutoResize(true)
+    end
   end
   for k, cid in ipairs(b.extras or {}) do local it = g_ui.createWidget('GFRewardItem', panel); it:setItemId(cid); it:setTooltip(({'Magical stone fragments', b.major and 'Major upgrade stones' or 'Minor upgrade stones', 'Rarity Infuser', 'Astral Protector'})[k]) end
   local lobby = data.lobby
