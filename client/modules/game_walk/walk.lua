@@ -31,74 +31,135 @@ local turnKeys = {
 
 WalkController = Controller:new()
 
--- OurTibia (02.10.2026): map click keeps going. The client gives up after 3
--- quick retries when a monster steps into the path (or the server cancels a
--- step, e.g. while casting). We remember the clicked destination and walk
--- there again with a fresh path for up to 12 s / 25 retries; any manual
--- walk, Escape or a new click replaces it.
-local mapClick = { dest = nil, time = 0, retries = 0, event = nil }
+-- OurTibia (17.10.2026): map click written anew. The old one asked the client for the same
+-- path again and again, so when the server refused a step ("There is not enough room",
+-- "Sorry, not possible") the character stood at the wall for 20 s. Now we search the way
+-- ourselves (the client's rules: straight step 1, diagonal 3, no fields, no creatures) and
+-- remember every tile the server refused - the next search goes around it. Destinations
+-- outside the loaded map (minimap clicks) still use the client's own long-distance walk.
+local mapClick = { dest = nil, time = 0, sends = 0, event = nil }
+local refused = {} -- "x:y:z" -> g_clock.millis() until the tile is avoided
+local function pkey(x, y, z) return x .. ':' .. y .. ':' .. z end
+local STEPS = {
+    {0, -1, Directions.North, 1}, {1, 0, Directions.East, 1}, {0, 1, Directions.South, 1}, {-1, 0, Directions.West, 1},
+    {1, -1, Directions.NorthEast, 3}, {1, 1, Directions.SouthEast, 3}, {-1, 1, Directions.SouthWest, 3}, {-1, -1, Directions.NorthWest, 3},
+}
+local OFFSET = {}
+for _, s in ipairs(STEPS) do OFFSET[s[3]] = {s[1], s[2]} end
+
 local function clearMapClick()
     mapClick.dest = nil
     mapClick.target = nil
-    mapClick.retries = 0
-    mapClick.noWay = 0
+    mapClick.way = nil
+    mapClick.sends = 0
     if mapClick.event then removeEvent(mapClick.event); mapClick.event = nil end
 end
-local adjustMapClick -- defined below
 local originalAutoWalk = LocalPlayer.autoWalk
-local function rememberAutoWalk(player, dest, ...)
-    if not mapClick.retrying then
-        clearMapClick()
-        if dest then
-            mapClick.dest = { x = dest.x, y = dest.y, z = dest.z }; mapClick.time = g_clock.millis()
-            -- 09.10.2026: the destination belongs to this character only (Ctrl+G relog)
-            mapClick.playerId = player and player.getId and player:getId() or nil
-            -- 16.10.2026: a click on a creature walks next to it (or does nothing when we already are)
-            local pos = player and player:getPosition()
-            if pos and pos.z == dest.z then
-                local ok, go = pcall(adjustMapClick, pos)
-                if ok and not go then clearMapClick(); return false end
-                if ok and mapClick.dest then dest = {x = mapClick.dest.x, y = mapClick.dest.y, z = mapClick.dest.z} end
-            end
-        end
-    end
-    return originalAutoWalk(player, dest, ...)
-end
-LocalPlayer.autoWalk = rememberAutoWalk
 
--- OurTibia (16.10.2026): a click on an NPC / monster (or a tile somebody stands on)
--- walked "into" the creature for 20 s - the character stood next to it and the
--- client kept asking for a path. Now: next to it = arrived; otherwise walk to the
--- free tile next to it that is closest to us.
-local function blockedByCreature(dest)
-    local t = g_map.getTile(dest)
-    if not t then return false end
-    local local_ = g_game.getLocalPlayer()
+local function hasOtherCreature(t)
+    local me = g_game.getLocalPlayer()
     for _, c in ipairs(t:getCreatures() or {}) do
-        if c ~= local_ and not (local_ and c:getId() == local_:getId()) then return true end
+        if not (me and c:getId() == me:getId()) then return true end
     end
     return false
 end
+local function blockedByCreature(dest)
+    local t = g_map.getTile(dest)
+    return t ~= nil and hasOtherCreature(t)
+end
+
+-- binary heap on f
+local function hpush(h, n)
+    h[#h + 1] = n
+    local i = #h
+    while i > 1 do
+        local p = math.floor(i / 2)
+        if h[p].f <= h[i].f then break end
+        h[p], h[i] = h[i], h[p]; i = p
+    end
+end
+local function hpop(h)
+    local top = h[1]; local last = h[#h]; h[#h] = nil
+    if #h > 0 then
+        h[1] = last
+        local i = 1
+        while true do
+            local l, r, m = i * 2, i * 2 + 1, i
+            if h[l] and h[l].f < h[m].f then m = l end
+            if h[r] and h[r].f < h[m].f then m = r end
+            if m == i then break end
+            h[m], h[i] = h[i], h[m]; i = m
+        end
+    end
+    return top
+end
+
+local function findWay(from, to, allowFields, allowCreatures)
+    if from.z ~= to.z or (from.x == to.x and from.y == to.y) then return nil end
+    local now, z = g_clock.millis(), from.z
+    local goal = g_map.getTile(to)
+    if not goal or not goal:isWalkable(true) then return nil end
+    local best = {[pkey(from.x, from.y, z)] = 0}
+    local heap = {{x = from.x, y = from.y, g = 0, f = 0}}
+    local done, count = {}, 0
+    while #heap > 0 do
+        local cur = hpop(heap)
+        local ck = pkey(cur.x, cur.y, z)
+        if not done[ck] then
+            done[ck] = true
+            if cur.x == to.x and cur.y == to.y then
+                local dirs, n = {}, cur
+                while n.prev do table.insert(dirs, 1, n.dir); n = n.prev end
+                return dirs
+            end
+            count = count + 1
+            if count > 5000 then return nil end
+            for _, s in ipairs(STEPS) do
+                local nx, ny = cur.x + s[1], cur.y + s[2]
+                local nk = pkey(nx, ny, z)
+                if not done[nk] and not ((refused[nk] or 0) > now) then
+                    local t = g_map.getTile({x = nx, y = ny, z = z})
+                    local isGoal = nx == to.x and ny == to.y
+                    local ok = t ~= nil and t:isWalkable(true)
+                    if ok and not isGoal then
+                        if not allowCreatures and hasOtherCreature(t) then ok = false end
+                        if ok and not allowFields and not t:isPathable() then ok = false end
+                    end
+                    if ok then
+                        local g = cur.g + s[4]
+                        if not best[nk] or g < best[nk] then
+                            best[nk] = g
+                            local h = math.max(math.abs(to.x - nx), math.abs(to.y - ny))
+                            hpush(heap, {x = nx, y = ny, g = g, f = g + h, prev = cur, dir = s[3]})
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return nil
+end
+
+-- a click on an NPC / monster walks to the free tile next to it that is closest to us
 local function besideCreature(pos, dest)
-    local best, bestD
+    local bestPos, bestD
     for dx = -1, 1 do for dy = -1, 1 do
         if dx ~= 0 or dy ~= 0 then
             local q = {x = dest.x + dx, y = dest.y + dy, z = dest.z}
             local t = g_map.getTile(q)
-            if t and t:isWalkable() and not blockedByCreature(q) then
+            if t and t:isWalkable(true) and not hasOtherCreature(t) then
                 local d = math.max(math.abs(q.x - pos.x), math.abs(q.y - pos.y)) * 10 + math.abs(q.x - pos.x) + math.abs(q.y - pos.y)
-                if not bestD or d < bestD then best, bestD = q, d end
+                if not bestD or d < bestD then bestPos, bestD = q, d end
             end
         end
     end end
-    return best
+    return bestPos
 end
 -- returns false when the map click is finished
-adjustMapClick = function(pos)
+local function adjustMapClick(pos)
     local dest = mapClick.dest
     if not dest or not pos then return false end
     if mapClick.target then
-        -- walking to the side of a creature: arrived, or the creature left its tile
         if math.max(math.abs(pos.x - mapClick.target.x), math.abs(pos.y - mapClick.target.y)) <= 1 then return false end
         if not blockedByCreature(mapClick.target) then dest.x, dest.y = mapClick.target.x, mapClick.target.y; mapClick.target = nil; return true end
     elseif blockedByCreature(dest) then
@@ -112,141 +173,116 @@ adjustMapClick = function(pos)
     end
     return true
 end
-local function retryMapClick()
-    local dest = mapClick.dest
-    if not dest or mapClick.event then return end
-    local player = g_game.getLocalPlayer()
-    if not player or g_game.isDead() then clearMapClick(); return end
-    if mapClick.playerId and player:getId() ~= mapClick.playerId then clearMapClick(); return end
-    local pos = player:getPosition()
-    if not pos or pos.z ~= dest.z or (pos.x == dest.x and pos.y == dest.y) then clearMapClick(); return end
-    if not adjustMapClick(pos) then clearMapClick(); return end
-    if g_clock.millis() - mapClick.time > 20000 or mapClick.retries >= 60 then clearMapClick(); return end
-    mapClick.retries = mapClick.retries + 1
-    mapClick.event = scheduleEvent(function()
-        mapClick.event = nil
-        local p = g_game.getLocalPlayer()
-        if not p or not mapClick.dest then return end
-        mapClick.retrying = true
-        pcall(function() originalAutoWalk(p, mapClick.dest) end)
-        mapClick.retrying = false
-    end, 150 + math.min(mapClick.retries, 6) * 50)
+
+local function noWay()
+    clearMapClick()
+    pcall(function() modules.game_textmessage.displayFailureMessage(tr('There is no way.')) end)
 end
 
--- OurTibia (03.10.2026): watchdog - a map click is never silently dropped.
--- If the character stands still (a monster blocked the path, an NPC stepped
--- in, an attack interrupted the walk) while a clicked destination is still
--- pending, walk there again with a new path (for up to 20 s).
+-- searches the way from where we stand and sends it to the server
+local function sendWay(player)
+    local dest = mapClick.dest
+    local pos = player:getPosition()
+    if not dest or not pos then return false end
+    if pos.z ~= dest.z then clearMapClick(); return true end
+    if not adjustMapClick(pos) then clearMapClick(); return true end
+    if pos.x == dest.x and pos.y == dest.y then clearMapClick(); return true end
+    local dirs = findWay(pos, dest, false, false) or findWay(pos, dest, true, false) or findWay(pos, dest, true, true)
+    if not dirs or #dirs == 0 then return false end
+    if #dirs > 127 then local t = {} for i = 1, 127 do t[i] = dirs[i] end dirs = t end
+    local way, x, y = {}, pos.x, pos.y
+    for i, d in ipairs(dirs) do
+        local o = OFFSET[d]; x, y = x + o[1], y + o[2]
+        way[i] = {x = x, y = y}
+    end
+    mapClick.way = way
+    mapClick.from = {x = pos.x, y = pos.y, z = pos.z}
+    mapClick.sends = mapClick.sends + 1
+    mapClick.lastKey = nil
+    if player:isAutoWalking() then player:stopAutoWalk() end
+    g_game.autoWalk(dirs, pos)
+    return true
+end
+
+-- the tile the server refused: the next one on our way after the tile we stand on
+local function refuseNextTile(ms)
+    local player = g_game.getLocalPlayer()
+    local way, dest = mapClick.way, mapClick.dest
+    if not player or not way or not dest then return end
+    local pos = player:getPosition(); if not pos then return end
+    local nextTile
+    if mapClick.from and pos.x == mapClick.from.x and pos.y == mapClick.from.y then nextTile = way[1]
+    else
+        for i, t in ipairs(way) do if t.x == pos.x and t.y == pos.y then nextTile = way[i + 1]; break end end
+    end
+    if not nextTile then return end
+    if nextTile.x == dest.x and nextTile.y == dest.y and ms > 5000 then
+        -- the clicked tile itself cannot be entered
+        mapClick.unreachable = true
+    end
+    refused[pkey(nextTile.x, nextTile.y, pos.z)] = g_clock.millis() + ms
+end
+
+local function continueMapClick(delay)
+    if not mapClick.dest or mapClick.event then return end
+    mapClick.event = scheduleEvent(function()
+        mapClick.event = nil
+        local player = g_game.getLocalPlayer()
+        if not player or not mapClick.dest or not g_game.isOnline() or g_game.isDead() then clearMapClick(); return end
+        if mapClick.playerId and player:getId() ~= mapClick.playerId then clearMapClick(); return end
+        if mapClick.unreachable then mapClick.unreachable = nil; noWay(); return end
+        if g_clock.millis() - mapClick.time > 20000 or mapClick.sends >= 30 then clearMapClick(); return end
+        if not sendWay(player) then noWay() end
+    end, delay or 80)
+end
+local function retryMapClick() continueMapClick(80) end
+
+local function rememberAutoWalk(player, dest, ...)
+    clearMapClick()
+    if not player or not dest then return false end
+    local pos = player:getPosition()
+    -- far away (minimap) or another floor: the client's own walk
+    if not pos or pos.z ~= dest.z or not g_map.getTile(dest) then return originalAutoWalk(player, dest, ...) end
+    mapClick.dest = {x = dest.x, y = dest.y, z = dest.z}
+    mapClick.time = g_clock.millis()
+    mapClick.playerId = player:getId()
+    if not sendWay(player) then noWay(); return false end
+    return true
+end
+LocalPlayer.autoWalk = rememberAutoWalk
+
+-- the server refused a step of the map click: avoid that tile and walk on at once
+local function onMapClickBlocked(mode, text)
+    if not mapClick.dest or type(text) ~= 'string' then return end
+    if text:find('There is not enough room', 1, true) then refuseNextTile(120000)
+    elseif text:find('Sorry, not possible', 1, true) then refuseNextTile(2000)
+    else return end
+    continueMapClick(60)
+end
+
+-- watchdog: the character stands still before reaching the clicked tile -> new way
 local mapClickWatch = nil
 local function watchMapClick()
     local dest = mapClick.dest
     local player = g_game.getLocalPlayer()
-    if dest and (not player or not g_game.isOnline() or (mapClick.playerId and player:getId() ~= mapClick.playerId)) then
-        -- 09.10.2026: logged out / another character - forget the old map click
-        clearMapClick()
-    elseif dest and player and g_game.isOnline() and not g_game.isDead() and not mapClick.event then
+    if dest and player and g_game.isOnline() and not mapClick.event then
         local pos = player:getPosition()
-        if not pos or pos.z ~= dest.z or (pos.x == dest.x and pos.y == dest.y) or g_clock.millis() - mapClick.time > 20000 or not adjustMapClick(pos) then
-            clearMapClick()
-            if pos and player:isAutoWalking() and not player:isWalking() then pcall(function() player:stopAutoWalk() end) end
+        if not pos or pos.z ~= dest.z or (pos.x == dest.x and pos.y == dest.y) then clearMapClick()
         else
-            -- 05.10.2026: also when the client still says "auto walking" but the
-            -- character has not moved for 0.7 s (a blocked step can leave that
-            -- state behind) - walk on with a fresh path.
-            local key = pos.x .. ':' .. pos.y .. ':' .. pos.z
+            local key = pkey(pos.x, pos.y, pos.z)
             if mapClick.lastKey ~= key then mapClick.lastKey = key; mapClick.lastMove = g_clock.millis() end
-            local idle = not player:isAutoWalking() and not player:isServerWalking() and not player:isWalking()
-            local stuck = not player:isWalking() and g_clock.millis() - (mapClick.lastMove or 0) > 700
-            if idle or stuck then
+            if not player:isWalking() and not player:isServerWalking() and g_clock.millis() - (mapClick.lastMove or 0) > 600 then
                 mapClick.lastMove = g_clock.millis()
-                mapClick.retrying = true
-                pcall(function()
-                    if stuck and not idle then player:stopAutoWalk() end
-                    originalAutoWalk(player, dest)
-                end)
-                mapClick.retrying = false
+                continueMapClick(1)
             end
         end
-    end
-    mapClickWatch = scheduleEvent(watchMapClick, 250)
+    elseif dest and (not player or not g_game.isOnline()) then clearMapClick() end
+    mapClickWatch = scheduleEvent(watchMapClick, 200)
 end
 mapClickWatch = scheduleEvent(watchMapClick, 1000)
--- OurTibia (05.10.2026): standing inside a fire bomb (or any ring of fields)
--- the normal path search refuses to step on fields, so a map click said
--- "There is no way". When no normal path exists we search again allowing
--- fields (non-pathable tiles) and send that path to the server.
-function ourFieldWalk()
-    local dest = mapClick.dest
-    local player = g_game.getLocalPlayer()
-    if not dest or not player then return false end
-    local pos = player:getPosition()
-    if not pos or pos.z ~= dest.z then return false end
-    local ok, dirs, res = pcall(g_map.findPath, pos, dest, 20000, PathFindFlags.AllowNonPathable)
-    if not ok or res ~= PathFindResults.Ok or not dirs or #dirs == 0 then return false end
-    if #dirs > 127 then local t = {} for i = 1, 127 do t[i] = dirs[i] end dirs = t end
-    g_game.autoWalk(dirs, pos)
-    return true
-end
--- OurTibia (17.10.2026): a map click on a neighbour tile (also diagonal) is one
--- step - no path search, so a monster standing in front of us does not stop a
--- diagonal step. When no path exists (a creature blocks the only way) walk the
--- path through the creatures: the character walks up to it and the normal
--- retry finds a new way once it moves.
-local function ourDirectStep()
-    local dest = mapClick.dest
-    local player = g_game.getLocalPlayer()
-    if not dest or not player then return false end
-    local pos = player:getPosition()
-    if not pos or pos.z ~= dest.z then return false end
-    local dx, dy = dest.x - pos.x, dest.y - pos.y
-    if math.max(math.abs(dx), math.abs(dy)) ~= 1 then return false end
-    local t = g_map.getTile(dest)
-    if not t or not t:isWalkable() or blockedByCreature(dest) then return false end
-    local dirs = {[-1] = {[-1] = Directions.NorthWest, [0] = Directions.North, [1] = Directions.NorthEast},
-        [0] = {[-1] = Directions.West, [1] = Directions.East},
-        [1] = {[-1] = Directions.SouthWest, [0] = Directions.South, [1] = Directions.SouthEast}}
-    local dir = dirs[dy] and dirs[dy][dx]
-    if not dir then return false end
-    g_game.walk(dir)
-    return true
-end
-local function ourCreatureWalk()
-    local dest = mapClick.dest
-    local player = g_game.getLocalPlayer()
-    if not dest or not player then return false end
-    local pos = player:getPosition()
-    if not pos or pos.z ~= dest.z then return false end
-    local ok, dirs, res = pcall(g_map.findPath, pos, dest, 20000, PathFindFlags.AllowCreatures)
-    if not ok or res ~= PathFindResults.Ok or not dirs or #dirs == 0 then return false end
-    if #dirs > 127 then local t = {} for i = 1, 127 do t[i] = dirs[i] end dirs = t end
-    g_game.autoWalk(dirs, pos)
-    return true
-end
--- called by game_textmessage before it shows "There is no way."; true = handled
-function ourAutoWalkFail()
-    if ourDirectStep() or ourFieldWalk() or ourCreatureWalk() then return true end
-    retryMapClick()
-    return false
-end
--- OurTibia (05.10.2026): a monster or NPC stepping into the path makes the
--- server answer "Sorry, not possible." - walk on at once with a new path around
--- it (the client's own retry waited up to half a second, which looked like the
--- map click was cancelled).
-local function onMapClickBlocked(mode, text)
-    if not mapClick.dest or type(text) ~= 'string' then return end
-    if not (text:find('Sorry, not possible', 1, true) or text:find('There is not enough room', 1, true)) then return end
-    scheduleEvent(function()
-        local p = g_game.getLocalPlayer()
-        local dest = mapClick.dest
-        if not p or not dest or mapClick.event then return end
-        local pos = p:getPosition()
-        if not pos or pos.z ~= dest.z or (pos.x == dest.x and pos.y == dest.y) then return end
-        if not adjustMapClick(pos) then clearMapClick(); return end
-        mapClick.retrying = true
-        pcall(function() originalAutoWalk(p, dest) end)
-        mapClick.retrying = false
-    end, 40)
-end
+
+-- game_textmessage asks before "There is no way." (only the client's own long walk gets there)
+function ourAutoWalkFail() return false end
 OurClearMapClick = clearMapClick -- Escape (game_interface) forgets the clicked destination
 
 --- Stops the smart walking process.

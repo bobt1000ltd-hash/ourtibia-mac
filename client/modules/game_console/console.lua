@@ -2285,8 +2285,13 @@ function onTalk(name, level, mode, message, channelId, creaturePos)
             modules.game_textmessage.displayPrivateMessage(name .. ':\n' .. message)
         end
     else
-        local channel = channels[channelId]
-        if not channel and (defaultMessage or channelId == 0) then
+        -- OurTibia (17.10.2026): the guild channel has id 0 on this server, so local Say /
+        -- NPC messages (channel 0 too) landed in the guild tab. Only channel modes use the id.
+        local isChannelMode = mode == MessageModes.Channel or mode == MessageModes.ChannelHighlight or
+            mode == MessageModes.ChannelManagement or mode == MessageModes.GamemasterChannel or mode == MessageModes.RVRChannel
+        local channel = isChannelMode and channels[channelId] or nil
+        if not isChannelMode and not defaultMessage and channelId ~= 0 then channel = channels[channelId] end
+        if not channel and (defaultMessage or channelId == 0 or not isChannelMode) then
             channel = tr('Local Chat')
         end
 
