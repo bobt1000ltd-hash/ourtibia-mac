@@ -218,6 +218,16 @@ local function check(base, manifestText, signatureText)
     end
     local have = known and known[path]
     if have == nil then have = g_resources.fileSha256InWorkDir(path) end
+    -- 17.10.2026: a program file (bin/) already waiting as *.new with the right content is not
+    -- downloaded again and does not restart the client (the launcher could not swap it, e.g. a second
+    -- OurTibia window was open - the client restarted again and again). It is swapped on a later start.
+    if have ~= sha and path:find('^bin[%w_]*/') then
+      local okNew, pending = pcall(g_resources.fileSha256InWorkDir, path .. '.new')
+      if okNew and pending == sha then
+        log('waiting for the launcher to install ' .. path .. ' (close every OurTibia window and start again)')
+        have = sha
+      end
+    end
     if have ~= sha then todo[#todo + 1] = { path = path, sha256 = sha, size = tonumber(f.size) or 0 } end
   end
   if #todo == 0 then
