@@ -436,7 +436,7 @@ local function renderKitn()
     lbl(money(pts),'#ffd35a','verdana-11px-rounded');lbl(' Paw and Fur points','#a8a8a8')
     if nxt then x=x+10;lbl('(next rank: '..nxt[2]..' at '..nxt[1]..')','#7a7a7a') end
     box:setWidth(x)
-    box:setTooltip('Paw and Fur points come from Grizzly Adams tasks and count towards the\n"Killing in the Name of..." quest ranks. They are NOT Task Shop points.')
+    box:setTooltip('Paw and Fur points come from Grizzly Adams tasks. They are NOT Task Shop points.')
   end
   local list=ui('kitnList');list:destroyChildren()
   local pins=kitnPins()
@@ -479,7 +479,7 @@ local function renderKitn()
     for _,rv in ipairs(t.rewards or {}) do
       local tip
       if rv.k=='exp' then tip='Experience: '..money(rv.v) elseif rv.k=='money' then tip='Gold (paid to your bank): '..money(rv.v)
-      elseif rv.k=='points' then tip='Paw and Fur points: '..money(rv.v)..'\n(count towards the "Killing in the Name of..." ranks, not the Task Shop)'
+      elseif rv.k=='points' then tip='Paw and Fur points: '..money(rv.v)
       elseif rv.k=='item' then tip=(rv.v==10305 and 'Holy Icon - the way into the Demon Oak quest (first completion only)' or 'Demon trophy') end
       local val=rv.k=='item' and rv.v or short(rv.v)
       local x=COLX[rv.k];if not x then x=extra;extra=extra+20 end

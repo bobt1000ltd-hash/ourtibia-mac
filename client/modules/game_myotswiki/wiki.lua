@@ -196,8 +196,8 @@ end
 -- 10.10.2026: Loot / Attacks look like the Drop / Quest tabs of an item page
 NEMESIS_BOSSES={['yeti']=true,['the horned fox']=true,['necropharus']=true,['fernfang']=true,['man in the cave']=true,['dharalion']=true,['demodras']=true,['arachir the ancient one']=true,['diblis the fair']=true,['sir valorcrest']=true,['zevelon duskbringer']=true,['the old widow']=true,['zulazza the corruptor']=true,['zushuka']=true,['the pale count']=true}
 local function detailButton(text,action,on)
-  -- 17.10.2026 (Tobeto): Loot / Attacks / Drop / Quest - one style and size (88 x 20)
-  local w=g_ui.createWidget('Button',ui('detailTabs'));w:setSize({width=88,height=20});w:setMarginTop(4);w:setText(text);w.onClick=action
+  -- 17.10.2026 (Tobeto): Loot / Attacks / Drop / Quest - one style and size (90 x 20, like Close)
+  local w=g_ui.createWidget('Button',ui('detailTabs'));w:setSize({width=90,height=20}) -- = Close button;w:setMarginTop(4);w:setText(text);w.onClick=action
   w:setColor(on and '#ffd35a' or '#a0a0a0');w:setOn(on and true or false)
 end
 local function grid(columns)
@@ -207,7 +207,7 @@ local function grid(columns)
 end
 local function resetView()
   if itemPage then itemPage:hide() end;ui('sidebar'):show();ui('right'):show()
-  ui('detailHero'):hide();ui('sidebar'):setMarginTop(35);ui('right'):setMarginTop(10);sideFrame(true)
+  ui('detailHero'):hide();ui('sidebar'):setMarginTop(35);ui('right'):setMarginTop(35);ui('right'):setMarginBottom(30);sideFrame(true)
   ui('mapBrowser'):hide();ui('sidebar'):show();ui('filterScroll'):show();ui('lootControls'):hide();ui('descriptionScroll'):hide();ui('scrollbar'):show()
   ui('cards'):destroyChildren();ui('detailTabs'):destroyChildren()
   ui('itemPortrait'):hide();ui('portrait'):hide()
@@ -222,6 +222,7 @@ local function resetView()
   do local bar=ui('ourSortBar');if bar then bar:hide() end end
   sideTitle('Filters');grid(3)
   do local f=ui('resultsFrame');if f then f:setVisible(tab=='items' or tab=='monsters' or tab=='bosses') end end
+  do local r=ui('resetFilters');if r then r:show() end end
 end
 -- 17.10.2026 (Tobeto): Sort by / Sort mode sit in a small panel above the results
 -- (Items & Loot, Bestiary, Bosstiary) instead of the filters; "Locate on map" stays
@@ -243,14 +244,14 @@ function ourWikiLayout()
   if reset then
     reset:setParent(window);reset:breakAnchors()
     reset:addAnchor(AnchorLeft,'sidebar',AnchorLeft);reset:addAnchor(AnchorRight,'sidebar',AnchorRight);reset:addAnchor(AnchorBottom,'sidebar',AnchorBottom)
-    reset:setMarginRight(-9);reset:setHeight(20)
+    reset:setMarginRight(5);reset:setHeight(20)
     ui('sidebar'):setMarginBottom(30)
   end
   if not ui('resultsFrame') then
     local frame=g_ui.createWidget('MiniPanel',window);frame:setId('resultsFrame');frame:setText('Results')
     frame:addAnchor(AnchorTop,'right',AnchorTop);frame:addAnchor(AnchorLeft,'right',AnchorLeft)
     frame:addAnchor(AnchorRight,'right',AnchorRight);frame:addAnchor(AnchorBottom,'right',AnchorBottom)
-    frame:setMarginTop(-25);frame:setMarginLeft(-6);frame:setMarginRight(-6);frame:setMarginBottom(-6)
+    frame:setMarginTop(-25);frame:setMarginLeft(-6);frame:setMarginRight(-6);frame:setMarginBottom(-6) -- right = sidebar top/bottom (resetView)
     frame:setPhantom(true);frame:lower()
   end
   local locate=ui('locate')
@@ -319,6 +320,7 @@ function renderItemSources()
 end
 function renderItemPage(row)
   ui('sidebar'):hide();ui('right'):hide();ui('filterScroll'):hide();sideFrame(false);itemPage:show()
+  do local f=ui('resultsFrame');if f then f:hide() end;local r=ui('resetFilters');if r then r:hide() end end
   local icon=detailUI('icon');local cid=tonumber(row.cid) or 0
   local prof=detailUI('profButton')
   if prof then
@@ -391,7 +393,8 @@ function renderDetail(mode)
     statRow(stats,title(element),(resist>0 and '+' or '')..resist..'%',element..'-resist',resist>0 and '#ef6666' or resist<0 and '#70d878' or '#888888')
   end
   ui('locate'):show()
-  ui('detailHero'):show();ui('sidebar'):setMarginTop(105);ui('right'):setMarginTop(80)
+  ui('detailHero'):show();ui('sidebar'):setMarginTop(105);ui('right'):setMarginTop(80);ui('right'):setMarginBottom(0)
+  do local f=ui('resultsFrame');if f then f:hide() end;local r=ui('resetFilters');if r then r:hide() end end
   ui('heroName'):setText(title(row.name)..(row.taskBoss and '  [Task boss]' or ''))
   ui('heroSpawns'):setText(#list(row.spawns)>0 and #list(row.spawns)..' spawn locations' or 'No fixed spawns')
   OurTibiaArt.creature(ui('heroPortrait'),row.outfit,row.name)
