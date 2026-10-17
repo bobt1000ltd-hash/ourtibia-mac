@@ -1260,7 +1260,10 @@ function onLevelChange(localPlayer, value, percent)
     -- bar renders full and the tooltip reads "-5500 percent to go" at high levels.
     percent = localPlayer:getLevelPercent()
     setSkillValue('level', comma_value(value))
-    local text = tr('You have %s percent to go', 100 - percent)
+    -- 17.10.2026 (owner): the tooltip shows how much experience is missing to the next level
+    local need = expToAdvance(value, localPlayer:getExperience())
+    local text = need > 0 and string.format('You need %s experience for level %d (%d%% to go).', comma_value(need), value + 1, 100 - percent)
+        or tr('You have %s percent to go', 100 - percent)
     setSkillPercent('level', percent, text)
 end
 
