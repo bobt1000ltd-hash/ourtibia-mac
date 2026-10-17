@@ -45,16 +45,21 @@ GFBossEntry < UIWidget
     phantom: true
   Label
     id: cooldown
-    anchors.fill: parent
-    text-align: center
+    anchors.left: name.left
+    anchors.right: parent.right
+    anchors.top: name.bottom
+    margin-top: 3
+    margin-right: 6
+    height: 28
     font: verdana-11px-rounded
-    color: #ffffff
-    background-color: #000000a0
+    color: #e0b060
     phantom: true
     visible: false
 
 GFMechanic < Label
-  height: 20
+  // 17.10.2026 (Tobeto): 1 px less at the top
+  height: 19
+  margin-top: 1
   text-align: center
   font: verdana-11px-rounded
   color: #ff8a8a
@@ -295,30 +300,24 @@ MainWindow
       margin: 12 10 0 10
       // 17.10.2026 (Tobeto): the same height as Change role / Leave group / Start
       height: 24
+      // 17.10.2026 (Tobeto): "Join group" (asks about the party when you are in one) and "Create group"
       Button
         id: joinButton
         anchors.left: parent.left
         anchors.top: parent.top
         size: 150 22
-        text: Quick join
-        tooltip: Join the oldest group that has a free place for your role (or start a new one).
-        @onClick: modules.game_groupfinder.join()
+        text: Join group
+        tooltip: Join the oldest group that has a free place for your role. In a party you are asked whether to join as the party.
+        @onClick: modules.game_groupfinder.joinGroup()
       Button
         id: createButton
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.left: joinButton.right
         anchors.top: parent.top
+        margin-left: 8
         size: 150 22
         text: Create group
         tooltip: Make a new group of your own (you can set a password).
         @onClick: modules.game_groupfinder.create()
-      Button
-        id: partyButton
-        anchors.right: parent.right
-        anchors.top: parent.top
-        size: 150 22
-        text: Join as party
-        tooltip: Party leader only: queue your whole party (max 4 players) as one closed group.
-        @onClick: modules.game_groupfinder.joinParty()
 
     Label
       id: groupsTitle
@@ -344,7 +343,8 @@ MainWindow
       id: groupTitle
       anchors.top: groups.bottom
       anchors.left: parent.left
-      margin: 10 10 0 10
+      // 17.10.2026 (Tobeto): 1 px lower
+      margin: 11 10 0 10
       font: verdana-11px-rounded
       color: #f0d080
       text: Your group
@@ -472,3 +472,21 @@ GFRoleDialog < MainWindow
     margin-right: 6
     size: 80 22
     text: OK
+
+// 17.10.2026 (Tobeto): small Yes / No confirmation inside the Group Finder
+GFConfirm < MainWindow
+  size: 200 72
+  text: Fight alone
+  Button
+    id: no
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    size: 80 22
+    text: No
+  Button
+    id: yes
+    anchors.bottom: parent.bottom
+    anchors.right: no.left
+    margin-right: 6
+    size: 80 22
+    text: Yes

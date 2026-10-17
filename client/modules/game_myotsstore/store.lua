@@ -57,7 +57,7 @@ end
 function offerTooltip(offer)
   local head=offer.name..'\n'..offer.price..(offer.currency=='tokens' and ' loyalty tokens' or ' coins')
   if offer.category=='Cosmetics' and type(offer.bonus)=='table' and #offer.bonus>0 then
-    local lines={head,'',offer.sub=='Mounts' and 'Bonus while riding:' or 'Bonus while worn:'}
+    local lines={head,'',offer.sub=='Mounts' and 'Bonus (chosen mount, also when not riding):' or 'Bonus while worn:'}
     for _,b in ipairs(offer.bonus) do lines[#lines+1]=tostring(b.t or (b.l..' '..tostring(b.v))) end
     return table.concat(lines,'\n')
   end
@@ -677,6 +677,23 @@ function openSearch(cat,text)
   category=cat or category;search=(text or ''):lower();setHistory(false)
   if TIER_PRICE[sortMode] then sortMode=SORTS[1] end
   show();buildLeft();refresh();pcall(function() ui('productScroll'):setValue(0) end)
+end
+-- 17.10.2026 (Tobeto): Set Outfit -> "Get outfit" / "Get mount": the store opens on it and
+-- the purchase confirmation pops up at once
+function openBuyFor(name)
+  openSearch('Cosmetics',name)
+  local want=tostring(name or ''):lower();local tries=0
+  local function try()
+    tries=tries+1
+    if data and data.products then
+      for _,o in ipairs(data.products) do
+        local n=tostring(o.name or ''):lower()
+        if n==want or n:find(want,1,true) then openConfirm(o);return end
+      end
+    end
+    if tries<15 then scheduleEvent(try,200) end
+  end
+  scheduleEvent(try,150)
 end
 function toggle() if window:isVisible() then hide() else show() end end
 function init()

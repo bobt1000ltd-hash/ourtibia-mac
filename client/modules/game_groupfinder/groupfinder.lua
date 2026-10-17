@@ -47,7 +47,8 @@ local function cooldownLeft() return math.max(0, (tonumber(data and data.resetIn
 -- 17.10.2026 (Tobeto): human-size outfits (Grimbold, Sir Malthor, Malzareth) use only the
 -- lower right quarter of their 64 px picture; an overlay draws them about twice as big and
 -- moved so the figure fills the frame like the big monsters (the layout widget stays)
-local SMALL_LOOKS = {[70] = {1.9, 0.47}, [130] = {1.5, 0.16}, [131] = {1.5, 0.16}} -- scale, shift
+-- 17.10.2026 (Tobeto): Sir Malthor (131) and Azhereth (309) bigger, Malzareth (130) 2 px lower
+local SMALL_LOOKS = {[70] = {1.9, 0.47}, [130] = {1.5, 0.16, 2}, [131] = {1.7, 0.3}, [309] = {1.35, 0.2}} -- scale, shift, extra y
 local function bigArt(widget, look, name)
   local parent = widget:getParent()
   local overlay = parent:getChildById(widget:getId() .. 'Big')
@@ -68,7 +69,7 @@ local function bigArt(widget, look, name)
   pcall(function() overlay:setCreatureSize(math.floor(w * fit[1])) end)
   pcall(function() overlay:setCenter(true) end)
   overlay:setSize({width = w, height = h})
-  overlay:setMarginLeft(-math.floor(w * fit[2])); overlay:setMarginTop(-math.floor(h * fit[2]))
+  overlay:setMarginLeft(-math.floor(w * fit[2])); overlay:setMarginTop(-math.floor(h * fit[2]) + (fit[3] or 0))
   overlay:setOpacity(widget:getOpacity())
   overlay:show(); widget:hide()
 end
@@ -80,6 +81,7 @@ local function introChip(parent, x, title, value)
   local b = g_ui.createWidget('Label', c); b:setText(value); b:setColor('#ffd35a'); b:setFont('verdana-11px-rounded'); b:setTextAutoResize(true)
   -- 17.10.2026 (Tobeto): the yellow value 1 px to the right
   b:addAnchor(AnchorLeft, 'prev', AnchorRight); b:addAnchor(AnchorVerticalCenter, 'parent', AnchorVerticalCenter); b:setMarginLeft(6)
+  b:setMarginTop(-2) -- 17.10.2026 (Tobeto): the yellow value 1 px higher
   local w = 10 + a:getTextSize().width + 6 + b:getTextSize().width + 9
   c:setWidth(w)
   return w
@@ -100,7 +102,7 @@ local function updateCooldowns()
   local left = cooldownLeft()
   for i, b in ipairs(data.bosses or {}) do
     local w = ui('list'):getChildById('boss' .. i)
-    if w and b.done then w:getChildById('cooldown'):setText('Defeated - ' .. hms(left)) end
+    if w and b.done then w:getChildById('cooldown'):setText('Defeated\nNext fight in ' .. hms(left)) end
   end
 end
 local function renderList()
@@ -120,7 +122,10 @@ local function renderList()
       w:setTooltip('Your level is too low (' .. b.level .. ' needed).')
     end
     if b.done then
+      -- 17.10.2026 (Tobeto): no dark box over the text - the level line and the bar make room
+      -- for one clean line "Defeated - next fight in ..."
       w:getChildById('creature'):setOpacity(0.4); local ov = w:getChildById('creatureBig'); if ov then ov:setOpacity(0.4) end; w:getChildById('name'):setColor('#8a8a8a')
+      w:getChildById('info'):hide(); w:getChildById('pips'):hide()
       w:getChildById('cooldown'):show()
       w:setTooltip('You defeated ' .. b.name .. ' today. The cooldown resets at the server save.')
     end
@@ -148,14 +153,18 @@ function renderDetails()
     if tip then c:setTooltip(tip) end
   end
   local panel = ui('rewards'); panel:destroyChildren()
-  for _, cid in ipairs(b.rewards or {}) do local it = g_ui.createWidget('GFRewardItem', panel); it:setItemId(cid); it:setTooltip('Unidentified item') end
+  -- 17.10.2026 (Tobeto): the real item name (it drops unidentified)
+  for k, cid in ipairs(b.rewards or {}) do
+    local it = g_ui.createWidget('GFRewardItem', panel); it:setItemId(cid)
+    local nm = (b.rewardNames or {})[k]
+    it:setTooltip(nm and (nm:gsub('^%l', string.upper) .. '\n(drops unidentified)') or 'Unidentified item')
+  end
   for k, cid in ipairs(b.extras or {}) do local it = g_ui.createWidget('GFRewardItem', panel); it:setItemId(cid); it:setTooltip(({'Magical stone fragments', b.major and 'Major upgrade stones' or 'Minor upgrade stones', 'Rarity Infuser', 'Astral Protector'})[k]) end
   local lobby = data.lobby
   local canAct = not b.done and (data.level or 0) >= b.level and not (lobby and lobby.state == 'fight')
   local join = ui('joinButton')
-  join:setEnabled(canAct and next(data.roles or {}) ~= nil)
-  ui('createButton'):setEnabled(canAct and next(data.roles or {}) ~= nil)
-  ui('partyButton'):setEnabled(canAct)
+  join:setEnabled(canAct and not lobby and next(data.roles or {}) ~= nil)
+  ui('createButton'):setEnabled(canAct and not lobby and next(data.roles or {}) ~= nil)
   -- every group waiting for this boss
   local gp = ui('groups'); gp:destroyChildren()
   local shown, more = 0, 0
@@ -190,11 +199,11 @@ function renderDetails()
   end
   if shown == 0 then
     local row = g_ui.createWidget('GFGroupRow', gp)
-    row:getChildById('text'):setText('No group is waiting. Use Quick join or create your own group.')
+    row:getChildById('text'):setText('No group is waiting - join or create one, or Start alone.')
     row:getChildById('text'):setColor('#808080'); row:getChildById('joinGroup'):hide()
   elseif more > 0 then
     local row = g_ui.createWidget('GFGroupRow', gp)
-    row:getChildById('text'):setText('... and ' .. more .. ' more group(s). Quick join picks the oldest one with a free slot.')
+    row:getChildById('text'):setText('... and ' .. more .. ' more group(s). Join group picks the oldest one with a free slot.')
     row:getChildById('text'):setColor('#808080'); row:getChildById('joinGroup'):hide()
   end
   -- own group
@@ -217,20 +226,37 @@ function renderDetails()
     for _ = #lobby.members + 1, 4 do
       local s = g_ui.createWidget('GFSlot', slots); s:getChildById('name'):setText('- free -'); s:getChildById('name'):setColor('#606060')
     end
+    ui('leaveButton'):show(); ui('roleButton'):show()
     ui('leaveButton'):setEnabled(true)
     ui('roleButton'):setEnabled(lobby.state == 'open')
     ui('startButton'):setEnabled(lobby.leader and lobby.state == 'open')
     ui('startButton'):setTooltip(lobby.leader and 'Start the fight (ready check / agreement of the group)' or 'Only the group leader can start.')
   else
     ui('groupState'):setText('Choose a boss, then join or create a group.')
-    ui('leaveButton'):setEnabled(false)
-    ui('roleButton'):setEnabled(false)
-    ui('startButton'):setEnabled(false)
+    -- 17.10.2026 (Tobeto): no Leave group / Change role without a group; Start = fight alone
+    ui('leaveButton'):hide(); ui('roleButton'):hide()
+    ui('startButton'):setEnabled(canAct and next(data.roles or {}) ~= nil)
+    ui('startButton'):setTooltip('Fight ' .. (b.name or 'this boss') .. ' alone.')
   end
 end
 
 -- ------------------------------------------------------------------ role dialog
 function closeDialog() if dialog then dialog:destroy(); dialog = nil end end
+-- 17.10.2026 (Tobeto): small Yes / No window inside the Group Finder (can be dragged inside it)
+local confirmBox
+function confirm(title, onYes, onNo)
+  if confirmBox then confirmBox:destroy(); confirmBox = nil end
+  confirmBox = g_ui.createWidget('GFConfirm', window)
+  confirmBox:setText(title)
+  local wr = window:getRect()
+  confirmBox:setPosition({x = wr.x + math.floor((wr.width - confirmBox:getWidth()) / 2), y = wr.y + math.floor((wr.height - confirmBox:getHeight()) / 2)})
+  local function close() if confirmBox then confirmBox:destroy(); confirmBox = nil end end
+  confirmBox:getChildById('yes').onClick = function() close(); if onYes then onYes() end end
+  confirmBox:getChildById('no').onClick = function() close(); if onNo then onNo() end end
+  confirmBox.onEnter = function() close(); if onYes then onYes() end end
+  confirmBox.onEscape = function() close(); if onNo then onNo() end end
+  confirmBox:raise(); confirmBox:focus()
+end
 function askRole(opt, callback)
   closeDialog()
   dialog = g_ui.createWidget('GFRoleDialog', rootWidget)
@@ -298,8 +324,29 @@ function changeRole()
   askRole({title = 'Change your role', taken = taken}, function(r) send('join:' .. l.boss .. ':' .. r) end)
 end
 function joinParty() send('party:' .. selected) end
+-- 17.10.2026 (Tobeto): one "Join group" button. In a party: asked whether to join as the party;
+-- otherwise (or "No") the player joins on his own (the oldest group with a free place).
+local function inParty() local p = g_game.getLocalPlayer(); return p and p.isPartyMember and p:isPartyMember() end
+function joinGroup()
+  if inParty() then
+    confirm('Join as a party?', function() joinParty() end, function() join() end)
+  else
+    join()
+  end
+end
+local function soloRole()
+  local allowed = data and data.roles or {}
+  if role and allowed[role] then return role end
+  for _, r in ipairs({'dps', 'healer', 'tank'}) do if allowed[r] then return r end end
+end
 function leave() send('leave') end
-function start() send('start') end
+function start()
+  if data and data.lobby then return send('start') end
+  -- not in a group: fight the selected boss alone (asked first)
+  local r = soloRole(); if not r then return end
+  local i = selected
+  confirm('Fight alone', function() send('solo:' .. i .. ':' .. r) end)
+end
 function hide() closeDialog(); if tickEvent then removeEvent(tickEvent); tickEvent = nil end; if window then window:hide() end; send('close') end
 function toggle()
   if window:isVisible() then hide() else send('open') end
@@ -311,6 +358,9 @@ local function closePrompt()
 end
 local function showPrompt(p)
   closePrompt()
+  if p.type == 'solo' then
+    return confirm('Fight alone', function() send('start:solo') end)
+  end
   local titles = {ready = 'Ready check', agree = 'Start without a full group?', solo = 'Fight alone?'}
   local title = titles[p.type] or 'Group Finder'
   local yesCmd = p.type == 'solo' and 'start:solo' or 'yes'

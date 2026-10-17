@@ -1995,6 +1995,8 @@ ProtocolGame.registerExtendedOpcode(119, function(protocol, opcode, buffer)
         end
         return
     end
+    local mnt = buffer:match('^mnt:(%d+)$')
+    if mnt then ourActiveMount = tonumber(mnt); if ourActiveMount == 0 then ourActiveMount = nil end; if window then pcall(ourUpdateBonusPanel) end; return end
     local look, addons, name = buffer:match('^cur:(%d+):(%d+):(.+)$')
     ourBonusName = name
     ourBonusLook = tonumber(look)
@@ -2092,11 +2094,10 @@ function ourCreateBonusPanel()
         box:setBorderColor('#00000077')
         local c = g_ui.createWidget('UICreature', box)
         c:setId(id)
+        -- 17.10.2026 (Tobeto): the picture in the middle of its frame
         c:setSize({width = 32, height = 32})
-        c:addAnchor(AnchorTop, 'parent', AnchorTop)
-        c:addAnchor(AnchorLeft, 'parent', AnchorLeft)
-        c:setMarginTop(1)
-        c:setMarginLeft(1)
+        c:addAnchor(AnchorHorizontalCenter, 'parent', AnchorHorizontalCenter)
+        c:addAnchor(AnchorVerticalCenter, 'parent', AnchorVerticalCenter)
         c:setPhantom(false)
         pcall(function() c:setCenter(true) end)
     end
@@ -2226,16 +2227,17 @@ function ourUpdateActive()
     -- 16.10.2026 (Tobeto): the bonus counts only for the full outfit (both addons)
     o:setTooltip(b and (addons == 3 and ('Outfit bonus' .. (ourBonusName and (' (' .. ourBonusName .. ')') or '') .. ':\n' .. tostring(b[3] or '')) or 'This outfit gives a bonus only with both addons.') or 'This outfit gives no bonus.')
     local m = act:recursiveGetChildById('ourActMount')
-    local mountLook = p:isMounted() and cur.mount or 0
+    -- 17.10.2026 (Tobeto): the chosen mount counts also when not riding
+    local mountLook = (p:isMounted() and cur.mount) or ourActiveMount or 0
     if mountLook and mountLook > 0 then
         m:setOutfit({type = mountLook})
         m:show()
         local mb = ourBonusOf('mount', mountLook)
-        m:setTooltip(mb and ('Mount bonus (while riding):\n' .. tostring(mb)) or 'This mount gives no bonus.')
+        m:setTooltip(mb and ('Mount bonus:\n' .. tostring(mb) .. '\n(counts also when you do not ride it; only the mount speed needs riding)') or 'This mount gives no bonus.')
     else
         m:hide()
         local box = act:recursiveGetChildById('ourActMountBox')
-        if box then box:setTooltip('No mount bonus - you are not riding.') end
+        if box then box:setTooltip('No mount chosen.') end
     end
 end
 
@@ -2263,8 +2265,9 @@ function ourUpdateBonusPanel()
             for _, t in ipairs(new) do parts[#parts + 1] = '{' .. t .. ', #d8c48a}\n' end
             return table.concat(parts)
         end
-        for _, t in ipairs(old) do parts[#parts + 1] = '{- ' .. t .. ', #ff6060}\n' end
-        for _, t in ipairs(new) do parts[#parts + 1] = '{+ ' .. t .. ', #66dd44}\n' end
+        -- 17.10.2026 (Tobeto): the colour says it all (no + / -)
+        for _, t in ipairs(old) do parts[#parts + 1] = '{' .. t .. ', #ff6060}\n' end
+        for _, t in ipairs(new) do parts[#parts + 1] = '{' .. t .. ', #66dd44}\n' end
         return table.concat(parts)
     end
     local p = g_game.getLocalPlayer()
@@ -2278,13 +2281,16 @@ function ourUpdateBonusPanel()
         if b then
             local newStr = (tempOutfit.addons or 0) == 3 and b[3] or ''
             colored = diff(activeStr, newStr)
-            if (tempOutfit.addons or 0) ~= 3 then colored = colored .. '{Needs the full outfit., #a0a0a0}' end
+            if (tempOutfit.addons or 0) ~= 3 then colored = '{You need the full outfit (both addons) for its bonus., #a0a0a0}' end
             showBtn = (tempOutfit.addons or 0) == 3
+        else
+            colored = '{This outfit has no bonus., #a0a0a0}'
         end
     elseif ourListMode == 'mount' then
         local b = ourBonusOf('mount', tempOutfit.mount)
-        local mb = (p and p:isMounted() and (cur.mount or 0) > 0) and ourBonusOf('mount', cur.mount) or nil
-        if b then colored = diff(mb or '', b) end
+        local am = (p and p:isMounted() and cur.mount) or ourActiveMount
+        local mb = am and ourBonusOf('mount', am) or nil
+        if b then colored = diff(mb or '', b) else colored = '{This mount has no bonus., #a0a0a0}' end
     end
     -- 17.10.2026 (Tobeto): "Active bonuses" always lists the bonus you use now
     -- (outfit + mount); a different outfit / mount shows what changes (red / green)
@@ -2300,18 +2306,33 @@ function ourUpdateBonusPanel()
         return table.concat(parts)
     end
     local picking = (ourListMode == 'outfit' and tempOutfit.type and tempOutfit.type ~= (ourBonusLook or cur.type)) or
-        (ourListMode == 'mount' and (tempOutfit.mount or 0) > 0 and tempOutfit.mount ~= ((p and p:isMounted()) and cur.mount or 0))
-    if colored and colored ~= '' and picking then text = colored else text = activeText() end
+        (ourListMode == 'mount' and (tempOutfit.mount or 0) > 0 and tempOutfit.mount ~= (((p and p:isMounted()) and cur.mount) or ourActiveMount or 0))
+    -- 17.10.2026 (Tobeto): the active bonus is only the pictures (with tooltips); the text shows
+    -- only what changes when another outfit / mount is picked
+    if colored and colored ~= '' and picking then text = colored else text = nil end
     -- 15.10.2026 (Tobeto): "Set new bonus" replaces the active bonus outfit
     local activeLook = ourBonusLook
     if not activeLook then
         local p = g_game.getLocalPlayer()
         activeLook = p and p:getOutfit().type
     end
-    if showBtn and ourStoreOnlySet.outfit[tempOutfit.type] then
-        showBtn = false
-        text = (text or '') .. '{Get it in the Game Store., #9fd0ff}'
+    -- 17.10.2026 (Tobeto): not owned and sold in the Game Store -> "Get outfit" / "Get mount"
+    local storeName = (ourListMode == 'outfit' and ourStoreOnlySet.outfit[tempOutfit.type]) or (ourListMode == 'mount' and ourStoreOnlySet.mount[tempOutfit.mount])
+    if storeName then
+        if text and colored then text = colored end
+        pcall(function() lbl:setColoredText(text or '') end)
+        if text then lbl:show() else lbl:hide() end
+        btn:setText(ourListMode == 'outfit' and 'Get outfit' or 'Get mount')
+        btn:setTooltip('Open the Game Store to buy ' .. storeName .. '.')
+        btn.onClick = function() local st = modules.game_myotsstore; if st and st.openBuyFor then st.openBuyFor(storeName) end end
+        btn:show()
+        pcall(ourUpdateActive)
+        return
     end
+    btn.onClick = function()
+        if g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(119, 'set:' .. (tempOutfit.type or 0) .. ':' .. (tempOutfit.addons or 0)) end
+    end
+    btn:setTooltip('Keep the bonus of the selected outfit and wear any other outfit you like (only the look changes, bonuses do not stack). Right click: back to the bonus of the worn outfit.')
     if showBtn and activeLook == tempOutfit.type and (ourBonusLook == nil or ourBonusAddons == (tempOutfit.addons or 0)) then
         showBtn = false
     end

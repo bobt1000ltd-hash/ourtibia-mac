@@ -628,7 +628,7 @@ local function cosmeticCards(list,isMount)
     b:setText(isMount and e.bonus or (e.stages and e.stages[3] or ''))
     b:addAnchor(AnchorLeft,'parent',AnchorLeft);b:addAnchor(AnchorRight,'parent',AnchorRight);b:addAnchor(AnchorBottom,'parent',AnchorBottom);b:setMarginLeft(4);b:setMarginRight(4);b:setMarginBottom(3);b:setHeight(28)
     local tip={e.name,'How to get: '..(e.how or '?'),''}
-    if isMount then tip[#tip+1]='Bonus while riding: '..(e.bonus or '')
+    if isMount then tip[#tip+1]='Bonus (chosen mount, also when not riding): '..(e.bonus or '')
     else
       -- 16.10.2026 (Tobeto): the bonus counts only for the full outfit (both addons)
       tip[#tip+1]='Bonus with the full outfit: '..(e.stages and e.stages[3] or '')
@@ -661,7 +661,7 @@ pages['mounts/taming']=function()
 end
 pages['mounts/store']=function()
   h1('Store mounts')
-  body('Mounts sold in the Game Store (Cosmetics) for 120, 240 or 360 coins. The bonus is worth a 10, 20 or 30 HP value and only counts while riding.')
+  body('Mounts sold in the Game Store (Cosmetics) for 120, 240 or 360 coins. The bonus is worth a 10, 20 or 30 HP value and counts for your chosen mount even when you do not ride it (only the mount speed needs riding).')
   if not data or not data.mounts then body('Loading...') return end
   cosmeticCards(filtered(data.mounts,'store'),true)
 end
