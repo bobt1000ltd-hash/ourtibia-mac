@@ -94,7 +94,7 @@ local function hpop(h)
     return top
 end
 
-local function findWay(from, to, allowFields, allowCreatures)
+local function findWay(from, to, allowFields, allowCreatures, ignoreRefused)
     if from.z ~= to.z or (from.x == to.x and from.y == to.y) then return nil end
     local now, z = g_clock.millis(), from.z
     local goal = g_map.getTile(to)
@@ -117,7 +117,7 @@ local function findWay(from, to, allowFields, allowCreatures)
             for _, s in ipairs(STEPS) do
                 local nx, ny = cur.x + s[1], cur.y + s[2]
                 local nk = pkey(nx, ny, z)
-                if not done[nk] and not ((refused[nk] or 0) > now) then
+                if not done[nk] and (ignoreRefused or not ((refused[nk] or 0) > now)) then
                     local t = g_map.getTile({x = nx, y = ny, z = z})
                     local isGoal = nx == to.x and ny == to.y
                     local ok = t ~= nil and t:isWalkable(true)
@@ -174,6 +174,7 @@ local function adjustMapClick(pos)
     return true
 end
 
+local continueMapClick
 local function noWay()
     clearMapClick()
     pcall(function() modules.game_textmessage.displayFailureMessage(tr('There is no way.')) end)
@@ -188,7 +189,22 @@ local function sendWay(player)
     if not adjustMapClick(pos) then clearMapClick(); return true end
     if pos.x == dest.x and pos.y == dest.y then clearMapClick(); return true end
     local dirs = findWay(pos, dest, false, false) or findWay(pos, dest, true, false) or findWay(pos, dest, true, true)
+        or findWay(pos, dest, true, true, true)
     if not dirs or #dirs == 0 then return false end
+    -- 17.10.2026 (owner): monsters all around - the only way goes through a creature. Do not
+    -- walk into it (the server refuses, "Sorry, not possible" again and again, and the click
+    -- ended with "There is no way."); wait a moment until it moves and search again.
+    do
+        local o = OFFSET[dirs[1]]
+        local first = g_map.getTile({x = pos.x + o[1], y = pos.y + o[2], z = pos.z})
+        if first and hasOtherCreature(first) then
+            if player:isAutoWalking() then player:stopAutoWalk() end
+            mapClick.waiting = true
+            continueMapClick(250)
+            return true
+        end
+    end
+    mapClick.waiting = nil
     if #dirs > 127 then local t = {} for i = 1, 127 do t[i] = dirs[i] end dirs = t end
     local way, x, y = {}, pos.x, pos.y
     for i, d in ipairs(dirs) do
@@ -205,7 +221,7 @@ local function sendWay(player)
 end
 
 -- the tile the server refused: the next one on our way after the tile we stand on
-local function refuseNextTile(ms)
+local function refuseNextTile(ms, creatureOk)
     local player = g_game.getLocalPlayer()
     local way, dest = mapClick.way, mapClick.dest
     if not player or not way or not dest then return end
@@ -216,6 +232,10 @@ local function refuseNextTile(ms)
         for i, t in ipairs(way) do if t.x == pos.x and t.y == pos.y then nextTile = way[i + 1]; break end end
     end
     if not nextTile then return end
+    if creatureOk then
+        local t = g_map.getTile({x = nextTile.x, y = nextTile.y, z = pos.z})
+        if t and hasOtherCreature(t) then return end -- a creature, not the tile: just search again
+    end
     if nextTile.x == dest.x and nextTile.y == dest.y and ms > 5000 then
         -- the clicked tile itself cannot be entered
         mapClick.unreachable = true
@@ -223,7 +243,7 @@ local function refuseNextTile(ms)
     refused[pkey(nextTile.x, nextTile.y, pos.z)] = g_clock.millis() + ms
 end
 
-local function continueMapClick(delay)
+continueMapClick = function(delay)
     if not mapClick.dest or mapClick.event then return end
     mapClick.event = scheduleEvent(function()
         mapClick.event = nil
@@ -256,7 +276,7 @@ LocalPlayer.autoWalk = rememberAutoWalk
 local function onMapClickBlocked(mode, text)
     if not mapClick.dest or type(text) ~= 'string' then return end
     if text:find('There is not enough room', 1, true) then refuseNextTile(120000)
-    elseif text:find('Sorry, not possible', 1, true) then refuseNextTile(2000)
+    elseif text:find('Sorry, not possible', 1, true) then refuseNextTile(2000, true)
     else return end
     continueMapClick(60)
 end
@@ -520,8 +540,9 @@ local function onTeleport(player, newPos, oldPos)
     local TELEPORT_DELAY = g_settings.getNumber("walkTeleportDelay")
     local STAIRS_DELAY = g_settings.getNumber("walkStairsDelay")
 
-    local delay = (offsetX >= 3 or offsetY >= 3 or offsetZ >= 2) and TELEPORT_DELAY or STAIRS_DELAY
-    player:lockWalk(delay)
+    -- 17.10.2026 (owner): no walk delay after stairs / ramps / ladders (one floor, a step away)
+    if offsetX < 3 and offsetY < 3 and offsetZ < 2 then return end
+    player:lockWalk(TELEPORT_DELAY)
 end
 
 -- OurTibia (02.10.2026): is any key for this direction still held down?
