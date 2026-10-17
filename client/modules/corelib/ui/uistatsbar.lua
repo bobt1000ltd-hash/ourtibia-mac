@@ -107,7 +107,16 @@ function UIStatsBar:onStyleApply(styleName, styleNode)
 end
 
 function UIStatsBar:setValue(value, total)
-    if not (value) or not (total) or total == 0 or not (self.statsType) or not (self.statsSize) or not (self.statsOrientation) then
+    if not (value) or not (total) or not (self.statsType) or not (self.statsSize) or not (self.statsOrientation) then
+        return
+    end
+    -- OurTibia (17.10.2026): a character with 0 max mana (fresh no-vocation character) kept the
+    -- placeholder text "9999999999/9999999999" - show an empty bar with 0/0
+    if total == 0 then
+        self.currentValue = 0
+        self.currentTotal = 0
+        if self.statsOrientation == 'horizontal' then self.bar:setWidth(0) elseif self.statsOrientation == 'vertical' then self.bar:setHeight(0) end
+        if self.showText then self.text:show(); self.text:setText(self.manaShieldText or '0/0') else self.text:hide() end
         return
     end
 
