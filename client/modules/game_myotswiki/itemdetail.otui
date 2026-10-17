@@ -51,7 +51,8 @@ Panel
       anchors.bottom: parent.bottom
       margin: 6
       margin-right: 16
-      height: 22
+      // 17.10.2026 (Tobeto): the same size as the Close button
+      height: 20
       text: Track drop
       !tooltip: tr('Add this item to the Drop Tracker (Analyzer)')
     Button
@@ -60,7 +61,7 @@ Panel
       anchors.right: parent.right
       anchors.bottom: trackButton.top
       margin: 0 16 4 6
-      height: 22
+      height: 20
       text: Show proficiency
       visible: false
     Label
@@ -89,7 +90,7 @@ Panel
       anchors.verticalCenter: sourceOrder.verticalCenter
       anchors.left: parent.left
       margin-left: 5
-      size: 88 20
+      size: 90 20
       text: Drop
       !tooltip: tr('Monsters and bosses that drop this item')
       @onClick: modules.game_myotswiki.setSourceTab('drop')
@@ -98,7 +99,7 @@ Panel
       anchors.verticalCenter: sourceOrder.verticalCenter
       anchors.left: dropTab.right
       margin-left: 4
-      size: 88 20
+      size: 90 20
       text: Quest
       !tooltip: tr('Quests that give this item')
       @onClick: modules.game_myotswiki.setSourceTab('quest')

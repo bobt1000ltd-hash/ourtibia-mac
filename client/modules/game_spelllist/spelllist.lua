@@ -124,7 +124,8 @@ function init()
     vocationBoxPaladin = spelllistWindow:getChildById('vocationBoxPaladin')
     vocationBoxKnight = spelllistWindow:getChildById('vocationBoxKnight')
     vocationBoxMonk = spelllistWindow:getChildById('vocationBoxMonk')
-    vocationBoxMonk:hide();vocationBoxMonk:setEnabled(false)
+    -- 17.10.2026 (owner): the Monk box is used for spells without a vocation (Rookgaard)
+    vocationBoxMonk:setText(tr('None'));vocationBoxMonk:show();vocationBoxMonk:setEnabled(true)
 
     groupBoxAny = spelllistWindow:getChildById('groupBoxAny')
     groupBoxAttack = spelllistWindow:getChildById('groupBoxAttack')
@@ -275,7 +276,7 @@ local function vocationMatches(vocations, filterId)
         return true
     end
     if filterId == FILTER_VOCATION_MONK then
-        return table.find(vocations, VocationsServer.Monk) or table.find(vocations, VocationsServer.ExaltedMonk)
+        return table.find(vocations, 0) -- 17.10.2026: "None" (no vocation)
     end
     return table.find(vocations, filterId) or table.find(vocations, filterId + 4)
 end
@@ -338,7 +339,7 @@ function updateSpellInformation(widget)
         -- 15.10.2026 (Tobeto): the details fit the compact window - all four vocations
         -- are "All", three or more use short names
         local count = select(2, vocation:gsub(',', ',')) + (vocation ~= '' and 1 or 0)
-        if count >= 4 then vocation = 'All vocations'
+        if count >= 4 then vocation = table.find(info.vocations, 0) and 'All + no vocation' or 'All vocations'
         elseif #vocation > 22 then
             for long, short in pairs({['Master Sorcerer'] = 'MS', ['Elder Druid'] = 'ED', ['Royal Paladin'] = 'RP', ['Elite Knight'] = 'EK'}) do
                 vocation = vocation:gsub(long, short)

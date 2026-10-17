@@ -1,3 +1,9 @@
+-- OurTibia (17.10.2026): no expiry timer on corpses (a dead rat in the bag showed "4:29")
+function ourShowDuration(item)
+    if not (g_game.getFeature(GameThingClock) and modules.client_options.getOption('showExpiryInContainers')) then return false end
+    if item and item.isContainer and item:isContainer() then return false end
+    return true
+end
 containerSettings = nil
 
 function init()
@@ -699,7 +705,7 @@ function sortContainerItems(container, sortMode)
                 
                 ItemsDatabase.setRarityItem(itemWidget, itemData.item)
                 ItemsDatabase.setTier(itemWidget, itemData.item)
-                itemWidget:setShowDuration(g_game.getFeature(GameThingClock) and modules.client_options.getOption('showExpiryInContainers'))
+                itemWidget:setShowDuration(ourShowDuration(itemWidget:getItem()))
                 itemWidget:setShowCharges(g_game.getFeature(GameThingCounter) and modules.client_options.getOption('showExpiryInContainers'))
 
                 local itemName = "unnamed"
@@ -839,7 +845,7 @@ function refreshContainerItems(container)
         itemWidget:setItem(container:getItem(slot))
         ItemsDatabase.setRarityItem(itemWidget, container:getItem(slot))
         ItemsDatabase.setTier(itemWidget, container:getItem(slot))
-        itemWidget:setShowDuration(g_game.getFeature(GameThingClock) and modules.client_options.getOption('showExpiryInContainers'))
+        itemWidget:setShowDuration(ourShowDuration(itemWidget:getItem()))
         itemWidget:setShowCharges(g_game.getFeature(GameThingCounter) and modules.client_options.getOption('showExpiryInContainers'))
     end
 
@@ -1141,7 +1147,7 @@ function onContainerOpen(container, previousContainer)
         itemWidget:setItem(container:getItem(slot))
         ItemsDatabase.setRarityItem(itemWidget, container:getItem(slot))
         ItemsDatabase.setTier(itemWidget, container:getItem(slot))
-        itemWidget:setShowDuration(g_game.getFeature(GameThingClock) and modules.client_options.getOption('showExpiryInContainers'))
+        itemWidget:setShowDuration(ourShowDuration(itemWidget:getItem()))
         itemWidget:setShowCharges(g_game.getFeature(GameThingCounter) and modules.client_options.getOption('showExpiryInContainers'))
         itemWidget:setMargin(0)
         itemWidget.position = container:getSlotPosition(slot)
@@ -1279,7 +1285,7 @@ function onContainerUpdateItem(container, slot, item, oldItem)
     itemWidget:setItem(item)
     ItemsDatabase.setRarityItem(itemWidget, item)
     ItemsDatabase.setTier(itemWidget, item)
-    itemWidget:setShowDuration(g_game.getFeature(GameThingClock) and modules.client_options.getOption('showExpiryInContainers'))
+    itemWidget:setShowDuration(ourShowDuration(itemWidget:getItem()))
     itemWidget:setShowCharges(g_game.getFeature(GameThingCounter) and modules.client_options.getOption('showExpiryInContainers'))
     
     -- Note: Removed automatic re-sorting to prevent interference with manual item movement

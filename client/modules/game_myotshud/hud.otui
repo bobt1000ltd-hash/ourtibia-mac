@@ -471,8 +471,8 @@ HudSubLabel < Label
   margin-left: 18
 
 HudField < TextEdit
-  // 17.10.2026 (Tobeto): 1 px taller at the bottom - the same space above and below the text
-  height: 21
+  // 17.10.2026 (Tobeto): 2 px less at the top, 1 px less at the bottom (was 21)
+  height: 18
   margin-left: 18
   // 16.10.2026 (Tobeto): the text appears where the cursor blinks
   text-align: left

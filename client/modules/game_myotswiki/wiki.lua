@@ -221,6 +221,7 @@ local function resetView()
   ui('cards'):setMarginTop(0);ui('scrollbar'):setMarginTop(0)
   do local bar=ui('ourSortBar');if bar then bar:hide() end end
   sideTitle('Filters');grid(3)
+  do local f=ui('resultsFrame');if f then f:setVisible(tab=='items' or tab=='monsters' or tab=='bosses') end end
 end
 -- 17.10.2026 (Tobeto): Sort by / Sort mode sit in a small panel above the results
 -- (Items & Loot, Bestiary, Bosstiary) instead of the filters; "Locate on map" stays
@@ -236,6 +237,22 @@ function ourWikiLayout()
   local label=g_ui.createWidget('Label',bar);label:setId('ourSortTitle');label:setText('Sort by');label:setColor('#c0c0c0')
   label:setTextAutoResize(true);label:addAnchor(AnchorRight,'sort',AnchorLeft);label:addAnchor(AnchorVerticalCenter,'sort',AnchorVerticalCenter);label:setMarginRight(6)
   for _,id in ipairs({'sortLabel','directionLabel'}) do local w=ui(id);if w then w:hide();w:setHeight(0) end end
+  -- 17.10.2026 (Tobeto): "Reset filters" sticks to the bottom of the Filters panel and the
+  -- results (Items & Loot, Bestiary, Bosstiary) sit in their own panel with the sorting on it
+  local reset=ui('resetFilters')
+  if reset then
+    reset:setParent(window);reset:breakAnchors()
+    reset:addAnchor(AnchorLeft,'sidebar',AnchorLeft);reset:addAnchor(AnchorRight,'sidebar',AnchorRight);reset:addAnchor(AnchorBottom,'sidebar',AnchorBottom)
+    reset:setMarginRight(-9);reset:setHeight(20)
+    ui('sidebar'):setMarginBottom(30)
+  end
+  if not ui('resultsFrame') then
+    local frame=g_ui.createWidget('MiniPanel',window);frame:setId('resultsFrame');frame:setText('Results')
+    frame:addAnchor(AnchorTop,'right',AnchorTop);frame:addAnchor(AnchorLeft,'right',AnchorLeft)
+    frame:addAnchor(AnchorRight,'right',AnchorRight);frame:addAnchor(AnchorBottom,'right',AnchorBottom)
+    frame:setMarginTop(-25);frame:setMarginLeft(-6);frame:setMarginRight(-6);frame:setMarginBottom(-6)
+    frame:setPhantom(true);frame:lower()
+  end
   local locate=ui('locate')
   if locate then
     locate:setParent(window);locate:breakAnchors()
@@ -712,6 +729,7 @@ function changeTab(name,reset)
     restoreMap();tab='knowledge';clearMarkers()
     if itemPage then itemPage:hide() end
     for _,id in ipairs({'sidebar','sideFrame','filterScroll','right','mapBrowser','detailHero','previousPage','nextPage','page'}) do ui(id):hide() end
+    do local f=ui('resultsFrame');if f then f:hide() end;local r=ui('resetFilters');if r then r:hide() end end
     ui('knowledge'):show();ui('address'):setText('wiki://knowledge/home')
     WikiKnowledge.open(window)
     return

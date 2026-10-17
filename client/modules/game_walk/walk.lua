@@ -187,6 +187,47 @@ function ourFieldWalk()
     g_game.autoWalk(dirs, pos)
     return true
 end
+-- OurTibia (17.10.2026): a map click on a neighbour tile (also diagonal) is one
+-- step - no path search, so a monster standing in front of us does not stop a
+-- diagonal step. When no path exists (a creature blocks the only way) walk the
+-- path through the creatures: the character walks up to it and the normal
+-- retry finds a new way once it moves.
+local function ourDirectStep()
+    local dest = mapClick.dest
+    local player = g_game.getLocalPlayer()
+    if not dest or not player then return false end
+    local pos = player:getPosition()
+    if not pos or pos.z ~= dest.z then return false end
+    local dx, dy = dest.x - pos.x, dest.y - pos.y
+    if math.max(math.abs(dx), math.abs(dy)) ~= 1 then return false end
+    local t = g_map.getTile(dest)
+    if not t or not t:isWalkable() or blockedByCreature(dest) then return false end
+    local dirs = {[-1] = {[-1] = Directions.NorthWest, [0] = Directions.North, [1] = Directions.NorthEast},
+        [0] = {[-1] = Directions.West, [1] = Directions.East},
+        [1] = {[-1] = Directions.SouthWest, [0] = Directions.South, [1] = Directions.SouthEast}}
+    local dir = dirs[dy] and dirs[dy][dx]
+    if not dir then return false end
+    g_game.walk(dir)
+    return true
+end
+local function ourCreatureWalk()
+    local dest = mapClick.dest
+    local player = g_game.getLocalPlayer()
+    if not dest or not player then return false end
+    local pos = player:getPosition()
+    if not pos or pos.z ~= dest.z then return false end
+    local ok, dirs, res = pcall(g_map.findPath, pos, dest, 20000, PathFindFlags.AllowCreatures)
+    if not ok or res ~= PathFindResults.Ok or not dirs or #dirs == 0 then return false end
+    if #dirs > 127 then local t = {} for i = 1, 127 do t[i] = dirs[i] end dirs = t end
+    g_game.autoWalk(dirs, pos)
+    return true
+end
+-- called by game_textmessage before it shows "There is no way."; true = handled
+function ourAutoWalkFail()
+    if ourDirectStep() or ourFieldWalk() or ourCreatureWalk() then return true end
+    retryMapClick()
+    return false
+end
 -- OurTibia (05.10.2026): a monster or NPC stepping into the path makes the
 -- server answer "Sorry, not possible." - walk on at once with a new path around
 -- it (the client's own retry waited up to half a second, which looked like the
@@ -523,7 +564,6 @@ function WalkController:onGameStart()
         onCancelWalk = onCancelWalk,
         onWalkFinish = onWalkFinish,
         onAutoWalk = onAutoWalk,
-        onAutoWalkFail = function() if not ourFieldWalk() then retryMapClick() end end
     })
 
     modules.game_interface.getRootPanel().onFocusChange = stopSmartWalk

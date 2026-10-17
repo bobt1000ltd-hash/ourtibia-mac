@@ -350,5 +350,11 @@ function clearMessages()
 end
 
 function LocalPlayer:onAutoWalkFail(player)
+    -- 17.10.2026: game_walk first tries a direct step / a way around (no message then)
+    local fn = _G.ourAutoWalkFail
+    if fn then
+        local ok, handled = pcall(fn)
+        if ok and handled then return end
+    end
     modules.game_textmessage.displayFailureMessage(tr('There is no way.'))
 end

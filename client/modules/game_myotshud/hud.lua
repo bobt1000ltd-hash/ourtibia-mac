@@ -641,7 +641,15 @@ local function trimWords(words) return ((words or ''):lower():gsub('^%s+',''):gs
 local function spell(words,p)
   words=trimWords(words);if words=='' then return nil end
   for _,s in pairs(refs.spells or {}) do if trimWords(s.words)==words then
-    if p:getLevel()<(s.level or 0) or p:getMagicLevel()<(s.magiclevel or 0) or p:getMana()<(s.mana or 0) or p:getSoul()<(s.soul or 0) then return nil end
+    if p:getLevel()<(s.level or 0) or p:getMagicLevel()<(s.magiclevel or 0) or p:getMana()<(s.mana or 0) or p:getSoul()<(s.soul or 0) then
+      -- 17.10.2026: say exactly what is missing
+      local miss={}
+      if p:getLevel()<(s.level or 0) then miss[#miss+1]='level '..s.level..' (you have '..p:getLevel()..')' end
+      if p:getMagicLevel()<(s.magiclevel or 0) then miss[#miss+1]='magic level '..s.magiclevel..' (you have '..p:getMagicLevel()..')' end
+      if p:getMana()<(s.mana or 0) then miss[#miss+1]=s.mana..' mana (you have '..p:getMana()..')' end
+      if p:getSoul()<(s.soul or 0) then miss[#miss+1]=s.soul..' soul (you have '..p:getSoul()..')' end
+      return nil,table.concat(miss,', ')
+    end
     return s
   end end
   -- 02.10.2026: spells missing from the catalog (or typed differently) are still
@@ -671,7 +679,7 @@ local function train(p)
     local sp=trimWords(trainer.mana and trainer.manaSpell or trainer.runeSpell)
     local percent=math.floor(p:getMana()/math.max(1,p:getMaxMana())*100)
     local need=tonumber(trainer.mana and trainer.manaThreshold or trainer.runeThreshold) or 90
-    if percent>=need and not spell(sp,p) then trainer.warned=true;statusMessage('Trainer: you cannot cast "'..sp..'" yet (level, magic level, mana or soul).') end
+    if percent>=need then local ok,why=spell(sp,p);if not ok then trainer.warned=true;statusMessage('Trainer: "'..sp..'" needs '..(why or 'more level or mana')..'.') end end
   end
   -- These two checkboxes are independent of the spell-training switch.
   if trainer.food and (p:getRegenerationTime() or 0)<600 then command('trainer:food') end
@@ -862,6 +870,7 @@ function init()
   do
     local on=false
     local b=button(c,'Autoloot: OFF',nil)
+    b:setHeight(20) -- 17.10.2026 (Tobeto): 1 px less at the top, 2 px less at the bottom
     local function paint() b:setText(on and 'Autoloot: ON' or 'Autoloot: OFF');b:setColor(on and '#66dd44' or '#ff5555');b:setTooltip(on and 'Autoloot is on (click to stop)' or 'Autoloot is off (click to start)') end
     b.onClick=function() on=not on;paint();command('loot:enabled:'..(on and 1 or 0)) end
     fields.enabled={setChecked=function(_,v) on=v and true or false;paint() end,isChecked=function() return on end}
@@ -894,6 +903,7 @@ function init()
     if trainer.enabled and g_game.isOnline() then pcall(train,g_game.getLocalPlayer()) end
   end
   trainerButton=button(c,'Trainer: OFF',function() toggleTrainer() end)
+  trainerButton:setHeight(20) -- 17.10.2026 (Tobeto): 1 px less at the top, 2 px less at the bottom
   pinTop(training,trainerButton)
   -- 15.10.2026 (Tobeto): two separate groups, fields indented under their checkbox
   for index,entry in ipairs({{'mana','Mana training','manaSpell','manaThreshold'}, {'runes','Rune maker','runeSpell','runeThreshold'}}) do

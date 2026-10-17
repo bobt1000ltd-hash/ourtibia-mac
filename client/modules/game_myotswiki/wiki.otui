@@ -92,21 +92,16 @@ WikiAttack < Panel
     margin-right: 14
     height: 6
 
+// 17.10.2026 (Tobeto): Knowledge categories in the style of the Close button
 WikiNavButton < Button
-  height: 24
-  font: verdana-11px-rounded
+  height: 20
   text-align: center
-  text-offset: 0 2
-  $pressed:
-    text-offset: 1 3
   $on:
-    text-offset: 1 3
     color: #ffd35a
 
 WikiNavSub < WikiNavButton
   color: #c8c8c8
   $on:
-    text-offset: 1 3
     color: #ffd35a
 
 WikiTab < Button
@@ -122,24 +117,25 @@ MainWindow
   text: Game Wiki & Knowledge Compendium
   size: 870 640
   @onEscape: modules.game_myotswiki.hide()
+  // 17.10.2026 (Tobeto): every button here has the height of the Close button (20)
   Button
     id: closeTop
     text: X
-    size: 20 19
+    size: 20 20
     anchors.top: parent.top
     anchors.right: parent.right
     @onClick: modules.game_myotswiki.hide()
   Button
     id: back
     text: <
-    size: 25 22
+    size: 25 20
     anchors.top: parent.top
     anchors.left: parent.left
     @onClick: modules.game_myotswiki.back()
   Button
     id: copyLink
     text: Link to chat
-    size: 100 22
+    size: 90 20
     anchors.top: parent.top
     anchors.right: closeTop.left
     margin-right: 6
@@ -229,9 +225,10 @@ MainWindow
       text: Search
       height: 0
       visible: false
+    // 17.10.2026 (Tobeto): input boxes as high as the text cursor
     TextEdit
       id: search
-      height: 25
+      height: 18
       placeholder: Search...
     Label
       id: categoryLabel
@@ -327,18 +324,18 @@ MainWindow
       height: 14
     TextEdit
       id: minimum
-      height: 23
+      height: 18
     Label
       id: maximumLabel
       text: Maximum selected stat
       height: 14
     TextEdit
       id: maximum
-      height: 23
+      height: 18
     Button
       id: resetFilters
       text: Reset filters
-      height: 24
+      height: 20
       @onClick: modules.game_myotswiki.resetFilters()
     Panel
       id: statRows
@@ -356,7 +353,7 @@ MainWindow
     Button
       id: locate
       text: Locate on map
-      height: 24
+      height: 20
       @onClick: modules.game_myotswiki.locate()
   VerticalScrollBar
     id: filterScroll
@@ -382,6 +379,7 @@ MainWindow
         id: mapGroupMonsters
         text: Monsters
         width: 64
+        height: 20
         $on:
           color: #ffd35a
         @onClick: modules.game_myotswiki.mapList('Monsters')
@@ -389,6 +387,7 @@ MainWindow
         id: mapGroupBosses
         text: Bosses
         width: 56
+        height: 20
         $on:
           color: #ffd35a
         @onClick: modules.game_myotswiki.mapList('Bosses')
@@ -396,6 +395,7 @@ MainWindow
         id: mapGroupNPCs
         text: NPCs
         width: 56
+        height: 20
         $on:
           color: #ffd35a
         @onClick: modules.game_myotswiki.mapList('NPCs')
@@ -405,7 +405,7 @@ MainWindow
       anchors.left: parent.left
       anchors.right: parent.right
       margin-top: 6
-      height: 25
+      height: 18
       placeholder: Search spawns...
     ScrollablePanel
       id: mapList
@@ -572,31 +572,29 @@ MainWindow
     anchors.bottom: footer.top
     margin-top: 10
     visible: false
-    Panel
+    // 17.10.2026 (Tobeto): the categories sit in a panel like "Filters"
+    MiniPanel
       id: knowledgeNavBox
       anchors.left: parent.left
       anchors.top: parent.top
       anchors.bottom: parent.bottom
+      margin-top: 25
       width: 200
-      border-width: 1
-      border-color: #555555
+      text: Categories
       Label
         id: knowledgeNavTitle
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        margin: 6 8 0 8
-        height: 20
-        font: Verdana Bold-13px
-        color: #f0f0f0
-        text: Categories
+        height: 0
+        visible: false
       ScrollablePanel
         id: knowledgeNav
         anchors.top: knowledgeNavTitle.bottom
         anchors.left: parent.left
         anchors.right: knowledgeNavScroll.left
         anchors.bottom: parent.bottom
-        margin: 6 2 6 6
+        margin: 0 2 0 0
         vertical-scrollbar: knowledgeNavScroll
         layout:
           type: verticalBox
@@ -606,8 +604,8 @@ MainWindow
         anchors.top: knowledgeNavTitle.bottom
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        margin: 6 2 6 0
-        step: 27
+        margin: 0 0 0 0
+        step: 23
         pixels-scroll: true
     ScrollablePanel
       id: knowledgeContent
@@ -645,7 +643,7 @@ MainWindow
     Button
       id: previousPage
       text: <
-      width: 35
+      size: 35 20
       anchors.right: page.left
       anchors.verticalCenter: parent.verticalCenter
       margin-right: 6
@@ -653,7 +651,7 @@ MainWindow
     Button
       id: nextPage
       text: >
-      width: 35
+      size: 35 20
       anchors.left: page.right
       anchors.verticalCenter: parent.verticalCenter
       margin-left: 6
@@ -661,7 +659,7 @@ MainWindow
     Button
       id: close
       text: Close
-      width: 90
+      size: 90 20
       anchors.bottom: parent.bottom
       anchors.right: parent.right
       @onClick: modules.game_myotswiki.hide()
