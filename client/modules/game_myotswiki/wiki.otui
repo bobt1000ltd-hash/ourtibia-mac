@@ -213,6 +213,8 @@ MainWindow
     margin-left: 6
     margin-bottom: 6
     width: 185
+    // 17.10.2026 (Tobeto): room between the filters and the scroll bar
+    padding-right: 5
     vertical-scrollbar: filterScroll
     layout:
       type: verticalBox
@@ -221,10 +223,12 @@ MainWindow
       id: sidebarTitle
       height: 0
       visible: false
+    // 17.10.2026 (Tobeto): no "Search" title - the box says "Search..."
     Label
       id: searchLabel
       text: Search
-      height: 14
+      height: 0
+      visible: false
     TextEdit
       id: search
       height: 25
@@ -236,7 +240,7 @@ MainWindow
     ComboBox
       id: category
       text-offset: -15 0
-      height: 20
+      height: 19
     Label
       id: sortLabel
       text: Sort by
@@ -244,7 +248,7 @@ MainWindow
     ComboBox
       id: sort
       text-offset: -15 0
-      height: 20
+      height: 19
     Label
       id: directionLabel
       text: Sort mode
@@ -252,7 +256,7 @@ MainWindow
     ComboBox
       id: direction
       text-offset: -15 0
-      height: 20
+      height: 19
     Label
       id: obtainingLabel
       text: Way of obtaining
@@ -260,7 +264,7 @@ MainWindow
     ComboBox
       id: obtaining
       text-offset: -15 0
-      height: 20
+      height: 19
     Label
       id: resistanceLabel
       text: Resistance
@@ -268,7 +272,7 @@ MainWindow
     ComboBox
       id: resistance
       text-offset: -15 0
-      height: 20
+      height: 19
     Label
       id: tierLabel
       text: Drop tier
@@ -276,7 +280,7 @@ MainWindow
     ComboBox
       id: tier
       text-offset: -15 0
-      height: 20
+      height: 19
     Label
       id: weaponLabel
       text: Weapon type
@@ -284,7 +288,7 @@ MainWindow
     ComboBox
       id: weapon
       text-offset: -15 0
-      height: 20
+      height: 19
     Label
       id: handsLabel
       text: Hands
@@ -292,7 +296,7 @@ MainWindow
     ComboBox
       id: hands
       text-offset: -15 0
-      height: 20
+      height: 19
     Label
       id: elementLabel
       text: Damage element
@@ -300,7 +304,7 @@ MainWindow
     ComboBox
       id: element
       text-offset: -15 0
-      height: 20
+      height: 19
     Label
       id: weaknessLabel
       text: Weak to
@@ -308,7 +312,7 @@ MainWindow
     ComboBox
       id: weakness
       text-offset: -15 0
-      height: 20
+      height: 19
     Label
       id: spawnFilterLabel
       text: Spawn availability
@@ -316,7 +320,7 @@ MainWindow
     ComboBox
       id: spawnFilter
       text-offset: -15 0
-      height: 20
+      height: 19
     Label
       id: minimumLabel
       text: Minimum selected stat

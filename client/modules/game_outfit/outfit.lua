@@ -356,6 +356,7 @@ function create(player, outfitList, creatureMount, mountList, familiarList, wing
     -- while wearing another (server opcode 119).
     -- 15.10.2026 (Tobeto): the button sits in the lower left corner of "Configure", the bonus of the
     -- selected outfit / mount is written above it; nothing is shown when it has no bonus.
+    pcall(ourCompactLayout)
     pcall(ourCreateBonusPanel)
 
     previewCreature = window.preview.panel.creature
@@ -1107,6 +1108,35 @@ function showShaders()
             end
         end
     end
+    -- 17.10.2026 (Tobeto): every shader is listed; the ones you do not own are blue
+    -- (Game Store, loyalty token icon) or grey (Task Shop) and can only be previewed
+    for _, e in ipairs(ourMissingShaders or {}) do
+        if not window.selectionList:getChildById(e[2]) then
+            local button = g_ui.createWidget("SelectionButton", window.selectionList)
+            button:setId(e[2])
+            button.outfit:setOutfit({type = tempOutfit.type, addons = tempOutfit.addons})
+            button.outfit:setCenter(true)
+            button.outfit:getCreature():setShader(e[2])
+            button.name:setText(e[3])
+            button.ourShaderMissing = true
+            button.ourStoreOnly = true
+            if e[5] == 'loyalty' then
+                button:setImageSource('/images/ui/button-blue-qt')
+                local icon = g_ui.createWidget('UIItem', button)
+                icon:setId('ourCurrency'); icon:setVirtual(true); icon:setPhantom(false)
+                icon:setSize({width = 16, height = 16})
+                icon:addAnchor(AnchorTop, 'parent', AnchorTop); icon:addAnchor(AnchorLeft, 'parent', AnchorLeft)
+                icon:setMarginTop(2); icon:setMarginLeft(2)
+                icon:setItemId(22721)
+                local tip = string.format('%s\nGame Store (Loyalty): %d loyalty tokens.\nClick the token to open the store.', e[3], e[4] or 0)
+                icon:setTooltip(tip); button:setTooltip(tip)
+                local name = e[3]
+                icon.onClick = function() local st = modules.game_myotsstore;if st and st.openSearch then st.openSearch('Loyalty', name) end end
+            else
+                button:setTooltip(e[3] .. '\nTask Shop (task points).')
+            end
+        end
+    end
     if focused ~= nil then
         local w = window.selectionList[focused]
         w:focus()
@@ -1443,6 +1473,12 @@ function onWingsSelect(list, focusedChild, unfocusedChild, reason)
 end
 
 function onShaderSelect(list, focusedChild, unfocusedChild, reason)
+    -- 17.10.2026: a shader you do not own is only previewed (it is not applied)
+    if focusedChild and focusedChild.ourShaderMissing then
+        local creature = previewCreature and previewCreature:getCreature()
+        if creature then creature:setShader(focusedChild:getId()) end
+        return
+    end
     if focusedChild then
         local shaderType = focusedChild:getId()
         if previewCreature then
@@ -1972,6 +2008,18 @@ function ourBonusOf(mode, id)
     if mode == 'mount' then return OurOutfitBonus.m and OurOutfitBonus.m[tostring(id)] end
 end
 
+-- 17.10.2026 (Tobeto): the preview is 10 px lower, so "Change Appearance" shows Preset,
+-- Outfit, Mount and Shader without a scroll bar; "Configure" and "Active bonuses" move up too.
+function ourCompactLayout()
+    local preview = window.preview
+    preview:setHeight(preview:getHeight() - 10)
+    local settingsPanel = window.appearance.settings
+    settingsPanel:setHeight(96)
+    settingsPanel:setPaddingRight(5)
+    local bar = window.appearance:getChildById('scrollbar')
+    if bar then bar:hide(); bar:setWidth(0) end
+end
+
 function ourCreateBonusPanel()
     local conf = window.configure
     local btn = g_ui.createWidget('Button', window)
@@ -1983,7 +2031,7 @@ function ourCreateBonusPanel()
     btn:setMarginBottom(7)
     btn:setMarginLeft(6)
     btn:setMarginRight(6)
-    btn:setText('Set new bonus')
+    btn:setText('Set as new bonus')
     btn:setTooltip('Keep the bonus of the selected outfit and wear any other outfit you like (only the look changes, bonuses do not stack). Right click: back to the bonus of the worn outfit.')
     btn.onClick = function()
         if g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(119, 'set:' .. (tempOutfit.type or 0) .. ':' .. (tempOutfit.addons or 0)) end
@@ -2019,7 +2067,7 @@ function ourCreateBonusPanel()
     act:addAnchor(AnchorTop, 'parent', AnchorTop)
     act:addAnchor(AnchorLeft, 'parent', AnchorLeft)
     act:addAnchor(AnchorRight, 'parent', AnchorRight)
-    act:setMarginTop(24)
+    act:setMarginTop(0) -- 17.10.2026 (Tobeto): the same space under the title as in "Configure"
     local title = g_ui.createWidget('UIWidget', act)
     title:setId('title')
     title:setHeight(0)
@@ -2027,21 +2075,30 @@ function ourCreateBonusPanel()
     title:addAnchor(AnchorLeft, 'parent', AnchorLeft)
     title:addAnchor(AnchorRight, 'parent', AnchorRight)
     for i, id in ipairs({'ourActOutfit', 'ourActMount'}) do
-        local c = g_ui.createWidget('UICreature', act)
+        -- 17.10.2026: a frame with the creature inside (an empty mount slot no longer
+        -- draws outfit 0, which flooded the terminal with "Invalid thing type")
+        local box = g_ui.createWidget('UIWidget', act)
+        box:setId(id .. 'Box')
+        box:setSize({width = 34, height = 34})
+        box:addAnchor(AnchorTop, 'title', AnchorBottom)
+        if i == 1 then
+            box:addAnchor(AnchorRight, 'parent', AnchorHorizontalCenter)
+            box:setMarginRight(6)
+        else
+            box:addAnchor(AnchorLeft, 'parent', AnchorHorizontalCenter)
+            box:setMarginLeft(6)
+        end
+        box:setBorderWidth(1)
+        box:setBorderColor('#00000077')
+        local c = g_ui.createWidget('UICreature', box)
         c:setId(id)
         c:setSize({width = 32, height = 32})
-        c:addAnchor(AnchorTop, 'title', AnchorBottom)
-        if i == 1 then
-            c:addAnchor(AnchorRight, 'parent', AnchorHorizontalCenter)
-            c:setMarginRight(6)
-        else
-            c:addAnchor(AnchorLeft, 'parent', AnchorHorizontalCenter)
-            c:setMarginLeft(6)
-        end
+        c:addAnchor(AnchorTop, 'parent', AnchorTop)
+        c:addAnchor(AnchorLeft, 'parent', AnchorLeft)
+        c:setMarginTop(1)
+        c:setMarginLeft(1)
         c:setPhantom(false)
         pcall(function() c:setCenter(true) end)
-        c:setBorderWidth(1)
-        c:setBorderColor('#00000077')
     end
     local lbl = g_ui.createWidget('Label', panel)
     lbl:setId('ourBonusText')
@@ -2052,11 +2109,13 @@ function ourCreateBonusPanel()
     lbl:setMarginLeft(8)
     lbl:setMarginRight(6)
     lbl:setTextWrap(true)
-    lbl:setTextAutoResize(true)
+    -- 17.10.2026: only the height follows the text (the full auto size wrapped it too early)
+    lbl:setTextVerticalAutoResize(true)
     lbl:setTextAlign(AlignTopLeft)
     lbl:setColor('#d8c48a')
     lbl:setFont('verdana-11px-rounded')
     lbl:hide()
+    btn:raise() -- 17.10.2026: the panel was drawn over the "Set as new bonus" button
     ourBonusName = nil
     ourBonusLook = nil
     if g_game.isOnline() then
@@ -2158,7 +2217,7 @@ function ourUpdateActive()
     local cur = p:getOutfit()
     local look = ourBonusLook or cur.type
     local addons = ourBonusLook and (ourBonusAddons or 0) or (cur.addons or 0)
-    local o = act:getChildById('ourActOutfit')
+    local o = act:recursiveGetChildById('ourActOutfit')
     local out = table.copy(cur)
     out.type = look; out.addons = addons; out.mount = 0
     o:setOutfit(out)
@@ -2166,7 +2225,7 @@ function ourUpdateActive()
     local st = ADDON_STAGE_TIP[addons] or 1
     -- 16.10.2026 (Tobeto): the bonus counts only for the full outfit (both addons)
     o:setTooltip(b and (addons == 3 and ('Outfit bonus' .. (ourBonusName and (' (' .. ourBonusName .. ')') or '') .. ':\n' .. tostring(b[3] or '')) or 'This outfit gives a bonus only with both addons.') or 'This outfit gives no bonus.')
-    local m = act:getChildById('ourActMount')
+    local m = act:recursiveGetChildById('ourActMount')
     local mountLook = p:isMounted() and cur.mount or 0
     if mountLook and mountLook > 0 then
         m:setOutfit({type = mountLook})
@@ -2174,8 +2233,9 @@ function ourUpdateActive()
         local mb = ourBonusOf('mount', mountLook)
         m:setTooltip(mb and ('Mount bonus (while riding):\n' .. tostring(mb)) or 'This mount gives no bonus.')
     else
-        m:setOutfit({type = 0})
-        m:setTooltip('No mount bonus - you are not riding.')
+        m:hide()
+        local box = act:recursiveGetChildById('ourActMountBox')
+        if box then box:setTooltip('No mount bonus - you are not riding.') end
     end
 end
 
@@ -2183,8 +2243,10 @@ ADDON_STAGE_TIP = {[0] = 1, [1] = 2, [2] = 2, [3] = 3}
 local ADDON_STAGE = {[0] = {1, 'no addons'}, [1] = {2, 'one addon'}, [2] = {2, 'one addon'}, [3] = {3, 'both addons'}}
 function ourUpdateBonusPanel()
     if not window then return end
-    local btn = window:getChildById('ourBonusOutfit')
-    local lbl = window:getChildById('ourBonusText')
+    -- 17.10.2026: the label lives inside "Active bonuses" (getChildById did not find it,
+    -- so nothing was shown and the "Set as new bonus" button never came back)
+    local btn = window:recursiveGetChildById('ourBonusOutfit')
+    local lbl = window:recursiveGetChildById('ourBonusText')
     if not btn or not lbl then return end
     local text, showBtn, colored
     -- 16.10.2026 (Tobeto): what you lose (red) and what you get (green) with the picked look
@@ -2224,7 +2286,22 @@ function ourUpdateBonusPanel()
         local mb = (p and p:isMounted() and (cur.mount or 0) > 0) and ourBonusOf('mount', cur.mount) or nil
         if b then colored = diff(mb or '', b) end
     end
-    if colored and colored ~= '' then text = colored end
+    -- 17.10.2026 (Tobeto): "Active bonuses" always lists the bonus you use now
+    -- (outfit + mount); a different outfit / mount shows what changes (red / green)
+    local function activeText()
+        local parts = {}
+        local aLook = ourBonusLook or cur.type
+        local aAdd = ourBonusLook and (ourBonusAddons or 0) or (cur.addons or 0)
+        local ab = ourBonusOf('outfit', aLook)
+        if ab and aAdd == 3 then for _, t in ipairs(items(ab[3])) do parts[#parts + 1] = '{' .. t .. ', #d8c48a}\n' end end
+        local mb = (p and p:isMounted() and (cur.mount or 0) > 0) and ourBonusOf('mount', cur.mount) or nil
+        if mb then for _, t in ipairs(items(mb)) do parts[#parts + 1] = '{' .. t .. ', #9fd0ff}\n' end end
+        if #parts == 0 then return '{No active bonus., #a0a0a0}' end
+        return table.concat(parts)
+    end
+    local picking = (ourListMode == 'outfit' and tempOutfit.type and tempOutfit.type ~= (ourBonusLook or cur.type)) or
+        (ourListMode == 'mount' and (tempOutfit.mount or 0) > 0 and tempOutfit.mount ~= ((p and p:isMounted()) and cur.mount or 0))
+    if colored and colored ~= '' and picking then text = colored else text = activeText() end
     -- 15.10.2026 (Tobeto): "Set new bonus" replaces the active bonus outfit
     local activeLook = ourBonusLook
     if not activeLook then
@@ -2240,9 +2317,20 @@ function ourUpdateBonusPanel()
     end
     if text then pcall(function() lbl:setColoredText(text) end); lbl:show() else lbl:hide() end
     btn:setVisible(showBtn and true or false)
-    if showBtn then btn:setText('Set new bonus') end
+    if showBtn then btn:setText('Set as new bonus') end
     pcall(ourUpdateActive)
     -- 16.10.2026: the label sits under the active outfit / mount in "Active bonuses"
+end
+
+ourMissingShaders = nil
+function ourSetMissingShaders(list)
+    ourMissingShaders = list
+    if not window then return end
+    if #list > 0 then
+        for _, w in ipairs({window.preview.options.showShader, window.appearance.settings.shader}) do
+            if w then w:setVisible(true) end
+        end
+    end
 end
 
 -- 11.10.2026 (Tobeto): owned shaders arrive from the server (game_myotsstore

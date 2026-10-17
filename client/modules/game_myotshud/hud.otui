@@ -38,7 +38,8 @@ HudCheck < CheckBox
   font: verdana-11px-rounded
   color: #e8e8e8
   image-rect: 0 3 12 12
-  text-offset: 18 0
+  // 17.10.2026 (Tobeto): text centred on the box (was 1 px lower)
+  text-offset: 18 -1
 
 // 16.10.2026 (Tobeto): Kill Tracker in the Task Tracker style - no stars; the 8 stages are
 // thin lines: the ones still to do on the left of the bar, the finished ones on the right.
@@ -69,15 +70,14 @@ KillEntry < UIWidget
     anchors.top: name.bottom
     margin-left: 5
     margin-top: 3
-    size: 30 16
+    size: 1 16
   Panel
     id: stagesRight
     phantom: true
     anchors.right: parent.right
     anchors.top: name.bottom
-    margin-right: 2
     margin-top: 3
-    size: 30 16
+    size: 34 16
   LifeProgressBar
     id: killProgress
     phantom: true
@@ -85,8 +85,6 @@ KillEntry < UIWidget
     anchors.right: stagesRight.left
     anchors.top: name.bottom
     margin-top: 3
-    margin-left: 3
-    margin-right: 3
     height: 16
     background-color: #00a83a
     border: 1 #182018
@@ -470,7 +468,8 @@ HudSubLabel < Label
   margin-left: 18
 
 HudField < TextEdit
-  height: 20
+  // 17.10.2026 (Tobeto): 1 px taller at the bottom - the same space above and below the text
+  height: 21
   margin-left: 18
   // 16.10.2026 (Tobeto): the text appears where the cursor blinks
   text-align: left

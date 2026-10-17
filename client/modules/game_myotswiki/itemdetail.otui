@@ -89,7 +89,7 @@ Panel
       anchors.verticalCenter: sourceOrder.verticalCenter
       anchors.left: parent.left
       margin-left: 5
-      size: 78 20
+      size: 88 20
       text: Drop
       !tooltip: tr('Monsters and bosses that drop this item')
       @onClick: modules.game_myotswiki.setSourceTab('drop')
@@ -98,7 +98,7 @@ Panel
       anchors.verticalCenter: sourceOrder.verticalCenter
       anchors.left: dropTab.right
       margin-left: 4
-      size: 78 20
+      size: 88 20
       text: Quest
       !tooltip: tr('Quests that give this item')
       @onClick: modules.game_myotswiki.setSourceTab('quest')

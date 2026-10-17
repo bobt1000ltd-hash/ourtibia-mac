@@ -293,12 +293,13 @@ MainWindow
       anchors.left: parent.left
       anchors.right: parent.right
       margin: 12 10 0 10
-      height: 30
+      // 17.10.2026 (Tobeto): the same height as Change role / Leave group / Start
+      height: 24
       Button
         id: joinButton
         anchors.left: parent.left
         anchors.top: parent.top
-        size: 150 28
+        size: 150 22
         text: Quick join
         tooltip: Join the oldest group that has a free place for your role (or start a new one).
         @onClick: modules.game_groupfinder.join()
@@ -306,7 +307,7 @@ MainWindow
         id: createButton
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        size: 150 28
+        size: 150 22
         text: Create group
         tooltip: Make a new group of your own (you can set a password).
         @onClick: modules.game_groupfinder.create()
@@ -314,7 +315,7 @@ MainWindow
         id: partyButton
         anchors.right: parent.right
         anchors.top: parent.top
-        size: 150 28
+        size: 150 22
         text: Join as party
         tooltip: Party leader only: queue your whole party (max 4 players) as one closed group.
         @onClick: modules.game_groupfinder.joinParty()
@@ -368,10 +369,12 @@ MainWindow
         type: verticalBox
         spacing: 2
 
+  // 17.10.2026 (Tobeto): Close in the lower right corner like every other window
   Button
     id: startButton
     anchors.bottom: parent.bottom
-    anchors.right: parent.right
+    anchors.right: closeButton.left
+    margin-right: 6
     size: 110 22
     text: Start
     @onClick: modules.game_groupfinder.start()
@@ -395,19 +398,19 @@ MainWindow
   Button
     id: closeButton
     anchors.bottom: parent.bottom
-    anchors.left: parent.left
+    anchors.right: parent.right
     size: 80 22
     text: Close
     @onClick: modules.game_groupfinder.hide()
   Label
     id: footer
     anchors.bottom: parent.bottom
-    anchors.left: closeButton.right
+    anchors.left: parent.left
     anchors.right: roleButton.left
-    margin: 0 8 4 8
+    margin: 0 8 4 0
     font: verdana-11px-monochrome
     color: #9a9a9a
-    text: Rewards go to the reward chest in any town temple.
+    text:
 
 // 16.10.2026 (Tobeto): the role (and an optional password) is asked when you create or join
 GFRoleDialog < MainWindow

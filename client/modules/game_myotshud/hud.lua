@@ -44,6 +44,8 @@ end
 local function toggle(w) if w:isVisible() then w:close() else w:open() end end
 -- 16.10.2026 (Tobeto): Task Board -> 'Task Tracker' button
 function showTaskTracker() local w=windows and windows.myotsTasks;if w then if not w:isVisible() then w:open() end;pcall(function() w:raise() end) end end
+-- 17.10.2026 (Tobeto): the Task Board button switches the Task Tracker on and off
+function toggleTaskTracker() local w=windows and windows.myotsTasks;if w then if w:isVisible() then w:close() else w:open();pcall(function() w:raise() end) end end end
 -- 13.10.2026 (Tobeto): Autolooting and Trainer cannot be stretched past their contents
 function ourCapPanels()
   for _,id in ipairs({'myotsLoot','myotsTrainer'}) do
@@ -157,6 +159,10 @@ local function drawKills()
     end
     lines(row:getChildById('stagesLeft'),8-r.stars,'#6a6a6a',false)
     lines(row:getChildById('stagesRight'),r.stars,'#e0b040',true)
+    -- 17.10.2026 (Tobeto): the bar always has the same length and reaches the right side;
+    -- only the stage lines move from the left to the right when a stage is finished
+    do local leftW=(8-r.stars)*4+1
+      row:getChildById('stagesLeft'):setWidth(leftW);row:getChildById('stagesRight'):setWidth(35-leftW) end
     local progress=row:getChildById('killProgress')
     -- 11.10.2026: the server sends the milestones of this monster (fewer kills for rare spawns)
     local previous=tonumber(r.prev)
@@ -173,8 +179,10 @@ local function drawKills()
     local monster=refs and refs.monsters and refs.monsters[r.name]
     -- 16.10.2026: the server sends the outfit (new monsters are not in hud.json)
     OurTibiaArt.creature(row:getChildById('outfit'),(type(r.outfit)=='table' and (tonumber(r.outfit.type) or 0)+(tonumber(r.outfit.typeex) or 0)>0) and r.outfit or (monster and monster.outfit),r.name)
-    row:setTooltip(r.stars>=8 and string.format('%s: all 8 stages done (%g kills)\nBonus: +8%% damage, +16%% loot against this monster.\nClick to open the wiki page.',r.name,math.floor(r.kills*100)/100)
-      or string.format('%s: stage %d / 8 - %g / %d kills\nBonus now: +%d%% damage, +%d%% loot against this monster.\nEach finished stage: one reward (coins, fragments or upgrade stones).\nClick to open the wiki page.',r.name,r.stars+1,math.floor(r.kills*100)/100,r.target,r.stars,r.stars*2))
+    -- 17.10.2026 (Tobeto): tooltip in the "Wolf" format
+    do local kills=math.floor(r.kills*100)/100
+      row:setTooltip(string.format('%s\nStage: %d/8\nKills: %s\nCurrent bonus:\n+%d%% damage\n+%d%% loot\nClick to open wiki.',
+        tostring(r.display or r.name),math.min(8,r.stars+(r.stars>=8 and 0 or 1)),r.stars>=8 and string.format('%g',kills) or string.format('%g/%d',kills,r.target),r.stars,r.stars*2)) end
   end
   if #(state.recent or {})==0 then label(c,'Hunt to track your first kills.') end
 end
@@ -897,7 +905,8 @@ function init()
   -- 15.10.2026 (Tobeto): two separate groups, fields indented under their checkbox
   for index,entry in ipairs({{'mana','Mana training','manaSpell','manaThreshold'}, {'runes','Rune maker','runeSpell','runeThreshold'}}) do
     local key,title,spellKey,thresholdKey=entry[1],entry[2],entry[3],entry[4]
-    local sep=g_ui.createWidget('HorizontalSeparator',c);sep:setMarginTop(index==1 and 4 or 6);sep:setMarginBottom(3)
+    -- 17.10.2026 (Tobeto): no line between the Trainer: ON/OFF button and the options
+    if index>1 then local sep=g_ui.createWidget('HorizontalSeparator',c);sep:setMarginTop(6);sep:setMarginBottom(3) end
     -- 05.10.2026: ticking Mana Training / Rune Maker switches the trainer on (players
     -- ticked the box and never pressed "Trainer: OFF", so nothing was cast).
     fields['train_'..key]=check(c,title,function(v)trainer[key]=v;if v and not loading then trainer.enabled=true;updateTrainerButton() end;saveTrainer()end)

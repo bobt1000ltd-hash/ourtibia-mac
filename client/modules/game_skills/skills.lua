@@ -150,13 +150,21 @@ function ourPinTabs()
     nz:addAnchor(AnchorRight, 'miniwindowScrollBar', AnchorLeft)
     nz:setMarginLeft(8); nz:setMarginRight(6)
     nz:hide()
+    -- 17.10.2026 (Tobeto): the line under the fixed elements does not scroll either
+    local line = g_ui.createWidget('HorizontalSeparator', skillsWindow)
+    line:setId('myotsStaticLine')
+    line:addAnchor(AnchorTop, 'myotsNonZero', AnchorBottom)
+    line:addAnchor(AnchorLeft, 'parent', AnchorLeft)
+    line:addAnchor(AnchorRight, 'miniwindowScrollBar', AnchorLeft)
+    line:setMarginLeft(8); line:setMarginRight(6); line:setMarginTop(3)
+    line:hide()
     ourTabsOffset()
 end
 function ourTabsOffset()
     local contents = skillsWindow and skillsWindow:getChildById('contentsPanel')
     local nz = skillsWindow and skillsWindow:getChildById('myotsNonZero')
     if not contents then return end
-    contents:setMarginTop(3 + 20 + 3 + ((nz and nz:isVisible()) and 18 or 0))
+    contents:setMarginTop(3 + 20 + 3 + ((nz and nz:isVisible()) and (18 + 6) or 0))
 end
 
 function skillController:onTerminate()
@@ -1060,6 +1068,12 @@ function updateHeight()
     local contentsPanel = skillsWindow:getChildById('contentsPanel')
     skillsWindow:setContentMinimumHeight(math.max(minimumHeight, 44))
     skillsWindow:setContentMaximumHeight(maximumHeight)
+    -- 17.10.2026 (Tobeto): unpinning an attribute makes the window shorter right away
+    local border = skillsWindow:getChildById('bottomResizeBorder')
+    local maxH = border and tonumber(border.maximum)
+    if maxH and maxH > 0 and skillsWindow:getHeight() > maxH then
+        skillsWindow:setHeight(maxH)
+    end
 end
 
 local function resetTable(t)
@@ -1841,6 +1855,7 @@ function myotsTab(attributes)
     end
     skillsWindow:recursiveGetChildById('myotsDetails'):setVisible(attributes)
     local nz = skillsWindow:getChildById('myotsNonZero'); if nz then nz:setVisible(attributes) end
+    local line = skillsWindow:getChildById('myotsStaticLine'); if line then line:setVisible(attributes) end
     pcall(ourTabsOffset)
     pcall(ourRefreshPinned)
     if attributes then
@@ -2017,6 +2032,11 @@ function myotsAttributes(rows)
         if entry.section then
             local heading=g_ui.createWidget('OurAttributeHeading',panel)
             local title=heading and heading:getChildById('title');if title then title:setText(tostring(entry.section)) end
+            -- 17.10.2026 (Tobeto): the first heading uses the fixed line above the list
+            if panel:getChildCount()==1 and heading then
+                for _,ch in ipairs(heading:getChildren()) do if ch~=title then ch:hide() end end
+                heading:setHeight(19)
+            end
         else
             local widget=g_ui.createWidget('OurAttributeRow',panel)
             local key=tostring(entry.key or 'unknown')
@@ -2205,8 +2225,11 @@ function ourRefreshPinned()
         ourSetupPin(row,key)
         n=n+1
     end
-    panel:setHeight(n>0 and (n*17+9) or 0)
-    panel:setVisible(n>0 and not myotsAttributesShown)
+    -- 17.10.2026 (Tobeto): the window ends with the closing lines of the menus
+    -- (after the pinned attributes, or after the last skill when nothing is pinned)
+    do local finish=g_ui.createWidget('HorizontalSeparator',panel);finish:setId('ourFinish');finish:setMarginTop(4);finish:setHeight(2) end
+    panel:setHeight(n>0 and (n*17+9+12) or 12)
+    panel:setVisible(not myotsAttributesShown)
     if n>0 then scheduleEvent(function() if not panel:isDestroyed() then myotsFitAttributes(panel) end end,1) end
     panel.myotsPreviousVisible=nil
     if n>0 and not myotsAttributesLast and g_game.isOnline() and not ourPinSyncAsked then

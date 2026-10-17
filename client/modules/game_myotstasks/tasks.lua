@@ -85,7 +85,7 @@ function ourRewards(r,t,tall)
   rewardCell(r,104,y0+gap,'points',money(t.points),'#ffd35a','Task points (Task Shop)')
   local rolls=tonumber(t.rolls) or 0
   if rolls>0 then rewardCell(r,6,y0+gap*2,'present','x'..rolls,'#ffb050',rolls..' reward'..(rolls>1 and 's' or '')..' (Kill Tracker style): platinum / crystal coins,\nmagical stone fragments or forge stones - better for stronger monsters.') end
-  if t.boss then rewardCell(r,104,y0+gap*2,'boss','Boss entry','#ff9a7a','1 entry to '..title(t.boss)..' (Task Board -> Boss Access).') end
+  if t.boss then rewardCell(r,104,y0+gap*2,'boss','Boss entry','#ff9a7a',title(t.boss)) end -- 17.10.2026 (Tobeto): only the boss name
 end
 
 local function renderBoard()
@@ -160,7 +160,7 @@ local function renderFooter(data)
   if data.gold then ui('footGold'):setText(money(data.gold)..' gp') end
   if data.tokens then ui('footTokens'):setText(money(data.tokens)..' tokens') end
   if data.points then ui('footPoints'):setText(money(data.points)..' task points') end
-  if board then ui('bossButton'):setText('Boss Access ('..#(board.bosses or {})..')') end
+  if board then ui('bossButton'):setText('Boss Access ('..#(board.bosses or {})..')');ui('bossButton'):setEnabled(#(board.bosses or {})>0) end
   if data.message and data.message~='' then ui('status'):setText(data.message) end
 end
 
@@ -249,7 +249,31 @@ function unlock()
     {{text=tr('Yes'),callback=function() close();send('unlock') end},{text=tr('No'),callback=close},anchor=AnchorHorizontalCenter},
     function() close();send('unlock') end,close)
 end
-function closePopup() ui('popup'):hide() end
+function closePopup() ui('popup'):hide();ui('popupShade'):hide() end
+-- 17.10.2026 (Tobeto): the pop-up works like the Game Store transfer window - it blocks the
+-- board behind it, is dragged by its title bar and stays inside the Task Board
+local function popupDrag()
+  local box,bar=ui('popup'),ui('popupTitle')
+  if bar.ourDrag then return end
+  bar.ourDrag=true;bar:setDraggable(true);bar:setPhantom(false)
+  bar.onDragEnter=function(self,mousePos) box:breakAnchors();self.ourRef={x=mousePos.x-box:getX(),y=mousePos.y-box:getY()};return true end
+  bar.onDragMove=function(self,mousePos)
+    if not self.ourRef then return true end
+    local r=window:getRect()
+    local x=math.max(r.x+2,math.min(mousePos.x-self.ourRef.x,r.x+r.width-box:getWidth()-2))
+    local y=math.max(r.y+20,math.min(mousePos.y-self.ourRef.y,r.y+r.height-box:getHeight()-2))
+    box:setPosition({x=x,y=y});return true
+  end
+  bar.onDragLeave=function(self) self.ourRef=nil;return true end
+end
+local function openPopup(height)
+  popupDrag()
+  local box=ui('popup')
+  box:breakAnchors();box:addAnchor(AnchorHorizontalCenter,'parent',AnchorHorizontalCenter);box:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
+  if height then box:setHeight(height) end
+  pcall(g_tooltip.hide)
+  ui('popupShade'):show();ui('popupShade'):raise();box:show();box:raise();box:focus()
+end
 local function popup(titleText,rows)
   ui('popupTitle'):setText(titleText)
   local list=ui('popupList');list:destroyChildren()
@@ -261,14 +285,38 @@ local function popup(titleText,rows)
     end
   end
   if #rows==0 then local l=g_ui.createWidget('Label',list);l:setText('Nothing here yet.') end
-  ui('popup'):show();ui('popup'):raise()
+  openPopup(330)
 end
+-- 17.10.2026 (Tobeto): "Boss Access" - one row per boss you can fight: picture, name,
+-- where it is (click: wiki map) and Enter; the window is as tall as the list
 function bossList()
-  local rows={}
-  for _,b in ipairs(board and board.bosses or {}) do
-    rows[#rows+1]={text=title(b.name)..'  -  '..b.entries..' entr'..(b.entries==1 and 'y' or 'ies'),button='Enter',onClick=function() closePopup();send('boss:'..b.i) end}
+  local bosses=board and board.bosses or {}
+  if #bosses==0 then return end
+  ui('popupTitle'):setText('Boss Access')
+  local list=ui('popupList');list:destroyChildren()
+  local wiki=modules.game_myotswiki
+  for _,b in ipairs(bosses) do
+    local row=g_ui.createWidget('UIWidget',list);row:setHeight(40);row:setBackgroundColor('#262626');row:setBorderWidth(1);row:setBorderColor('#3c3c3c')
+    local info=wiki and wiki.findCreature and wiki.findCreature(b.name)
+    local art=g_ui.createWidget('UICreature',row);art:setId('art');art:setSize({width=34,height=34});art:setPhantom(true)
+    art:addAnchor(AnchorLeft,'parent',AnchorLeft);art:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);art:setMarginLeft(4)
+    if info then pcall(OurTibiaArt.creature,art,info.outfit or info.look,info.name) end
+    local name=g_ui.createWidget('Label',row);name:setText(title(b.name)..'  ('..b.entries..' entr'..(b.entries==1 and 'y' or 'ies')..')')
+    name:setFont('verdana-11px-rounded');name:setColor('#ffd35a');name:setTextAutoResize(true)
+    name:addAnchor(AnchorTop,'parent',AnchorTop);name:addAnchor(AnchorLeft,'art',AnchorRight);name:setMarginTop(5);name:setMarginLeft(8)
+    local spot=info and type(info.spawns)=='table' and info.spawns[1] or (info and info.x and info) or nil
+    local loc=g_ui.createWidget('Label',row);loc:setTextAutoResize(true)
+    loc:addAnchor(AnchorTop,'prev',AnchorBottom);loc:addAnchor(AnchorLeft,'art',AnchorRight);loc:setMarginTop(3);loc:setMarginLeft(8)
+    if spot and spot.x then
+      loc:setText(string.format('Location: %d, %d, %d (wiki map)',spot.x,spot.y,spot.z));loc:setColor('#8fb8ff');loc:setPhantom(false)
+      loc:setTooltip('Click: show it on the wiki map')
+      loc.onClick=function() if wiki and wiki.showMapAt then wiki.showMapAt({name=b.name,x=spot.x,y=spot.y,z=spot.z}) end end
+    else loc:setText('Location: unknown');loc:setColor('#8a8a8a') end
+    local enter=g_ui.createWidget('Button',row);enter:setText('Enter');enter:setWidth(64)
+    enter:addAnchor(AnchorRight,'parent',AnchorRight);enter:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);enter:setMarginRight(6)
+    enter.onClick=function() closePopup();send('boss:'..b.i) end
   end
-  popup('Boss Access - complete tasks on boss creatures to get entries',rows)
+  openPopup(math.min(420,20+12+#bosses*43+42))
 end
 
 local function receive(protocol,opcode,buffer)
@@ -366,10 +414,21 @@ local function renderKitn()
     local r=g_ui.createWidget('KitnRow',list)
     local o=t.outfit or {}
     if (tonumber(o.type) or 0)>0 then OurTibiaArt.creature(r:getChildById('creature'),{type=o.type,head=o.head,body=o.body,legs=o.legs,feet=o.feet,addons=o.addons},(t.creatures or {})[1] or t.name) end
-    r:getChildById('name'):setText(title(t.name))
+    -- 17.10.2026 (Tobeto): one monster name (e.g. "Sea Serpents"); every monster is in the
+    -- [i] tooltip, and there is no [i] for a task with one monster
+    local shown=tostring(t.name or ''):gsub('%s+second task$',''):gsub('%s+and%s+.*$',''):gsub('%s+or%s+.*$','')
+    local nameLabel=r:getChildById('name');nameLabel:setText(title(shown))
     local names={};for _,c in ipairs(t.creatures or {}) do names[#names+1]='- '..title(c) end
     local cr=r:getChildById('creatures')
-    r:getChildById('info'):setTooltip('Monsters that count for this task:\n'..table.concat(names,'\n')..(t.repeats and t.repeats>0 and ('\n\nCompleted '..t.repeats..' time'..(t.repeats>1 and 's' or '')) or ''))
+    local infoBox=r:getChildById('info')
+    infoBox:setTooltip('Monsters that count for this task:\n'..table.concat(names,'\n')..(t.repeats and t.repeats>0 and ('\n\nCompleted '..t.repeats..' time'..(t.repeats>1 and 's' or '')) or ''))
+    if #names<=1 then infoBox:setOpacity(0);infoBox:setPhantom(true) end
+    -- one line: the name sits in the middle of the row (the [i] next to it)
+    if nameLabel:getTextSize().width<=nameLabel:getWidth() then
+      nameLabel:breakAnchors();nameLabel:addAnchor(AnchorLeft,'artBox',AnchorRight);nameLabel:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
+      nameLabel:setMarginLeft(8);nameLabel:setMarginTop(t.locked and -18 or 0);nameLabel:setHeight(14);nameLabel:setTextAlign(AlignLeft)
+      infoBox:breakAnchors();infoBox:addAnchor(AnchorLeft,'name',AnchorRight);infoBox:addAnchor(AnchorVerticalCenter,'name',AnchorVerticalCenter);infoBox:setMarginLeft(1);infoBox:setMarginTop(0)
+    end
     local kills=tonumber(t.kills) or 0
     r:getChildById('kills'):setText(money(kills)..' / '..money(t.need))
     r:getChildById('bar'):setPercent(math.floor(math.min(1,kills/math.max(1,tonumber(t.need) or 1))*100))
@@ -387,16 +446,22 @@ local function renderKitn()
       kitnReward(rw,x,17,rv.k,val,rv.k=='exp' and '#f0f0f0' or rv.k=='money' and '#f0d060' or '#ffd35a',tip)
     end
     if t.boss then
-      local tip='Boss: '..title(t.boss)..'\nAfter claiming the reward the boss portal opens for one fight'..(t.bossPos and (' ('..t.bossPos[1]..', '..t.bossPos[2]..', '..t.bossPos[3]..')') or '')..'.'
-      if t.bossReady then tip=tip..'\nThe portal is OPEN for you now.' end
+      local tip=title(t.boss) -- 17.10.2026 (Tobeto): only the boss name
       local b=kitnReward(rw,extra,17,'boss',0,'#ff9a7a',tip)
       if t.bossReady then b:setBorderWidth(1);b:setBorderColor('#3fbf3f') end
     end
     local a=r:getChildById('action')
     if t.locked then
       a:setText('Locked');a:setEnabled(false);a:setTooltip(t.locked)
-      r:setOpacity(0.75)
+      -- 17.10.2026 (Tobeto): the reason in the task-name font, in a strip added to the bottom of the row
+      r:setHeight(58+18)
+      cr:breakAnchors();cr:addAnchor(AnchorLeft,'parent',AnchorLeft);cr:addAnchor(AnchorRight,'parent',AnchorRight);cr:addAnchor(AnchorBottom,'parent',AnchorBottom)
+      cr:setMarginLeft(8);cr:setMarginRight(8);cr:setMarginBottom(4);cr:setHeight(14);cr:setWidth(0)
+      cr:setFont('verdana-11px-rounded');cr:setColor('#ffd35a');cr:setTextAlign(AlignLeft)
       cr:setText(t.locked);cr:setTooltip(t.locked);cr:show()
+      local strip=g_ui.createWidget('UIWidget',r);strip:setPhantom(true);strip:setHeight(1);strip:setBackgroundColor('#3c3c3c')
+      strip:addAnchor(AnchorLeft,'parent',AnchorLeft);strip:addAnchor(AnchorRight,'parent',AnchorRight);strip:addAnchor(AnchorBottom,'parent',AnchorBottom);strip:setMarginBottom(20)
+      for _,id in ipairs({'artBox','action'}) do local w=r:getChildById(id);if w then w:breakAnchors();w:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);w:setMarginTop(-18);if id=='artBox' then w:addAnchor(AnchorLeft,'parent',AnchorLeft);w:setMarginLeft(20) else w:addAnchor(AnchorRight,'parent',AnchorRight);w:setMarginRight(8) end end end
     elseif t.ready then
       a:setText('Claim reward');a:setEnabled(true);a:setColor('#8fe08f');r:setBorderColor('#3fbf3f')
       a.onClick=function() kitnSend('claim:'..t.id) end
@@ -404,9 +469,15 @@ local function renderKitn()
       a:setText('In progress');a:setEnabled(false);r:setBorderColor('#5a4a20')
     end
     local pin=r:getChildById('pin')
-    pin:setImageColor(pins[t.id] and '#44d040' or '#5a5a5a')
-    pin:setTooltip(pins[t.id] and 'Unpin this task' or 'Pin this task to the top of the list')
-    pin.onClick=function() kitnTogglePin(t.id);renderKitn() end
+    if t.locked and not pins[t.id] then
+      pin:hide() -- 17.10.2026 (Tobeto): an unavailable task can not be pinned
+    else
+      local function paint(hovered) pin:setImageColor((pins[t.id] or hovered) and '#44d040' or '#5a5a5a') end
+      paint(false)
+      pin.onHoverChange=function(_,hovered) paint(hovered) end -- 17.10.2026 (Tobeto): green on hover
+      pin:setTooltip(pins[t.id] and 'Unpin this task' or 'Pin this task to the top of the list')
+      pin.onClick=function() kitnTogglePin(t.id);renderKitn() end
+    end
   end
   if kitn.message and kitn.message~='' then ui('status'):setText(kitn.message) end
 end

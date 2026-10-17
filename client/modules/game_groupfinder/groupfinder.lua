@@ -44,14 +44,43 @@ local function drawPips(panel, stars, size, gap)
 end
 local function cooldownLeft() return math.max(0, (tonumber(data and data.resetIn) or 0) - math.floor((g_clock.millis() - receivedAt) / 1000)) end
 
+-- 17.10.2026 (Tobeto): human-size outfits (Grimbold, Sir Malthor, Malzareth) use only the
+-- lower right quarter of their 64 px picture; an overlay draws them about twice as big and
+-- moved so the figure fills the frame like the big monsters (the layout widget stays)
+local SMALL_LOOKS = {[70] = {1.9, 0.47}, [130] = {1.5, 0.16}, [131] = {1.5, 0.16}} -- scale, shift
+local function bigArt(widget, look, name)
+  local parent = widget:getParent()
+  local overlay = parent:getChildById(widget:getId() .. 'Big')
+  if not SMALL_LOOKS[look.type] then
+    if overlay then overlay:hide() end
+    widget:show()
+    OurTibiaArt.creature(widget, look, name)
+    return
+  end
+  local w, h = widget:getWidth(), widget:getHeight()
+  if not overlay then
+    overlay = g_ui.createWidget('UICreature', parent)
+    overlay:setId(widget:getId() .. 'Big'); overlay:setPhantom(true)
+    overlay:addAnchor(AnchorLeft, widget:getId(), AnchorLeft); overlay:addAnchor(AnchorTop, widget:getId(), AnchorTop)
+  end
+  overlay:setOutfit(look)
+  local fit = SMALL_LOOKS[look.type]
+  pcall(function() overlay:setCreatureSize(math.floor(w * fit[1])) end)
+  pcall(function() overlay:setCenter(true) end)
+  overlay:setSize({width = w, height = h})
+  overlay:setMarginLeft(-math.floor(w * fit[2])); overlay:setMarginTop(-math.floor(h * fit[2]))
+  overlay:setOpacity(widget:getOpacity())
+  overlay:show(); widget:hide()
+end
 local function introChip(parent, x, title, value)
   local c = g_ui.createWidget('GFInfoChip', parent)
   c:addAnchor(AnchorLeft, 'parent', AnchorLeft); c:addAnchor(AnchorVerticalCenter, 'parent', AnchorVerticalCenter); c:setMarginLeft(x)
   local a = g_ui.createWidget('Label', c); a:setText(title); a:setColor('#a0a0a0'); a:setTextAutoResize(true)
   a:addAnchor(AnchorLeft, 'parent', AnchorLeft); a:addAnchor(AnchorVerticalCenter, 'parent', AnchorVerticalCenter); a:setMarginLeft(10)
   local b = g_ui.createWidget('Label', c); b:setText(value); b:setColor('#ffd35a'); b:setFont('verdana-11px-rounded'); b:setTextAutoResize(true)
-  b:addAnchor(AnchorLeft, 'prev', AnchorRight); b:addAnchor(AnchorVerticalCenter, 'parent', AnchorVerticalCenter); b:setMarginLeft(5)
-  local w = 10 + a:getTextSize().width + 5 + b:getTextSize().width + 10
+  -- 17.10.2026 (Tobeto): the yellow value 1 px to the right
+  b:addAnchor(AnchorLeft, 'prev', AnchorRight); b:addAnchor(AnchorVerticalCenter, 'parent', AnchorVerticalCenter); b:setMarginLeft(6)
+  local w = 10 + a:getTextSize().width + 6 + b:getTextSize().width + 9
   c:setWidth(w)
   return w
 end
@@ -80,7 +109,8 @@ local function renderList()
     local w = g_ui.createWidget('GFBossEntry', list)
     w:setId('boss' .. i)
     local o = b.look or {}
-    w:getChildById('creature'):setOutfit({type = o.type, head = o.head or 0, body = o.body or 0, legs = o.legs or 0, feet = o.feet or 0, addons = o.addons or 0})
+    -- 17.10.2026 (Tobeto): small outfits (Grimbold, Sir Malthor, Malzareth) fill the box like the big ones
+    bigArt(w:getChildById('creature'), {type = o.type, head = o.head or 0, body = o.body or 0, legs = o.legs or 0, feet = o.feet or 0, addons = o.addons or 0}, b.name)
     w:getChildById('name'):setText(b.name)
     w:getChildById('info'):setText('Level ' .. b.level .. '+')
     drawPips(w:getChildById('pips'), b.stars, 12, 3)
@@ -90,7 +120,7 @@ local function renderList()
       w:setTooltip('Your level is too low (' .. b.level .. ' needed).')
     end
     if b.done then
-      w:getChildById('creature'):setOpacity(0.4); w:getChildById('name'):setColor('#8a8a8a')
+      w:getChildById('creature'):setOpacity(0.4); local ov = w:getChildById('creatureBig'); if ov then ov:setOpacity(0.4) end; w:getChildById('name'):setColor('#8a8a8a')
       w:getChildById('cooldown'):show()
       w:setTooltip('You defeated ' .. b.name .. ' today. The cooldown resets at the server save.')
     end
@@ -106,7 +136,7 @@ function renderDetails()
   local b = data.bosses and data.bosses[selected]
   if not b then return end
   local o = b.look or {}
-  ui('bigCreature'):setOutfit({type = o.type, head = o.head or 0, body = o.body or 0, legs = o.legs or 0, feet = o.feet or 0, addons = o.addons or 0})
+  bigArt(ui('bigCreature'), {type = o.type, head = o.head or 0, body = o.body or 0, legs = o.legs or 0, feet = o.feet or 0, addons = o.addons or 0}, b.name)
   ui('bossName'):setText(b.name)
   ui('bossStats'):setText('Level ' .. b.level .. '+     Health ' .. num(b.hp))
   ui('bossStats'):setColor((data.level or 0) < b.level and '#e06060' or '#d0d0d0')

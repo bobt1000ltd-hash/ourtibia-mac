@@ -167,12 +167,13 @@ KitnRow < UIWidget
   border-width: 1
   border-color: #3c3c3c
   // 16.10.2026 (Tobeto): a few pixels from the top border
+  // 17.10.2026 (Tobeto): 1 px bigger (to the right and down), 1 px further from the top
   UIButton
     id: pin
     anchors.left: parent.left
     anchors.top: parent.top
-    margin: 5 0 0 4
-    size: 12 12
+    margin: 6 0 0 4
+    size: 13 13
     image-source: /game_skills/pin
     image-color: #5a5a5a
   UIWidget
@@ -203,15 +204,17 @@ KitnRow < UIWidget
     text-align: topLeft
     font: verdana-11px-rounded
     color: #ffd35a
+  // 17.10.2026 (Tobeto): 1 px bigger to the left and down, the "i" in the middle
   UIWidget
     id: info
     anchors.top: parent.top
     anchors.left: name.right
     margin-top: 12
-    margin-left: 2
-    size: 13 13
+    margin-left: 1
+    size: 14 14
     text: i
     text-align: center
+    text-offset: 0 0
     font: verdana-11px-rounded
     color: #c8c8c8
     background-color: #2e2e2e
@@ -276,7 +279,7 @@ KitnHeader < UIWidget
     id: c2
     anchors.left: parent.left
     anchors.verticalCenter: parent.verticalCenter
-    margin-left: 207
+    margin-left: 204
     width: 104
     text-align: center
     text: Kills
@@ -285,7 +288,9 @@ KitnHeader < UIWidget
     id: c3
     anchors.left: parent.left
     anchors.verticalCenter: parent.verticalCenter
-    margin-left: 323
+    margin-left: 320
+    width: 218
+    text-align: center
     text: Rewards
     color: #c8a040
 
@@ -676,7 +681,7 @@ MainWindow
       margin-right: 4
       width: 90
       text: Task Tracker
-      @onClick: if modules.game_myotshud and modules.game_myotshud.showTaskTracker then modules.game_myotshud.showTaskTracker() end
+      @onClick: if modules.game_myotshud and modules.game_myotshud.toggleTaskTracker then modules.game_myotshud.toggleTaskTracker() end
     Button
       id: bossButton
       anchors.right: closeButton.left
@@ -692,22 +697,33 @@ MainWindow
       width: 60
       text: Close
       @onClick: modules.game_myotstasks.hide()
+  // 17.10.2026 (Tobeto): pop-ups block the board behind them and are moved by the title bar
+  UIWidget
+    id: popupShade
+    anchors.fill: parent
+    background-color: #000000a0
+    phantom: false
+    focusable: false
+    visible: false
   Panel
     id: popup
     anchors.centerIn: parent
     size: 380 330
-    background-color: #2b2b2b
+    phantom: false
+    background-color: #1e1e1e
     border-width: 1
-    border-color: #6a6a6a
+    border-color: #8a7030
     visible: false
     Label
       id: popupTitle
       anchors.top: parent.top
       anchors.left: parent.left
       anchors.right: parent.right
-      height: 18
+      height: 20
       text-align: center
-      background-color: #3b3b3b
+      font: verdana-11px-rounded
+      color: #ffd35a
+      background-color: #2e2a20
     ScrollablePanel
       id: popupList
       anchors.top: popupTitle.bottom

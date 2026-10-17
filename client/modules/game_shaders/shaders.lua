@@ -129,6 +129,23 @@ local OUTFIT_SHADERS = { {
     name = 'Outfit - Aurora',
     useFramebuffer = true,
     frag = 'shaders/fragment/outfit_aurora.frag'
+}, {
+    -- MyOTS Task Shop shaders (17.10.2026; they used the bestiary / forge shaders by mistake)
+    name = 'Outfit - Nebula',
+    useFramebuffer = true,
+    frag = 'shaders/fragment/outfit_nebula.frag'
+}, {
+    name = 'Outfit - Eclipse',
+    useFramebuffer = true,
+    frag = 'shaders/fragment/outfit_eclipse.frag'
+}, {
+    name = 'Outfit - Radiant',
+    useFramebuffer = true,
+    frag = 'shaders/fragment/outfit_radiant.frag'
+}, {
+    name = 'Outfit - Ember',
+    useFramebuffer = true,
+    frag = 'shaders/fragment/outfit_ember.frag'
 }, }
 
 local MOUNT_SHADERS = { {

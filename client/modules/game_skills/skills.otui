@@ -69,9 +69,9 @@ MyStatRow < UIWidget
     id: add
     anchors.right: parent.right
     anchors.top: parent.top
-    size: 14 14
+    size: 15 15
     text: +
-    text-offset: 0 -2
+    text-offset: 0 1
 
 SkillFirstWidget < UIWidget
 
@@ -273,10 +273,10 @@ MiniWindow
         id: add
         anchors.right: parent.right
         anchors.top: parent.top
-        size: 14 14
+        size: 15 15
         padding: 0
         text: +
-        text-offset: 0 -2
+        text-offset: 0 1
         !tooltip: modules.game_skills.myotsAddTip
         @onClick: modules.game_skills.myotsAllocate('str')
 
@@ -303,10 +303,10 @@ MiniWindow
         id: add
         anchors.right: parent.right
         anchors.top: parent.top
-        size: 14 14
+        size: 15 15
         padding: 0
         text: +
-        text-offset: 0 -2
+        text-offset: 0 1
         !tooltip: modules.game_skills.myotsAddTip
         @onClick: modules.game_skills.myotsAllocate('dex')
 
@@ -333,10 +333,10 @@ MiniWindow
         id: add
         anchors.right: parent.right
         anchors.top: parent.top
-        size: 14 14
+        size: 15 15
         padding: 0
         text: +
-        text-offset: 0 -2
+        text-offset: 0 1
         !tooltip: modules.game_skills.myotsAddTip
         @onClick: modules.game_skills.myotsAllocate('int')
 
@@ -363,10 +363,10 @@ MiniWindow
         id: add
         anchors.right: parent.right
         anchors.top: parent.top
-        size: 14 14
+        size: 15 15
         padding: 0
         text: +
-        text-offset: 0 -2
+        text-offset: 0 1
         !tooltip: modules.game_skills.myotsAddTip
         @onClick: modules.game_skills.myotsAllocate('con')
 
@@ -393,10 +393,10 @@ MiniWindow
         id: add
         anchors.right: parent.right
         anchors.top: parent.top
-        size: 14 14
+        size: 15 15
         padding: 0
         text: +
-        text-offset: 0 -2
+        text-offset: 0 1
         !tooltip: modules.game_skills.myotsAddTip
         @onClick: modules.game_skills.myotsAllocate('wil')
 
@@ -423,10 +423,10 @@ MiniWindow
         id: add
         anchors.right: parent.right
         anchors.top: parent.top
-        size: 14 14
+        size: 15 15
         padding: 0
         text: +
-        text-offset: 0 -2
+        text-offset: 0 1
         !tooltip: modules.game_skills.myotsAddTip
         @onClick: modules.game_skills.myotsAllocate('luck')
 
@@ -596,8 +596,8 @@ MiniWindow
       ImageSkill
         image-source: /images/icons/icon_cooking
         image-size: 9 9
+      // 17.10.2026 (owner): green like the other skills
       SkillPercentPanel
-        background-color: #c07020
       margin-bottom: 5
         
     HorizontalSeparator

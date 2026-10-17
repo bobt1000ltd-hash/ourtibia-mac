@@ -113,7 +113,7 @@ local function filterVisibility(visible)
     local w=window:recursiveGetChildById(id)
     local show=visible and (not itemFilters[id] or tab=='items') and (not creatureFilters[id] or tab=='monsters' or tab=='bosses' or tab=='map')
     w:setVisible(show)
-    local label=window:recursiveGetChildById(id..'Label');if label then label:setVisible(show) end
+    local label=window:recursiveGetChildById(id..'Label');if label then label:setVisible(show and id~='search' and id~='sort' and id~='direction') end
   end
 end
 local function restoreMap()
@@ -196,7 +196,8 @@ end
 -- 10.10.2026: Loot / Attacks look like the Drop / Quest tabs of an item page
 NEMESIS_BOSSES={['yeti']=true,['the horned fox']=true,['necropharus']=true,['fernfang']=true,['man in the cave']=true,['dharalion']=true,['demodras']=true,['arachir the ancient one']=true,['diblis the fair']=true,['sir valorcrest']=true,['zevelon duskbringer']=true,['the old widow']=true,['zulazza the corruptor']=true,['zushuka']=true,['the pale count']=true}
 local function detailButton(text,action,on)
-  local w=g_ui.createWidget('Button',ui('detailTabs'));w:setSize({width=96,height=20});w:setMarginTop(4);w:setText(text);w.onClick=action
+  -- 17.10.2026 (Tobeto): Loot / Attacks / Drop / Quest - one style and size (88 x 20)
+  local w=g_ui.createWidget('Button',ui('detailTabs'));w:setSize({width=88,height=20});w:setMarginTop(4);w:setText(text);w.onClick=action
   w:setColor(on and '#ffd35a' or '#a0a0a0');w:setOn(on and true or false)
 end
 local function grid(columns)
@@ -218,7 +219,33 @@ local function resetView()
   filterVisibility(true)
   ui('stats'):setWidth(185);ui('sidebarTitle'):setWidth(185)
   ui('cards'):setMarginTop(0);ui('scrollbar'):setMarginTop(0)
+  do local bar=ui('ourSortBar');if bar then bar:hide() end end
   sideTitle('Filters');grid(3)
+end
+-- 17.10.2026 (Tobeto): Sort by / Sort mode sit in a small panel above the results
+-- (Items & Loot, Bestiary, Bosstiary) instead of the filters; "Locate on map" stays
+-- at the bottom of the Monster details panel.
+function ourWikiLayout()
+  local right=ui('right');if not right or ui('ourSortBar') then return end
+  local bar=g_ui.createWidget('UIWidget',right);bar:setId('ourSortBar')
+  bar:addAnchor(AnchorTop,'parent',AnchorTop);bar:addAnchor(AnchorLeft,'parent',AnchorLeft);bar:addAnchor(AnchorRight,'parent',AnchorRight)
+  bar:setHeight(22);bar:hide()
+  local direction=ui('direction');local sort=ui('sort')
+  direction:setParent(bar);direction:breakAnchors();direction:addAnchor(AnchorRight,'parent',AnchorRight);direction:addAnchor(AnchorTop,'parent',AnchorTop);direction:setWidth(110);direction:setMarginRight(16)
+  sort:setParent(bar);sort:breakAnchors();sort:addAnchor(AnchorRight,'direction',AnchorLeft);sort:addAnchor(AnchorTop,'parent',AnchorTop);sort:setWidth(130);sort:setMarginRight(4)
+  local label=g_ui.createWidget('Label',bar);label:setId('ourSortTitle');label:setText('Sort by');label:setColor('#c0c0c0')
+  label:setTextAutoResize(true);label:addAnchor(AnchorRight,'sort',AnchorLeft);label:addAnchor(AnchorVerticalCenter,'sort',AnchorVerticalCenter);label:setMarginRight(6)
+  for _,id in ipairs({'sortLabel','directionLabel'}) do local w=ui(id);if w then w:hide();w:setHeight(0) end end
+  local locate=ui('locate')
+  if locate then
+    locate:setParent(window);locate:breakAnchors()
+    locate:addAnchor(AnchorLeft,'sidebar',AnchorLeft);locate:addAnchor(AnchorRight,'sidebar',AnchorRight);locate:addAnchor(AnchorBottom,'sidebar',AnchorBottom)
+    locate:setMarginRight(-9);locate:setHeight(22)
+  end
+end
+local function ourShowSortBar()
+  local bar=ui('ourSortBar');if not bar then return end
+  bar:show();bar:raise();ui('cards'):setMarginTop(28);ui('scrollbar'):setMarginTop(28)
 end
 function hide() restoreMap();if window then window:hide() end end
 function show() if g_game.isOnline() then if #ui('cards'):getChildren()==0 and tab~='knowledge' then changeTab('items',true)end;window:show();window:raise();window:focus() end end
@@ -598,6 +625,7 @@ function renderPage()
   restoreMap()
   resetView();selected=nil;detailMode=nil;ui('address'):setText('wiki://'..tab)
   ui('stats'):hide()
+  if tab=='items' or tab=='monsters' or tab=='bosses' then ourShowSortBar() end
   local columns=(tab=='monsters' or tab=='bosses') and 2 or 3
   grid(columns)
   -- 16.10.2026 (Tobeto): as many rows as fit in the panel (no empty space at the bottom)
@@ -815,6 +843,13 @@ function linkSummary(link)
   return nil
 end
 -- 12.10.2026: "where is <npc>" chat link -> the wiki map at the NPC's place
+-- 17.10.2026: monster / boss / NPC row by name (Task Board -> Boss Access)
+function findCreature(name)
+  local low=tostring(name or ''):lower()
+  for _,key in ipairs({'bosses','monsters','npcs'}) do
+    for _,r in ipairs(catalog and catalog[key] or {}) do if tostring(r.name):lower()==low then return r end end
+  end
+end
 function showMapAt(link)
   if not link or not link.x or not g_game.isOnline() then return end
   local name=tostring(link.name or ''):lower()
@@ -857,6 +892,7 @@ function init()
   catalog=json.decode(g_resources.readFileContents('/data/myots/compendium.json'));spawnIndex={}
   for key,name in pairs({monsters='Monsters',bosses='Bosses',npcs='NPCs'}) do for _,row in ipairs(catalog[key]) do row.mapGroup=name end end
   window=g_ui.displayUI('wiki');window:hide()
+  pcall(ourWikiLayout)
   for _,npc in ipairs(catalog.npcs) do npcsByName[npc.name:lower()]=npc end
   for _,section in ipairs({'monsters','bosses'}) do
     for _,creature in ipairs(catalog[section]) do

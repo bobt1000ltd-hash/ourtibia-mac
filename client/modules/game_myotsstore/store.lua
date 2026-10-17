@@ -297,6 +297,8 @@ function buildLeft()
   local s=g_ui.createWidget('TextEdit',left);s:setHeight(22);pcall(function() s:setMaxLength(20) end)
   -- 16.10.2026 (Tobeto): the text appears where the cursor blinks (the centred text and the left cursor did not match)
   s:setTextAlign(AlignLeft)
+  -- 17.10.2026 (Tobeto): the cursor 1 px to the left (search, history search, donate, transfer)
+  s:setPaddingLeft(math.max(0,s:getPaddingLeft()-1))
   if historyMode then
     -- 15.10.2026 (Tobeto): in History the search looks through the transactions
     s:setText(historySearch);s:setTooltip('Search the history: product, name, date, amount or balance')
@@ -414,6 +416,7 @@ function buildLeft()
     local amount=g_ui.createWidget('TextEdit',donateRow);amount:setId('fundAmount');amount:setHeight(22);amount:setWidth(84);
     amount:addAnchor(AnchorLeft,'parent',AnchorLeft);amount:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
     pcall(function() amount:setMaxLength(7) end)
+    amount:setPaddingLeft(math.max(0,amount:getPaddingLeft()-1))
     pcall(function() amount:setPlaceholder('gp') end)
     amount:setText(window.ourFundAmount or '')
     amount.onTextChange=function(_,t)
@@ -524,6 +527,7 @@ function openTransfer()
   show(slider:getValue())
   ui('tStatus'):setText(coins>0 and '' or 'You have no Premium Points to gift.')
   ui('tName'):setText('')
+  if not ui('tName').ourPad then ui('tName').ourPad=true;ui('tName'):setPaddingLeft(math.max(0,ui('tName'):getPaddingLeft()-1)) end
   ui('transferShade'):show();ui('transferShade'):raise();ui('transfer'):show();ui('transfer'):raise();ui('tName'):focus()
 end
 function closeTransfer() ui('transfer'):hide();ui('transferShade'):hide() end
@@ -630,7 +634,7 @@ local function receive(protocol,opcode,buffer)
   end
 end
 -- Outfit shaders bought in the Loyalty store (server 87_shaders.lua, opcode 113).
-local SHADERS={'Outfit - Rainbow','Outfit - Ghost','Outfit - Jelly','Outfit - Fragmented','Outfit - Outline','Outfit - cyclopedia-black','Outfit - ForgeDonor','Outfit - ForgeSuccess','Outfit - ForgeFailed',
+local SHADERS={'Outfit - Rainbow','Outfit - Ghost','Outfit - Jelly','Outfit - Fragmented','Outfit - Outline','Outfit - Nebula','Outfit - Eclipse','Outfit - Radiant','Outfit - Ember', -- 17.10.2026: own Task Shop shaders
   'Outfit - Blood Moon','Outfit - Toxic','Outfit - Golden Glow','Outfit - Frost','Outfit - Inferno','Outfit - Storm','Outfit - Void','Outfit - Holy Light','Outfit - Aurora'}
 local function applyShader(c,i)
   if not c then return end
@@ -648,6 +652,15 @@ local function onShader(protocol,opcode,buffer)
     for i,cname,dname in list:gmatch('(%d+)=([^=;]+)=([^;]+)') do owned[#owned+1]={tonumber(i),cname,dname} end
     local outfit=modules.game_outfit
     if outfit and outfit.ourSetShaders then pcall(outfit.ourSetShaders,owned,tonumber(sel)) end
+    return
+  end
+  -- 17.10.2026 (Tobeto): shaders you do not own yet (Set Outfit shows them too)
+  local all=buffer:match('^a:(.*)$')
+  if all then
+    local missing={}
+    for i,cname,dname,price,cur in all:gmatch('(%d+)=([^=;]+)=([^=;]+)=(%d+)=([^;]+)') do missing[#missing+1]={tonumber(i),cname,dname,tonumber(price),cur} end
+    local outfit=modules.game_outfit
+    if outfit and outfit.ourSetMissingShaders then pcall(outfit.ourSetMissingShaders,missing) end
     return
   end
   local cid,i=buffer:match('^s:(%d+):(%d+)$')
