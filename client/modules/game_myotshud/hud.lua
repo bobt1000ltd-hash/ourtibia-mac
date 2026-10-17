@@ -147,15 +147,16 @@ local function drawKills()
     -- 11.10.2026 (Tobeto): click a monster -> its wiki page
     do local monsterName=r.name;row.onClick=function() local w=modules.game_myotswiki;if w and w.showMonster then w.showMonster(monsterName) end end end
     row:setTooltip(string.format('%s: %d/8 stars\nBonus: +%d%% damage, +%d%% loot against this monster.\nEach new star: one reward (coins, fragments or upgrade stones).',r.name,r.stars,r.stars,r.stars*2))
-    -- 17.10.2026 (Tobeto): stage lines (green = done, left of the bar; white = to do, right of it)
-    local track=row:getChildById('track')
-    local done=r.stars
-    for _=1,done do local l=g_ui.createWidget('KillStage',track);l:setBackgroundColor('#3cd23c') end
-    local progress=g_ui.createWidget('KillBar',track);progress:setId('killProgress')
-    for _=done+1,8 do local l=g_ui.createWidget('KillStage',track);l:setBackgroundColor('#f0f0f0') end
-    -- the bar takes what is left after the 8 lines (8 x 2 px + 8 gaps of 2 px)
-    local function size() if track:isDestroyed() then return end local w=track:getWidth();if w and w>40 then progress:setWidth(w-32) end end
-    progress:setWidth(math.max(40,(c:getWidth() or 150)-41-32));size();scheduleEvent(size,30)
+    -- 17.10.2026 (owner): the 8 stars again (the stage lines were removed)
+    local stars=row:getChildById('stars')
+    if stars then
+      stars:destroyChildren()
+      for starIndex=1,8 do
+        local star=g_ui.createWidget('KillStar',stars)
+        star:setImageSource(starIndex<=r.stars and '/images/game/prey/prey_star' or '/images/game/prey/prey_nostar')
+      end
+    end
+    local progress=row:getChildById('killProgress')
     -- 11.10.2026: the server sends the milestones of this monster (fewer kills for rare spawns)
     local previous=tonumber(r.prev)
     if not previous then

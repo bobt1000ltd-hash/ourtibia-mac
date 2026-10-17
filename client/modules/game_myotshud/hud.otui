@@ -42,54 +42,59 @@ HudCheck < CheckBox
   text-offset: 18 -1
 
 // 17.10.2026 (owner): back to the stars
-// 17.10.2026 (Tobeto): Kill Tracker in the Task Tracker style - monster on the left, name on
-// top, below it the completed stages (green lines), a progress bar of a fixed size with the
-// kills in the middle, then the stages still to do (white lines). 8 lines + bar = always the
-// same total width, so every stage looks the same.
 KillEntry < UIWidget
-  height: 36
+  height: 50
   focusable: false
   UICreature
     id: outfit
     phantom: true
     anchors.left: parent.left
     anchors.top: parent.top
-    size: 34 34
+    size: 40 40
   Label
     id: name
     phantom: true
     anchors.left: outfit.right
     anchors.right: parent.right
     anchors.top: parent.top
-    margin-left: 5
-    margin-top: 2
-    height: 14
+    margin-left: 6
+    margin-right: 2
+    height: 15
     font: verdana-11px-monochrome
-    color: #e8e8e8
-    text-auto-resize: false
   Panel
-    id: track
+    id: stars
+    phantom: true
+    anchors.left: outfit.right
+    anchors.top: name.bottom
+    margin-left: 6
+    size: 80 10
+    layout:
+      type: horizontalBox
+      spacing: 1
+  LifeProgressBar
+    id: killProgress
     phantom: true
     anchors.left: outfit.right
     anchors.right: parent.right
-    anchors.top: name.bottom
+    anchors.top: stars.bottom
     margin-top: 3
     margin-right: 2
-    margin-left: 5
+    margin-left: 6
     height: 16
-    layout:
-      type: horizontalBox
-      spacing: 2
-
-KillBar < LifeProgressBar
-  phantom: true
-  height: 16
-  background-color: #00a83a
-  border: 1 #182018
-  font: verdana-11px-rounded
-  color: #ffffff
-  text-offset: 0 -1
-  text-align: center
+    background-color: #00a83a
+    border: 1 #182018
+    font: verdana-11px-rounded
+    color: #ffffff
+    text-offset: 0 -1
+    text-align: center
+  Label
+    id: killCount
+    phantom: true
+    anchors.left: outfit.right
+    anchors.top: killProgress.bottom
+    anchors.right: parent.right
+    height: 0
+    visible: false
 
 KillStage < UIWidget
   size: 2 16

@@ -1936,11 +1936,19 @@ function accept()
     -- 15.10.2026 (Tobeto): store outfits / mounts you do not own are only a preview
     local p = g_game.getLocalPlayer()
     local cur = p and p:getOutfit() or {}
-    local missing = ourStoreOnlySet.outfit[tempOutfit.type] or ourStoreOnlySet.mount[tempOutfit.mount or 0]
-    if ourStoreOnlySet.outfit[tempOutfit.type] then tempOutfit.type = cur.type; tempOutfit.addons = cur.addons end
-    if ourStoreOnlySet.mount[tempOutfit.mount or 0] then tempOutfit.mount = cur.mount end
-    if missing and modules.game_textmessage then
-        modules.game_textmessage.displayFailureMessage(missing .. ' is not yours yet - you can get it in the Game Store.')
+    -- 17.10.2026: the client list of store-only looks could be old (bought in the store after the
+    -- window was filled) and blocked an outfit / mount the player owns. The server decides now:
+    -- the look is sent, and only when the server did not change it the store hint is shown.
+    local wantOutfit = ourStoreOnlySet.outfit[tempOutfit.type] and tempOutfit.type or nil
+    local wantMount = ourStoreOnlySet.mount[tempOutfit.mount or 0] and tempOutfit.mount or nil
+    if wantOutfit or wantMount then
+        local outfitName, mountName = wantOutfit and ourStoreOnlySet.outfit[wantOutfit], wantMount and ourStoreOnlySet.mount[wantMount]
+        scheduleEvent(function()
+            local lp = g_game.getLocalPlayer(); if not lp or not modules.game_textmessage then return end
+            local now = lp:getOutfit() or {}
+            local missing = (wantOutfit and now.type ~= wantOutfit and outfitName) or (wantMount and now.mount ~= wantMount and mountName)
+            if missing then modules.game_textmessage.displayFailureMessage(missing .. ' is not yours yet - you can get it in the Game Store.') end
+        end, 800)
     end
     -- MyOTS: send the outfit (with the chosen mount) BEFORE the mount toggle;
     -- the server mounts the "current mount" and it is set by changeOutfit.
@@ -2144,6 +2152,7 @@ end
 -- outfits / mounts you do not have yet are added (blue, coin icon).
 ourStoreOnlySet = {outfit = {}, mount = {}}
 function ourAddStoreEntries(mode)
+    ourStoreOnlySet[mode] = {} -- 17.10.2026: rebuilt for every list (an outfit bought since then is owned)
     if not window or not OurOutfitBonus then return end
     local list = mode == 'outfit' and OurOutfitBonus.sl or OurOutfitBonus.sml
     if type(list) ~= 'table' then return end
