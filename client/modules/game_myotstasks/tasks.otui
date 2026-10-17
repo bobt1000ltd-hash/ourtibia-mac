@@ -107,6 +107,16 @@ TaskCard < UIWidget
     size: 58 22
     text: Pause
     visible: false
+  // 17.10.2026 (owner): cancel a daily task - the slot stays empty until the server save
+  Button
+    id: drop
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin: 4 4 0 0
+    size: 18 18
+    text: X
+    color: #ff6060
+    visible: false
 
 ShopTile < UIButton
   size: 92 92

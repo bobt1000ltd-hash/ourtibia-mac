@@ -112,7 +112,20 @@ local function renderBoard()
       local tag=c:getChildById('header')
       -- 15.10.2026 (Tobeto): no NEW / ACTIVE tags - the yellow frame shows an active task
       tag:hide()
-      if status==2 then
+      local drop=c:getChildById('drop')
+      if daily and (status==0 or status==1 or status==3) then
+        drop:show();drop:setTooltip('Cancel this daily task.\nThe slot stays empty until the server save.')
+        drop.onClick=function()
+          local box;local function close() if box then box:destroy();box=nil end end
+          box=displayGeneralBox(tr('Cancel daily task'),'Cancel '..(t.display or title(t.name))..'?\nThis slot stays empty until the server save.',
+            {{text=tr('Yes'),callback=function() close();send('drop:'..t.slot) end},{text=tr('No'),callback=close},anchor=AnchorHorizontalCenter},
+            function() close();send('drop:'..t.slot) end,close)
+        end
+      end
+      if status==4 then
+        action:setText('Cancelled - back after server save');action:setEnabled(false);c:setBorderColor('#5a2a2a');c:setBackgroundColor('#1c1818')
+        c:getChildById('kills'):setText('');c:getChildById('bar'):setPercent(0)
+      elseif status==2 then
         action:setText('Completed');action:setEnabled(false);c:setBorderColor('#3fbf3f')
       elseif status==1 then
         action:setText('In Progress...');action:setEnabled(false);c:setBorderColor('#c8a040');c:setBackgroundColor('#2a2618')
@@ -151,7 +164,8 @@ local function renderBoard()
   wl:setVisible(locked and true or false)
   if locked then wl:setText('Weekly tasks unlock at level '..locked..'.\nYour first weekly tasks are rolled when you reach it.');ui('unlock'):hide() end
   if daily then
-    ui('active'):show();ui('reroll'):show();ui('rerollPremium'):show()
+    ui('active'):show();ui('reroll'):show();ui('rerollPremium'):show();ui('reroll'):setEnabled(true)
+    ui('reroll').onClick=function() reroll('gold') end;ui('reroll'):setTooltip('')
     ui('active'):setText('Active '..(board.active or 0)..'/3')
     ui('done'):setText('Completed today '..(board.done or 0)..'/3')
     ui('reset'):setText('Daily reset in '..duration(board.dailyLeft))
@@ -161,7 +175,23 @@ local function renderBoard()
     ui('rerollPremium'):setVisible(pp>0);ui('rerollPremium'):setText('Reroll ('..pp..' pp)')
   else
     local completed=0;for _,t in ipairs(board.weekly or {}) do if tonumber(t.status)==2 then completed=completed+1 end end
-    ui('active'):hide();ui('reroll'):hide();ui('rerollPremium'):hide()
+    ui('active'):hide();ui('rerollPremium'):hide()
+    -- 17.10.2026 (owner): one weekly reset at level 30, 50, 70, 90, ...
+    local wr=tonumber(board.weeklyReset);local nx=tonumber(board.nextWeeklyReset)
+    local rb=ui('reroll')
+    if locked then rb:hide()
+    else
+      rb:show();rb:setEnabled(wr~=nil)
+      rb:setText(wr and ('Reset (lvl '..wr..')') or ('Reset at lvl '..(nx or 30)))
+      rb:setTooltip('One reset of the weekly tasks at level 30, 50, 70, 90 and every 20 levels after.\nAll weekly tasks are rolled again (progress is lost).')
+      rb.onClick=function()
+        if not wr then return end
+        local box;local function close() if box then box:destroy();box=nil end end
+        box=displayGeneralBox(tr('Reset weekly tasks'),'Use your level '..wr..' reset?\nAll weekly tasks are rolled again and their progress is lost.',
+          {{text=tr('Yes'),callback=function() close();send('wreset') end},{text=tr('No'),callback=close},anchor=AnchorHorizontalCenter},
+          function() close();send('wreset') end,close)
+      end
+    end
     ui('done'):setText('Completed '..completed..'/'..(#(board.weekly or {})))
     ui('reset'):setText('Weekly reset in '..duration(board.weeklyLeft))
   end
