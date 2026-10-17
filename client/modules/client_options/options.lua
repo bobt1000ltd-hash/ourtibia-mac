@@ -223,6 +223,13 @@ local function setup()
         g_settings.set('ambientLight', 40)
         g_settings.set('ourtibiaLightsOnV3', true)
     end
+    -- 17.10.2026 (Tobeto): like on Tibia - dark caves and nights need a torch, a light spell or
+    -- the light wand (ambient 40% lit everything). Once; the slider still works.
+    if not g_settings.getBoolean('ourtibiaLightsRLV4') then
+        g_settings.set('enableLights', true)
+        g_settings.set('ambientLight', 0)
+        g_settings.set('ourtibiaLightsRLV4', true)
+    end
     -- 14.10.2026 (owner): the brightness options are removed from the settings -
     -- lights on and ambient light 40% for everybody (also if somebody changed it).
     g_settings.set('enableLights', true)

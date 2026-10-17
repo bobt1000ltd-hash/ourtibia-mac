@@ -248,7 +248,7 @@ return {
         end
     },
     ambientLight                      = {
-        value = 40,
+        value = 0, -- 17.10.2026 (Tobeto): like Tibia (was 40)
         action = function(value, options, controller, panels, extraWidgets)
             panels.graphicsEffectsPanel:recursiveGetChildById('ambientLight'):setText(string.format(
                 'Ambient light: %s%%', value))

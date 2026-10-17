@@ -494,8 +494,22 @@ function hide() waiting=nil;if retryEvent then removeEvent(retryEvent);retryEven
 function toggle() if window:isVisible() then hide() else show() end end
 function init()
   window=g_ui.displayUI('tasks');window:hide()
-  ui('unlock'):setText('Unlock a third row of tasks (daily and weekly board) - 100 premium points')
-  ui('unlock'):setColor('#ffd35a')
+  -- 17.10.2026 (Tobeto): the locked third row looks like three locked task cards
+  local u=ui('unlock');u:setText('');u:setBorderWidth(0);u:setPadding(0);u:setImageSource('')
+  local row=g_ui.createWidget('UIWidget',u);row:fill('parent');row:setPhantom(true)
+  local lay=UIHorizontalLayout.create(row);lay:setSpacing(6);row:setLayout(lay)
+  for i=1,3 do
+    local c=g_ui.createWidget('UIWidget',row);c:setSize({width=212,height=166});c:setPhantom(true)
+    c:setBackgroundColor('#1c1a14');c:setBorderWidth(1);c:setBorderColor('#6a5a30')
+    local icon=g_ui.createWidget('UIWidget',c);icon:setSize({width=24,height=24});icon:setPhantom(true)
+    icon:addAnchor(AnchorTop,'parent',AnchorTop);icon:addAnchor(AnchorHorizontalCenter,'parent',AnchorHorizontalCenter);icon:setMarginTop(34)
+    icon:setImageSource('/images/store/icon-tibiacoin');icon:setImageSmooth(true);icon:setImageColor('#c8a040')
+    local t=g_ui.createWidget('Label',c);t:setPhantom(true);t:setTextAlign(AlignCenter);t:setTextWrap(true)
+    t:addAnchor(AnchorTop,'prev',AnchorBottom);t:addAnchor(AnchorLeft,'parent',AnchorLeft);t:addAnchor(AnchorRight,'parent',AnchorRight)
+    t:setMarginTop(10);t:setMarginLeft(8);t:setMarginRight(8);t:setHeight(80)
+    t:setColor('#ffd35a');t:setText(i==2 and 'Locked task slot\n\nClick to unlock the third row\n(100 premium points)' or 'Locked task slot')
+  end
+  u:setTooltip('Unlock a third row of tasks (daily and weekly board) - 100 premium points')
   for _,t in ipairs(TABS) do
     local b=g_ui.createWidget('TaskTab',ui('tabs'));b:setText(t[2]);b.tabName=t[1];b:setWidth(164)
     b:getChildById('icon'):setItemId(t[3])

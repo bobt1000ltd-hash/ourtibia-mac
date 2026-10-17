@@ -371,7 +371,9 @@ drawStateInner=function()
   end
   for page=1,4 do fields['preset'..page]:setOn(page==state.loot.preset) end
   local slots=math.max(0,tonumber(state.loot.slots) or 0)
-  fields.lootItems:setHeight(math.max(1,math.ceil(slots/4))*38)
+  -- 17.10.2026 (Tobeto): the 4 extra slots of the store are shown locked (coin icon) until bought
+  local locked=(slots>0 and slots<12) and (12-slots) or 0
+  fields.lootItems:setHeight(math.max(1,math.ceil((slots+locked)/4))*38)
   ourLootEmpty={}
   for i=1,slots do
     local slotIndex=i
@@ -404,8 +406,21 @@ drawStateInner=function()
       return true
     end
   end
+  for _=1,locked do
+    local row=g_ui.createWidget('LootSlot',fields.lootItems)
+    row:getChildById('plus'):hide();row:getChildById('remove'):hide()
+    row:getChildById('icon'):hide()
+    local coin=g_ui.createWidget('UIWidget',row);coin:setSize({width=12,height=12});coin:setPhantom(true)
+    coin:addAnchor(AnchorHorizontalCenter,'parent',AnchorHorizontalCenter);coin:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
+    coin:setImageSource('/images/store/icon-tibiacoin');coin:setImageSmooth(true)
+    row:setOpacity(0.75)
+    row:setTooltip('Locked slot. Unlock 4 more autoloot slots in the Game Store (Extras > Services > More Autoloot Slots). Click to open the store.')
+    row.onClick=function() local st=modules.game_myotsstore;if st and st.openBuyFor then pcall(st.openBuyFor,'More Autoloot Slots') end end
+  end
   pcall(drawExclusions)
   loading=false
+  -- the panel may get taller (more slots) - let it stretch to the new contents
+  addEvent(function() pcall(ourCapPanels) end)
 end
 -- 15.10.2026 (Tobeto): time left until the task reset - Daily in hours (minutes in the last
 -- hour), Weekly in days (hours on the last day, minutes in the last hour)

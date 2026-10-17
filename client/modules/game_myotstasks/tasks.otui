@@ -333,9 +333,9 @@ MainWindow
       anchors.top: parent.top
       anchors.left: parent.left
       anchors.right: parent.right
-      margin-top: 356
-      height: 60
-      background-color: #3a3220
+      margin-top: 344
+      height: 166
+      background-color: #00000000
       border-width: 1
       border-color: #c8a040
       color: #ffd35a

@@ -230,6 +230,7 @@ local function continueMapClick(delay)
         local player = g_game.getLocalPlayer()
         if not player or not mapClick.dest or not g_game.isOnline() or g_game.isDead() then clearMapClick(); return end
         if mapClick.playerId and player:getId() ~= mapClick.playerId then clearMapClick(); return end
+        if g_game.isFollowing and g_game.isFollowing() then clearMapClick(); return end
         if mapClick.unreachable then mapClick.unreachable = nil; noWay(); return end
         if g_clock.millis() - mapClick.time > 20000 or mapClick.sends >= 30 then clearMapClick(); return end
         if not sendWay(player) then noWay() end
@@ -265,6 +266,8 @@ local mapClickWatch = nil
 local function watchMapClick()
     local dest = mapClick.dest
     local player = g_game.getLocalPlayer()
+    -- 17.10.2026 (Tobeto): following a creature ends the map click (it kept walking to the old spot)
+    if dest and g_game.isFollowing and g_game.isFollowing() then clearMapClick(); dest = nil end
     if dest and player and g_game.isOnline() and not mapClick.event then
         local pos = player:getPosition()
         if not pos or pos.z ~= dest.z or (pos.x == dest.x and pos.y == dest.y) then clearMapClick()

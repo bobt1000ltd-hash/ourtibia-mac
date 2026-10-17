@@ -43,6 +43,22 @@ function B.redraw()
       B.widgets[#B.widgets+1]={label=label,cell=cell,b=b}
     end
   end
+  -- 17.10.2026 (owner): active meals (cooking) with the time left
+  for _,m in ipairs(B.meals or {}) do
+    local left=(m.until_ or 0)-now
+    if left>0 then
+      shown=shown+1
+      local cell=g_ui.createWidget('UIWidget',w);cell:setSize({width=44,height=44});cell:setFocusable(false)
+      local icon=g_ui.createWidget('UIItem',cell);icon:setSize({width=32,height=32});icon:setVirtual(true)
+      icon:addAnchor(AnchorTop,'parent',AnchorTop);icon:addAnchor(AnchorHorizontalCenter,'parent',AnchorHorizontalCenter)
+      pcall(function() icon:setItemId(tonumber(m.cid) or 0) end);icon:setPhantom(true)
+      local label=g_ui.createWidget('Label',cell);label:setFont('verdana-11px-rounded');label:setColor('#b8f0a0')
+      label:addAnchor(AnchorBottom,'parent',AnchorBottom);label:addAnchor(AnchorHorizontalCenter,'parent',AnchorHorizontalCenter)
+      label:setText(fmt(left));label:setTextAutoResize(true);label:setPhantom(true)
+      cell:setTooltip('Well fed: '..tostring(m.name)..(m.group and (' ('..tostring(m.group)..')') or '')..'\n'..string.format('%d:%02d left',math.floor(left/60),math.floor(left)%60))
+      B.widgets[#B.widgets+1]={label=label,cell=cell,b=m,meal=true}
+    end
+  end
   -- 13.10.2026 (Tobeto): respawn fund tile - always visible, amount in the tooltip
   if B.fund then
     shown=shown+1
@@ -64,7 +80,10 @@ local function tick()
   local now=g_clock.seconds();local expired=false
   for _,e in ipairs(B.widgets) do
     local left=(e.b.until_ or 0)-now
-    if left<=0 then expired=true else e.label:setText(fmt(left)) end
+    if left<=0 then expired=true else
+      e.label:setText(fmt(left))
+      if e.meal then e.cell:setTooltip('Well fed: '..tostring(e.b.name)..(e.b.group and (' ('..tostring(e.b.group)..')') or '')..'\n'..string.format('%d:%02d left',math.floor(left/60),math.floor(left)%60)) end
+    end
   end
   if expired then B.redraw() end
 end
@@ -75,8 +94,15 @@ function B.set(list,fund,step)
   B.redraw()
   if not ticker then ticker=cycleEvent(tick,1000) end
 end
+-- 17.10.2026: meals from game_myotscook {name, cid, left, group}
+function B.setMeals(list)
+  local now=g_clock.seconds();B.meals={}
+  for _,m in ipairs(list or {}) do local c={};for k,v in pairs(m) do c[k]=v end;c.until_=now+(tonumber(m.left) or 0);B.meals[#B.meals+1]=c end
+  B.redraw()
+  if not ticker then ticker=cycleEvent(tick,1000) end
+end
 function B.clear()
-  B.list={};B.widgets={}
+  B.list={};B.widgets={};B.meals={}
   if ticker then removeEvent(ticker);ticker=nil end
   if bar and not bar:isDestroyed() then bar:destroy() end;bar=nil
 end

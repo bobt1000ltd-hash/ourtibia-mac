@@ -349,6 +349,11 @@ function showSkillsContextMenu(widget, mousePos, mouseButton)
 
     hideMenuOptionsForOldClients(menu)
 
+    -- 17.10.2026 (Tobeto): Hit Points, Mana, Soul Points and Capacity live in the Attributes tab -
+    -- their switches here were "on" but showed nothing, so they are not listed any more
+    for _, gone in ipairs({'rowHealth', 'rowMana', 'rowSoul', 'rowCapacity'}) do
+        local w = menu:getChildById(gone); if w then w:destroy() end
+    end
     for _, choice in ipairs(menu:getChildren()) do
         local choiceId = choice:getId()
         if choiceId and choiceId ~= 'HorizontalSeparator' then

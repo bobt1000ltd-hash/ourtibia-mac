@@ -96,6 +96,44 @@ local function render()
   buildList(); renderActive(); updateSkillRow()
 end
 
+-- 17.10.2026 (owner): "Well fed" condition icon (under the equipment) while a meal works;
+-- the tooltip lists the meals and their time left
+local wellFedEvent
+local function wellFedText()
+  local t = g_clock.seconds(); local lines = {}
+  for _, a in ipairs(active or {}) do
+    local left = math.floor((a.until_ or 0) - t)
+    if left > 0 then lines[#lines + 1] = cap(a.name) .. ' - ' .. string.format('%d:%02d', math.floor(left / 60), left % 60) .. ' left' end
+  end
+  return lines
+end
+function updateWellFed()
+  local inv = modules.game_inventory
+  if not inv or not inv.getIconsPanelOn then return end
+  local lines = wellFedText()
+  for _, getter in ipairs({inv.getIconsPanelOn, inv.getIconsPanelOff}) do
+    local ok, panel = pcall(getter)
+    if ok and panel then
+      local icon = panel:getChildById('ourWellFed')
+      if #lines == 0 then
+        if icon then icon:destroy() end
+      else
+        if not icon then
+          icon = g_ui.createWidget('ConditionWidget', panel); icon:setId('ourWellFed')
+          icon:setImageSource('/game_myotscook/images/wellfed'); icon:setImageSize(tosize('9 9'))
+        end
+        icon:setTooltip('Well fed\n' .. table.concat(lines, '\n'))
+      end
+    end
+  end
+  if #lines > 0 and not wellFedEvent then
+    wellFedEvent = cycleEvent(function()
+      if #wellFedText() == 0 then removeEvent(wellFedEvent); wellFedEvent = nil end
+      pcall(updateWellFed)
+    end, 1000)
+  end
+end
+
 local function receive(protocol, code, buffer)
   local ok, data = pcall(json.decode, buffer)
   if not ok or type(data) ~= 'table' then return end
@@ -111,6 +149,10 @@ local function receive(protocol, code, buffer)
     active = data.list or {}
     local t = g_clock.seconds(); for _, a in ipairs(active) do a.until_ = t + (a.left or 0) end
     renderActive()
+    -- 17.10.2026 (owner): "Well fed" icon under the equipment + meal timers in the boost bar
+    pcall(updateWellFed)
+    local bb = BoostBar or (modules.game_myotshud and modules.game_myotshud.BoostBar)
+    if bb and bb.setMeals then pcall(bb.setMeals, active) end
   end
 end
 
