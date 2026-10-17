@@ -147,22 +147,15 @@ local function drawKills()
     -- 11.10.2026 (Tobeto): click a monster -> its wiki page
     do local monsterName=r.name;row.onClick=function() local w=modules.game_myotswiki;if w and w.showMonster then w.showMonster(monsterName) end end end
     row:setTooltip(string.format('%s: %d/8 stars\nBonus: +%d%% damage, +%d%% loot against this monster.\nEach new star: one reward (coins, fragments or upgrade stones).',r.name,r.stars,r.stars,r.stars*2))
-    -- 16.10.2026 (Tobeto): stage lines (left: still to do, right: done) around the bar
-    local function lines(panel,count,color,fromRight)
-      panel:destroyChildren()
-      for k=1,count do
-        local l=g_ui.createWidget('KillStage',panel);l:setBackgroundColor(color)
-        l:addAnchor(AnchorTop,'parent',AnchorTop)
-        if fromRight then l:addAnchor(AnchorRight,'parent',AnchorRight);l:setMarginRight((k-1)*4)
-        else l:addAnchor(AnchorLeft,'parent',AnchorLeft);l:setMarginLeft((k-1)*4) end
+    -- 17.10.2026 (owner): the 8 stars again (the stage lines were removed)
+    local stars=row:getChildById('stars')
+    if stars then
+      stars:destroyChildren()
+      for starIndex=1,8 do
+        local star=g_ui.createWidget('KillStar',stars)
+        star:setImageSource(starIndex<=r.stars and '/images/game/prey/prey_star' or '/images/game/prey/prey_nostar')
       end
     end
-    lines(row:getChildById('stagesLeft'),8-r.stars,'#6a6a6a',false)
-    lines(row:getChildById('stagesRight'),r.stars,'#e0b040',true)
-    -- 17.10.2026 (Tobeto): the bar always has the same length and reaches the right side;
-    -- only the stage lines move from the left to the right when a stage is finished
-    do local leftW=(8-r.stars)*4+1
-      row:getChildById('stagesLeft'):setWidth(leftW);row:getChildById('stagesRight'):setWidth(35-leftW) end
     local progress=row:getChildById('killProgress')
     -- 11.10.2026: the server sends the milestones of this monster (fewer kills for rare spawns)
     local previous=tonumber(r.prev)
