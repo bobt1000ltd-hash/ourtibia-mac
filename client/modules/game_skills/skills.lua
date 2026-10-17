@@ -1898,6 +1898,9 @@ function myotsStats(buffer)
         if free > 0 then skillsButton:setBorderWidth(1); skillsButton:setBorderColor('#ffd35a'); skillsButton:setImageColor('#ffe9a0')
         else skillsButton:setBorderWidth(0); skillsButton:setImageColor('#ffffff') end
     end
+    -- 17.10.2026: the base vocation from the server (the client learns a new vocation from The
+    -- Oracle only at the next login); used by the spell list filter
+    if parts[12] then _G.OurBaseVocation = tonumber(parts[12]) end
     if parts[11] then
         myotsXpRateText = parts[11] .. '%'
         local tip = 'Your current experience rate amounts to ' .. parts[11] .. '%.'

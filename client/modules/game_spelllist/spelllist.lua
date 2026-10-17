@@ -297,7 +297,7 @@ function updateSpelllist()
         local found = query == '' or spellName:lower():find(query, 1, true) or (info.words and info.words:lower():find(query, 1, true))
         if not tmpLabel or not localPlayer then
         elseif found and (not (filters.level) or (info.maglevel or 0) <= localPlayer:getMagicLevel()) and
-            (not (filters.vocation) or table.find(info.vocations, serverVocation(localPlayer:getVocation()))) and
+            (not (filters.vocation) or table.find(info.vocations, _G.OurBaseVocation or serverVocation(localPlayer:getVocation()))) and
             (filters.vocationId == FILTER_VOCATION_ANY or vocationMatches(info.vocations, filters.vocationId)) and
             (filters.groupId == FILTER_GROUP_ANY or info.group[filters.groupId]) and
             (filters.premium == FILTER_PREMIUM_ANY or (info.premium and filters.premium == FILTER_PREMIUM_YES) or
@@ -383,6 +383,13 @@ function selectDefaultVocation()
     end
     local vocation = player:getVocation()
     local widget = vocationBoxAny
+    -- 17.10.2026: the vocation from the server (after The Oracle the client value is old)
+    local base = _G.OurBaseVocation
+    if base then
+        widget = ({[0] = vocationBoxMonk, [1] = vocationBoxSorcerer, [2] = vocationBoxDruid, [3] = vocationBoxPaladin, [4] = vocationBoxKnight})[base] or vocationBoxAny
+        vocationRadioGroup:selectWidget(widget)
+        return
+    end
     if vocation == VocationsClient.Knight or vocation == VocationsClient.EliteKnight then
         widget = vocationBoxKnight
     elseif vocation == VocationsClient.Paladin or vocation == VocationsClient.RoyalPaladin then
