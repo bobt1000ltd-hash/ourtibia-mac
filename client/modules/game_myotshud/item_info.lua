@@ -305,7 +305,7 @@ OurItemInfo={
 [10278]={n="stone wing",w=1.53,s={"Fiona",120}},
 [266]={n="health potion",w=2.7},
 [5917]={n="bandana",b="Arm: 1",w=8.5,s={"Rashid",150}},
-[12732]={n="shimmer rod",b="Atk: 64-87 Ice",w=31,s={"Yaman",2500}},
+[12732]={n="shimmer rod",b="Atk: 55-75 Ice",w=31,s={"Yaman",2500}},
 [3281]={n="giant sword",b="Atk: 49, Def: 15",w=180,s={"Alesar",17000}},
 [5950]={n="beach bag",w=8},
 [3421]={n="dark shield",b="Def: 25",w=52,s={"Rashid",400}},

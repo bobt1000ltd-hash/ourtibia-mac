@@ -163,6 +163,13 @@ local function adjustMapClick(pos)
         if math.max(math.abs(pos.x - mapClick.target.x), math.abs(pos.y - mapClick.target.y)) <= 1 then return false end
         if not blockedByCreature(mapClick.target) then dest.x, dest.y = mapClick.target.x, mapClick.target.y; mapClick.target = nil; return true end
     elseif blockedByCreature(dest) then
+        -- 18.10.2026 (owner: "when the character runs into a monster the map click stops"): the
+        -- clicked tile was free and a monster stepped on it - that is not a click on the monster.
+        -- Wait next to it (or keep walking towards it) until it moves away, do not end the click.
+        if not mapClick.destHadCreature then
+            if math.max(math.abs(pos.x - dest.x), math.abs(pos.y - dest.y)) <= 1 then return 'wait' end
+            return true
+        end
         if math.max(math.abs(pos.x - dest.x), math.abs(pos.y - dest.y)) <= 1 then return false end
         mapClick.target = {x = dest.x, y = dest.y, z = dest.z}
     end
@@ -186,7 +193,14 @@ local function sendWay(player)
     local pos = player:getPosition()
     if not dest or not pos then return false end
     if pos.z ~= dest.z then clearMapClick(); return true end
-    if not adjustMapClick(pos) then clearMapClick(); return true end
+    local adj = adjustMapClick(pos)
+    if adj == 'wait' then
+        if player:isAutoWalking() then player:stopAutoWalk() end
+        mapClick.waiting = true
+        continueMapClick(250)
+        return true
+    end
+    if not adj then clearMapClick(); return true end
     if pos.x == dest.x and pos.y == dest.y then clearMapClick(); return true end
     local dirs = findWay(pos, dest, false, false) or findWay(pos, dest, true, false) or findWay(pos, dest, true, true)
         or findWay(pos, dest, true, true, true)
@@ -252,7 +266,9 @@ continueMapClick = function(delay)
         if mapClick.playerId and player:getId() ~= mapClick.playerId then clearMapClick(); return end
         if g_game.isFollowing and g_game.isFollowing() then clearMapClick(); return end
         if mapClick.unreachable then mapClick.unreachable = nil; noWay(); return end
-        if g_clock.millis() - mapClick.time > 20000 or mapClick.sends >= 30 then clearMapClick(); return end
+        -- 18.10.2026 (owner): in a fight monsters keep stepping into the way and every step the server
+        -- refused used one of the 30 tries - the click ended halfway. More time and tries now.
+        if g_clock.millis() - mapClick.time > 60000 or mapClick.sends >= 150 then clearMapClick(); return end
         if not sendWay(player) then noWay() end
     end, delay or 80)
 end
@@ -265,6 +281,7 @@ local function rememberAutoWalk(player, dest, ...)
     -- far away (minimap) or another floor: the client's own walk
     if not pos or pos.z ~= dest.z or not g_map.getTile(dest) then return originalAutoWalk(player, dest, ...) end
     mapClick.dest = {x = dest.x, y = dest.y, z = dest.z}
+    mapClick.destHadCreature = blockedByCreature(dest) -- a click on a monster / NPC: walk next to it
     mapClick.time = g_clock.millis()
     mapClick.playerId = player:getId()
     if not sendWay(player) then noWay(); return false end

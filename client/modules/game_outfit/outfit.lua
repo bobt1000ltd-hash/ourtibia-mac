@@ -2242,7 +2242,8 @@ function ourUpdateActive()
         m:setOutfit({type = mountLook})
         m:show()
         local mb = ourBonusOf('mount', mountLook)
-        m:setTooltip(mb and ('Mount bonus:\n' .. tostring(mb) .. '\n(counts also when you do not ride it; only the mount speed needs riding)') or 'This mount gives no bonus.')
+        -- 18.10.2026 (Tobeto): without the "(counts also...)" line
+        m:setTooltip(mb and ('Mount bonus:\n' .. tostring(mb)) or 'This mount gives no bonus.')
     else
         m:hide()
         local box = act:recursiveGetChildById('ourActMountBox')
