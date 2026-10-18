@@ -1,0 +1,44 @@
+[1/40] Running cpp protocol buffer compiler on D:/a/ourtibia-mac/ourtibia-mac/source/src/protobuf/staticdata.proto
+[2/40] Running cpp protocol buffer compiler on D:/a/ourtibia-mac/ourtibia-mac/source/src/protobuf/sounds.proto
+[3/40] Running cpp protocol buffer compiler on D:/a/ourtibia-mac/ourtibia-mac/source/src/protobuf/appearances.proto
+[4/40] Building CXX object src\protobuf\CMakeFiles\protobuf.dir\sounds.pb.cc.obj
+[5/40] Building CXX object src\protobuf\CMakeFiles\protobuf.dir\staticdata.pb.cc.obj
+[6/40] Building C object src\CMakeFiles\otclient_core.dir\framework\core\minizip\ioapi_mem.c.obj
+[7/40] Building CXX object src\protobuf\CMakeFiles\protobuf.dir\appearances.pb.cc.obj
+[8/40] Building C object src\CMakeFiles\otclient_core.dir\framework\core\minizip\ioapi.c.obj
+[9/40] Building C object src\CMakeFiles\otclient_core.dir\framework\core\minizip\unzip.c.obj
+[10/40] Building C object src\CMakeFiles\otclient_core.dir\framework\core\minizip\crypt.c.obj
+[11/40] Linking CXX static library src\protobuf\protobuf.lib
+[12/40] Building RC object src\CMakeFiles\otclient.dir\__\cmake\icon\otcicon.rc.res
+[13/40] Building CXX object src\CMakeFiles\otclient_core.dir\cmake_pch.cxx.obj
+[14/40] Building CXX object src\CMakeFiles\otclient_core.dir\framework\luaengine\luavaluecasts.cpp.obj
+cl : Command line warning D9025 : overriding '/O2' with '/Od'
+cl : Command line warning D9025 : overriding '/Ob2' with '/Ob0'
+[15/40] Building CXX object src\CMakeFiles\otclient.dir\main.cpp.obj
+[16/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_21_cxx.cxx.obj
+[17/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_18_cxx.cxx.obj
+[18/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_19_cxx.cxx.obj
+[19/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_20_cxx.cxx.obj
+[20/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_16_cxx.cxx.obj
+[21/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_15_cxx.cxx.obj
+[22/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_17_cxx.cxx.obj
+[23/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_13_cxx.cxx.obj
+[24/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_14_cxx.cxx.obj
+[25/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_10_cxx.cxx.obj
+[26/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_12_cxx.cxx.obj
+[27/40] Building CXX object src\CMakeFiles\otclient_core.dir\framework\luafunctions.cpp.obj
+cl : Command line warning D9025 : overriding '/O2' with '/Od'
+cl : Command line warning D9025 : overriding '/Ob2' with '/Ob0'
+[28/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_6_cxx.cxx.obj
+[29/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_11_cxx.cxx.obj
+[30/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_5_cxx.cxx.obj
+[31/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_4_cxx.cxx.obj
+[32/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_8_cxx.cxx.obj
+[33/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_7_cxx.cxx.obj
+[34/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_0_cxx.cxx.obj
+[35/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_2_cxx.cxx.obj
+[36/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_1_cxx.cxx.obj
+[37/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_3_cxx.cxx.obj
+[38/40] Building CXX object src\CMakeFiles\otclient_core.dir\Unity\unity_9_cxx.cxx.obj
+[39/40] Linking CXX static library src\otclient_core.lib
+[40/40] Linking CXX executable D:\a\ourtibia-mac\ourtibia-mac\source\otclient.exe

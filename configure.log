@@ -1,0 +1,1179 @@
+Preset CMake variables:
+
+  BUILD_STATIC_LIBRARY="ON"
+  CMAKE_COLOR_DIAGNOSTICS="ON"
+  CMAKE_CXX_COMPILER="cl.exe"
+  CMAKE_C_COMPILER="cl.exe"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg/scripts/buildsystems/vcpkg.cmake"
+  OTCLIENT_BUILD_TESTS="OFF"
+  SPEED_UP_BUILD_UNITY="ON"
+  VCPKG_BUILD_TYPE="release"
+  VCPKG_HOST_TRIPLET="x64-windows"
+  VCPKG_INSTALL_OPTIONS="--clean-packages-after-build;--clean-buildtrees-after-build"
+  VCPKG_OVERLAY_TRIPLETS="D:/a/ourtibia-mac/ourtibia-mac/source/cmake/triplets"
+  VCPKG_TARGET_TRIPLET="x64-windows-static-release"
+
+-- Shared vcpkg installed tree disabled: explicitly disabled
+-- Running vcpkg install
+Fetching registry information from https://github.com/microsoft/vcpkg (HEAD)...
+Detecting compiler hash for triplet x64-windows...
+Compiler found: C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe
+Detecting compiler hash for triplet x64-windows-static-release...
+Compiler found: C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe
+The following packages will be built and installed:
+    abseil:x64-windows-static-release@20260107.1#3 -- git+https://github.com/microsoft/vcpkg@8e20a1d1a1c5d5cf4c8cda806b52131a94b04831
+  * abseil:x64-windows@20260107.1#3 -- git+https://github.com/microsoft/vcpkg@8e20a1d1a1c5d5cf4c8cda806b52131a94b04831
+    angle:x64-windows-static-release@chromium_7258#2 -- git+https://github.com/microsoft/vcpkg@6eb27c13ec4328ed3d63f058a485a4e213087bda
+    asio:x64-windows-static-release@1.32.0 -- git+https://github.com/microsoft/vcpkg@d1b402afe0e4c5b8efb08dcc8be6b0c90900a55e
+  * brotli:x64-windows-static-release@1.2.0 -- git+https://github.com/microsoft/vcpkg@0fb79bb13588702a9e06057745b4aed95ce5c861
+    bshoshany-thread-pool:x64-windows-static-release@5.1.0 -- git+https://github.com/microsoft/vcpkg@c33b29d4887afd17e45999cd95f3a4852eccf4ee
+  * bzip2[core,tool]:x64-windows-static-release@1.0.8#6 -- git+https://github.com/microsoft/vcpkg@2d029da682847c5ebdc54e4dbea001331a02207e
+    cpp-httplib[brotli,core]:x64-windows-static-release@0.48.0 -- git+https://github.com/microsoft/vcpkg@02fea7b082ae030fc8afe0699ad507be328cf432
+    cppcodec:x64-windows-static-release@0.2#4 -- git+https://github.com/microsoft/vcpkg@c113d2ea70af2571436215a28fb1c880605a1c24
+    discord-rpc:x64-windows-static-release@3.4.0#4 -- git+https://github.com/microsoft/vcpkg@1ff8f211964141f0bc8ba459c88c1d8af8415c24
+  * egl-registry:x64-windows-static-release@2025-05-27 -- git+https://github.com/microsoft/vcpkg@980ed62fded868a1cb66460b32704aca030af013
+    fmt:x64-windows-static-release@12.2.0 -- git+https://github.com/microsoft/vcpkg@823af43db9df2c4be15c4331b36b3cc419afa02c
+    freetype[brotli,bzip2,core,png,zlib]:x64-windows-static-release@2.14.3 -- git+https://github.com/microsoft/vcpkg@37a2b08e48b987c9b2a45a075fed1bc382e8de03
+    glew:x64-windows-static-release@2.3.1 -- git+https://github.com/microsoft/vcpkg@edfc7053968c85e646897acc2f6f1c94d1690499
+    inih[core,cpp]:x64-windows-static-release@58 -- D:\a\ourtibia-mac\ourtibia-mac\source\overlay-ports\inih
+    ixwebsocket[core,mbedtls,ssl]:x64-windows-static-release@12.0.0 -- git+https://github.com/microsoft/vcpkg@d77872fa00eec3d7c759ce8f0a06285ffab22516
+    libarchive[bzip2,core,crypto,lz4,lzma,xar,zstd]:x64-windows-static-release@3.8.7 -- git+https://github.com/microsoft/vcpkg@5fa6c30380bdf44dc81d78116c3a1f01a87a86b5
+    liblzma:x64-windows-static-release@5.8.3 -- git+https://github.com/microsoft/vcpkg@ae94eaf58eb64ce5b0dfba7769095c43c6c65d71
+    libobfuscate:x64-windows-static-release@2024-07-10 -- git+https://github.com/microsoft/vcpkg@59a443292768ae0fdfa760c225f278f6f34084ac
+    libogg:x64-windows-static-release@1.3.6#1 -- git+https://github.com/microsoft/vcpkg@0631c72b35b0e169220b9c0fa9a6af4b229268cb
+    libpng[apng,core]:x64-windows-static-release@1.6.58 -- git+https://github.com/microsoft/vcpkg@909d98e06046a0901fd11300b3d725d6a80d27bf
+    libvorbis:x64-windows-static-release@1.3.7#4 -- git+https://github.com/microsoft/vcpkg@149b8037ad8023f0f1b130616cf1a90238083cb0
+    luajit:x64-windows-static-release@2026-06-16 -- git+https://github.com/microsoft/vcpkg@23a9a69cef543cf5015332f1d4a66223aeb418e1
+  * lz4:x64-windows-static-release@1.10.0 -- git+https://github.com/microsoft/vcpkg@4f01eec10f515a428e914107c5188366380f8dd9
+  * mbedtls:x64-windows-static-release@3.6.5 -- git+https://github.com/microsoft/vcpkg@26a9705b24467d80e1382519bf8721db6702a278
+    nlohmann-json:x64-windows-static-release@3.12.0#2 -- git+https://github.com/microsoft/vcpkg@ac3b8821cf486e45dd543bef2a4ba1d1ba230258
+    openal-soft:x64-windows-static-release@1.25.1#2 -- git+https://github.com/microsoft/vcpkg@35d7e2a2f7dfc87f25ee7d95b8063d31090653f2
+    opengl:x64-windows-static-release@2022-12-04#3 -- git+https://github.com/microsoft/vcpkg@c3ae71738f88449ebcd781cef60d9a253fa091d4
+  * opengl-registry:x64-windows-static-release@2026-01-26 -- git+https://github.com/microsoft/vcpkg@0cd17c3b57221250d5ba174580f0a2993853ce34
+    openssl:x64-windows-static-release@3.6.3 -- git+https://github.com/microsoft/vcpkg@b4a2360e8425d8d5e2a24436804b592bef26980b
+    parallel-hashmap:x64-windows-static-release@2.0.0 -- git+https://github.com/microsoft/vcpkg@26448d76360f5c0b1b018e1f68fea9d24b598246
+    physfs:x64-windows-static-release@3.2.0#1 -- git+https://github.com/microsoft/vcpkg@09bfe04124fab72544d0a7c27efcccb4005dc784
+  * protobuf:x64-windows@6.33.4#2 -- git+https://github.com/microsoft/vcpkg@ed5f5c06952c67498f580082ff1209d051222947
+    protobuf:x64-windows-static-release@6.33.4#2 -- git+https://github.com/microsoft/vcpkg@ed5f5c06952c67498f580082ff1209d051222947
+    pugixml:x64-windows-static-release@1.16 -- git+https://github.com/microsoft/vcpkg@57dda7f8da9461a690dbc3c09363436215230838
+  * rapidjson:x64-windows-static-release@2025-02-26 -- git+https://github.com/microsoft/vcpkg@4297a243aa0e3ed6c3a4c307579914593da5751d
+    spdlog[core,fmt,tz-offset]:x64-windows-static-release@1.17.0 -- git+https://github.com/microsoft/vcpkg@7971db787034aef4204ace90e0f94fdbab808f75
+    stduuid:x64-windows-static-release@1.2.3 -- git+https://github.com/microsoft/vcpkg@a3a58db8b151c363a0f3df4a99e416d3a8dc0b62
+  * utf8-range:x64-windows-static-release@6.33.4 -- git+https://github.com/microsoft/vcpkg@9f24dda3a883d4026bb1122c50077c07c9a32f47
+  * utf8-range:x64-windows@6.33.4 -- git+https://github.com/microsoft/vcpkg@9f24dda3a883d4026bb1122c50077c07c9a32f47
+    utfcpp:x64-windows-static-release@4.1.1 -- git+https://github.com/microsoft/vcpkg@984c1d7c2c169d80f519d3cb856ad1ad13a0eb23
+  * vcpkg-cmake:x64-windows@2024-04-23 -- git+https://github.com/microsoft/vcpkg@e74aa1e8f93278a8e71372f1fa08c3df420eb840
+  * vcpkg-cmake-config:x64-windows@2024-05-23 -- git+https://github.com/microsoft/vcpkg@97a63e4bc1a17422ffe4eff71da53b4b561a7841
+  * vcpkg-cmake-get-vars:x64-windows@2025-05-29 -- git+https://github.com/microsoft/vcpkg@d6510f888dd526c7828f6b973349e7f30be51254
+  * vcpkg-get-python-packages:x64-windows@2025-04-05 -- git+https://github.com/microsoft/vcpkg@2550a21f375bb78fd3fba745a2e58a2355912767
+    zlib:x64-windows-static-release@1.3.2#1 -- git+https://github.com/microsoft/vcpkg@f49b05c666425471a7f6dc8b6156e9b3675a3c90
+  * zstd:x64-windows-static-release@1.5.7 -- git+https://github.com/microsoft/vcpkg@31b7320fab13790c6861cb3c2d50dc8f60ca3602
+Additional packages (*) will be modified to complete this operation.
+Restored 47 package(s) from C:\vcpkg-cache in 7.2 s. Use --debug to see more details.
+Installing 1/47 vcpkg-cmake-config:x64-windows@2024-05-23...
+Elapsed time to handle vcpkg-cmake-config:x64-windows: 2.56 ms
+vcpkg-cmake-config:x64-windows package ABI: 86af7722479a6c486bf4b4fe35b4418fafb9c43146b41ea69f88b367456e6c32
+Installing 2/47 vcpkg-cmake:x64-windows@2024-04-23...
+Elapsed time to handle vcpkg-cmake:x64-windows: 2.84 ms
+vcpkg-cmake:x64-windows package ABI: 48573a90dd362f33ccd9a184bf979f7e19d00cea9001052466425743f608363a
+Installing 3/47 abseil:x64-windows-static-release@20260107.1#3...
+Elapsed time to handle abseil:x64-windows-static-release: 118 ms
+abseil:x64-windows-static-release package ABI: 4e15f35e48bb35f6b9099e00ff116a87e49ad6820676ca35489c3ca75a48d465
+Installing 4/47 zlib:x64-windows-static-release@1.3.2#1...
+Elapsed time to handle zlib:x64-windows-static-release: 6.95 ms
+zlib:x64-windows-static-release package ABI: 57b30d1692865166c6026b602cd2338ebe9b15b8b1c47efaf2bad3c9f656d360
+Installing 5/47 vcpkg-get-python-packages:x64-windows@2025-04-05...
+Elapsed time to handle vcpkg-get-python-packages:x64-windows: 2.53 ms
+vcpkg-get-python-packages:x64-windows package ABI: a419e69f06616556100d9b00effdd525100bd1d584a02e241e3036510324fb60
+Installing 6/47 egl-registry:x64-windows-static-release@2025-05-27...
+Elapsed time to handle egl-registry:x64-windows-static-release: 4.27 ms
+egl-registry:x64-windows-static-release package ABI: a7d9f283189dadce2b4470c9e4c4068dfd32d63cb79f857d939dc39dd5d0fd68
+Installing 7/47 opengl-registry:x64-windows-static-release@2026-01-26...
+Elapsed time to handle opengl-registry:x64-windows-static-release: 9.9 ms
+opengl-registry:x64-windows-static-release package ABI: 36b42ec485ccacacd4d6943531373672a17f4721378dd835419d19ac542e6799
+Installing 8/47 angle:x64-windows-static-release@chromium_7258#2...
+Elapsed time to handle angle:x64-windows-static-release: 8.96 ms
+angle:x64-windows-static-release package ABI: f3259d02abd67c4c5d77c880447d64cc48c5af9a8ff46301eda479b382affbec
+Installing 9/47 asio:x64-windows-static-release@1.32.0...
+Elapsed time to handle asio:x64-windows-static-release: 102 ms
+asio:x64-windows-static-release package ABI: df042931a7413a75386221dc2486a3200f5f05172f2dd0e8837cb48aad039f5c
+Installing 10/47 bshoshany-thread-pool:x64-windows-static-release@5.1.0...
+Elapsed time to handle bshoshany-thread-pool:x64-windows-static-release: 4.84 ms
+bshoshany-thread-pool:x64-windows-static-release package ABI: b9bb856bafad1c3dd5c43dcb94306343c192a69022d5723e0bdc71d1150b7024
+Installing 11/47 brotli:x64-windows-static-release@1.2.0...
+Elapsed time to handle brotli:x64-windows-static-release: 6.98 ms
+brotli:x64-windows-static-release package ABI: 2a30208e92bff7a441702d1ff081e4b98a1c907b13ab239f220dd30baa015199
+Installing 12/47 cpp-httplib[brotli,core]:x64-windows-static-release@0.48.0...
+Elapsed time to handle cpp-httplib:x64-windows-static-release: 7.67 ms
+cpp-httplib:x64-windows-static-release package ABI: 51255912f2440446f01e3e28319dee4ddc72a9f260ac776b257ec83ecf01c004
+Installing 13/47 cppcodec:x64-windows-static-release@0.2#4...
+Elapsed time to handle cppcodec:x64-windows-static-release: 9.77 ms
+cppcodec:x64-windows-static-release package ABI: 4bc62f0c16b28c7c87f8cc66ba7684ffd11ddb8e938d1964c921c5a95931a924
+Installing 14/47 rapidjson:x64-windows-static-release@2025-02-26...
+Elapsed time to handle rapidjson:x64-windows-static-release: 13.2 ms
+rapidjson:x64-windows-static-release package ABI: bd2baef10051fcc3a51b3cabee848b10849b471cb62d5c386279ca2b2ba8f0bf
+Installing 15/47 discord-rpc:x64-windows-static-release@3.4.0#4...
+Elapsed time to handle discord-rpc:x64-windows-static-release: 7.9 ms
+discord-rpc:x64-windows-static-release package ABI: 1fbf22c812af6727512c3074c3c4315bf527ec411e3cde7e43ffd0fa600a3dec
+Installing 16/47 fmt:x64-windows-static-release@12.2.0...
+Elapsed time to handle fmt:x64-windows-static-release: 8.4 ms
+fmt:x64-windows-static-release package ABI: d6ef7be942249737cb0893bc9855e3184ab46cfb2308582956b686fc98f98f7c
+Installing 17/47 libpng[apng,core]:x64-windows-static-release@1.6.58...
+Elapsed time to handle libpng:x64-windows-static-release: 7.76 ms
+libpng:x64-windows-static-release package ABI: a3f99d625e136e046b4a31fd6440162a449ed28880331d9e63b8083258d2d304
+Installing 18/47 bzip2[core,tool]:x64-windows-static-release@1.0.8#6...
+Elapsed time to handle bzip2:x64-windows-static-release: 6.67 ms
+bzip2:x64-windows-static-release package ABI: b6e237a07204431012f79db536623893cbd4896e2d517c2dc1a729addf4d339b
+Installing 19/47 freetype[brotli,bzip2,core,png,zlib]:x64-windows-static-release@2.14.3...
+Elapsed time to handle freetype:x64-windows-static-release: 17 ms
+freetype:x64-windows-static-release package ABI: d1c0d586ea26b793d83d14fe399630e7f6f24b41b5c697de1458ebccbecfe085
+Installing 20/47 opengl:x64-windows-static-release@2022-12-04#3...
+Elapsed time to handle opengl:x64-windows-static-release: 6.38 ms
+opengl:x64-windows-static-release package ABI: 1020e0bdff7aece11699c1a1a032a2b8b1975ffd99030d1ba52e0e66a3261e50
+Installing 21/47 glew:x64-windows-static-release@2.3.1...
+Elapsed time to handle glew:x64-windows-static-release: 6.92 ms
+glew:x64-windows-static-release package ABI: 9c7a6f50bf253057512afdd663b22372eef7404bcc3e6a979917b3761a59bf5e
+Installing 22/47 inih[core,cpp]:x64-windows-static-release@58...
+Elapsed time to handle inih:x64-windows-static-release: 6.1 ms
+inih:x64-windows-static-release package ABI: 765ab501b637d4c37e5d93d974d5acb57b4ddea6be6900efd0353511df3cad76
+Installing 23/47 mbedtls:x64-windows-static-release@3.6.5...
+Elapsed time to handle mbedtls:x64-windows-static-release: 22.7 ms
+mbedtls:x64-windows-static-release package ABI: 5daaa00b6389b9868f5f742fa729f38028efa95e63b6f66b9049801c6feeaa24
+Installing 24/47 ixwebsocket[core,mbedtls,ssl]:x64-windows-static-release@12.0.0...
+Elapsed time to handle ixwebsocket:x64-windows-static-release: 17.3 ms
+ixwebsocket:x64-windows-static-release package ABI: cf2f6fa42461847e6943ffab9e9540840fc55e7e47502576d77f4ab2001903eb
+Installing 25/47 zstd:x64-windows-static-release@1.5.7...
+Elapsed time to handle zstd:x64-windows-static-release: 6.96 ms
+zstd:x64-windows-static-release package ABI: 92d72a07d8da3c0a2dc5a8b2c04f145a52930295d796153fdc26625f1488d4a0
+Installing 26/47 liblzma:x64-windows-static-release@5.8.3...
+Elapsed time to handle liblzma:x64-windows-static-release: 12.2 ms
+liblzma:x64-windows-static-release package ABI: 8627f023bf903f892cd4082c3e23e55fea09397aa7b5e0fe1f93bded53939d89
+Installing 27/47 lz4:x64-windows-static-release@1.10.0...
+Elapsed time to handle lz4:x64-windows-static-release: 7.64 ms
+lz4:x64-windows-static-release package ABI: 3625f87bb1a069bc6cf4ebffbcc13ead3dcea02c2e1770f3e495381e2a2b8a7c
+Installing 28/47 vcpkg-cmake-get-vars:x64-windows@2025-05-29...
+Elapsed time to handle vcpkg-cmake-get-vars:x64-windows: 4.12 ms
+vcpkg-cmake-get-vars:x64-windows package ABI: e74638082261a3e8a2030afee3cc88da2cf1da936e5634eadf33c7973a58d6e0
+Installing 29/47 openssl:x64-windows-static-release@3.6.3...
+Elapsed time to handle openssl:x64-windows-static-release: 33.1 ms
+openssl:x64-windows-static-release package ABI: 952514ab19e8247c47bd27462efa74df6715c95ffc8c124405f154567c314d09
+Installing 30/47 libarchive[bzip2,core,crypto,lz4,lzma,xar,zstd]:x64-windows-static-release@3.8.7...
+Elapsed time to handle libarchive:x64-windows-static-release: 9.01 ms
+libarchive:x64-windows-static-release package ABI: 049375ff729a9acaa12f389ee2c89e0817ab2e2405b8dfcd5ed616b9600de04b
+Installing 31/47 libobfuscate:x64-windows-static-release@2024-07-10...
+Elapsed time to handle libobfuscate:x64-windows-static-release: 5.25 ms
+libobfuscate:x64-windows-static-release package ABI: 6ecdfbee7b4dcb4965614f7221f30efc98ec1aea1499e2e328a3ceda688b6f70
+Installing 32/47 libogg:x64-windows-static-release@1.3.6#1...
+Elapsed time to handle libogg:x64-windows-static-release: 7.34 ms
+libogg:x64-windows-static-release package ABI: 20cc8b9b1f891873003e28781feea88c5fa3c1a1a02195e5eff4096e50aa5fac
+Installing 33/47 libvorbis:x64-windows-static-release@1.3.7#4...
+Elapsed time to handle libvorbis:x64-windows-static-release: 7.99 ms
+libvorbis:x64-windows-static-release package ABI: a9895b2b390881feb75daa5319e3e2cec9db131bd28869da05b078daa96170ba
+Installing 34/47 luajit:x64-windows-static-release@2026-06-16...
+Elapsed time to handle luajit:x64-windows-static-release: 12.2 ms
+luajit:x64-windows-static-release package ABI: a967a85b5728f8039b931be07113f4258024bdd4b36c7329c00829352b1769d0
+Installing 35/47 nlohmann-json:x64-windows-static-release@3.12.0#2...
+Elapsed time to handle nlohmann-json:x64-windows-static-release: 15.1 ms
+nlohmann-json:x64-windows-static-release package ABI: e7171090af9fa76367e48cc0e35cf656a4700855efe4301598e3114ae6da8330
+Installing 36/47 openal-soft:x64-windows-static-release@1.25.1#2...
+Elapsed time to handle openal-soft:x64-windows-static-release: 8.48 ms
+openal-soft:x64-windows-static-release package ABI: d088463db89f462a818c602cfd4beefb971efd1813b022d934319a3b75e15feb
+Installing 37/47 parallel-hashmap:x64-windows-static-release@2.0.0...
+Elapsed time to handle parallel-hashmap:x64-windows-static-release: 8.53 ms
+parallel-hashmap:x64-windows-static-release package ABI: 37542b112c89d848c39cfb97caacf1e7211bc1f0bbe61a19e8a2fc6e9f01c165
+Installing 38/47 physfs:x64-windows-static-release@3.2.0#1...
+Elapsed time to handle physfs:x64-windows-static-release: 7.51 ms
+physfs:x64-windows-static-release package ABI: 403e390156a0fa9f649afdfe0bb68455031e7da71add32f0f7b019a6eeb974a3
+Installing 39/47 utf8-range:x64-windows-static-release@6.33.4...
+Elapsed time to handle utf8-range:x64-windows-static-release: 7.84 ms
+utf8-range:x64-windows-static-release package ABI: 30ef642fc6033e01b8afbd8fc3f05898c808cea3d73579163498d9e30fc8ab8d
+Installing 40/47 abseil:x64-windows@20260107.1#3...
+Elapsed time to handle abseil:x64-windows: 155 ms
+abseil:x64-windows package ABI: c66b88cd0db701f0bf0d75dc08b843d37277d775d7468549d3531fa32bf5c629
+Installing 41/47 utf8-range:x64-windows@6.33.4...
+Elapsed time to handle utf8-range:x64-windows: 7.69 ms
+utf8-range:x64-windows package ABI: 75bea0b00daea8d1ea79d9fea554fcadae2b163598f9defa4bfd8f8ab10ce770
+Installing 42/47 protobuf:x64-windows@6.33.4#2...
+Elapsed time to handle protobuf:x64-windows: 40 ms
+protobuf:x64-windows package ABI: f4d1a7e3c329db6bd05e64b035ba9d5d21a18f894a7d5e8ecb7600205cb9eab2
+Installing 43/47 protobuf:x64-windows-static-release@6.33.4#2...
+Elapsed time to handle protobuf:x64-windows-static-release: 34.3 ms
+protobuf:x64-windows-static-release package ABI: bfb21aeb2a38592d6e4f088a431929c65a2b81912c84a0c3b870210f2e22a8e6
+Installing 44/47 pugixml:x64-windows-static-release@1.16...
+Elapsed time to handle pugixml:x64-windows-static-release: 8 ms
+pugixml:x64-windows-static-release package ABI: b532e76ed804f559854421e5ae3476d7d01d2ff28549e079167b80ffee580120
+Installing 45/47 spdlog[core,fmt,tz-offset]:x64-windows-static-release@1.17.0...
+Elapsed time to handle spdlog:x64-windows-static-release: 317 ms
+spdlog:x64-windows-static-release package ABI: b214c51850b12a5a22cb63754515c8489435e42240af8fa4fcd3cd8c47bd863a
+Installing 46/47 stduuid:x64-windows-static-release@1.2.3...
+Elapsed time to handle stduuid:x64-windows-static-release: 7.79 ms
+stduuid:x64-windows-static-release package ABI: 47c32daaf3de35d912bf1e5087dfd03397a115179a4cc651d152df761db06fd5
+Installing 47/47 utfcpp:x64-windows-static-release@4.1.1...
+Elapsed time to handle utfcpp:x64-windows-static-release: 10.3 ms
+utfcpp:x64-windows-static-release package ABI: d40a42e27e5783521f00f8befec608040fa63f80c9a8a68ca4cd7c943c785784
+Installed contents are licensed to you by owners. Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Some packages did not declare an SPDX license. Check the `copyright` file for each package for more information about their licensing.
+Packages installed in this vcpkg installation declare the following licenses:
+(Apache-2.0 OR GPL-2.0-or-later)
+(BSD-3-Clause OR GPL-2.0-only)
+(FTL OR GPL-2.0-or-later)
+Apache-2.0
+BSD-2-Clause
+BSD-3-Clause
+BSL-1.0
+LGPL-2.0-or-later
+MIT
+Unlicense
+Zlib
+bzip2-1.0.6
+libpng-2.0
+abseil provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(absl CONFIG REQUIRED)
+  # note: 203 additional targets are not displayed.
+  target_link_libraries(main PRIVATE absl::any absl::log absl::base absl::bits)
+
+abseil provides pkg-config modules:
+
+  # Abseil absl_check library
+  absl_absl_check
+
+  # Abseil absl_log library
+  absl_absl_log
+
+  # Abseil absl_vlog_is_on library
+  absl_absl_vlog_is_on
+
+  # Abseil algorithm library
+  absl_algorithm
+
+  # Abseil algorithm_container library
+  absl_algorithm_container
+
+  # Abseil any library
+  absl_any
+
+  # Abseil any_invocable library
+  absl_any_invocable
+
+  # Abseil atomic_hook library
+  absl_atomic_hook
+
+  # Abseil bad_any_cast library
+  absl_bad_any_cast
+
+  # Abseil bad_optional_access library
+  absl_bad_optional_access
+
+  # Abseil bad_variant_access library
+  absl_bad_variant_access
+
+  # Abseil base library
+  absl_base
+
+  # Abseil base_internal library
+  absl_base_internal
+
+  # Abseil bind_front library
+  absl_bind_front
+
+  # Abseil bits library
+  absl_bits
+
+  # Abseil borrowed_fixup_buffer library
+  absl_borrowed_fixup_buffer
+
+  # Abseil bounded_utf8_length_sequence library
+  absl_bounded_utf8_length_sequence
+
+  # Abseil btree library
+  absl_btree
+
+  # Abseil charset library
+  absl_charset
+
+  # Abseil check library
+  absl_check
+
+  # Abseil chunked_queue library
+  absl_chunked_queue
+
+  # Abseil city library
+  absl_city
+
+  # Abseil civil_time library
+  absl_civil_time
+
+  # Abseil cleanup library
+  absl_cleanup
+
+  # Abseil cleanup_internal library
+  absl_cleanup_internal
+
+  # Abseil common_policy_traits library
+  absl_common_policy_traits
+
+  # Abseil compare library
+  absl_compare
+
+  # Abseil compressed_tuple library
+  absl_compressed_tuple
+
+  # Abseil config library
+  absl_config
+
+  # Abseil constexpr_testing_internal library
+  absl_constexpr_testing_internal
+
+  # Abseil container_common library
+  absl_container_common
+
+  # Abseil container_memory library
+  absl_container_memory
+
+  # Abseil cord library
+  absl_cord
+
+  # Abseil cord_internal library
+  absl_cord_internal
+
+  # Abseil cordz_functions library
+  absl_cordz_functions
+
+  # Abseil cordz_handle library
+  absl_cordz_handle
+
+  # Abseil cordz_info library
+  absl_cordz_info
+
+  # Abseil cordz_sample_token library
+  absl_cordz_sample_token
+
+  # Abseil cordz_statistics library
+  absl_cordz_statistics
+
+  # Abseil cordz_update_scope library
+  absl_cordz_update_scope
+
+  # Abseil cordz_update_tracker library
+  absl_cordz_update_tracker
+
+  # Abseil core_headers library
+  absl_core_headers
+
+  # Abseil crc32c library
+  absl_crc32c
+
+  # Abseil crc_cord_state library
+  absl_crc_cord_state
+
+  # Abseil crc_cpu_detect library
+  absl_crc_cpu_detect
+
+  # Abseil crc_internal library
+  absl_crc_internal
+
+  # Abseil debugging library
+  absl_debugging
+
+  # Abseil debugging_internal library
+  absl_debugging_internal
+
+  # Abseil decode_rust_punycode library
+  absl_decode_rust_punycode
+
+  # Abseil demangle_internal library
+  absl_demangle_internal
+
+  # Abseil demangle_rust library
+  absl_demangle_rust
+
+  # Abseil die_if_null library
+  absl_die_if_null
+
+  # Abseil dynamic_annotations library
+  absl_dynamic_annotations
+
+  # Abseil endian library
+  absl_endian
+
+  # Abseil errno_saver library
+  absl_errno_saver
+
+  # Abseil examine_stack library
+  absl_examine_stack
+
+  # Abseil exponential_biased library
+  absl_exponential_biased
+
+  # Abseil failure_signal_handler library
+  absl_failure_signal_handler
+
+  # Abseil fast_type_id library
+  absl_fast_type_id
+
+  # Abseil fixed_array library
+  absl_fixed_array
+
+  # Abseil flags library
+  absl_flags
+
+  # Abseil flags_commandlineflag library
+  absl_flags_commandlineflag
+
+  # Abseil flags_commandlineflag_internal library
+  absl_flags_commandlineflag_internal
+
+  # Abseil flags_config library
+  absl_flags_config
+
+  # Abseil flags_internal library
+  absl_flags_internal
+
+  # Abseil flags_marshalling library
+  absl_flags_marshalling
+
+  # Abseil flags_parse library
+  absl_flags_parse
+
+  # Abseil flags_path_util library
+  absl_flags_path_util
+
+  # Abseil flags_private_handle_accessor library
+  absl_flags_private_handle_accessor
+
+  # Abseil flags_program_name library
+  absl_flags_program_name
+
+  # Abseil flags_reflection library
+  absl_flags_reflection
+
+  # Abseil flags_usage library
+  absl_flags_usage
+
+  # Abseil flags_usage_internal library
+  absl_flags_usage_internal
+
+  # Abseil flat_hash_map library
+  absl_flat_hash_map
+
+  # Abseil flat_hash_set library
+  absl_flat_hash_set
+
+  # Abseil function_ref library
+  absl_function_ref
+
+  # Abseil generic_printer_internal library
+  absl_generic_printer_internal
+
+  # Abseil graphcycles_internal library
+  absl_graphcycles_internal
+
+  # Abseil has_ostream_operator library
+  absl_has_ostream_operator
+
+  # Abseil hash library
+  absl_hash
+
+  # Abseil hash_container_defaults library
+  absl_hash_container_defaults
+
+  # Abseil hash_function_defaults library
+  absl_hash_function_defaults
+
+  # Abseil hash_policy_traits library
+  absl_hash_policy_traits
+
+  # Abseil hashtable_control_bytes library
+  absl_hashtable_control_bytes
+
+  # Abseil hashtable_debug library
+  absl_hashtable_debug
+
+  # Abseil hashtable_debug_hooks library
+  absl_hashtable_debug_hooks
+
+  # Abseil hashtable_profiler library
+  absl_hashtable_profiler
+
+  # Abseil hashtablez_sampler library
+  absl_hashtablez_sampler
+
+  # Abseil inlined_vector library
+  absl_inlined_vector
+
+  # Abseil inlined_vector_internal library
+  absl_inlined_vector_internal
+
+  # Abseil int128 library
+  absl_int128
+
+  # Abseil iterator_traits_internal library
+  absl_iterator_traits_internal
+
+  # Abseil iterator_traits_test_helper_internal library
+  absl_iterator_traits_test_helper_internal
+
+  # Abseil kernel_timeout_internal library
+  absl_kernel_timeout_internal
+
+  # Abseil layout library
+  absl_layout
+
+  # Abseil leak_check library
+  absl_leak_check
+
+  # Abseil linked_hash_map library
+  absl_linked_hash_map
+
+  # Abseil linked_hash_set library
+  absl_linked_hash_set
+
+  # Abseil log library
+  absl_log
+
+  # Abseil log_entry library
+  absl_log_entry
+
+  # Abseil log_flags library
+  absl_log_flags
+
+  # Abseil log_globals library
+  absl_log_globals
+
+  # Abseil log_initialize library
+  absl_log_initialize
+
+  # Abseil log_internal_append_truncated library
+  absl_log_internal_append_truncated
+
+  # Abseil log_internal_check_impl library
+  absl_log_internal_check_impl
+
+  # Abseil log_internal_check_op library
+  absl_log_internal_check_op
+
+  # Abseil log_internal_conditions library
+  absl_log_internal_conditions
+
+  # Abseil log_internal_config library
+  absl_log_internal_config
+
+  # Abseil log_internal_container library
+  absl_log_internal_container
+
+  # Abseil log_internal_flags library
+  absl_log_internal_flags
+
+  # Abseil log_internal_fnmatch library
+  absl_log_internal_fnmatch
+
+  # Abseil log_internal_format library
+  absl_log_internal_format
+
+  # Abseil log_internal_globals library
+  absl_log_internal_globals
+
+  # Abseil log_internal_log_impl library
+  absl_log_internal_log_impl
+
+  # Abseil log_internal_log_sink_set library
+  absl_log_internal_log_sink_set
+
+  # Abseil log_internal_message library
+  absl_log_internal_message
+
+  # Abseil log_internal_nullguard library
+  absl_log_internal_nullguard
+
+  # Abseil log_internal_nullstream library
+  absl_log_internal_nullstream
+
+  # Abseil log_internal_proto library
+  absl_log_internal_proto
+
+  # Abseil log_internal_strip library
+  absl_log_internal_strip
+
+  # Abseil log_internal_structured library
+  absl_log_internal_structured
+
+  # Abseil log_internal_structured_proto library
+  absl_log_internal_structured_proto
+
+  # Abseil log_internal_voidify library
+  absl_log_internal_voidify
+
+  # Abseil log_severity library
+  absl_log_severity
+
+  # Abseil log_sink library
+  absl_log_sink
+
+  # Abseil log_sink_registry library
+  absl_log_sink_registry
+
+  # Abseil log_streamer library
+  absl_log_streamer
+
+  # Abseil log_structured library
+  absl_log_structured
+
+  # Abseil malloc_internal library
+  absl_malloc_internal
+
+  # Abseil memory library
+  absl_memory
+
+  # Abseil meta library
+  absl_meta
+
+  # Abseil no_destructor library
+  absl_no_destructor
+
+  # Abseil node_hash_map library
+  absl_node_hash_map
+
+  # Abseil node_hash_set library
+  absl_node_hash_set
+
+  # Abseil node_slot_policy library
+  absl_node_slot_policy
+
+  # Abseil non_temporal_arm_intrinsics library
+  absl_non_temporal_arm_intrinsics
+
+  # Abseil non_temporal_memcpy library
+  absl_non_temporal_memcpy
+
+  # Abseil nullability library
+  absl_nullability
+
+  # Abseil nullability_traits_internal library
+  absl_nullability_traits_internal
+
+  # Abseil numeric library
+  absl_numeric
+
+  # Abseil numeric_representation library
+  absl_numeric_representation
+
+  # Abseil optional library
+  absl_optional
+
+  # Abseil overload library
+  absl_overload
+
+  # Abseil periodic_sampler library
+  absl_periodic_sampler
+
+  # Abseil poison library
+  absl_poison
+
+  # Abseil prefetch library
+  absl_prefetch
+
+  # Abseil pretty_function library
+  absl_pretty_function
+
+  # Abseil profile_builder library
+  absl_profile_builder
+
+  # Abseil random_bit_gen_ref library
+  absl_random_bit_gen_ref
+
+  # Abseil random_distributions library
+  absl_random_distributions
+
+  # Abseil random_internal_distribution_caller library
+  absl_random_internal_distribution_caller
+
+  # Abseil random_internal_distribution_test_util library
+  absl_random_internal_distribution_test_util
+
+  # Abseil random_internal_entropy_pool library
+  absl_random_internal_entropy_pool
+
+  # Abseil random_internal_fast_uniform_bits library
+  absl_random_internal_fast_uniform_bits
+
+  # Abseil random_internal_fastmath library
+  absl_random_internal_fastmath
+
+  # Abseil random_internal_generate_real library
+  absl_random_internal_generate_real
+
+  # Abseil random_internal_iostream_state_saver library
+  absl_random_internal_iostream_state_saver
+
+  # Abseil random_internal_mock_helpers library
+  absl_random_internal_mock_helpers
+
+  # Abseil random_internal_nonsecure_base library
+  absl_random_internal_nonsecure_base
+
+  # Abseil random_internal_pcg_engine library
+  absl_random_internal_pcg_engine
+
+  # Abseil random_internal_platform library
+  absl_random_internal_platform
+
+  # Abseil random_internal_randen library
+  absl_random_internal_randen
+
+  # Abseil random_internal_randen_engine library
+  absl_random_internal_randen_engine
+
+  # Abseil random_internal_randen_hwaes library
+  absl_random_internal_randen_hwaes
+
+  # Abseil random_internal_randen_hwaes_impl library
+  absl_random_internal_randen_hwaes_impl
+
+  # Abseil random_internal_randen_slow library
+  absl_random_internal_randen_slow
+
+  # Abseil random_internal_salted_seed_seq library
+  absl_random_internal_salted_seed_seq
+
+  # Abseil random_internal_seed_material library
+  absl_random_internal_seed_material
+
+  # Abseil random_internal_traits library
+  absl_random_internal_traits
+
+  # Abseil random_internal_uniform_helper library
+  absl_random_internal_uniform_helper
+
+  # Abseil random_internal_wide_multiply library
+  absl_random_internal_wide_multiply
+
+  # Abseil random_random library
+  absl_random_random
+
+  # Abseil random_seed_gen_exception library
+  absl_random_seed_gen_exception
+
+  # Abseil random_seed_sequences library
+  absl_random_seed_sequences
+
+  # Abseil raw_hash_map library
+  absl_raw_hash_map
+
+  # Abseil raw_hash_set library
+  absl_raw_hash_set
+
+  # Abseil raw_hash_set_resize_impl library
+  absl_raw_hash_set_resize_impl
+
+  # Abseil raw_logging_internal library
+  absl_raw_logging_internal
+
+  # Abseil requires_internal library
+  absl_requires_internal
+
+  # Abseil sample_recorder library
+  absl_sample_recorder
+
+  # Abseil scoped_set_env library
+  absl_scoped_set_env
+
+  # Abseil span library
+  absl_span
+
+  # Abseil spinlock_wait library
+  absl_spinlock_wait
+
+  # Abseil stacktrace library
+  absl_stacktrace
+
+  # Abseil status library
+  absl_status
+
+  # Abseil statusor library
+  absl_statusor
+
+  # Abseil str_format library
+  absl_str_format
+
+  # Abseil str_format_internal library
+  absl_str_format_internal
+
+  # Abseil strerror library
+  absl_strerror
+
+  # Abseil string_view library
+  absl_string_view
+
+  # Abseil strings library
+  absl_strings
+
+  # Abseil strings_append_and_overwrite library
+  absl_strings_append_and_overwrite
+
+  # Abseil strings_internal library
+  absl_strings_internal
+
+  # Abseil strings_resize_and_overwrite library
+  absl_strings_resize_and_overwrite
+
+  # Abseil symbolize library
+  absl_symbolize
+
+  # Abseil synchronization library
+  absl_synchronization
+
+  # Abseil throw_delegate library
+  absl_throw_delegate
+
+  # Abseil time library
+  absl_time
+
+  # Abseil time_zone library
+  absl_time_zone
+
+  # Abseil tracing_internal library
+  absl_tracing_internal
+
+  # Abseil type_traits library
+  absl_type_traits
+
+  # Abseil utf8_for_code_point library
+  absl_utf8_for_code_point
+
+  # Abseil utility library
+  absl_utility
+
+  # Abseil variant library
+  absl_variant
+
+  # Abseil vlog_config_internal library
+  absl_vlog_config_internal
+
+  # Abseil vlog_is_on library
+  absl_vlog_is_on
+
+  # Abseil weakly_mixed_integer library
+  absl_weakly_mixed_integer
+
+zlib is compatible with built-in CMake targets:
+
+  find_package(ZLIB REQUIRED)
+  target_link_libraries(main PRIVATE ZLIB::ZLIB)
+
+The package angle provides unofficial CMake targets:
+
+    find_package(unofficial-angle REQUIRED CONFIG)
+    target_link_libraries(main PRIVATE unofficial::angle::libGLESv2)
+
+    # Or use the EGL target
+    find_package(unofficial-angle REQUIRED CONFIG)
+    target_link_libraries(main PRIVATE unofficial::angle::libEGL)
+
+asio provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(asio CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE asio::asio)
+
+asio provides pkg-config modules:
+
+  # A cross-platform C++ library for network and low-level I/O programming that provides developers with a consistent asynchronous model using a modern C++ approach.
+  asio
+
+bshoshany-thread-pool is header-only and can be used from CMake via:
+
+  find_path(BSHOSHANY_THREAD_POOL_INCLUDE_DIRS "BS_thread_pool.hpp")
+  target_include_directories(main PRIVATE ${BSHOSHANY_THREAD_POOL_INCLUDE_DIRS})
+
+cpp-httplib provides CMake targets:
+
+    find_package(httplib CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE httplib::httplib)
+
+cppcodec is header-only and can be used from CMake via:
+
+  find_path(CPPCODEC_INCLUDE_DIRS "cppcodec/base32_crockford.hpp")
+  target_include_directories(main PRIVATE ${CPPCODEC_INCLUDE_DIRS})
+
+The package fmt provides CMake targets:
+
+    find_package(fmt CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE fmt::fmt)
+
+    # Or use the header-only version
+    find_package(fmt CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE fmt::fmt-header-only)
+
+libpng provides CMake targets:
+
+  find_package(PNG REQUIRED)
+  target_link_libraries(main PRIVATE PNG::PNG)
+
+freetype is compatible with built-in CMake targets:
+
+    find_package(Freetype REQUIRED)
+    target_link_libraries(main PRIVATE Freetype::Freetype) # since CMake 3.10
+
+The package opengl is compatible with built-in CMake targets via CMake v3.7 and prior syntax
+
+    find_package(OpenGL REQUIRED)
+    target_link_libraries(main PRIVATE ${OPENGL_LIBRARIES})
+    target_include_directories(main PRIVATE ${OPENGL_INCLUDE_DIR})
+
+and the CMake v3.8 and beyond imported target syntax
+
+    find_package(OpenGL REQUIRED)
+    target_link_libraries(main PRIVATE OpenGL::GL)
+
+introduction of various components
+
+    find_package(OpenGL REQUIRED COMPONENTS GL      # v3.8
+                                            GLU     # v3.8
+                                            GLX     # v3.10
+                                            EGL     # v3.10
+                                            OpenGL) # v3.10
+
+The OpenGL SDK is highly platform dependent and is usually an OS component. It's not realistic to build from source for every platform.
+
+    WINDOWS: is part of the Windows SDK which this package installs.
+    LINUX: the SDK may be installed from your distro's repo or from 3rd parties manually. There are too many to count.
+    APPLE: consult your distribution vendor on the state of OpenGL support: https://support.apple.com/en-us/HT202823
+
+glew provides CMake targets:
+
+  # Legacy CMake find module
+  find_package(GLEW REQUIRED)
+  target_link_libraries(main PRIVATE GLEW::GLEW)
+
+  # Modern CMake config package
+  find_package(GLEW CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE GLEW::GLEW)
+
+glew provides pkg-config modules:
+
+  # The OpenGL Extension Wrangler library
+  glew
+
+The package inih provides unofficial CMake targets:
+    find_package(unofficial-inih CONFIG REQUIRED)
+    # C API
+    target_link_libraries(main PRIVATE unofficial::inih::libinih)
+    # C++ API (Requires "cpp" feature)
+    target_link_libraries(main PRIVATE unofficial::inih::inireader)
+Alternatively, if you are using pkg-config use the name "inih" for the C API and "inireader" for the C++ API
+
+ixwebsocket provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(ixwebsocket CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE ixwebsocket::ixwebsocket)
+
+ixwebsocket provides pkg-config modules:
+
+  # websocket and http client and server library, with TLS support and very few dependencies
+  ixwebsocket
+
+liblzma is compatible with built-in CMake targets:
+
+    find_package(LibLZMA REQUIRED)
+    target_link_libraries(main PRIVATE LibLZMA::LibLZMA)
+
+liblzma provides CMake targets:
+
+    find_package(liblzma CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE liblzma::liblzma)
+
+openssl is compatible with built-in CMake targets:
+
+  find_package(OpenSSL REQUIRED)
+  target_link_libraries(main PRIVATE OpenSSL::SSL)
+  target_link_libraries(main PRIVATE OpenSSL::Crypto)
+
+libarchive is compatible with the CMake Find Module:
+
+  find_package(LibArchive REQUIRED)
+  target_link_libraries(main PRIVATE LibArchive::LibArchive) # since CMake 3.17
+
+libarchive provides pkg-config modules:
+
+  # library that can create and read several streaming archive formats
+  libarchive
+
+libobfuscate is header-only and can be used from CMake via:
+
+  find_path(LIBOBFUSCATE_INCLUDE_DIRS "obfuscate.h")
+  target_include_directories(main PRIVATE ${LIBOBFUSCATE_INCLUDE_DIRS})
+
+libogg provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(Ogg CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Ogg::ogg)
+
+libogg provides pkg-config modules:
+
+  # ogg is a library for manipulating ogg bitstreams
+  ogg
+
+The package libvorbis provides CMake targets:
+
+    # Vorbis reference encoder and decoder, low-level API
+    find_package(Vorbis CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Vorbis::vorbis)
+
+    # Audio stream decoding and basic manipulation, high-level API
+    find_package(Vorbis CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Vorbis::vorbisfile)
+
+    # Convenience API for setting up an encoding environment
+    find_package(Vorbis CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Vorbis::vorbisenc)
+
+luajit provides pkg-config modules:
+
+  # Just-in-time compiler for Lua
+  luajit
+
+The package nlohmann-json provides CMake targets:
+
+    find_package(nlohmann_json CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json)
+
+The package nlohmann-json can be configured to not provide implicit conversions via a custom triplet file:
+
+    set(nlohmann-json_IMPLICIT_CONVERSIONS OFF)
+
+For more information, see the docs here:
+    
+    https://json.nlohmann.me/api/macros/json_use_implicit_conversions/
+
+openal-soft provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(OpenAL CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE OpenAL::OpenAL)
+
+openal-soft provides pkg-config modules:
+
+  # OpenAL is a cross-platform 3D audio API
+  openal
+
+parallel-hashmap is header-only and can be used from CMake via:
+
+  find_path(PARALLEL_HASHMAP_INCLUDE_DIRS "parallel_hashmap/btree.h")
+  target_include_directories(main PRIVATE ${PARALLEL_HASHMAP_INCLUDE_DIRS})
+
+physfs provides CMake targets:
+
+    find_package(PhysFS CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE $<IF:$<TARGET_EXISTS:PhysFS::PhysFS>,PhysFS::PhysFS,PhysFS::PhysFS-static>)
+
+physfs is compatible with built-in CMake targets:
+
+    find_package(PhysFS REQUIRED)
+    target_include_directories(main PRIVATE ${PHYSFS_INCLUDE_DIR})
+    target_link_libraries(main PRIVATE ${PHYSFS_LIBRARY})
+
+protobuf provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(protobuf CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE protobuf::libprotobuf protobuf::libprotobuf-lite)
+
+protobuf provides pkg-config modules:
+
+  # Google's Data Interchange Format
+  protobuf-lite
+
+  # Google's Data Interchange Format
+  protobuf
+
+pugixml provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(pugixml CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE pugixml::static pugixml::pugixml)
+
+pugixml provides pkg-config modules:
+
+  # Light-weight, simple and fast XML parser for C++ with XPath support.
+  pugixml
+
+The package spdlog provides CMake targets:
+
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog)
+
+    # Or use the header-only version
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog_header_only)
+
+stduuid provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(stduuid CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE stduuid)
+
+utfcpp provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(utf8cpp CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE utf8::cpp utf8cpp::utf8cpp)
+
+All requested installations completed successfully in: 1.2 s
+-- Running vcpkg install - done
+-- The C compiler identification is MSVC 19.44.35229.0
+-- The CXX compiler identification is MSVC 19.44.35229.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Enabled: ipo
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - not found
+-- Found Threads: TRUE
+-- Found Protobuf: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows/tools/protobuf/protoc.exe (found version "33.4.0")
+-- Found Protobuf Compiler: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows/tools/protobuf/protoc.exe
+-- Build type: Release
+-- Build commit: 
+-- Build revision: 
+-- Found ZLIB: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows-static-release/lib/zs.lib (found version "1.3.2")
+-- Found PNG: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows-static-release/lib/libpng16.lib (found version "1.6.58")
+-- Looking for C++ include parallel_hashmap/phmap.h
+-- Looking for C++ include parallel_hashmap/phmap.h - not found
+-- Looking for C++ include parallel_hashmap/btree.h
+-- Looking for C++ include parallel_hashmap/btree.h - not found
+-- Found LibLZMA: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows-static-release/lib/lzma.lib (found version "5.8.3")
+-- Found LibArchive: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows-static-release/lib/archive.lib (found version "3.8.7")
+-- Found BZip2: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows-static-release/lib/bz2.lib (found version "1.0.8")
+-- Looking for BZ2_bzCompressInit
+-- Looking for BZ2_bzCompressInit - found
+-- Found OpenSSL: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows-static-release/lib/libcrypto.lib (found version "3.6.3")
+-- Found nlohmann_json: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows-static-release/share/nlohmann_json/nlohmann_jsonConfig.cmake (found version "3.12.0")
+-- Found asio: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows-static-release/include
+-- Found httplib: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows-static-release/include/httplib.h (found version "0.48.0")
+-- Disabled: Discord Rich Presence
+-- Found VorbisFile: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows-static-release/lib/vorbisfile.lib
+-- Found LuaJIT: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows-static-release/lib/lua51.lib
+-- Use precompiled header: ON
+-- Enabled: Build unity for speed up compilation
+-- Disabled: asan
+-- Disabled: DEBUG LOG
+-- Enabled: STATIC_LIBRARY
+-- Found Vorbis: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release/vcpkg_installed/x64-windows-static-release/lib/vorbis.lib
+-- Disabled: Build tests
+-- Configuring done (46.5s)
+-- Generating done (0.1s)
+-- Build files have been written to: D:/a/ourtibia-mac/ourtibia-mac/source/build/windows-release
