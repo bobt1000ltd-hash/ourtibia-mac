@@ -95,14 +95,17 @@ void Connection::connect(const std::string_view host, const uint16_t port, const
     m_connectCallback = connectCallback;
 
     const asio::ip::tcp::resolver::query query(host.data(), stdext::unsafe_cast<std::string>(port));
-    m_resolver.async_resolve(query, [this](auto&& error, auto&& endpointIterator) {
-        onResolve(std::move(error), std::move(endpointIterator));
+    // OurTibia (18.10.2026, crash report): the handlers keep the connection alive. With a raw
+    // "this" a connection released while the name was being resolved (e.g. a reconnect right
+    // after death) crashed in internal_connect (bad_weak_ptr from shared_from_this).
+    m_resolver.async_resolve(query, [self = asConnection()](auto&& error, auto&& endpointIterator) {
+        self->onResolve(std::move(error), std::move(endpointIterator));
     });
 
     m_readTimer.cancel();
     m_readTimer.expires_after(std::chrono::seconds(static_cast<uint32_t>(READ_TIMEOUT)));
-    m_readTimer.async_wait([this](auto&& error) {
-        onTimeout(std::move(error));
+    m_readTimer.async_wait([self = asConnection()](auto&& error) {
+        self->onTimeout(std::move(error));
     });
 }
 
@@ -231,6 +234,10 @@ void Connection::onResolve(const std::error_code& error, const asio::ip::basic_r
     m_readTimer.cancel();
 
     if (error == asio::error::operation_aborted)
+        return;
+
+    // closed while the name was being resolved: do not connect any more
+    if (!m_connecting)
         return;
 
     if (!error)
