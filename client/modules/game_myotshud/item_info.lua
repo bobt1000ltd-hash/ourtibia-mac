@@ -8510,6 +8510,8 @@ for cid,g in pairs(G) do local o=OurItemInfo[cid];if o and not custom[cid] then 
 
 -- 15.10.2026: Rashid buys the equipment no other NPC bought (Tobeto).
 do local R={
+-- 18.10.2026 (Tobeto): the Rafzan items (Rafzan is not on the map) - Rashid buys them too
+[17812]=500,[17813]=300,[17846]=750,[17859]=300,[17810]=250,
 [811]=11000,
 [812]=11000,
 [813]=2500,
