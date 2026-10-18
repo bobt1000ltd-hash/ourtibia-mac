@@ -1,0 +1,8 @@
+Module
+  name: game_myotsquests
+  description: Quest Log with quest guide and quest tracker (18.10.2026)
+  sandboxed: true
+  scripts: [ quests ]
+  dependencies: [ game_interface ]
+  @onLoad: init()
+  @onUnload: terminate()

@@ -548,6 +548,10 @@ local function hide()
 end
 
 function show()
+    -- 18.10.2026 (owner): the new Quest Log with the quest guide (game_myotsquests)
+    if modules.game_myotsquests and modules.game_myotsquests.show then
+        return modules.game_myotsquests.show()
+    end
     if not questLogController.ui then
         return
     end
@@ -562,6 +566,9 @@ function show()
 end
 
 local function toggle()
+    if modules.game_myotsquests and modules.game_myotsquests.toggle then
+        return modules.game_myotsquests.toggle()
+    end
     if not questLogController.ui then
         return
     end

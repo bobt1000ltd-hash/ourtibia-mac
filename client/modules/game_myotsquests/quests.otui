@@ -1,0 +1,429 @@
+// 18.10.2026 (owner): Quest Log with a quest guide - the style of the Task Board
+QuestRow < UIButton
+  height: 34
+  background-color: #222222
+  border-width: 1
+  border-color: #333333
+  $hover:
+    border-color: #6a6a6a
+  $on:
+    background-color: #3a3220
+    border-color: #c8a040
+  UIWidget
+    id: dot
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 7
+    size: 9 9
+    phantom: true
+  Label
+    id: name
+    anchors.top: parent.top
+    anchors.left: dot.right
+    anchors.right: parent.right
+    margin: 3 6 0 7
+    height: 14
+    font: verdana-11px-rounded
+    color: #e0e0e0
+    phantom: true
+  Label
+    id: info
+    anchors.top: name.bottom
+    anchors.left: name.left
+    anchors.right: progress.left
+    margin-top: 1
+    height: 12
+    font: small-9px
+    color: #8f8f8f
+    phantom: true
+  ProgressBar
+    id: progress
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    margin: 0 6 6 0
+    size: 46 5
+    background-color: #3fbf3f
+    phantom: true
+
+QuestFilter < UIButton
+  height: 20
+  font: verdana-11px-rounded
+  color: #a8a8a8
+  background-color: #262626
+  border-width: 1
+  border-color: #3c3c3c
+  $hover:
+    color: #ffffff
+  $on:
+    color: #ffd35a
+    border-color: #c8a040
+    background-color: #3a3220
+
+QuestSection < Label
+  height: 18
+  font: Verdana Bold-11px
+  color: #c8a040
+  text-offset: 0 2
+
+QuestText < Label
+  font: verdana-11px-rounded
+  color: #d8d8d8
+  text-wrap: true
+  text-auto-resize: true
+
+QuestChip < UIButton
+  height: 18
+  font: verdana-11px-rounded
+  color: #ffe9a8
+  background-color: #2b2618
+  border-width: 1
+  border-color: #6b5826
+  text-offset: 0 0
+  $hover:
+    background-color: #3d3420
+    border-color: #c8a040
+    color: #ffffff
+
+QuestChipGrid < UIWidget
+  height: 22
+  layout:
+    type: grid
+    cell-size: 150 18
+    cell-spacing: 4
+    num-columns: 3
+    flow: true
+
+QuestMissionRow < UIWidget
+  height: 18
+  UIWidget
+    id: mark
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    size: 9 9
+    phantom: true
+  Label
+    id: name
+    anchors.left: mark.right
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 7
+    height: 14
+    font: verdana-11px-rounded
+    color: #c8c8c8
+    phantom: true
+
+QuestStepCard < UIWidget
+  height: 112
+  background-color: #1c1a14
+  border-width: 1
+  border-color: #6b5826
+  UIWidget
+    id: artBox
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin: 8 0 0 8
+    size: 58 58
+    background-color: #161616
+    border-width: 1
+    border-color: #303030
+    phantom: true
+  UICreature
+    id: npc
+    anchors.centerIn: artBox
+    size: 52 52
+    phantom: true
+  Label
+    id: title
+    anchors.top: parent.top
+    anchors.left: artBox.right
+    anchors.right: parent.right
+    margin: 9 8 0 10
+    height: 14
+    font: Verdana Bold-11px
+    color: #ffd35a
+  Label
+    id: where
+    anchors.top: title.bottom
+    anchors.left: title.left
+    anchors.right: parent.right
+    margin: 2 8 0 0
+    height: 14
+    font: verdana-11px-rounded
+    color: #9fc4ff
+  Label
+    id: sayLabel
+    anchors.top: where.bottom
+    anchors.left: title.left
+    margin-top: 7
+    height: 18
+    width: 30
+    text: Say:
+    font: verdana-11px-rounded
+    color: #a0a0a0
+    text-offset: 0 2
+  Panel
+    id: say
+    anchors.top: sayLabel.top
+    anchors.left: sayLabel.right
+    anchors.right: parent.right
+    margin-right: 8
+    height: 18
+    layout:
+      type: horizontalBox
+      spacing: 4
+      fit-children: false
+  Button
+    id: mapButton
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    margin: 0 0 8 8
+    size: 110 22
+    text: Show on map
+  Button
+    id: talkButton
+    anchors.bottom: parent.bottom
+    anchors.left: mapButton.right
+    margin: 0 0 8 6
+    size: 110 22
+    text: Say next word
+  Label
+    id: hint
+    anchors.bottom: parent.bottom
+    anchors.left: talkButton.right
+    anchors.right: parent.right
+    margin: 0 8 12 8
+    height: 12
+    font: small-9px
+    color: #7f7f7f
+    text-align: right
+
+MainWindow
+  id: myotsQuestLog
+  text: Quest Log
+  size: 820 580
+  @onEscape: modules.game_myotsquests.hide()
+
+  Panel
+    id: left
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.bottom: bottomBar.top
+    width: 250
+    margin-bottom: 6
+
+    TextEdit
+      id: search
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      height: 20
+      placeholder: Search a quest...
+      placeholder-color: #6e706f
+      @onTextChange: modules.game_myotsquests.refreshList()
+
+    Panel
+      id: filters
+      anchors.top: search.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin-top: 6
+      height: 20
+      layout:
+        type: grid
+        cell-size: 59 20
+        cell-spacing: 4
+        num-columns: 4
+
+    ScrollablePanel
+      id: list
+      anchors.top: filters.bottom
+      anchors.left: parent.left
+      anchors.right: listScroll.left
+      anchors.bottom: counter.top
+      margin-top: 6
+      margin-bottom: 4
+      vertical-scrollbar: listScroll
+      layout:
+        type: verticalBox
+        spacing: 3
+
+    VerticalScrollBar
+      id: listScroll
+      anchors.top: filters.bottom
+      anchors.bottom: counter.top
+      anchors.right: parent.right
+      margin-top: 6
+      margin-bottom: 4
+      step: 37
+      pixels-scroll: true
+
+    Label
+      id: counter
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      height: 14
+      font: small-9px
+      color: #8f8f8f
+
+  Panel
+    id: right
+    anchors.top: parent.top
+    anchors.left: left.right
+    anchors.right: parent.right
+    anchors.bottom: bottomBar.top
+    margin-left: 10
+    margin-bottom: 6
+    background-color: #1a1a1a
+    border-width: 1
+    border-color: #333333
+
+    Label
+      id: questName
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: trackButton.left
+      margin: 10 10 0 12
+      height: 18
+      font: Verdana Bold-13px
+      color: #ffd35a
+
+    Label
+      id: questInfo
+      anchors.top: questName.bottom
+      anchors.left: questName.left
+      anchors.right: parent.right
+      margin: 3 10 0 0
+      height: 14
+      font: verdana-11px-rounded
+      color: #9a9a9a
+
+    Button
+      id: trackButton
+      anchors.top: parent.top
+      anchors.right: parent.right
+      margin: 10 10 0 0
+      size: 118 22
+      text: Track quest
+      @onClick: modules.game_myotsquests.toggleTrack()
+
+    UIWidget
+      id: headLine
+      anchors.top: questInfo.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin: 8 10 0 10
+      height: 1
+      background-color: #3a3a3a
+
+    ScrollablePanel
+      id: detail
+      anchors.top: headLine.bottom
+      anchors.left: parent.left
+      anchors.right: detailScroll.left
+      anchors.bottom: parent.bottom
+      margin: 8 6 8 12
+      vertical-scrollbar: detailScroll
+      layout:
+        type: verticalBox
+        spacing: 5
+
+    VerticalScrollBar
+      id: detailScroll
+      anchors.top: headLine.bottom
+      anchors.bottom: parent.bottom
+      anchors.right: parent.right
+      margin: 8 2 8 0
+      step: 40
+      pixels-scroll: true
+
+    Label
+      id: empty
+      anchors.centerIn: parent
+      text: Choose a quest on the left.
+      color: #8f8f8f
+
+  Panel
+    id: bottomBar
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    height: 22
+
+    Button
+      id: trackerButton
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      size: 110 22
+      text: Quest Tracker
+      @onClick: modules.game_myotsquests.toggleTracker()
+
+    Label
+      id: status
+      anchors.left: trackerButton.right
+      anchors.right: closeButton.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin: 0 10 0 10
+      height: 14
+      color: #8f8f8f
+
+    Button
+      id: closeButton
+      anchors.right: parent.right
+      anchors.verticalCenter: parent.verticalCenter
+      size: 70 22
+      text: Close
+      @onClick: modules.game_myotsquests.hide()
+
+// the Quest Tracker next to the game window
+QuestTrackerWindow < MiniWindow
+  &save: true
+  height: 160
+  width: 180
+  Label
+    id: miniwindowTitle
+    anchors.top: miniwindowHeader.top
+    anchors.left: miniwindowHeader.left
+    margin-left: 5
+    margin-top: 1
+    width: 118
+    height: 14
+    font: verdana-11px-monochrome
+  MiniWindowContents
+    padding-left: 5
+    padding-right: 5
+    padding-top: 3
+    padding-bottom: 3
+    layout:
+      type: verticalBox
+      spacing: 4
+
+QuestTrackerEntry < UIButton
+  height: 46
+  background-color: #1f1f1f
+  border-width: 1
+  border-color: #333333
+  $hover:
+    border-color: #c8a040
+  Label
+    id: name
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin: 3 4 0 5
+    height: 13
+    font: verdana-11px-rounded
+    color: #ffd35a
+    phantom: true
+  Label
+    id: step
+    anchors.top: name.bottom
+    anchors.left: name.left
+    anchors.right: parent.right
+    margin: 1 4 0 0
+    height: 26
+    font: small-9px
+    color: #cfcfcf
+    text-wrap: true
+    text-align: topLeft
+    phantom: true
