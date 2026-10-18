@@ -486,7 +486,10 @@ MainWindow
       anchors.left: tNameLabel.right
       anchors.right: parent.right
       margin-right: 10
-      height: 22
+      // 18.10.2026 (Tobeto): as tall as the cursor
+      height: 16
+      padding-top: 1
+      padding-bottom: 0
       max-length: 30
     UIItem
       id: tCoin

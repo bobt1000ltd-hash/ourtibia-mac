@@ -294,7 +294,8 @@ function buildLeft()
   -- 14.10.2026 (Tobeto): typed text centred in the box and limited
   -- 15.10.2026 (Tobeto): text starts at the left like the search box of Set Outfit (cursor and text in one place)
   -- 15.10.2026 (Tobeto): text centred in the box (also the respawn fund field)
-  local s=g_ui.createWidget('TextEdit',left);s:setHeight(22);pcall(function() s:setMaxLength(20) end)
+  -- 18.10.2026 (Tobeto): the field as tall as the cursor (it was 22 px with the cursor at the top)
+  local s=g_ui.createWidget('TextEdit',left);s:setHeight(16);s:setPaddingTop(1);s:setPaddingBottom(0);s:setMarginBottom(3);pcall(function() s:setMaxLength(20) end)
   -- 16.10.2026 (Tobeto): the text appears where the cursor blinks (the centred text and the left cursor did not match)
   s:setTextAlign(AlignLeft)
   -- 17.10.2026 (Tobeto): the cursor 1 px to the left (search, history search, donate, transfer)
@@ -413,7 +414,7 @@ function buildLeft()
     bar:setText(money(fund)..' / '..short(step))
     local donateRow=g_ui.createWidget('UIWidget',left);donateRow:setHeight(22)
     -- 14.10.2026 (Tobeto): empty field, digits only, at most 1,000,000 (more jumps back to 1,000,000)
-    local amount=g_ui.createWidget('TextEdit',donateRow);amount:setId('fundAmount');amount:setHeight(22);amount:setWidth(84);
+    local amount=g_ui.createWidget('TextEdit',donateRow);amount:setId('fundAmount');amount:setHeight(16);amount:setPaddingTop(1);amount:setPaddingBottom(0);amount:setWidth(84);
     amount:addAnchor(AnchorLeft,'parent',AnchorLeft);amount:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
     pcall(function() amount:setMaxLength(7) end)
     amount:setPaddingLeft(math.max(0,amount:getPaddingLeft()-1))

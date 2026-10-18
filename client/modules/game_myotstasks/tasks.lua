@@ -21,7 +21,9 @@ end
 local function send(text) if g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(OPCODE,text) end end
 local function ui(id) return window:recursiveGetChildById(id) end
 local function money(n) n=math.floor(tonumber(n) or 0);local s=tostring(n):reverse():gsub('(%d%d%d)','%1,'):reverse();return (s:gsub('^,','')) end
-local function short(n) n=tonumber(n) or 0;if n>=1000000 then return string.format('%.1fM',n/1000000) elseif n>=10000 then return string.format('%dk',math.floor(n/1000)) end;return money(n) end
+-- 18.10.2026 (Tobeto): 1500 -> "1,5k", 2000 -> "2k", 12500 -> "12,5k" (gold too)
+local function compact(v,suffix) local t=math.floor(v*10+0.5)/10;if t==math.floor(t) then return string.format('%d',t)..suffix end;return (string.format('%.1f',t):gsub('%.',','))..suffix end
+local function short(n) n=tonumber(n) or 0;if n>=1000000 then return compact(n/1000000,'M') elseif n>=1000 then if n>=100000 then return string.format('%dk',math.floor(n/1000)) end;return compact(n/1000,'k') end;return money(n) end
 local function title(s) return (tostring(s):gsub('(%a)([%w\']*)',function(a,b) return a:upper()..b end)) end
 local function duration(s) s=math.max(0,math.floor(tonumber(s) or 0));local d=math.floor(s/86400);local h=math.floor(s%86400/3600);local m=math.floor(s%3600/60);if d>0 then return d..'d '..h..'h' end;return h..'h '..m..'m' end
 
@@ -67,7 +69,7 @@ local function rewardCell(parent,x,y,kind,value,color,tip)
     icon:setItemId(ids[kind] or 3031)
     if kind=='gold' then pcall(function() icon:setShowCount(false) end);icon:setItemCount(100) end
   end
-  icon:setPhantom(true);icon:setSize({width=16,height=16})
+  icon:setPhantom(true);icon:setSize({width=20,height=20})
   icon:addAnchor(AnchorLeft,'parent',AnchorLeft);icon:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
   local l=g_ui.createWidget('Label',cell);l:setPhantom(true);l:setText(value);l:setColor(color);l:setTextAutoResize(true)
   l:addAnchor(AnchorLeft,'parent',AnchorLeft);l:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);l:setMarginLeft(20)
@@ -394,7 +396,8 @@ end
 local PAW_ITEM=5896 -- bear paw
 local RANK_AT={{10,'Huntsman'},{20,'Ranger'},{40,'Big Game Hunter'},{70,'Trophy Hunter'},{100,'Elite Hunter'}}
 local function kitnReward(parent,x,y,kind,value,color,tip)
-  local cell=g_ui.createWidget('UIWidget',parent);cell:setSize({width=60,height=16})
+  -- 18.10.2026 (Tobeto): icons a little bigger (20 px)
+  local cell=g_ui.createWidget('UIWidget',parent);cell:setSize({width=62,height=20})
   cell:addAnchor(AnchorTop,'parent',AnchorTop);cell:addAnchor(AnchorLeft,'parent',AnchorLeft);cell:setMarginTop(y);cell:setMarginLeft(x)
   local icon
   if kind=='exp' then icon=g_ui.createWidget('UIWidget',cell);icon:setImageSource('/images/myots/store/boost-experience');icon:setImageSmooth(true)
@@ -405,12 +408,12 @@ local function kitnReward(parent,x,y,kind,value,color,tip)
     elseif kind=='boss' then icon:setItemId(3114)
     else icon:setItemId(ITEM_CID[value] or value) end
   end
-  icon:setPhantom(true);icon:setSize({width=16,height=16})
+  icon:setPhantom(true);icon:setSize({width=20,height=20})
   icon:addAnchor(AnchorLeft,'parent',AnchorLeft);icon:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
   if kind~='item' and kind~='boss' then
     local l=g_ui.createWidget('Label',cell);l:setPhantom(true);l:setText(value);l:setColor(color);l:setTextAutoResize(true)
-    l:addAnchor(AnchorLeft,'parent',AnchorLeft);l:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);l:setMarginLeft(19)
-  else cell:setWidth(18) end
+    l:addAnchor(AnchorLeft,'parent',AnchorLeft);l:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);l:setMarginLeft(23)
+  else cell:setWidth(22) end
   cell:setTooltip(tip)
   return cell
 end
@@ -466,7 +469,7 @@ local function renderKitn()
     -- one line: the name sits in the middle of the row (the [i] next to it)
     if nameLabel:getTextSize().width<=nameLabel:getWidth() then
       nameLabel:breakAnchors();nameLabel:addAnchor(AnchorLeft,'artBox',AnchorRight);nameLabel:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter)
-      nameLabel:setMarginLeft(8);nameLabel:setMarginTop(t.locked and -18 or 0);nameLabel:setHeight(14);nameLabel:setTextAlign(AlignLeft)
+      nameLabel:setMarginLeft(8);nameLabel:setMarginTop(t.locked and -9 or 0);nameLabel:setHeight(14);nameLabel:setTextAlign(AlignLeft)
       infoBox:breakAnchors();infoBox:addAnchor(AnchorLeft,'name',AnchorRight);infoBox:addAnchor(AnchorVerticalCenter,'name',AnchorVerticalCenter);infoBox:setMarginLeft(1);infoBox:setMarginTop(0)
     end
     local kills=tonumber(t.kills) or 0
@@ -482,12 +485,12 @@ local function renderKitn()
       elseif rv.k=='points' then tip='Paw and Fur points: '..money(rv.v)
       elseif rv.k=='item' then tip=(rv.v==10305 and 'Holy Icon - the way into the Demon Oak quest (first completion only)' or 'Demon trophy') end
       local val=rv.k=='item' and rv.v or short(rv.v)
-      local x=COLX[rv.k];if not x then x=extra;extra=extra+20 end
-      kitnReward(rw,x,17,rv.k,val,rv.k=='exp' and '#f0f0f0' or rv.k=='money' and '#f0d060' or '#ffd35a',tip)
+      local x=COLX[rv.k];if not x then x=extra;extra=extra+24 end
+      kitnReward(rw,x,15,rv.k,val,rv.k=='exp' and '#f0f0f0' or rv.k=='money' and '#f0d060' or '#ffd35a',tip)
     end
     if t.boss then
       local tip=title(t.boss) -- 17.10.2026 (Tobeto): only the boss name
-      local b=kitnReward(rw,extra,17,'boss',0,'#ff9a7a',tip)
+      local b=kitnReward(rw,extra,15,'boss',0,'#ff9a7a',tip)
       if t.bossReady then b:setBorderWidth(1);b:setBorderColor('#3fbf3f') end
     end
     local a=r:getChildById('action')
@@ -497,11 +500,15 @@ local function renderKitn()
       r:setHeight(58+18)
       cr:breakAnchors();cr:addAnchor(AnchorLeft,'parent',AnchorLeft);cr:addAnchor(AnchorRight,'parent',AnchorRight);cr:addAnchor(AnchorBottom,'parent',AnchorBottom)
       cr:setMarginLeft(8);cr:setMarginRight(8);cr:setMarginBottom(4);cr:setHeight(14);cr:setWidth(0)
-      cr:setFont('verdana-11px-rounded');cr:setColor('#ffd35a');cr:setTextAlign(AlignLeft)
+      -- 18.10.2026 (Tobeto): the reason in another colour and a smaller font
+      cr:setFont('verdana-9px-rounded');cr:setColor('#d08a6a');cr:setTextAlign(AlignLeft)
       cr:setText(t.locked);cr:setTooltip(t.locked);cr:show()
       local strip=g_ui.createWidget('UIWidget',r);strip:setPhantom(true);strip:setHeight(1);strip:setBackgroundColor('#3c3c3c')
       strip:addAnchor(AnchorLeft,'parent',AnchorLeft);strip:addAnchor(AnchorRight,'parent',AnchorRight);strip:addAnchor(AnchorBottom,'parent',AnchorBottom);strip:setMarginBottom(20)
-      for _,id in ipairs({'artBox','action'}) do local w=r:getChildById(id);if w then w:breakAnchors();w:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);w:setMarginTop(-18);if id=='artBox' then w:addAnchor(AnchorLeft,'parent',AnchorLeft);w:setMarginLeft(20) else w:addAnchor(AnchorRight,'parent',AnchorRight);w:setMarginRight(8) end end end
+      -- 18.10.2026 (Tobeto): an unavailable task is greyed out
+      for _,id in ipairs({'creature','name','kills','bar','rewards','info'}) do local w=r:getChildById(id);if w then w:setOpacity(0.45) end end
+      r:setBackgroundColor('#1b1b1b')
+      for _,id in ipairs({'artBox','action'}) do local w=r:getChildById(id);if w then w:breakAnchors();w:addAnchor(AnchorVerticalCenter,'parent',AnchorVerticalCenter);w:setMarginTop(-9);if id=='artBox' then w:addAnchor(AnchorLeft,'parent',AnchorLeft);w:setMarginLeft(20) else w:addAnchor(AnchorRight,'parent',AnchorRight);w:setMarginRight(8) end end end
     elseif t.ready then
       a:setText('Claim reward');a:setEnabled(true);a:setColor('#8fe08f');r:setBorderColor('#3fbf3f')
       a.onClick=function() kitnSend('claim:'..t.id) end

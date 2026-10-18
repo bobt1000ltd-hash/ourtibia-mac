@@ -1117,7 +1117,10 @@ function BattleListInstance:doCreatureFitFilters(creature)
                (i == 'hideDruids' and creature:isPlayer() and ourVocOf(creature) == 4) or
                (i == 'hideSorcerers' and creature:isPlayer() and ourVocOf(creature) == 3) or
                (i == 'hideMonks' and creature:isPlayer() and ourVocOf(creature) == 5) or
-               (i == 'hideSummons' and creature:isMonster() and (function()
+               -- 18.10.2026 (owner): protocol 10.98 sends no master id - a summon is known by its type
+               (i == 'hideSummons' and not creature:isPlayer() and (function()
+                   local t = creature.getType and creature:getType()
+                   if t == CreatureTypeSummonOwn or t == CreatureTypeSummonOther then return true end
                    local masterId = creature:getMasterId()
                    return masterId and masterId > 0
                end)()) or

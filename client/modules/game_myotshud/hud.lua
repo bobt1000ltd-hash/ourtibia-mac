@@ -853,7 +853,36 @@ local function stop()
   daily:hide();if passiveWindow then passiveWindow:hide() end
   if exclWindow then exclWindow:hide() end
 end
+-- 18.10.2026 (Tobeto): with the NPC trade window (or another window outside the game panel)
+-- focused, the game hotkeys (mana potion...) stopped working - they are bound to the game
+-- panel, which no longer got the keys. Keys nobody used are passed on to the game panel,
+-- except while typing in a text field.
+local keyForward={}
+local function forwardKey(kind)
+  return function(_,keyCode,modifiers,...)
+    if not g_game.isOnline() or not gameRootPanel then return false end
+    local f=rootWidget:getFocusedChild()
+    if not f or f==gameRootPanel then return false end
+    local deep=f
+    while deep and deep:getFocusedChild() do deep=deep:getFocusedChild() end
+    if deep and (deep:getClassName()=='UITextEdit' or deep:getClassName()=='UISpinBox') then return false end
+    local h=gameRootPanel[kind]
+    if h==nil then return false end
+    return signalcall(h,gameRootPanel,keyCode,modifiers,...) and true or false
+  end
+end
+local function hookKeyForward()
+  if keyForward.on then return end
+  keyForward={on=true,onKeyDown=forwardKey('onKeyDown'),onKeyPress=forwardKey('onKeyPress'),onKeyUp=forwardKey('onKeyUp')}
+  connect(rootWidget,{onKeyDown=keyForward.onKeyDown,onKeyPress=keyForward.onKeyPress,onKeyUp=keyForward.onKeyUp})
+end
+local function unhookKeyForward()
+  if not keyForward.on then return end
+  disconnect(rootWidget,{onKeyDown=keyForward.onKeyDown,onKeyPress=keyForward.onKeyPress,onKeyUp=keyForward.onKeyUp})
+  keyForward={}
+end
 function init()
+  pcall(hookKeyForward)
   RarityFrames.init()
   refs=json.decode(g_resources.readFileContents('/data/myots/hud.json'))
   g_ui.importStyle('hud')
@@ -1023,6 +1052,7 @@ function init()
   updateTrainerButton()
 end
 function terminate()
+  pcall(unhookKeyForward)
   pcall(ourStopLootGlow)
   RarityFrames.terminate()
   ItemForge.terminate()
