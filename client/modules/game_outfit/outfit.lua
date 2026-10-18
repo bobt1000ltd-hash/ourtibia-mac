@@ -2252,6 +2252,24 @@ end
 
 ADDON_STAGE_TIP = {[0] = 1, [1] = 2, [2] = 2, [3] = 3}
 local ADDON_STAGE = {[0] = {1, 'no addons'}, [1] = {2, 'one addon'}, [2] = {2, 'one addon'}, [3] = {3, 'both addons'}}
+-- 18.10.2026 (Tobeto): long bonus texts stay above the "Set as new bonus" button (a few px
+-- free) - a smaller font first, then the rest is cut off
+local function ourFitBonusText(lbl, btn)
+    if not lbl or not lbl:isVisible() then return end
+    local panel = lbl:getParent(); if not panel then return end
+    local top = lbl:getY()
+    local limit = (btn and btn:isVisible()) and (btn:getY() - 4) or (panel:getY() + panel:getHeight() - 6)
+    local avail = limit - top
+    if avail <= 0 then return end
+    for _, font in ipairs({'verdana-11px-rounded', 'verdana-9px-rounded'}) do
+        lbl:setFont(font)
+        lbl:setTextVerticalAutoResize(true)
+        if lbl:getHeight() <= avail then lbl:setClipping(false); return end
+    end
+    lbl:setTextVerticalAutoResize(false)
+    lbl:setHeight(avail)
+    lbl:setClipping(true)
+end
 function ourUpdateBonusPanel()
     if not window then return end
     -- 17.10.2026: the label lives inside "Active bonuses" (getChildById did not find it,
@@ -2300,6 +2318,8 @@ function ourUpdateBonusPanel()
         local am = (p and p:isMounted() and cur.mount) or ourActiveMount
         local mb = am and ourBonusOf('mount', am) or nil
         if b then colored = diff(mb or '', b) else colored = '{This mount has no bonus., #a0a0a0}' end
+        -- 18.10.2026 (Tobeto): "Set as new bonus" also for a mount (even with no bonus set yet)
+        showBtn = b ~= nil and (tempOutfit.mount or 0) > 0 and tempOutfit.mount ~= (am or 0)
     end
     -- 17.10.2026 (Tobeto): "Active bonuses" always lists the bonus you use now
     -- (outfit + mount); a different outfit / mount shows what changes (red / green)
@@ -2336,19 +2356,28 @@ function ourUpdateBonusPanel()
         btn.onClick = function() local st = modules.game_myotsstore; if st and st.openBuyFor then st.openBuyFor(storeName) end end
         btn:show()
         pcall(ourUpdateActive)
+        pcall(ourFitBonusText, lbl, btn)
         return
     end
+    if ourListMode == 'mount' then
+        btn.onClick = function()
+            if g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(119, 'mount:' .. (tempOutfit.mount or 0)) end
+        end
+        btn:setTooltip('Use the bonus of the selected mount - it counts also when you do not ride (while riding, the ridden mount counts).')
+    else
     btn.onClick = function()
         if g_game.isOnline() then g_game.getProtocolGame():sendExtendedOpcode(119, 'set:' .. (tempOutfit.type or 0) .. ':' .. (tempOutfit.addons or 0)) end
     end
     btn:setTooltip('Keep the bonus of the selected outfit and wear any other outfit you like (only the look changes, bonuses do not stack). Right click: back to the bonus of the worn outfit.')
-    if showBtn and activeLook == tempOutfit.type and (ourBonusLook == nil or ourBonusAddons == (tempOutfit.addons or 0)) then
+    end
+    if ourListMode == 'outfit' and showBtn and activeLook == tempOutfit.type and (ourBonusLook == nil or ourBonusAddons == (tempOutfit.addons or 0)) then
         showBtn = false
     end
     if text then pcall(function() lbl:setColoredText(text) end); lbl:show() else lbl:hide() end
     btn:setVisible(showBtn and true or false)
     if showBtn then btn:setText('Set as new bonus') end
     pcall(ourUpdateActive)
+    pcall(ourFitBonusText, lbl, btn)
     -- 16.10.2026: the label sits under the active outfit / mount in "Active bonuses"
 end
 
