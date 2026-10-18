@@ -513,8 +513,10 @@ end
 function show()
   if not g_game.isOnline() then return end
   window:show(); fitToScreen(window, 980, 650); window:raise(); window:focus()
-  if not catalogRequested then catalogRequested = true; send('catalog') end
-  setTab(tab or 'buy')
+  if not catalogRequested or #(catalog or {}) == 0 then catalogRequested = true; send('catalog') end
+  -- 18.10.2026 (Tobeto): the Market always opens on the page with all offers (after selling it opened on Sell)
+  selectedItem = nil
+  setTab('buy')
 end
 function hide()
   closePicker()
