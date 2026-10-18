@@ -395,8 +395,8 @@ function renderDetail(mode)
   ui('locate'):show()
   ui('detailHero'):show();ui('sidebar'):setMarginTop(105);ui('right'):setMarginTop(80);ui('right'):setMarginBottom(0)
   do local f=ui('resultsFrame');if f then f:hide() end;local r=ui('resetFilters');if r then r:hide() end end
-  ui('heroName'):setText(title(row.name)..(row.taskBoss and '  [Task boss]' or ''))
-  ui('heroSpawns'):setText(#list(row.spawns)>0 and #list(row.spawns)..' spawn locations' or 'No fixed spawns')
+  ui('heroName'):setText(title(row.name)..(row.taskBoss and '  [Task boss]' or '')..(row.groupBoss and '  [Daily boss]' or ''))
+  ui('heroSpawns'):setText(#list(row.spawns)>0 and #list(row.spawns)..' spawn locations' or (row.groupBoss and ('Group Finder daily boss - level '..(row.groupLevel or 0)..'+, tier '..(row.groupStars or 0)..' loot') or 'No fixed spawns'))
   OurTibiaArt.creature(ui('heroPortrait'),row.outfit,row.name)
   ui('detailHeader'):hide();ui('detailHeader'):setHeight(0);ui('detailTabs'):setHeight(28)
   -- 10.10.2026: the monster details fit without the filter scrollbar (it ran through the header)
@@ -405,6 +405,11 @@ function renderDetail(mode)
   OurTibiaArt.creature(ui('portrait'),row.outfit,row.name)
   detailButton('Loot ('..#list(row.loot)..')',function()renderDetail('loot')end,detailMode~='attacks');detailButton('Attacks ('..#list(row.attacks)..')',function()renderDetail('attacks')end,detailMode=='attacks')
   -- 13.10.2026 (Tobeto): Nemesis bosses link to the Nemesis Bosses window (wiki closes)
+  -- 18.10.2026 (owner): the Group Finder daily bosses are in the Bosstiary; a button opens the Group Finder
+  if row.groupBoss then
+    local w=g_ui.createWidget('Button',ui('detailTabs'));w:setSize({width=110,height=20});w:setMarginTop(4);w:setText('Group Finder');w:setColor('#ffd35a')
+    w.onClick=function() hide();local G=modules.game_groupfinder;if G and G.show then G.show() elseif G and G.toggle then G.toggle() end end
+  end
   if NEMESIS_BOSSES[tostring(row.name):lower()] then
     local w=g_ui.createWidget('Button',ui('detailTabs'));w:setSize({width=110,height=20});w:setMarginTop(4);w:setText('Nemesis window');w:setColor('#ff9a6a')
     w.onClick=function() hide();local L=modules.game_myotslegends;if L and L.NemesisUI then L.NemesisUI.show() end end
