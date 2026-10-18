@@ -45,6 +45,115 @@ QuestRow < UIButton
     background-color: #3fbf3f
     phantom: true
 
+QuestTab < UIButton
+  width: 150
+  height: 26
+  font: verdana-11px-rounded
+  color: #bdbdbd
+  background-color: #262626
+  border-width: 1
+  border-color: #3c3c3c
+  $hover:
+    color: #ffffff
+    border-color: #6a6a6a
+  $on:
+    background-color: #3a3220
+    border-color: #c8a040
+    color: #ffd35a
+
+QuestItemCell < UIWidget
+  height: 40
+  background-color: #222222
+  border-width: 1
+  border-color: #333333
+  UIItem
+    id: item
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 4
+    size: 32 32
+    virtual: true
+    phantom: true
+  Label
+    id: name
+    anchors.top: parent.top
+    anchors.left: item.right
+    anchors.right: parent.right
+    margin: 5 4 0 6
+    height: 14
+    font: verdana-11px-rounded
+    color: #e0e0e0
+    phantom: true
+  Label
+    id: tier
+    anchors.top: name.bottom
+    anchors.left: name.left
+    margin-top: 2
+    height: 14
+    text-auto-resize: true
+    font: verdana-11px-rounded
+    phantom: true
+
+QuestItemGrid < UIWidget
+  height: 44
+  layout:
+    type: grid
+    cell-size: 228 40
+    cell-spacing: 4
+    num-columns: 2
+    flow: true
+
+QuestOutfitBox < UIWidget
+  height: 96
+  background-color: #1c1a14
+  border-width: 1
+  border-color: #6b5826
+  UIWidget
+    id: artBox
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin: 8 0 0 8
+    size: 80 80
+    background-color: #161616
+    border-width: 1
+    border-color: #303030
+    phantom: true
+  UICreature
+    id: outfit
+    anchors.centerIn: artBox
+    size: 76 76
+    phantom: true
+  Label
+    id: bonusTitle
+    anchors.top: parent.top
+    anchors.left: artBox.right
+    anchors.right: parent.right
+    margin: 9 8 0 12
+    height: 14
+    font: Verdana Bold-11px
+    color: #ffd35a
+    text: Bonus (full outfit with both addons)
+  Label
+    id: bonus
+    anchors.top: bonusTitle.bottom
+    anchors.left: bonusTitle.left
+    anchors.right: parent.right
+    margin: 4 8 0 0
+    height: 30
+    font: verdana-11px-rounded
+    color: #9fe39f
+    text-wrap: true
+    text-align: topLeft
+  Label
+    id: owned
+    anchors.bottom: parent.bottom
+    anchors.left: bonusTitle.left
+    anchors.right: parent.right
+    margin: 0 8 10 0
+    height: 14
+    font: verdana-11px-rounded
+    color: #c8c8c8
+
 QuestFilter < UIButton
   height: 20
   font: verdana-11px-rounded
@@ -200,12 +309,23 @@ QuestStepCard < UIWidget
 MainWindow
   id: myotsQuestLog
   text: Quest Log
-  size: 820 580
+  size: 820 614
   @onEscape: modules.game_myotsquests.hide()
 
   Panel
-    id: left
+    id: tabs
     anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 26
+    layout:
+      type: horizontalBox
+      spacing: 6
+
+  Panel
+    id: left
+    anchors.top: tabs.bottom
+    margin-top: 8
     anchors.left: parent.left
     anchors.bottom: bottomBar.top
     width: 250
@@ -268,7 +388,8 @@ MainWindow
 
   Panel
     id: right
-    anchors.top: parent.top
+    anchors.top: tabs.bottom
+    margin-top: 8
     anchors.left: left.right
     anchors.right: parent.right
     anchors.bottom: bottomBar.top

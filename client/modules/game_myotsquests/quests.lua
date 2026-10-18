@@ -11,6 +11,15 @@ local filter = 'all'
 local tracked = {}         -- quest ids shown in the tracker (per character)
 local sayIndex = 1
 local refreshEvent, trackerEvent
+local tab = 'quests'       -- quests / outfits / chests
+local outfits, chests = nil, nil
+local selectedOutfit, selectedChest
+local FILTERS = {
+  quests = {{'all', 'All'}, {'active', 'Active'}, {'new', 'New'}, {'done', 'Done'}},
+  outfits = {{'all', 'All'}, {'full', 'Full'}, {'owned', 'Owned'}, {'missing', 'Missing'}},
+  chests = {{'all', 'All'}, {'open', 'To do'}, {'done', 'Opened'}, {'high', 'Tier 6+'}},
+}
+local TIER_COLORS = {'#bdbdbd', '#bdbdbd', '#7fd07f', '#7fd07f', '#6fb0ff', '#6fb0ff', '#c58bff', '#c58bff', '#ffb03a', '#ffb03a', '#ff6a6a', '#ff6a6a'}
 
 local COLORS = {[0] = '#6f6f6f', [1] = '#ffb03a', [2] = '#3fbf3f'}
 local STATUS = {[0] = 'Not started', [1] = 'In progress', [2] = 'Completed'}
@@ -44,6 +53,8 @@ end
 
 function refreshList()
   if not window then return end
+  if tab == 'outfits' then return refreshOutfits() end
+  if tab == 'chests' then return refreshChests() end
   local list = ui('list')
   list:destroyChildren()
   local sorted = {}
@@ -80,6 +91,35 @@ function setFilter(name)
   filter = name
   for _, b in ipairs(ui('filters'):getChildren()) do b:setOn(b.filterName == name) end
   refreshList()
+end
+
+local function buildFilters()
+  ui('filters'):destroyChildren()
+  for _, f in ipairs(FILTERS[tab]) do
+    local b = g_ui.createWidget('QuestFilter', ui('filters'))
+    b:setText(f[2]); b.filterName = f[1]
+    b.onClick = function() setFilter(f[1]) end
+  end
+  setFilter('all')
+end
+
+local function clearDetail(text)
+  ui('detail'):destroyChildren()
+  ui('questName'):setText(''); ui('questInfo'):setText('')
+  ui('trackButton'):hide()
+  ui('empty'):setText(text or 'Choose a quest on the left.'); ui('empty'):show()
+end
+
+function setTab(name)
+  tab = name
+  for _, b in ipairs(ui('tabs'):getChildren()) do b:setOn(b.tabName == name) end
+  ui('search'):setText('')
+  clearDetail(name == 'quests' and 'Choose a quest on the left.' or (name == 'outfits' and 'Choose an outfit on the left.' or 'Choose a chest quest on the left.'))
+  buildFilters()
+  if name == 'quests' then
+    send('list'); if selectedId then send('q:' .. selectedId) end
+  elseif name == 'outfits' then ui('status'):setText('Loading...'); send('outfits')
+  else ui('status'):setText('Loading...'); send('chests') end
 end
 
 function selectQuest(id)
@@ -171,6 +211,7 @@ local function renderDetail()
   info[#info + 1] = q.d .. ' / ' .. q.t .. ' missions'
   ui('questInfo'):setText(table.concat(info, '   |   '))
   ui('questInfo'):setColor(COLORS[q.s])
+  ui('trackButton'):show()
   ui('trackButton'):setText(isTracked(q.i) and 'Stop tracking' or 'Track quest')
   ui('trackButton'):setEnabled(q.s ~= 2 or isTracked(q.i))
 
@@ -236,6 +277,151 @@ local function renderDetail()
     stepCard(d, {npc = q.start.npc, x = q.start.x, y = q.start.y, z = q.start.z, town = q.start.town, say = {'hi', 'mission'}}, q.start.npc)
   end
   ui('status'):setText('')
+end
+
+-- ---------------------------------------------------------------- outfit quests tab
+local function searchText() return ui('search') and ui('search'):getText():lower() or '' end
+local function outfitState(o)
+  if o.owned and o.a1 and o.a2 then return 2 end
+  if o.owned then return 1 end
+  return 0
+end
+
+function refreshOutfits()
+  local list = ui('list'); list:destroyChildren()
+  local full, owned = 0, 0
+  for _, o in ipairs(outfits or {}) do
+    local st = outfitState(o)
+    if st == 2 then full = full + 1 end
+    if st >= 1 then owned = owned + 1 end
+    local show = (filter == 'all') or (filter == 'full' and st == 2) or (filter == 'owned' and st >= 1) or (filter == 'missing' and st < 2)
+    if show and searchText() ~= '' and not o.n:lower():find(searchText(), 1, true) then show = false end
+    if show then
+      local row = g_ui.createWidget('QuestRow', list)
+      row:getChildById('name'):setText(o.n)
+      row:getChildById('dot'):setBackgroundColor(COLORS[st])
+      row:getChildById('info'):setText(o.bonus or '')
+      local addons = (o.a1 and 1 or 0) + (o.a2 and 1 or 0)
+      local bar = row:getChildById('progress')
+      bar:setPercent(o.owned and math.floor((1 + addons) * 100 / 3) or 0)
+      bar:setTooltip(o.owned and ('Outfit + ' .. addons .. ' of 2 addons') or 'You do not have this outfit yet')
+      if st == 2 then row:getChildById('name'):setColor('#9fd89f') end
+      row.outfitName = o.n
+      row:setOn(o.n == selectedOutfit)
+      row.onClick = function() renderOutfit(o.n) end
+    end
+  end
+  ui('counter'):setText(('%d outfit quests  |  %d owned  |  %d with both addons'):format(#(outfits or {}), owned, full))
+end
+
+function renderOutfit(name)
+  selectedOutfit = name
+  for _, row in ipairs(ui('list'):getChildren()) do row:setOn(row.outfitName == name) end
+  local o
+  for _, x in ipairs(outfits or {}) do if x.n == name then o = x end end
+  if not o then return end
+  ui('empty'):hide(); ui('trackButton'):hide()
+  ui('questName'):setText(o.n)
+  local st = outfitState(o)
+  ui('questInfo'):setText(st == 2 and 'Full outfit - the bonus is active when you wear it' or (st == 1 and 'You have the outfit - get both addons for the bonus' or 'You do not have this outfit yet'))
+  ui('questInfo'):setColor(COLORS[st])
+  local d = ui('detail'); d:destroyChildren()
+  local box = g_ui.createWidget('QuestOutfitBox', d)
+  pcall(function() box:getChildById('outfit'):setOutfit({type = o.look, head = 78, body = 69, legs = 58, feet = 76, addons = 3}) end)
+  box:getChildById('bonus'):setText(o.bonus or '')
+  box:getChildById('owned'):setText('Outfit: ' .. (o.owned and 'yes' or 'no') .. '   First addon: ' .. (o.a1 and 'yes' or 'no') .. '   Second addon: ' .. (o.a2 and 'yes' or 'no'))
+  section(d, 'How to get it')
+  textLine(d, o.how or '')
+  if o.quest then
+    local b = g_ui.createWidget('Button', d); b:setHeight(22)
+    b:setText('Open the quest: ' .. o.quest)
+    b.onClick = function() if o.qi then setTab('quests'); selectQuest(o.qi) end end
+  end
+  if #(o.missions or {}) > 0 then
+    section(d, 'Outfit and addon missions')
+    local firstStep
+    for _, m in ipairs(o.missions) do
+      local row = g_ui.createWidget('QuestMissionRow', d)
+      row:getChildById('name'):setText(m.n)
+      row:getChildById('mark'):setBackgroundColor(COLORS[m.s] or '#6f6f6f')
+      if m.s == 2 then row:getChildById('name'):setColor('#8fbf8f') elseif m.s == 1 then row:getChildById('name'):setColor('#ffd35a') end
+      if m.text and m.text ~= '' then row:setTooltip(m.text) end
+      if not firstStep and m.s < 2 and m.step then firstStep = m end
+    end
+    if firstStep then
+      section(d, 'Next step: ' .. firstStep.n)
+      if firstStep.text and firstStep.text ~= '' then textLine(d, firstStep.text) end
+      stepCard(d, firstStep.step, 'Talk to ' .. firstStep.step.npc)
+    end
+  end
+  textLine(d, 'The bonus counts only while you wear the full outfit (both addons). It works like the same attribute on an item.', '#8f8f8f')
+end
+
+-- ---------------------------------------------------------------- chest quests tab
+function refreshChests()
+  local list = ui('list'); list:destroyChildren()
+  local opened = 0
+  for _, c in ipairs(chests or {}) do
+    local done = c.opened >= c.total
+    if done then opened = opened + 1 end
+    local show = (filter == 'all') or (filter == 'open' and not done) or (filter == 'done' and done) or (filter == 'high' and c.tier >= 6)
+    if show and searchText() ~= '' then
+      local hit = c.n:lower():find(searchText(), 1, true) or (c.town or ''):lower():find(searchText(), 1, true)
+      for _, it in ipairs(c.items or {}) do if it.n:lower():find(searchText(), 1, true) then hit = true end end
+      show = hit and true or false
+    end
+    if show then
+      local row = g_ui.createWidget('QuestRow', list)
+      row:getChildById('name'):setText(c.n)
+      row:getChildById('dot'):setBackgroundColor(done and COLORS[2] or (c.opened > 0 and COLORS[1] or COLORS[0]))
+      row:getChildById('info'):setText('Tier ' .. c.tier .. (c.town and ('  -  ' .. c.town) or ''))
+      row:getChildById('info'):setColor(TIER_COLORS[c.tier] or '#bdbdbd')
+      local bar = row:getChildById('progress')
+      bar:setPercent(c.total > 0 and math.floor(c.opened * 100 / c.total) or 0)
+      bar:setTooltip(c.opened .. ' / ' .. c.total .. ' chests opened')
+      if done then row:getChildById('name'):setColor('#9fd89f') end
+      row.chestId = c.i
+      row:setOn(c.i == selectedChest)
+      row.onClick = function() renderChest(c.i) end
+    end
+  end
+  ui('counter'):setText(('%d chest quests  |  %d done'):format(#(chests or {}), opened))
+end
+
+function renderChest(id)
+  selectedChest = id
+  for _, row in ipairs(ui('list'):getChildren()) do row:setOn(row.chestId == id) end
+  local c
+  for _, x in ipairs(chests or {}) do if x.i == id then c = x end end
+  if not c then return end
+  ui('empty'):hide(); ui('trackButton'):hide()
+  ui('questName'):setText(c.n)
+  local done = c.opened >= c.total
+  ui('questInfo'):setText('Tier ' .. c.tier .. '   |   ' .. (c.town and ('near ' .. c.town .. '   |   ') or '') .. c.opened .. ' / ' .. c.total .. ' chests opened')
+  ui('questInfo'):setColor(done and COLORS[2] or (TIER_COLORS[c.tier] or '#bdbdbd'))
+  local d = ui('detail'); d:destroyChildren()
+  textLine(d, 'Every equipment item from this quest comes unidentified with tier ' .. c.tier .. '. Identify it to roll its rarity and attributes - the higher the tier, the better the rolls.', '#bdbdbd')
+  if c.choose then textLine(d, 'Choose one: you can take only one of these rewards.', '#ffb03a') end
+  section(d, 'Rewards')
+  local grid = g_ui.createWidget('QuestItemGrid', d)
+  grid:setHeight(math.ceil(#c.items / 2) * 44)
+  for _, it in ipairs(c.items) do
+    local cell = g_ui.createWidget('QuestItemCell', grid)
+    local item = cell:getChildById('item')
+    item:setItemId(it.c)
+    if it.k and it.k > 1 then item:setItemCount(it.k) end
+    cell:getChildById('name'):setText((it.k and it.k > 1 and (it.k .. ' ') or '') .. it.n)
+    local tl = cell:getChildById('tier')
+    if it.t and it.t > 0 then tl:setText('Tier ' .. it.t .. ' (unidentified)'); tl:setColor(TIER_COLORS[it.t] or '#bdbdbd')
+    else tl:setText('No tier'); tl:setColor('#7f7f7f') end
+  end
+  section(d, 'Where')
+  local b = g_ui.createWidget('Button', d); b:setHeight(22)
+  b:setText('Show on map (' .. c.x .. ', ' .. c.y .. ', ' .. c.z .. ')')
+  b.onClick = function()
+    local wiki = modules.game_myotswiki
+    if wiki and wiki.showMapAt then wiki.showMapAt({name = c.n, x = c.x, y = c.y, z = c.z}) end
+  end
 end
 
 -- ---------------------------------------------------------------- tracker
@@ -318,6 +504,7 @@ local function receive(protocol, opcode, buffer)
   if not ok or type(data) ~= 'table' then return end
   if data.kind == 'list' then
     quests = data.quests or {}
+    if tab ~= 'quests' then return end
     if ui('status'):getText() == 'Loading...' then ui('status'):setText('') end
     refreshList()
     if not selectedId then
@@ -326,8 +513,14 @@ local function receive(protocol, opcode, buffer)
       if selectedId then selectQuest(selectedId) end
     end
   elseif data.kind == 'quest' then
-    if data.i == selectedId then current = data; renderDetail() end
+    if data.i == selectedId and tab == 'quests' then current = data; renderDetail() end
     if isTracked(data.i) and tracker and tracker:isVisible() then requestTracker() end
+  elseif data.kind == 'outfits' then
+    outfits = data.outfits or {}
+    if tab == 'outfits' then ui('status'):setText(''); refreshList(); if selectedOutfit then renderOutfit(selectedOutfit) end end
+  elseif data.kind == 'chests' then
+    chests = data.chests or {}
+    if tab == 'chests' then ui('status'):setText(''); refreshList(); if selectedChest then renderChest(selectedChest) end end
   elseif data.kind == 'tracker' then
     renderTracker(data.quests)
   end
@@ -349,10 +542,8 @@ function show()
   if not g_game.isOnline() then return end
   window:show(); window:raise(); window:focus()
   local root = rootWidget or g_ui.getRootWidget()
-  window:setWidth(math.min(820, root:getWidth() - 10)); window:setHeight(math.min(580, root:getHeight() - 10))
-  ui('status'):setText('Loading...')
-  send('list')
-  if selectedId then send('q:' .. selectedId) end
+  window:setWidth(math.min(820, root:getWidth() - 10)); window:setHeight(math.min(614, root:getHeight() - 10))
+  setTab(tab)
 end
 function hide() if window then window:hide() end end
 function toggle() if window and window:isVisible() then hide() else show() end end
@@ -385,7 +576,13 @@ end
 function init()
   window = g_ui.displayUI('quests')
   window:hide()
-  for _, f in ipairs({{'all', 'All'}, {'active', 'Active'}, {'new', 'New'}, {'done', 'Done'}}) do
+  for _, t in ipairs({{'quests', 'Quests'}, {'outfits', 'Outfit Quests'}, {'chests', 'Chest Quests'}}) do
+    local b = g_ui.createWidget('QuestTab', ui('tabs'))
+    b:setText(t[2]); b.tabName = t[1]
+    b.onClick = function() setTab(t[1]) end
+  end
+  for _, b in ipairs(ui('tabs'):getChildren()) do b:setOn(b.tabName == tab) end
+  for _, f in ipairs(FILTERS.quests) do
     local b = g_ui.createWidget('QuestFilter', ui('filters'))
     b:setText(f[2]); b.filterName = f[1]
     b.onClick = function() setFilter(f[1]) end
