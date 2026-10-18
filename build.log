@@ -1,0 +1,48 @@
+[1/37] Running cpp protocol buffer compiler on D:/a/ourtibia-mac/ourtibia-mac/source/src/protobuf/staticdata.proto
+[2/37] Running cpp protocol buffer compiler on D:/a/ourtibia-mac/ourtibia-mac/source/src/protobuf/sounds.proto
+[3/37] Running cpp protocol buffer compiler on D:/a/ourtibia-mac/ourtibia-mac/source/src/protobuf/appearances.proto
+[4/37] Building C object src/CMakeFiles/otclient_core.dir/framework/core/minizip/ioapi.c.obj
+[5/37] Building C object src/CMakeFiles/otclient_core.dir/framework/core/minizip/ioapi_mem.c.obj
+[6/37] Building C object src/CMakeFiles/otclient_core.dir/framework/core/minizip/unzip.c.obj
+[7/37] Building C object src/CMakeFiles/otclient_core.dir/framework/core/minizip/crypt.c.obj
+[8/37] Building CXX object src/protobuf/CMakeFiles/protobuf.dir/staticdata.pb.cc.obj
+[9/37] Building CXX object src/protobuf/CMakeFiles/protobuf.dir/sounds.pb.cc.obj
+[10/37] Building CXX object src/protobuf/CMakeFiles/protobuf.dir/appearances.pb.cc.obj
+[11/37] Linking CXX static library src\protobuf\libprotobuf.a
+[12/37] Building CXX object src/CMakeFiles/otclient.dir/main.cpp.obj
+[13/37] Building CXX object src/CMakeFiles/otclient_core.dir/cmake_pch.hxx.gch
+[14/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_16_cxx.cxx.obj
+[15/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_17_cxx.cxx.obj
+[16/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_18_cxx.cxx.obj
+[17/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_21_cxx.cxx.obj
+[18/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_15_cxx.cxx.obj
+[19/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_20_cxx.cxx.obj
+[20/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_13_cxx.cxx.obj
+[21/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_14_cxx.cxx.obj
+[22/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_19_cxx.cxx.obj
+[23/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_8_cxx.cxx.obj
+[24/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_12_cxx.cxx.obj
+In file included from D:/a/ourtibia-mac/ourtibia-mac/source/build-mingw/src/CMakeFiles/otclient_core.dir/Unity/unity_12_cxx.cxx:16:
+D:/a/ourtibia-mac/ourtibia-mac/source/src/client/thingtype.cpp: In member function 'void ThingType::unserializeAppearance(uint16_t, ThingCategory, const otclient::protobuf::appearances::Appearance&)':
+D:/a/ourtibia-mac/ourtibia-mac/source/src/client/thingtype.cpp:77:33: warning: ignoring return value of 'const google::protobuf::RepeatedField<unsigned int>& otclient::protobuf::appearances::SpriteInfo::sprite_id() const', declared with attribute 'nodiscard' [-Wunused-result]
+   77 |             spriteInfo.sprite_id(); // sprites
+      |             ~~~~~~~~~~~~~~~~~~~~^~
+In file included from D:/a/ourtibia-mac/ourtibia-mac/source/src/client/thingtype.h:27,
+                 from D:/a/ourtibia-mac/ourtibia-mac/source/src/client/thing.cpp:28,
+                 from D:/a/ourtibia-mac/ourtibia-mac/source/build-mingw/src/CMakeFiles/otclient_core.dir/Unity/unity_12_cxx.cxx:13:
+D:/a/ourtibia-mac/ourtibia-mac/source/build-mingw/src/protobuf/appearances.pb.h:9348:61: note: declared here
+ 9348 | inline const ::google::protobuf::RepeatedField<::uint32_t>& SpriteInfo::sprite_id() const
+      |                                                             ^~~~~~~~~~
+[25/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_10_cxx.cxx.obj
+[26/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_7_cxx.cxx.obj
+[27/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_5_cxx.cxx.obj
+[28/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_6_cxx.cxx.obj
+[29/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_4_cxx.cxx.obj
+[30/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_11_cxx.cxx.obj
+[31/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_0_cxx.cxx.obj
+[32/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_1_cxx.cxx.obj
+[33/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_3_cxx.cxx.obj
+[34/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_9_cxx.cxx.obj
+[35/37] Building CXX object src/CMakeFiles/otclient_core.dir/Unity/unity_2_cxx.cxx.obj
+[36/37] Linking CXX static library src\libotclient_core.a
+[37/37] Linking CXX executable D:\a\ourtibia-mac\ourtibia-mac\source\otclient.exe

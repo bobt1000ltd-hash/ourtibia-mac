@@ -1,0 +1,2 @@
+cab6921c7b37a6dd23a17cd0e762e57a60ab9a37671d8b7acc721f7ee5c30e68 *OurTibia-Windows-mingw.zip
+7a2768bfe40b0922f2d5c68c4ce8280a5d698097d27c4ecff1efad8513a0951b *bin/MyOTS.exe
