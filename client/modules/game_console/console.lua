@@ -330,6 +330,19 @@ function consoleController:onInit()
                 end
                 return true
             end
+            -- 18.10.2026 (Tobeto: "Delete works like Backspace in the chat"): with the cursor at the
+            -- end of the line Delete removed the letter before it. Delete removes the letter after
+            -- the cursor and does nothing at the end of the line (the client program had it wrong).
+            if field == 'onKeyPress' and keyboardModifiers == KeyboardNoModifier and keyCode == KeyDelete
+                and (widget:getText() or '') ~= '' and not widget:hasSelection() then
+                local text = widget:getText()
+                local pos = widget:getCursorPos()
+                if not pos or pos < 0 then pos = 0 end
+                if pos < #text then
+                    widget:setText(text:sub(1, pos) .. text:sub(pos + 2)); widget:setCursorPos(pos)
+                end
+                return true
+            end
             -- 02.10.2026: PageUp/PageDown/Home/End/Insert/Delete hotkeys work while
             -- the chat line has the focus (Home/End/Delete only when it is empty).
             local navKeys = { [KeyPageUp] = true, [KeyPageDown] = true, [KeyInsert] = true }

@@ -819,6 +819,9 @@ void UITextEdit::removeCharacter(const bool right)
     std::string tmp = m_text;
     if (static_cast<size_t>(m_cursorPos) >= 0 && tmp.length() > 0) {
         if (static_cast<size_t>(m_cursorPos) >= tmp.length()) {
+            // OurTibia (18.10.2026): Delete at the end of the text removes nothing (it worked like Backspace)
+            if (right)
+                return;
             tmp.erase(tmp.begin() + (--m_cursorPos));
         } else if (right)
             tmp.erase(tmp.begin() + m_cursorPos);

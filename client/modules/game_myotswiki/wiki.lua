@@ -697,7 +697,11 @@ function filter()
       local name=(row.name or ''):lower()
       local desc=(table.concat(list(row.desc),' ')..' '..(row.shortinfo or '')):lower()
       local hasStat=desc:find('atk%s*[:+%-]') or desc:find('attack%s*[:+%-]') or desc:find('def%s*[:+%-]') or desc:find('defense%s*[:+%-]') or desc:find('arm%s*[:+%-]') or desc:find('armor%s*[:+%-]') or desc:find('protection%s+') or desc:find('magic level%s*[%+%-]') or desc:find('skill%s+[%a%s]*[%+%-]') or desc:find('speed%s*[%+%-]') or desc:find('capacity%s*[%+%-]') or desc:find('leech%s*[%+%-]') or desc:find('critical%s*[%+%-]') or desc:find('max%s+hp%s*[%+%-]') or desc:find('max%s+mana%s*[%+%-]') or desc:find('hitpoints%s*[%+%-]') or desc:find('mana points%s*[%+%-]')
-      if name~='throwing star of sula' and row.category~='Equipment' and (not gear[row.category or ''] or hasStat) then source[#source+1]=row end
+      -- 18.10.2026 (Tobeto: "searching 'dead' lists plenty of dead monsters"): corpses are not items -
+      -- a corpse name with no source (no monster drops it, no NPC trades it, no quest gives it) is hidden
+      local corpse=(name:find('^dead ') or name:find('^slain ') or name:find('^lifeless ') or name:find('^remains of') or name:find('remains$'))
+        and not ((row.droppedBy and next(row.droppedBy)) or (row.sellTo and next(row.sellTo)) or (row.buyFrom and next(row.buyFrom)) or row.questReward or row.shopItem)
+      if not corpse and name~='throwing star of sula' and row.category~='Equipment' and (not gear[row.category or ''] or hasStat) then source[#source+1]=row end
     end
   elseif tab=='map' then
     source={};for _,key in ipairs({'monsters','bosses','npcs'}) do for _,r in ipairs(catalog[key]) do source[#source+1]=r end end
