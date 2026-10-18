@@ -646,7 +646,7 @@ OurItemInfo={
 [7434]={n="royal axe",b="Atk: 44, Def: 21",w=92,s={"Rashid",40000}},
 [3219]={n="Waldo's post horn",w=22},
 [21158]={n="glooth spear",b="Atk: 55",w=26},
-[23744]={n="training spear",b="Atk: 8",w=26},
+[23744]={n="training spear",b="Atk: 5",w=20},
 [2988]={n="exotic flowers",w=11},
 [3354]={n="brass helmet",b="Arm: 3",w=27,s={"Aldo",30}},
 [3317]={n="barbarian axe",b="Atk: 28, Def: 15",w=51,s={"Morpel",185}},

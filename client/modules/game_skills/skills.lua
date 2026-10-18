@@ -2169,7 +2169,11 @@ function ourPaintPin(row,hovered)
     local pinned=set[row.ourPinKey]
     local show=pinned or hovered
     pin:setVisible(show and true or false)
-    pin:setImageColor((pinned or pin:isHovered()) and '#44d040' or '#6a6a6a')
+    -- 18.10.2026 (Tobeto): a pinned row under the mouse shows a red pin - the next click unpins it
+    local color='#6a6a6a'
+    if pinned and (hovered or pin:isHovered()) then color='#e04040'
+    elseif pinned or pin:isHovered() then color='#44d040' end
+    pin:setImageColor(color)
     local shift=show and 12 or 0
     local icon=row:getChildById('icon')
     local name=row:getChildById('name')
