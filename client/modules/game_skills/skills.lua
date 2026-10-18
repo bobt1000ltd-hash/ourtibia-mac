@@ -391,7 +391,7 @@ end
 -- 14.10.2026 (Tobeto): HP / MP regen and speed moved to the Attributes tab
 local OUR_ROWS = {rowLevel = {'level'}, rowStamina = {'stamina'}, -- 14.10.2026 (Tobeto): every position in one list
     rowExperience = {'experience', 'xpGainRate'}, rowHealth = {'health'}, rowMana = {'mana'},
-    rowSoul = {'soul'}, rowCapacity = {'capacity'}, rowRegenTime = {'regenerationTime'},
+    rowSoul = {'soul'}, rowCapacity = {'capacity'}, rowRegenTime = {'regenerationTime'}, rowSpeed = {'speed'}, -- 18.10.2026 (owner): speed back in the Skills tab
     -- 13.10.2026 (Tobeto): skills and offline training can be hidden completely too
     rowOfflineTraining = {'offlineTraining'}, rowMagic = {'magiclevel'}, rowFist = {'skillId0'},
     rowMelee = {'skillId2'}, rowDistance = {'skillId4'}, rowShielding = {'skillId5'}, rowFishing = {'skillId6'}, rowCooking = {'skillCooking'}}

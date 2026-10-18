@@ -493,7 +493,6 @@ MiniWindow
     SkillButton
       id: speed
       height: 15
-      visible: false
       SkillNameLabel
         !text: tr('Speed')
       SkillValueLabel
@@ -990,6 +989,10 @@ SkillsListSubMenu < PopupMenu
     id: rowCapacity
     visible: false
     !text: tr('Capacity')
+
+  SkillsSubMenuOption
+    id: rowSpeed
+    !text: tr('Speed')
 
   SkillsSubMenuOption
     id: rowRegenTime
