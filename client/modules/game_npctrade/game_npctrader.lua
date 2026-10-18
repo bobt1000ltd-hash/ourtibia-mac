@@ -26,6 +26,15 @@ function controllerNpcTrader:onGameStart()
             onNpcChatWindow(data)
         end,
         onOpenNpcTrade = function(...)
+            -- 18.10.2026 (Tobeto): the products of the NPC trade window in alphabetical order
+            local items = select(1, ...)
+            if type(items) == 'table' then
+                pcall(table.sort, items, function(a, b)
+                    local x, y = tostring(a[2] or ''):lower(), tostring(b[2] or ''):lower()
+                    if x ~= y then return x < y end
+                    return (a[4] or 0) < (b[4] or 0)
+                end)
+            end
             self:startEquippedImbuementsTracking()
             if self:isLegacyMode() then
                 onOpenNpcTrade(...)

@@ -38,6 +38,7 @@ local function saveTracked()
   local node = g_settings.getNode('myots-quests') or {}
   node[charKey()] = tracked
   g_settings.setNode('myots-quests', node)
+  pcall(g_settings.save)
 end
 local function isTracked(id) for _, t in ipairs(tracked) do if t == id then return true end end return false end
 

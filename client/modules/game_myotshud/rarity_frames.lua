@@ -347,6 +347,11 @@ F.boundShimmer='Item - Bound Shimmer'
 F.corpseGlow='Item - Corpse Glow'
 F.corpseGlowRare='Item - Corpse Glow Rare'
 F.outline={};for r=1,6 do F.outline[r]='Item - Rarity Outline '..r end
+F.CORPSE_VARIANTS=6
+F.corpseShimmer={};F.corpseRare={}
+for v=1,F.CORPSE_VARIANTS do F.corpseShimmer[v]='Item - Corpse Shimmer '..v;F.corpseRare[v]='Item - Corpse Rare '..v end
+-- the variant of the corpse on a tile: neighbouring tiles (also diagonal) never share one
+function F.corpseVariant(pos) return ((pos.x+3*pos.y+5*pos.z)%F.CORPSE_VARIANTS)+1 end
 function F.groundShader(r) if r==0 then return F.shimmer end return F.outline[r] end
 function F.setupShader()
  if F.shaderReady or not g_shaders then return end
@@ -359,6 +364,43 @@ function F.setupShader()
   g_shaders.setupItemShader(F.corpseGlow)
   g_shaders.createFragmentShader(F.corpseGlowRare,'/game_myotshud/corpse_glow_rare.frag',false)
   g_shaders.setupItemShader(F.corpseGlowRare)
+  -- 18.10.2026 (owner): every unlooted corpse animates on its own - six variants of the
+  -- shimmer / purple pulse with another phase and speed (one per corpse by its position);
+  -- one shared screen-wide sweep made neighbouring corpses blink together
+  local okv,errv=pcall(function() for v=1,F.CORPSE_VARIANTS do
+   local speed=70.0*(0.86+v*0.05);local offset=v*19.0;local phase=v*1.05;local rate=3.4+v*0.22
+   g_shaders.createFragmentShaderFromCode(F.corpseShimmer[v],string.format([[
+uniform float u_Time;
+uniform sampler2D u_Tex0;
+varying vec2 v_TexCoord;
+void main()
+{
+    vec4 col = texture2D(u_Tex0, v_TexCoord);
+    if (col.a < 0.01)
+        discard;
+    float d = gl_FragCoord.x - gl_FragCoord.y;
+    float p = mod(d - u_Time * %.2f - %.2f, 110.0);
+    float band = smoothstep(0.0, 9.0, p) * (1.0 - smoothstep(9.0, 18.0, p));
+    col.rgb = mix(col.rgb, vec3(1.0, 1.0, 1.0), band * 0.6);
+    gl_FragColor = col;
+}]],speed,offset),false)
+   g_shaders.setupItemShader(F.corpseShimmer[v])
+   g_shaders.createFragmentShaderFromCode(F.corpseRare[v],string.format([[
+uniform float u_Time;
+uniform sampler2D u_Tex0;
+varying vec2 v_TexCoord;
+void main()
+{
+    vec4 col = texture2D(u_Tex0, v_TexCoord);
+    if (col.a < 0.01)
+        discard;
+    float pulse = 0.38 + 0.17 * sin(u_Time * %.2f + %.2f);
+    col.rgb = mix(col.rgb, vec3(0.78, 0.30, 1.0), pulse);
+    gl_FragColor = col;
+}]],rate,phase),false)
+   g_shaders.setupItemShader(F.corpseRare[v])
+  end end)
+  if not okv then g_logger.error('Corpse shader variants: '..tostring(errv));F.corpseShimmer=nil end
   for r=1,6 do
    g_shaders.createFragmentShader(F.outline[r],'/game_myotshud/rarity_outline_'..r..'.frag',true)
    g_shaders.setupItemShader(F.outline[r])

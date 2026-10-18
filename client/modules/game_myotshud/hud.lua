@@ -486,9 +486,15 @@ local function applyCorpseShimmer()
   -- 06.10.2026: unlooted corpses shimmer like unidentified items (user request)
   local normal=RarityFrames and RarityFrames.shimmer or 'Item - Shimmer'
   local rare=RarityFrames and RarityFrames.corpseGlowRare or 'Item - Corpse Glow Rare'
+  local F=RarityFrames
   for _,pos in ipairs(corpseList) do
     -- 03.10.2026: a corpse with an unidentified item glows purple
     local shader=pos.u and rare or normal
+    -- 18.10.2026 (owner): each corpse has its own animation (variant by its tile)
+    if F and F.corpseVariant and F.corpseShimmer then
+      local v=F.corpseVariant(pos)
+      shader=pos.u and F.corpseRare[v] or F.corpseShimmer[v]
+    end
     for _,item in ipairs(corpseItems(pos)) do if item.ourCorpseShimmer~=shader then item:setShader(shader);item.ourCorpseShimmer=shader end end
   end
 end
