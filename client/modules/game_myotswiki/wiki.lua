@@ -189,16 +189,26 @@ function fitCardText(widget,text,room)
   end
   widget:setText(table.concat(lines,'\n'))
 end
-local function card(row,text,action)
-  local w=g_ui.createWidget('WikiCard',ui('cards'));fitCardText(w,text,(cardCellWidth or 200)-60);art(w,row)
+local function card(row,text,action,style)
+  -- OurTibia (18.10.2026, Tobeto): style 'WikiRow' = button-styled row of a detail table
+  local w=g_ui.createWidget(style or 'WikiCard',ui('cards'));fitCardText(w,text,(cardCellWidth or 200)-60);art(w,row)
   w:setTooltip(title(row.name or '')..(text:find('\n') and ('\n'..text:match('\n(.*)$')) or ''));w.onClick=action;return w
 end
 -- 10.10.2026: Loot / Attacks look like the Drop / Quest tabs of an item page
 NEMESIS_BOSSES={['yeti']=true,['the horned fox']=true,['necropharus']=true,['fernfang']=true,['man in the cave']=true,['dharalion']=true,['demodras']=true,['arachir the ancient one']=true,['diblis the fair']=true,['sir valorcrest']=true,['zevelon duskbringer']=true,['the old widow']=true,['zulazza the corruptor']=true,['zushuka']=true,['the pale count']=true}
 local function detailButton(text,action,on)
   -- 17.10.2026 (Tobeto): Loot / Attacks / Drop / Quest - one style and size (90 x 20, like Close)
-  local w=g_ui.createWidget('Button',ui('detailTabs'));w:setSize({width=90,height=20}) -- = Close button;w:setMarginTop(4);w:setText(text);w.onClick=action
-  w:setColor(on and '#ffd35a' or '#a0a0a0');w:setOn(on and true or false)
+  -- OurTibia (18.10.2026, Tobeto): the rest of this line was inside the "-- = Close button" comment,
+  -- so the buttons had no text; now there is one toggle button that names the OTHER table
+  local w=g_ui.createWidget('Button',ui('detailTabs'));w:setSize({width=90,height=20});w:setMarginTop(2);w:setText(text);w.onClick=action
+  w:setColor(on and '#ffd35a' or '#dfdfdf');w:setOn(on and true or false)
+  return w
+end
+-- OurTibia (18.10.2026, Tobeto): the panel around the results changes its title
+-- (Results / Loot / Attacks / Map)
+local function contentFrame(text)
+  local f=ui('resultsFrame');if not f then return end
+  if text then f:setText(text);f:show() else f:hide() end
 end
 local function grid(columns)
   cardCellWidth=columns==2 and 300 or 200
@@ -221,7 +231,9 @@ local function resetView()
   ui('cards'):setMarginTop(0);ui('scrollbar'):setMarginTop(0)
   do local bar=ui('ourSortBar');if bar then bar:hide() end end
   sideTitle('Filters');grid(3)
-  do local f=ui('resultsFrame');if f then f:setVisible(tab=='items' or tab=='monsters' or tab=='bosses') end end
+  contentFrame((tab=='items' or tab=='monsters' or tab=='bosses') and 'Results' or nil)
+  -- OurTibia (18.10.2026, Tobeto): the map tab makes the left panel wider (group buttons 90 px)
+  ui('sidebar'):setWidth(185);ui('mapBrowser'):setMarginRight(0)
   do local r=ui('resetFilters');if r then r:show() end end
 end
 -- 17.10.2026 (Tobeto): Sort by / Sort mode sit in a small panel above the results
@@ -253,6 +265,9 @@ function ourWikiLayout()
     frame:addAnchor(AnchorRight,'right',AnchorRight);frame:addAnchor(AnchorBottom,'right',AnchorBottom)
     frame:setMarginTop(-25);frame:setMarginLeft(-6);frame:setMarginRight(-6);frame:setMarginBottom(-6) -- right = sidebar top/bottom (resetView)
     frame:setPhantom(true);frame:lower()
+    -- OurTibia (18.10.2026, Tobeto): the frame ends at the right edge of the wiki (like the
+    -- untitled panel on top of a detail page), so the panel inside keeps 6 px from the edge
+    right:setMarginRight(6)
   end
   local locate=ui('locate')
   if locate then
@@ -277,6 +292,7 @@ local function detailUI(id) return itemPage:recursiveGetChildById(id) end
 -- 09.10.2026: item sources in two tabs - "Drop" (monsters/bosses) and "Quest"
 local sourceTab='drop'
 function setSourceTab(tabName) sourceTab=tabName=='quest' and 'quest' or 'drop';renderItemSources() end
+function toggleSourceTab() setSourceTab(sourceTab=='quest' and 'drop' or 'quest') end
 function renderItemSources()
   if not selected then return end
   local panel=detailUI('sources');panel:destroyChildren()
@@ -284,10 +300,15 @@ function renderItemSources()
   local sort=detailUI('sourceSort'):getCurrentOption().text
   local descending=detailUI('sourceOrder'):getCurrentOption().text=='Descending'
   local drops,quests=sourcesByItem[selected.sid] or {},list(selected.questSources)
-  local dropTab,questTab=detailUI('dropTab'),detailUI('questTab')
-  if dropTab then dropTab:setText('Drop ('..#drops..')');dropTab:setColor(sourceTab=='drop' and '#ffd35a' or '#a0a0a0');dropTab:setOn(sourceTab=='drop') end
-  if questTab then questTab:setText('Quest ('..#quests..')');questTab:setColor(sourceTab=='quest' and '#ffd35a' or '#a0a0a0');questTab:setOn(sourceTab=='quest') end
-  detailUI('sourceFilter'):setEnabled(sourceTab=='drop')
+  -- OurTibia (18.10.2026, Tobeto): the panel is titled with the open table and the one toggle
+  -- button names the other one ("Quest" while the drops are shown, default Drop)
+  detailUI('obtaining'):setText(sourceTab=='quest' and 'Quest' or 'Drop')
+  local toggleButton=detailUI('sourceToggle')
+  if toggleButton then
+    toggleButton:setText(sourceTab=='quest' and ('Drop ('..#drops..')') or ('Quest ('..#quests..')'))
+    toggleButton:setTooltip(sourceTab=='quest' and 'Show the monsters and bosses that drop this item' or 'Show the quests that give this item')
+  end
+  detailUI('sourceFilter'):setVisible(sourceTab=='drop')
   local rows={}
   if sourceTab=='drop' then
     for _,source in ipairs(drops) do if filter=='All' or source.kind==filter then rows[#rows+1]=source end end
@@ -302,7 +323,7 @@ function renderItemSources()
   end)
   for _,source in ipairs(rows) do
     local entry=source
-    local w=g_ui.createWidget('WikiCard',panel)
+    local w=g_ui.createWidget('WikiRow',panel) -- OurTibia (18.10.2026, Tobeto): button-styled row
     local tier=(entry.tier or 0)>0 and ('T'..entry.tier) or 'No tier'
     local chance=entry.chance>=0 and string.format(' %.2f%%',entry.chance) or ''
     fitCardText(w,title(entry.name)..'\n'..entry.kind..'  '..tier..chance,136)
@@ -320,7 +341,7 @@ function renderItemSources()
 end
 function renderItemPage(row)
   ui('sidebar'):hide();ui('right'):hide();ui('filterScroll'):hide();sideFrame(false);itemPage:show()
-  do local f=ui('resultsFrame');if f then f:hide() end;local r=ui('resetFilters');if r then r:hide() end end
+  do contentFrame(nil);local r=ui('resetFilters');if r then r:hide() end end
   local icon=detailUI('icon');local cid=tonumber(row.cid) or 0
   local prof=detailUI('profButton')
   if prof then
@@ -352,7 +373,8 @@ function renderItemPage(row)
   end
   detailUI('name'):setText(title(row.name)..'\n'..(row.shortinfo or row.category or ''))
   detailUI('stats'):setText('Base stats\n\n'..table.concat(list(row.desc),'\n'))
-  sourceTab=(#(sourcesByItem[row.sid] or {})==0 and #list(row.questSources)>0) and 'quest' or 'drop'
+  -- OurTibia (18.10.2026, Tobeto): the Drop table is always shown first
+  sourceTab='drop'
   renderItemSources()
   for _,group in ipairs({{'buy',row.buyFrom},{'sell',row.sellTo}}) do
     local panel=detailUI(group[1]);panel:destroyChildren();local rows={}
@@ -360,7 +382,7 @@ function renderItemPage(row)
     table.sort(rows,function(a,b)return a.name<b.name end)
     for _,merchant in ipairs(rows) do
       local npc=npcsByName[merchant.name:lower()]
-      local w=g_ui.createWidget('WikiCard',panel);w:setHeight(44)
+      local w=g_ui.createWidget('WikiRow',panel);w:setHeight(44) -- OurTibia (18.10.2026, Tobeto): button-styled row
       w:setText(title(merchant.name)..'     '..number(merchant.price)..' gp');art(w,npc or {name=merchant.name})
       if npc then w.onClick=function()changeTab('map');selected=npc;locate() end end
     end
@@ -393,17 +415,31 @@ function renderDetail(mode)
     statRow(stats,title(element),(resist>0 and '+' or '')..resist..'%',element..'-resist',resist>0 and '#ef6666' or resist<0 and '#70d878' or '#888888')
   end
   ui('locate'):show()
-  ui('detailHero'):show();ui('sidebar'):setMarginTop(105);ui('right'):setMarginTop(80);ui('right'):setMarginBottom(0)
-  do local f=ui('resultsFrame');if f then f:hide() end;local r=ui('resetFilters');if r then r:hide() end end
+  -- OurTibia (18.10.2026, Tobeto): picture, name and main stats in the untitled panel on top;
+  -- "Monster details" and the Loot / Attacks panel start below it at the same height
+  -- (Bestiary and Bosstiary use this same page).
+  ui('detailHero'):show();ui('sidebar'):setMarginTop(101);ui('right'):setMarginTop(101);ui('right'):setMarginBottom(30)
+  do local r=ui('resetFilters');if r then r:hide() end end
+  contentFrame(detailMode=='attacks' and 'Attacks' or 'Loot')
   ui('heroName'):setText(title(row.name)..(row.taskBoss and '  [Task boss]' or '')..(row.groupBoss and '  [Daily boss]' or ''))
-  ui('heroSpawns'):setText(#list(row.spawns)>0 and #list(row.spawns)..' spawn locations' or (row.groupBoss and ('Group Finder daily boss - level '..(row.groupLevel or 0)..'+, tier '..(row.groupStars or 0)..' loot') or 'No fixed spawns'))
+  do
+    local main='Hitpoints '..number(row.hp)..'     Experience '..number(row.exp)..'     Speed '..number(row.speed)
+    local where=#list(row.spawns)>0 and #list(row.spawns)..(#list(row.spawns)==1 and ' spawn location' or ' spawn locations') or (row.groupBoss and ('Group Finder daily boss - level '..(row.groupLevel or 0)..'+, tier '..(row.groupStars or 0)..' loot') or 'No fixed spawns')
+    ui('heroSpawns'):setText(main..'     |     '..where)
+  end
   OurTibiaArt.creature(ui('heroPortrait'),row.outfit,row.name)
-  ui('detailHeader'):hide();ui('detailHeader'):setHeight(0);ui('detailTabs'):setHeight(28)
+  ui('detailHeader'):hide();ui('detailHeader'):setHeight(0);ui('detailTabs'):setHeight(26)
   -- 10.10.2026: the monster details fit without the filter scrollbar (it ran through the header)
-  ui('filterScroll'):hide();ui('cards'):setMarginTop(6);ui('scrollbar'):setMarginTop(6)
+  ui('filterScroll'):hide();ui('cards'):setMarginTop(4);ui('scrollbar'):setMarginTop(4)
   ui('creatureTitle'):setText(title(row.name)..'\n'..#list(row.spawns)..' spawn locations')
   OurTibiaArt.creature(ui('portrait'),row.outfit,row.name)
-  detailButton('Loot ('..#list(row.loot)..')',function()renderDetail('loot')end,detailMode~='attacks');detailButton('Attacks ('..#list(row.attacks)..')',function()renderDetail('attacks')end,detailMode=='attacks')
+  -- OurTibia (18.10.2026, Tobeto): one toggle button below the title: it says "Attacks" while the
+  -- panel shows "Loot" and the other way round (default: Loot)
+  if detailMode=='attacks' then
+    detailButton('Loot ('..#list(row.loot)..')',function()renderDetail('loot')end,false):setTooltip('Show the loot of this creature')
+  else
+    detailButton('Attacks ('..#list(row.attacks)..')',function()renderDetail('attacks')end,false):setTooltip('Show the attacks of this creature')
+  end
   -- 13.10.2026 (Tobeto): Nemesis bosses link to the Nemesis Bosses window (wiki closes)
   -- 18.10.2026 (owner): the Group Finder daily bosses are in the Bosstiary; a button opens the Group Finder
   if row.groupBoss then
@@ -415,7 +451,7 @@ function renderDetail(mode)
     w.onClick=function() hide();local L=modules.game_myotslegends;if L and L.NemesisUI then L.NemesisUI.show() end end
   end
   if detailMode=='attacks' then
-    ui('cards'):setLayout(UIVerticalLayout.create(ui('cards')))
+    ui('cards'):setLayout(UIVerticalLayout.create(ui('cards')));ui('cards'):getLayout():setSpacing(3) -- OurTibia (18.10.2026, Tobeto): rows apart
     local maximum=1;for _,attack in ipairs(list(row.attacks)) do maximum=math.max(maximum,math.abs(attack.max or 0)) end
     heading(ui('cards'),'STRONGEST HIT   '..number(maximum))
     for _,attack in ipairs(list(row.attacks)) do
@@ -447,7 +483,7 @@ function renderDetail(mode)
       local item=drop
       local count=(item.maxCount or 1)>1 and tostring(item.minCount or 1)..'-'..item.maxCount..'x  ' or ''
       local tier=(tonumber(item.tier) or 0)>0 and 'T'..item.tier..'  ' or ''
-      local w=card(item,title(item.name)..'\n'..tier..count..tostring(item.chance)..'%',function()showReferenceItem(item.sid)end)
+      local w=card(item,title(item.name)..'\n'..tier..count..tostring(item.chance)..'%',function()showReferenceItem(item.sid)end,'WikiRow') -- OurTibia (18.10.2026, Tobeto): button-styled row
       w:setTooltip(title(item.name)..((tonumber(item.tier) or 0)>0 and ('\nDrop tier: '..item.tier) or '\nNo tier (cannot be upgraded)')..'\nChance: '..tostring(item.chance)..'%\n\nRight click (or Ctrl + right click): add to autoloot')
       -- OurTibia (03.10.2026): right click / Ctrl + right click adds the item to
       -- the autoloot list (the server refuses gold, valuables and products,
@@ -615,7 +651,8 @@ function mapList(group)
   end
   local width=math.max(60,(panel:getWidth()>0 and panel:getWidth() or 198)-57-8)
   for _,row in ipairs(rows)do
-    local entry=row;local w=g_ui.createWidget('WikiCard',panel);w:setHeight(48)
+    -- OurTibia (18.10.2026, Tobeto): every result is a button-styled panel without a title
+    local entry=row;local w=g_ui.createWidget('WikiRow',panel);w:setHeight(48)
     local count=#(row.spawns or (row.x and {row} or {}))
     local name,cut=fitName(title(row.name),width)
     if count>1 then w:setText(name..'\n'..count..' spawns') else w:setText(name) end
@@ -642,6 +679,11 @@ function locate()
   end
   resetView();ui('cards'):hide();ui('worldmap'):show();ui('mapControls'):show()
   filterVisibility(false)
+  -- OurTibia (18.10.2026, Tobeto): the map is shown inside a panel; the left panel is wide enough
+  -- for the Monsters / Bosses / NPCs buttons in the size of the Close button (3 x 90)
+  local scrollWidth=ui('filterScroll'):getWidth() or 12
+  ui('sidebar'):setWidth(3*90+2*3-scrollWidth);ui('mapBrowser'):setMarginRight(-scrollWidth)
+  contentFrame('Map')
   ui('sidebar'):hide();ui('filterScroll'):hide();ui('scrollbar'):hide();ui('mapBrowser'):show();mapList()
   sideTitle('OurTibia map')
   ui('stats'):setText(title(selected.name)..'\n\n'..#(selected.spawns or {selected})..' known locations\n\nDrag to move the map.\nMouse wheel to zoom.\nUse arrows to switch locations.');mapIndex=1;mapStep(0);ui('page'):setText('Map & Spawns')
@@ -742,6 +784,8 @@ function changeTab(name,reset)
     if itemPage then itemPage:hide() end
     for _,id in ipairs({'sidebar','sideFrame','filterScroll','right','mapBrowser','detailHero','previousPage','nextPage','page'}) do ui(id):hide() end
     do local f=ui('resultsFrame');if f then f:hide() end;local r=ui('resetFilters');if r then r:hide() end end
+    -- OurTibia (18.10.2026, Tobeto): no "Locate on map" button in Knowledge
+    ui('locate'):hide()
     ui('knowledge'):show();ui('address'):setText('wiki://knowledge/home')
     WikiKnowledge.open(window)
     return

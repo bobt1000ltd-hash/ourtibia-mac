@@ -148,15 +148,28 @@ local function drawKills()
     do local monsterName=r.name;row.onClick=function() local w=modules.game_myotswiki;if w and w.showMonster then w.showMonster(monsterName) end end end
     row:setTooltip(string.format('%s: %d/8 stars\nBonus: +%d%% damage, +%d%% loot against this monster.\nEach new star: one reward (coins, fragments or upgrade stones).',r.name,r.stars,r.stars,r.stars*2))
     -- 17.10.2026 (owner): the 8 stars again (the stage lines were removed)
-    local stars=row:getChildById('stars')
-    if stars then
-      stars:destroyChildren()
-      for starIndex=1,8 do
-        local star=g_ui.createWidget('KillStar',stars)
-        star:setImageSource(starIndex<=r.stars and '/images/game/prey/prey_star' or '/images/game/prey/prey_nostar')
+    -- OurTibia (18.10.2026, Tobeto): the stars are vertical lines (2 px, 2 px apart): reached
+    -- stages are green lines on the left of the progress bar, the missing ones white lines on
+    -- its right. The bar keeps its size (row width - 8 steps) and moves one step to the right
+    -- for every reached stage, so a line "moves" from the right side to the left one.
+    local stages=row:getChildById('stages')
+    if stages then
+      local LINE,STEP,MAXSTAGES=2,4,8
+      local reached=math.max(0,math.min(MAXSTAGES,r.stars))
+      for _,old in ipairs(stages:getChildren()) do if old:getId()~='killProgress' then old:destroy() end end
+      for i=0,MAXSTAGES-1 do
+        local line=g_ui.createWidget('KillStageLine',stages);line:setWidth(LINE)
+        if i<reached then
+          line:setBackgroundColor('#3fd04a');line:addAnchor(AnchorLeft,'parent',AnchorLeft);line:setMarginLeft(i*STEP)
+        else
+          local j=i-reached -- 0 = the line next to the bar
+          line:setBackgroundColor('#f0f0f0');line:addAnchor(AnchorRight,'parent',AnchorRight);line:setMarginRight((MAXSTAGES-reached-1-j)*STEP)
+        end
       end
+      local bar=stages:getChildById('killProgress')
+      if bar then bar:setMarginLeft(reached*STEP);bar:setMarginRight((MAXSTAGES-reached)*STEP) end
     end
-    local progress=row:getChildById('killProgress')
+    local progress=row:getChildById('stages'):getChildById('killProgress')
     -- 11.10.2026: the server sends the milestones of this monster (fewer kills for rare spawns)
     local previous=tonumber(r.prev)
     if not previous then
@@ -178,6 +191,11 @@ local function drawKills()
         tostring(r.display or r.name),math.min(8,r.stars+(r.stars>=8 and 0 or 1)),r.stars>=8 and string.format('%g',kills) or string.format('%g/%d',kills,r.target),r.stars,r.stars*2)) end
   end
   if #(state.recent or {})==0 then label(c,'Hunt to track your first kills.') end
+end
+-- OurTibia (18.10.2026, Tobeto): draw the Kill Tracker from a given list (testing the look
+-- without killing): modules.game_myotshud.previewKills({{name='dragon',stars=3,kills=950,target=2000}})
+function previewKills(recent)
+  state=state or {};state.recent=recent or {};drawKills()
 end
 -- OurTibia (06.10.2026): auto-loot exclusions (right-click item -> "Exclude from auto-loot").
 local exclWindow
@@ -939,25 +957,47 @@ function init()
     -- 05.10.2026: ticking Mana Training / Rune Maker switches the trainer on (players
     -- ticked the box and never pressed "Trainer: OFF", so nothing was cast).
     fields['train_'..key]=check(c,title,function(v)trainer[key]=v;if v and not loading then trainer.enabled=true;updateTrainerButton() end;saveTrainer()end)
+    -- 18.10.2026 (Tobeto): one row - spell field, then a small 0-100 mana % field with an
+    -- up/down button (click or hold); no "Minimum mana (%)" label, fields as tall as the cursor
     local spellLabel=g_ui.createWidget('HudSubLabel',c);spellLabel:setText('Spell')
-    fields[spellKey]=editable(g_ui.createWidget('HudField',c))
+    local row=g_ui.createWidget('UIWidget',c);row:setHeight(16);row:setMarginLeft(18);row:setMarginRight(2)
+    local spinBox=g_ui.createWidget('HudSpin',row)
+    local num=editable(g_ui.createWidget('HudNumField',row))
+    fields[spellKey]=editable(g_ui.createWidget('HudRowField',row))
     pcall(function() fields[spellKey]:setMaxLength(30) end) -- 16.10.2026 (Tobeto): limit
     fields[spellKey].onTextChange=function(_,v)if not loading then trainer[spellKey]=v;saveTrainer()end end
-    local manaLabel=g_ui.createWidget('HudSubLabel',c);manaLabel:setText('Minimum mana (%)');manaLabel:setMarginTop(2)
-    fields[thresholdKey]=editable(g_ui.createWidget('HudField',c))
-    pcall(function() fields[thresholdKey]:setMaxLength(3) end)
+    fields[thresholdKey]=num
+    num:setTooltip('Minimum mana (%) - the spell is cast when your mana is at least this high')
+    pcall(function() num:setMaxLength(3) end)
     -- 16.10.2026 (Tobeto): numbers only, 0 - 100
-    fields[thresholdKey].onTextChange=function(w,v)
+    num.onTextChange=function(w,v)
       local d=v:gsub('%D','')
       if tonumber(d) and tonumber(d)>100 then d='100' end
       if d~=v then w:setText(d);pcall(function() w:setCursorPos(#d) end);return end
-      if not loading then trainer[thresholdKey]=math.max(0,math.min(100,tonumber(d) or 90));saveTrainer() end
+      if not loading and d~='' then trainer[thresholdKey]=math.max(0,math.min(100,tonumber(d)));saveTrainer() end
+    end
+    local function stepValue(delta)
+      local v=math.max(0,math.min(100,(tonumber(num:getText()) or tonumber(trainer[thresholdKey]) or 90)+delta))
+      num:setText(tostring(v))
+    end
+    for _,b in ipairs({{'up',1},{'down',-1}}) do
+      local btn=spinBox:getChildById(b[1]);local delta=b[2]
+      btn.onMousePress=function(_,_,button)
+        if button~=MouseLeftButton then return false end
+        stepValue(delta)
+        if btn.repeatEvent then removeEvent(btn.repeatEvent) end
+        local function again(ms) btn.repeatEvent=scheduleEvent(function() stepValue(delta);again(60) end,ms) end
+        again(400);return true
+      end
+      btn.onMouseRelease=function() if btn.repeatEvent then removeEvent(btn.repeatEvent);btn.repeatEvent=nil end;return true end
     end
   end
   do local sep=g_ui.createWidget('HorizontalSeparator',c);sep:setMarginTop(6);sep:setMarginBottom(3) end
   fields.train_idle=check(c,'Anti-Idle',function(v)trainer.idle=v;saveTrainer()end)
   fields.train_food=check(c,'Auto-Eat Food',function(v)trainer.food=v;saveTrainer()end)
   fields.train_retarget=check(c,'Retarget dummy',function(v)trainer.retarget=v;saveTrainer()end)
+  -- 18.10.2026 (Tobeto): the three options closer together
+  for _,k in ipairs({'train_idle','train_food','train_retarget'}) do fields[k]:setHeight(16) end
   local hunt=panel('myotsHunt','Hunt Analyzer',250,left);fields.hunt=label(content(hunt),'');fields.hunt:setHeight(200);hunt:close()
   local lootSummary=panel('myotsLootSummary','Loot Analyzer',240,left)
   fields.lootSummary=label(content(lootSummary),'');fields.lootSummary:setHeight(600);fields.lootSummary:setTextWrap(true);lootSummary:close()

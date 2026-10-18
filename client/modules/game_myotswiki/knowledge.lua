@@ -731,7 +731,17 @@ local function buildNav()
   panel:destroyChildren();navButtons={}
   local function add(entry,indent)
     -- 10.10.2026: own style - the "on" state of a normal button moved the text of the open page to the left
-    local b=g_ui.createWidget(indent>0 and 'WikiNavSub' or 'WikiNavButton',panel)
+    -- OurTibia (18.10.2026, Tobeto): a subcategory is narrower - it sits in a row with room on the
+    -- left (the vertical layout split a margin on both sides), its text stays centered
+    local holder=panel
+    if indent>0 then
+      holder=g_ui.createWidget('UIWidget',panel);holder:setHeight(20);holder:setPhantom(true)
+    end
+    local b=g_ui.createWidget(indent>0 and 'WikiNavSub' or 'WikiNavButton',holder)
+    if indent>0 then
+      b:addAnchor(AnchorTop,'parent',AnchorTop);b:addAnchor(AnchorBottom,'parent',AnchorBottom)
+      b:addAnchor(AnchorLeft,'parent',AnchorLeft);b:addAnchor(AnchorRight,'parent',AnchorRight);b:setMarginLeft(14)
+    end
     local text=entry.name
     if entry.children then text=text..'   '..(expanded[entry.key] and '-' or '+') end
     b:setText(text);b:setOn(current==entry.key)
@@ -740,7 +750,7 @@ local function buildNav()
       if entry.children then local open=not expanded[entry.key];expanded={};expanded[entry.key]=open end
       K.go(entry.children and entry.children[1].key or entry.key)
     end
-    navButtons[entry.key]=b
+    navButtons[entry.key]=indent>0 and holder or b
     if entry.children and expanded[entry.key] then for _,c in ipairs(entry.children) do add(c,10) end end
   end
   for _,entry in ipairs(nav) do add(entry,0) end
@@ -758,6 +768,17 @@ function K.render()
   local ok,err=pcall(page)
   if not ok then g_logger.error('[wiki knowledge] '..tostring(err)) end
   ui('address'):setText('wiki://knowledge/'..current)
+  -- OurTibia (18.10.2026, Tobeto): the content panel is titled with the name of the open category
+  do
+    local name='Home'
+    for _,e in ipairs(nav) do
+      if e.key==current then name=e.name end
+      for _,c in ipairs(e.children or {}) do if c.key==current then name=c.name end end
+    end
+    local frame=ui('knowledgeFrame');if frame then frame:setText(name) end
+  end
+  -- "Locate on map" belongs to the monster pages only
+  do local locate=ui('locate');if locate then locate:hide() end end
   ui('knowledgeScroll'):setValue(0)
   buildNav()
 end

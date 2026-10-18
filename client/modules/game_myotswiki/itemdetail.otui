@@ -6,15 +6,14 @@ Panel
   anchors.bottom: footer.top
   margin-top: 8
   visible: false
-  Panel
+  // OurTibia (18.10.2026, Tobeto): picture, name and main stats in a panel without a title,
+  // above "Item details" and as wide as the whole wiki (aligned with the panels below)
+  WikiPlainPanel
     id: summary
     anchors.top: parent.top
     anchors.left: parent.left
     anchors.right: parent.right
     height: 56
-    background-color: #1c1c1c
-    border-width: 1
-    border-color: #3c3c3c
     UIItem
       id: icon
       anchors.left: parent.left
@@ -74,41 +73,30 @@ Panel
       margin-top: 30
       text-wrap: true
       font: verdana-11px-monochrome
-  Panel
+  // OurTibia (18.10.2026, Tobeto): the drop / quest table is a panel titled "Drop" or "Quest";
+  // the toggle button below the title names the other table, the sorting stays on the right
+  MiniPanel
     id: obtaining
     anchors.left: base.right
     anchors.right: parent.right
     anchors.top: summary.bottom
     margin-left: 6
     margin-top: 6
-    height: 245
-    background-color: #1a1a1a
-    border-width: 1
-    border-color: #3c3c3c
+    height: 268
+    text: Drop
     Button
-      id: dropTab
+      id: sourceToggle
       anchors.verticalCenter: sourceOrder.verticalCenter
       anchors.left: parent.left
-      margin-left: 5
-      size: 90 20
-      text: Drop
-      !tooltip: tr('Monsters and bosses that drop this item')
-      @onClick: modules.game_myotswiki.setSourceTab('drop')
-    Button
-      id: questTab
-      anchors.verticalCenter: sourceOrder.verticalCenter
-      anchors.left: dropTab.right
-      margin-left: 4
       size: 90 20
       text: Quest
-      !tooltip: tr('Quests that give this item')
-      @onClick: modules.game_myotswiki.setSourceTab('quest')
+      @onClick: modules.game_myotswiki.toggleSourceTab()
     ComboBox
       id: sourceFilter
       text-offset: -15 0
       anchors.top: parent.top
       anchors.right: sourceSort.left
-      margin-top: 5
+      margin-top: 1
       margin-right: 5
       width: 106
     ComboBox
@@ -116,7 +104,7 @@ Panel
       text-offset: -15 0
       anchors.top: parent.top
       anchors.right: sourceOrder.left
-      margin-top: 5
+      margin-top: 1
       margin-right: 5
       width: 106
     ComboBox
@@ -124,8 +112,7 @@ Panel
       text-offset: -15 0
       anchors.top: parent.top
       anchors.right: parent.right
-      margin-top: 5
-      margin-right: 5
+      margin-top: 1
       width: 106
     ScrollablePanel
       id: sources
@@ -133,12 +120,12 @@ Panel
       anchors.left: parent.left
       anchors.right: sourceScroll.left
       anchors.bottom: parent.bottom
-      margin: 5
+      margin: 5 4 0 0
       vertical-scrollbar: sourceScroll
       layout:
         type: grid
-        cell-size: 198 51
-        cell-spacing: 4
+        cell-size: 200 51
+        cell-spacing: 3
         num-columns: 3
     VerticalScrollBar
       id: sourceScroll
@@ -146,7 +133,7 @@ Panel
       anchors.right: parent.right
       anchors.bottom: parent.bottom
       margin-top: 5
-      step: 55
+      step: 54
       pixels-scroll: true
   MiniPanel
     id: buyFrame
