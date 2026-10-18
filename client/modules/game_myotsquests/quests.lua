@@ -20,9 +20,9 @@ local FILTERS = {
   chests = {{'all', 'All'}, {'open', 'To do'}, {'done', 'Opened'}, {'high', 'Tier 6+'}},
 }
 local SORTS = {
-  quests = {{'level', 'Level'}, {'level_desc', 'Level (high)'}, {'tier', 'Reward tier'}, {'name', 'Name'}, {'status', 'Status'}},
-  outfits = {{'bonus', 'Bonus'}, {'bonus_desc', 'Bonus (high)'}, {'name', 'Name'}, {'owned', 'Owned'}},
-  chests = {{'tier', 'Tier'}, {'tier_desc', 'Tier (high)'}, {'name', 'Name'}, {'town', 'Town'}},
+  quests = {{'level', 'Level'}, {'level_desc', 'Level desc'}, {'tier', 'Tier'}, {'name', 'Name'}, {'status', 'Status'}},
+  outfits = {{'bonus', 'Bonus'}, {'bonus_desc', 'Bonus desc'}, {'name', 'Name'}, {'owned', 'Owned'}},
+  chests = {{'tier', 'Tier'}, {'tier_desc', 'Tier desc'}, {'name', 'Name'}, {'town', 'Town'}},
 }
 local sortIndex = {quests = 1, outfits = 1, chests = 1}
 local function sortKey() return SORTS[tab][sortIndex[tab]][1] end

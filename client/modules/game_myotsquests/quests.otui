@@ -347,7 +347,7 @@ MainWindow
       id: sortButton
       anchors.top: parent.top
       anchors.right: parent.right
-      size: 96 20
+      size: 112 20
       @onClick: modules.game_myotsquests.nextSort()
 
     Panel
