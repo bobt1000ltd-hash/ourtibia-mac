@@ -335,11 +335,20 @@ MainWindow
       id: search
       anchors.top: parent.top
       anchors.left: parent.left
-      anchors.right: parent.right
+      anchors.right: sortButton.left
+      margin-right: 4
       height: 20
       placeholder: Search a quest...
       placeholder-color: #6e706f
       @onTextChange: modules.game_myotsquests.refreshList()
+
+    // 18.10.2026 (owner): sort by level / tier / name
+    QuestFilter
+      id: sortButton
+      anchors.top: parent.top
+      anchors.right: parent.right
+      size: 96 20
+      @onClick: modules.game_myotsquests.nextSort()
 
     Panel
       id: filters

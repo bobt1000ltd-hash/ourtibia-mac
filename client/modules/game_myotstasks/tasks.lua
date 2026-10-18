@@ -176,14 +176,14 @@ local function renderBoard()
   else
     local completed=0;for _,t in ipairs(board.weekly or {}) do if tonumber(t.status)==2 then completed=completed+1 end end
     ui('active'):hide();ui('rerollPremium'):hide()
-    -- 17.10.2026 (owner): one weekly reset at level 30, 50, 70, 90, ...
+    -- 18.10.2026 (owner): one weekly reset every 20 levels (20, 40, 60, ...)
     local wr=tonumber(board.weeklyReset);local nx=tonumber(board.nextWeeklyReset)
     local rb=ui('reroll')
     if locked then rb:hide()
     else
       rb:show();rb:setEnabled(wr~=nil)
-      rb:setText(wr and ('Reset (lvl '..wr..')') or ('Reset at lvl '..(nx or 30)))
-      rb:setTooltip('One reset of the weekly tasks at level 30, 50, 70, 90 and every 20 levels after.\nAll weekly tasks are rolled again (progress is lost).')
+      rb:setText(wr and ('Reset (lvl '..wr..')') or ('Reset at lvl '..(nx or 20)))
+      rb:setTooltip('One reset of the weekly tasks every 20 levels (level 20, 40, 60, 80, ...).\nAll weekly tasks are rolled again (progress is lost).')
       rb.onClick=function()
         if not wr then return end
         local box;local function close() if box then box:destroy();box=nil end end

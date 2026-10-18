@@ -439,7 +439,10 @@ function addKeyCombo(keyCombo, keySettings, focus)
     if not keyCombo then
         return
     end
-    if modules.game_actionbar and modules.game_actionbar.removeHotkeyFromActionBar then
+    -- 18.10.2026 (owner): only a hotkey the player adds by hand takes the key from the action
+    -- bar. Loading the list (opening / closing the window, the default F1-F12 entries) cleared
+    -- every action bar key.
+    if focus and modules.game_actionbar and modules.game_actionbar.removeHotkeyFromActionBar then
         modules.game_actionbar.removeHotkeyFromActionBar(keyCombo)
     end
     local hotkeyLabel = currentHotkeys:getChildById(keyCombo)

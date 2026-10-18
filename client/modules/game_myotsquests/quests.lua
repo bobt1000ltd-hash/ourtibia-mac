@@ -19,6 +19,13 @@ local FILTERS = {
   outfits = {{'all', 'All'}, {'full', 'Full'}, {'owned', 'Owned'}, {'missing', 'Missing'}},
   chests = {{'all', 'All'}, {'open', 'To do'}, {'done', 'Opened'}, {'high', 'Tier 6+'}},
 }
+local SORTS = {
+  quests = {{'level', 'Level'}, {'level_desc', 'Level (high)'}, {'tier', 'Reward tier'}, {'name', 'Name'}, {'status', 'Status'}},
+  outfits = {{'bonus', 'Bonus'}, {'bonus_desc', 'Bonus (high)'}, {'name', 'Name'}, {'owned', 'Owned'}},
+  chests = {{'tier', 'Tier'}, {'tier_desc', 'Tier (high)'}, {'name', 'Name'}, {'town', 'Town'}},
+}
+local sortIndex = {quests = 1, outfits = 1, chests = 1}
+local function sortKey() return SORTS[tab][sortIndex[tab]][1] end
 local TIER_COLORS = {'#bdbdbd', '#bdbdbd', '#7fd07f', '#7fd07f', '#6fb0ff', '#6fb0ff', '#c58bff', '#c58bff', '#ffb03a', '#ffb03a', '#ff6a6a', '#ff6a6a'}
 
 local COLORS = {[0] = '#6f6f6f', [1] = '#ffb03a', [2] = '#3fbf3f'}
@@ -62,9 +69,13 @@ function refreshList()
   for _, q in ipairs(quests) do if questMatches(q) then sorted[#sorted + 1] = q end end
   -- in progress first, then not started, then completed; inside by level, then name
   local order = {[1] = 0, [0] = 1, [2] = 2}
+  local key = sortKey()
   table.sort(sorted, function(a, b)
-    if order[a.s] ~= order[b.s] then return order[a.s] < order[b.s] end
-    if (a.l or 0) ~= (b.l or 0) then return (a.l or 0) < (b.l or 0) end
+    if key == 'name' then return a.n < b.n end
+    if key == 'status' and order[a.s] ~= order[b.s] then return order[a.s] < order[b.s] end
+    if key == 'tier' and (a.rt or 0) ~= (b.rt or 0) then return (a.rt or 0) > (b.rt or 0) end
+    local la, lb = a.l or 0, b.l or 0
+    if la ~= lb then if key == 'level_desc' then return la > lb end return la < lb end
     return a.n < b.n
   end)
   local active, done = 0, 0
@@ -76,6 +87,7 @@ function refreshList()
     row:getChildById('dot'):setBackgroundColor(COLORS[q.s] or '#6f6f6f')
     local info = (q.l and q.l > 0) and ('Level ' .. q.l .. '+') or ''
     info = info .. (info ~= '' and '  -  ' or '') .. STATUS[q.s]
+    if (q.rt or 0) > 0 then info = info .. '  -  T' .. q.rt end
     if isTracked(q.i) then info = info .. '  -  tracked' end
     row:getChildById('info'):setText(info)
     local bar = row:getChildById('progress')
@@ -92,6 +104,16 @@ function setFilter(name)
   filter = name
   for _, b in ipairs(ui('filters'):getChildren()) do b:setOn(b.filterName == name) end
   refreshList()
+end
+
+local function updateSortButton()
+  local b = ui('sortButton'); if not b then return end
+  b:setText('Sort: ' .. SORTS[tab][sortIndex[tab]][2])
+  b:setTooltip('Click to change the order of the list')
+end
+function nextSort()
+  sortIndex[tab] = sortIndex[tab] % #SORTS[tab] + 1
+  updateSortButton(); refreshList()
 end
 
 local function buildFilters()
@@ -116,7 +138,7 @@ function setTab(name)
   for _, b in ipairs(ui('tabs'):getChildren()) do b:setOn(b.tabName == name) end
   ui('search'):setText('')
   clearDetail(name == 'quests' and 'Choose a quest on the left.' or (name == 'outfits' and 'Choose an outfit on the left.' or 'Choose a chest quest on the left.'))
-  buildFilters()
+  buildFilters(); updateSortButton()
   if name == 'quests' then
     send('list'); if selectedId then send('q:' .. selectedId) end
   elseif name == 'outfits' then ui('status'):setText('Loading...'); send('outfits')
@@ -209,6 +231,7 @@ local function renderDetail()
   local info = {}
   if q.l and q.l > 0 then info[#info + 1] = 'Level ' .. q.l .. '+' end
   info[#info + 1] = STATUS[q.s]
+  if (q.rt or 0) > 0 then info[#info + 1] = 'Rewards: tier ' .. q.rt end
   info[#info + 1] = q.d .. ' / ' .. q.t .. ' missions'
   ui('questInfo'):setText(table.concat(info, '   |   '))
   ui('questInfo'):setColor(COLORS[q.s])
@@ -291,7 +314,16 @@ end
 function refreshOutfits()
   local list = ui('list'); list:destroyChildren()
   local full, owned = 0, 0
-  for _, o in ipairs(outfits or {}) do
+  local list2 = {}
+  for _, o in ipairs(outfits or {}) do list2[#list2 + 1] = o end
+  local key = sortKey()
+  table.sort(list2, function(a, b)
+    if key == 'name' then return a.n < b.n end
+    if key == 'owned' then local x, y = outfitState(a), outfitState(b); if x ~= y then return x > y end end
+    if (a.hp or 0) ~= (b.hp or 0) then if key == 'bonus_desc' then return (a.hp or 0) > (b.hp or 0) end return (a.hp or 0) < (b.hp or 0) end
+    return a.n < b.n
+  end)
+  for _, o in ipairs(list2) do
     local st = outfitState(o)
     if st == 2 then full = full + 1 end
     if st >= 1 then owned = owned + 1 end
@@ -362,7 +394,16 @@ end
 function refreshChests()
   local list = ui('list'); list:destroyChildren()
   local opened = 0
-  for _, c in ipairs(chests or {}) do
+  local list2 = {}
+  for _, c in ipairs(chests or {}) do list2[#list2 + 1] = c end
+  local key = sortKey()
+  table.sort(list2, function(a, b)
+    if key == 'name' then return a.n < b.n end
+    if key == 'town' and (a.town or '') ~= (b.town or '') then return (a.town or '') < (b.town or '') end
+    if a.tier ~= b.tier then if key == 'tier_desc' then return a.tier > b.tier end return a.tier < b.tier end
+    return a.n < b.n
+  end)
+  for _, c in ipairs(list2) do
     local done = c.opened >= c.total
     if done then opened = opened + 1 end
     local show = (filter == 'all') or (filter == 'open' and not done) or (filter == 'done' and done) or (filter == 'high' and c.tier >= 6)
