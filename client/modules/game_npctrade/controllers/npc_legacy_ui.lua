@@ -375,7 +375,20 @@ function refreshTradeItems()
     layout:update()
 end
 
+-- 18.10.2026 (owner): "Sell All" with many items froze the client - every sold stack sends the
+-- goods list, the capacity and the containers again and each of them rebuilt the whole list
+-- (and the Sell All tooltip searched the trade list for every item). Now the refreshes that come
+-- in together are done once, 60 ms after the last one.
+local refreshGoodsEvent = nil
 function refreshPlayerGoods()
+    if refreshGoodsEvent then return end
+    refreshGoodsEvent = scheduleEvent(function()
+        refreshGoodsEvent = nil
+        doRefreshPlayerGoods()
+    end, 60)
+end
+
+function doRefreshPlayerGoods()
     if not initialized then
         return
     end
@@ -516,8 +529,12 @@ function checkSellAllTooltip()
     local info = ''
     local first = true
 
+    local byId = {}
+    for _, t in pairs(tradeItems[SELL] or {}) do
+        if t.ptr then local id = t.ptr:getId(); if not byId[id] then byId[id] = t end end
+    end
     for key, amount in pairs(playerItems) do
-        local data = getTradeItemData(key, SELL)
+        local data = byId[key]
         if data then
             amount = getSellQuantityLegacy(data.ptr)
             if amount > 0 then

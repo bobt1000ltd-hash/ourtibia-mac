@@ -127,6 +127,14 @@ function F.apply(widget)
 end
 -- Skip widgets that were destroyed (e.g. a closed container) and forget them.
 local function applyAll() for widget in pairs(F.widgets)do if widget and widget.getChildById and not (widget.isDestroyed and widget:isDestroyed()) then F.apply(widget) else F.widgets[widget]=nil end end end
+-- 18.10.2026 (owner): "Sell All" / moving many items froze the client - every removed item ran
+-- applyAll (all frames of all open windows) twice. Changes that come in together are applied once.
+local applyPending=false
+local function applySoon()
+ if applyPending then return end
+ applyPending=true
+ addEvent(function() applyPending=false;applyAll() end)
+end
 function F.receive(protocol,code,data)
  if type(data)~='table'then return end
  if data.attributes then modules.game_skills.myotsAttributes(data.attributes);return end
@@ -237,10 +245,9 @@ local function onRemoveItem(container,slot)
  if F.quick[view] then
   local list=shiftUp(F.quick[view],slot);table.sort(list,function(a,b) return a.z<b.z end);F.quick[view]=list
  end
- applyAll()
  -- 17.10.2026: the container window empties its last slot after this signal and an empty
- -- slot gets no onItemChange - apply once more so no frame stays on an empty slot
- addEvent(applyAll)
+ -- slot gets no onItemChange - applied right after it (18.10: once for many removals)
+ applySoon()
 end
 -- An add is the other way round: the layout comes AFTER the insert. Records of
 -- the items behind the new one are taken from their old slot (one up), so the
@@ -262,7 +269,7 @@ local function onAddItem(container,slot)
   elseif e.r==0 or F.colors[e.r] then entries[key]=e end
  end
  F.views[view]=entries
- applyAll()
+ applySoon()
 end
 local function onClose(container)
  -- a new container replacing this one in the same window was handled in onOpen
