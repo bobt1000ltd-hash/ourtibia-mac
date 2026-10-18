@@ -55,8 +55,8 @@ TextWindow < MainWindow
     anchors.right: cancelButton.left
     margin-right: 10
     margin-bottom: 10
-    width: 50
-    height: 25
+    width: 55
+    height: 20
 
   Button
     id: cancelButton
@@ -65,5 +65,5 @@ TextWindow < MainWindow
     anchors.right: parent.right
     margin-bottom: 10
     margin-right: 10
-    width: 80
-    height: 25
+    width: 65
+    height: 20

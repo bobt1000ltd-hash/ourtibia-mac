@@ -447,12 +447,17 @@ function ourSetupMinimapResize()
     connect(ui, { onGeometryChange = function() scheduleEvent(function() ourApplyMinimapSize(ui:getHeight()) end, 1) end })
 end
 
+-- 18.10.2026: also works without the top menu icon (the Map button under PvP)
 function toggle()
-    if iconTopMenu:isOn() then
-        mapController.ui:hide()
-        iconTopMenu:setOn(false)
+    local ui = mapController and mapController.ui
+    if not ui then return end
+    local open = ui:isVisible()
+    if open then
+        ui:hide()
     else
-        mapController.ui:show()
-        iconTopMenu:setOn(true)
+        ui:show()
+        if ui.open then pcall(function() ui:open() end) end
+        ui:raise()
     end
+    if iconTopMenu then iconTopMenu:setOn(not open) end
 end

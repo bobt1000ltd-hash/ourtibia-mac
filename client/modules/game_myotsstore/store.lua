@@ -680,15 +680,17 @@ function openSearch(cat,text)
 end
 -- 17.10.2026 (Tobeto): Set Outfit -> "Get outfit" / "Get mount": the store opens on it and
 -- the purchase confirmation pops up at once
-function openBuyFor(name)
-  openSearch('Cosmetics',name)
+function openBuyFor(name,cat)
+  openSearch(cat or 'Cosmetics',name)
   local want=tostring(name or ''):lower();local tries=0
   local function try()
     tries=tries+1
     if data and data.products then
+      -- an exact name first ("Blessings" before "Henricus Blessings")
+      for _,o in ipairs(data.products) do if tostring(o.name or ''):lower()==want then openConfirm(o);return end end
       for _,o in ipairs(data.products) do
         local n=tostring(o.name or ''):lower()
-        if n==want or n:find(want,1,true) then openConfirm(o);return end
+        if n:find(want,1,true) then openConfirm(o);return end
       end
     end
     if tries<15 then scheduleEvent(try,200) end

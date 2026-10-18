@@ -68,7 +68,7 @@ PhantomMiniWindow
       anchors.left: changeSize.right
       margin-left: 3
       size: 12 12
-      @onClick: modules.game_blessing.toggle()
+      @onClick: if modules.game_myotsstore and modules.game_myotsstore.openBuyFor then modules.game_myotsstore.openBuyFor('Blessings','Extras') else modules.game_blessing.toggle() end
       $pressed !disabled:
         image-clip: 12 0 12 12
 
@@ -157,6 +157,18 @@ PhantomMiniWindow
       $checked:
         image-clip: 0 20 44 21
 
+    // 18.10.2026 (owner): a closed minimap could not be opened again (no button for it)
+    Button
+      id: ourMapButton
+      text: Map
+      font: verdana-11px-rounded
+      anchors.right: pvp.right
+      anchors.top: pvp.bottom
+      margin-top: 3
+      size: 44 18
+      @onClick: |
+        local mm = modules.game_minimap
+        if mm and mm.toggle then mm.toggle() end
 
     WhiteHandBox
       id: whiteHandBox
@@ -581,7 +593,7 @@ PhantomMiniWindow
       anchors.left: changeSize.left
       margin-top: 3
       size: 12 12
-      @onClick: modules.game_blessing.toggle()
+      @onClick: if modules.game_myotsstore and modules.game_myotsstore.openBuyFor then modules.game_myotsstore.openBuyFor('Blessings','Extras') else modules.game_blessing.toggle() end
       $pressed !disabled:
         image-clip: 12 0 12 12
 

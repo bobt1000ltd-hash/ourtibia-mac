@@ -32,6 +32,8 @@ function onGameEditText(id, itemId, maxLength, text, writer, time)
 
     local writeable = #text < maxLength and maxLength > 0
     local textItem = textWindow:getChildById('textItem')
+    -- 18.10.2026 (Tobeto): labels and other short texts get a much smaller input field
+    if maxLength > 0 and maxLength <= 120 then textWindow:setHeight(270) end
     local description = textWindow:getChildById('description')
     local textEdit = textWindow:getChildById('text')
     local okButton = textWindow:getChildById('okButton')

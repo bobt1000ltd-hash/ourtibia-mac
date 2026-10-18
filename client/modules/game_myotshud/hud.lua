@@ -840,7 +840,9 @@ function init()
   local xp=panel('myotsXp','XP Analyzer',132,left)
   fields.xp=label(content(xp),'Session: 00:00');fields.xp:setHeight(65)
   button(content(xp),'Reset session',resetSession)
-  local tasks=panel('myotsTasks','Task Tracker',78,left)
+  local tasks=panel('myotsTasks','Task Tracker',100,left)
+  -- 18.10.2026 (Tobeto): the Task Board button is back on top of the tracker
+  button(content(tasks),'Task Board',function() showDaily() end)
   -- 15.10.2026 (Tobeto): the Task Board button is on top of the tracker
   -- 15.10.2026 (Tobeto): no Task Board button any more - a click on a free task slot opens the Task Board
   fields.dailyStatus=label(content(tasks),'No active task')
