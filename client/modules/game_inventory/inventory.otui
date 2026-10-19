@@ -166,11 +166,14 @@ PhantomMiniWindow
       anchors.top: pvp.bottom
       margin-top: 3
       size: 44 18
-      // 19.10.2026 (Tobeto): moved to Options -> Interface -> HUD -> Show minimap
-      visible: false
+      // 19.10.2026 (Tobeto): the button stays; it uses the same setting as
+      // Options -> Interface -> HUD -> Show minimap, so both stay in sync
       @onClick: |
         local mm = modules.game_minimap
-        if mm and mm.toggle then mm.toggle() end
+        local co = modules.client_options
+        local ui = mm and mm.mapController and mm.mapController.ui
+        if co and co.setOption and ui then co.setOption('showMinimap', not ui:isVisible())
+        elseif mm and mm.toggle then mm.toggle() end
 
     WhiteHandBox
       id: whiteHandBox
