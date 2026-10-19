@@ -202,8 +202,23 @@ local function sendWay(player)
     end
     if not adj then clearMapClick(); return true end
     if pos.x == dest.x and pos.y == dest.y then clearMapClick(); return true end
-    local dirs = findWay(pos, dest, false, false) or findWay(pos, dest, true, false) or findWay(pos, dest, true, true)
-        or findWay(pos, dest, true, true, true)
+    local dirs
+    if not g_map.getTile(dest) then
+        -- 19.10.2026 (owner/Buto: "minimap clicks never work"): the client's own walk to a place
+        -- outside the screen only searched the tiles on the screen and always failed. The way is
+        -- searched over the minimap (seen tiles) and sent in parts; nearer, the normal search takes over.
+        for _, flags in ipairs({1, 1 + 2}) do -- not seen tiles allowed, then also through creatures
+            local ok, a, b = pcall(g_map.findPath, pos, dest, 60000, flags)
+            if ok and type(a) == 'table' then
+                local list, res = a, b
+                if a[1] and type(a[1]) == 'table' then list, res = a[1], a[2] end
+                if (res == nil or res == 0) and #list > 0 then dirs = list; break end
+            end
+        end
+    else
+        dirs = findWay(pos, dest, false, false) or findWay(pos, dest, true, false) or findWay(pos, dest, true, true)
+            or findWay(pos, dest, true, true, true)
+    end
     if not dirs or #dirs == 0 then return false end
     -- 17.10.2026 (owner): monsters all around - the only way goes through a creature. Do not
     -- walk into it (the server refuses, "Sorry, not possible" again and again, and the click
@@ -268,7 +283,7 @@ continueMapClick = function(delay)
         if mapClick.unreachable then mapClick.unreachable = nil; noWay(); return end
         -- 18.10.2026 (owner): in a fight monsters keep stepping into the way and every step the server
         -- refused used one of the 30 tries - the click ended halfway. More time and tries now.
-        if g_clock.millis() - mapClick.time > 60000 or mapClick.sends >= 150 then clearMapClick(); return end
+        if g_clock.millis() - mapClick.time > 180000 or mapClick.sends >= 150 then clearMapClick(); return end
         if not sendWay(player) then noWay() end
     end, delay or 80)
 end
@@ -278,8 +293,9 @@ local function rememberAutoWalk(player, dest, ...)
     clearMapClick()
     if not player or not dest then return false end
     local pos = player:getPosition()
-    -- far away (minimap) or another floor: the client's own walk
-    if not pos or pos.z ~= dest.z or not g_map.getTile(dest) then return originalAutoWalk(player, dest, ...) end
+    -- another floor: the client's own walk (19.10.2026: far away on the same floor - the minimap
+    -- search in sendWay)
+    if not pos or pos.z ~= dest.z then return originalAutoWalk(player, dest, ...) end
     mapClick.dest = {x = dest.x, y = dest.y, z = dest.z}
     mapClick.destHadCreature = blockedByCreature(dest) -- a click on a monster / NPC: walk next to it
     mapClick.time = g_clock.millis()
