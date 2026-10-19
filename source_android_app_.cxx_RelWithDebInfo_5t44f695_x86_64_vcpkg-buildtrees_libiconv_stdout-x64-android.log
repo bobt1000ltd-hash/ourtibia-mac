@@ -1,0 +1,4 @@
+-- Getting CMake variables for x64-android
+-- Loading CMake variables from /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/.cxx/RelWithDebInfo/5t44f695/x86_64/vcpkg-buildtrees/libiconv/cmake-get-vars_C_CXX-x64-android.cmake.log
+-- Not building GNU libiconv.
+-- Skipping post-build validation due to VCPKG_POLICY_EMPTY_PACKAGE
