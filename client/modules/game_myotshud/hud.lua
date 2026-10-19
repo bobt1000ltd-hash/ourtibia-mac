@@ -148,28 +148,15 @@ local function drawKills()
     do local monsterName=r.name;row.onClick=function() local w=modules.game_myotswiki;if w and w.showMonster then w.showMonster(monsterName) end end end
     row:setTooltip(string.format('%s: %d/8 stars\nBonus: +%d%% damage, +%d%% loot against this monster.\nEach new star: one reward (coins, fragments or upgrade stones).',r.name,r.stars,r.stars,r.stars*2))
     -- 17.10.2026 (owner): the 8 stars again (the stage lines were removed)
-    -- OurTibia (18.10.2026, Tobeto): the stars are vertical lines (2 px, 2 px apart): reached
-    -- stages are green lines on the left of the progress bar, the missing ones white lines on
-    -- its right. The bar keeps its size (row width - 8 steps) and moves one step to the right
-    -- for every reached stage, so a line "moves" from the right side to the left one.
-    local stages=row:getChildById('stages')
-    if stages then
-      local LINE,STEP,MAXSTAGES=2,4,8
-      local reached=math.max(0,math.min(MAXSTAGES,r.stars))
-      for _,old in ipairs(stages:getChildren()) do if old:getId()~='killProgress' then old:destroy() end end
-      for i=0,MAXSTAGES-1 do
-        local line=g_ui.createWidget('KillStageLine',stages);line:setWidth(LINE)
-        if i<reached then
-          line:setBackgroundColor('#3fd04a');line:addAnchor(AnchorLeft,'parent',AnchorLeft);line:setMarginLeft(i*STEP)
-        else
-          local j=i-reached -- 0 = the line next to the bar
-          line:setBackgroundColor('#f0f0f0');line:addAnchor(AnchorRight,'parent',AnchorRight);line:setMarginRight((MAXSTAGES-reached-1-j)*STEP)
-        end
+    local stars=row:getChildById('stars')
+    if stars then
+      stars:destroyChildren()
+      for starIndex=1,8 do
+        local star=g_ui.createWidget('KillStar',stars)
+        star:setImageSource(starIndex<=r.stars and '/images/game/prey/prey_star' or '/images/game/prey/prey_nostar')
       end
-      local bar=stages:getChildById('killProgress')
-      if bar then bar:setMarginLeft(reached*STEP);bar:setMarginRight((MAXSTAGES-reached)*STEP) end
     end
-    local progress=row:getChildById('stages'):getChildById('killProgress')
+    local progress=row:getChildById('killProgress')
     -- 11.10.2026: the server sends the milestones of this monster (fewer kills for rare spawns)
     local previous=tonumber(r.prev)
     if not previous then
@@ -191,11 +178,6 @@ local function drawKills()
         tostring(r.display or r.name),math.min(8,r.stars+(r.stars>=8 and 0 or 1)),r.stars>=8 and string.format('%g',kills) or string.format('%g/%d',kills,r.target),r.stars,r.stars*2)) end
   end
   if #(state.recent or {})==0 then label(c,'Hunt to track your first kills.') end
-end
--- OurTibia (18.10.2026, Tobeto): draw the Kill Tracker from a given list (testing the look
--- without killing): modules.game_myotshud.previewKills({{name='dragon',stars=3,kills=950,target=2000}})
-function previewKills(recent)
-  state=state or {};state.recent=recent or {};drawKills()
 end
 -- OurTibia (06.10.2026): auto-loot exclusions (right-click item -> "Exclude from auto-loot").
 local exclWindow
