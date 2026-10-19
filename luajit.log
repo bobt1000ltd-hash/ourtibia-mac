@@ -1,0 +1,223 @@
++ set -euo pipefail
++++ dirname build_luajit_android.sh
+++ cd .
+++ pwd
++ SCRIPT_DIR=/home/runner/work/ourtibia-mac/ourtibia-mac/source
++ NDK=/usr/local/lib/android/sdk/ndk/29.0.13599879
++ NDKBIN=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin
++ LUAJIT_SRC=/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src
++ INSTALL_BASE=/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs
++ REQUESTED_ABIS=arm64-v8a,armeabi-v7a,x86_64
++ '[' '!' -d /home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src ']'
++ IFS=,
++ read -r -a ABI_LIST
++ needs_32bit=false
++ for ABI in "${ABI_LIST[@]}"
+++ echo arm64-v8a
+++ xargs
++ ABI_TRIMMED=arm64-v8a
++ '[' arm64-v8a = armeabi-v7a ']'
++ '[' arm64-v8a = x86 ']'
++ for ABI in "${ABI_LIST[@]}"
+++ echo armeabi-v7a
+++ xargs
++ ABI_TRIMMED=armeabi-v7a
++ '[' armeabi-v7a = armeabi-v7a ']'
++ needs_32bit=true
++ break
++ '[' true = true ']'
++ gcc -m32 -x c -c /dev/null -o /dev/null
++ for ABI in "${ABI_LIST[@]}"
+++ echo arm64-v8a
+++ xargs
++ ABI_TRIMMED=arm64-v8a
++ case "$ABI_TRIMMED" in
++ build_luajit arm64-v8a aarch64-linux-android- aarch64-linux-android21- gcc
++ local ABI=arm64-v8a CROSS_PREFIX=aarch64-linux-android- CC_PREFIX=aarch64-linux-android21- HOST_CC=gcc
++ echo '=== Building LuaJIT for arm64-v8a ==='
+=== Building LuaJIT for arm64-v8a ===
++ cd /home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src
++ make clean
+make -C src clean
+make[1]: Entering directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+rm -f luajit libluajit.a libluajit.so host/minilua host/buildvm lj_vm.S lj_bcdef.h lj_ffdef.h lj_libdef.h lj_recdef.h lj_folddef.h host/buildvm_arch.h jit/vmdef.lua *.o host/*.o *.obj *.lib *.exp *.dll *.exe *.manifest *.pdb *.ilk
+make[1]: Leaving directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+++ nproc
++ make -j4 amalg HOST_CC=gcc CROSS=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android- STATIC_CC=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang 'DYNAMIC_CC=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang -fPIC' TARGET_LD=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang 'TARGET_AR=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar rcus' TARGET_STRIP=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip 'TARGET_CFLAGS=-fPIC -DLUAJIT_UNWIND_EXTERNAL -fno-stack-protector' BUILDMODE=static
+Building LuaJIT 2.1.0-beta3
+make -C src amalg
+make[1]: Entering directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+make all "LJCORE_O=ljamalg.o"
+make[2]: Entering directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+HOSTCC    host/minilua.o
+HOSTCC    host/buildvm_asm.o
+HOSTCC    host/buildvm_peobj.o
+HOSTCC    host/buildvm_lib.o
+HOSTCC    host/buildvm_fold.o
+CC        luajit.o
+HOSTLINK  host/minilua
+DYNASM    host/buildvm_arch.h
+HOSTCC    host/buildvm.o
+HOSTLINK  host/buildvm
+BUILDVM   lj_vm.S
+BUILDVM   lj_ffdef.h
+BUILDVM   lj_bcdef.h
+BUILDVM   lj_folddef.h
+BUILDVM   lj_recdef.h
+BUILDVM   lj_libdef.h
+BUILDVM   jit/vmdef.lua
+ASM       lj_vm.o
+CC        ljamalg.o
+AR        libluajit.a
+LINK      luajit
+OK        Successfully built LuaJIT
+make[2]: Leaving directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+make[1]: Leaving directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
++ local LIB_DIR=/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/arm64-v8a
++ mkdir -p /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/arm64-v8a
++ cp src/libluajit.a /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/arm64-v8a/libluajit-5.1.a
+++ du -h /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/arm64-v8a/libluajit-5.1.a
+++ cut -f1
++ echo '  -> /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/arm64-v8a/libluajit-5.1.a (800K)'
+  -> /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/arm64-v8a/libluajit-5.1.a (800K)
++ for ABI in "${ABI_LIST[@]}"
+++ echo armeabi-v7a
+++ xargs
++ ABI_TRIMMED=armeabi-v7a
++ case "$ABI_TRIMMED" in
++ build_luajit armeabi-v7a arm-linux-androideabi- armv7a-linux-androideabi21- 'gcc -m32'
++ local ABI=armeabi-v7a CROSS_PREFIX=arm-linux-androideabi- CC_PREFIX=armv7a-linux-androideabi21- 'HOST_CC=gcc -m32'
++ echo '=== Building LuaJIT for armeabi-v7a ==='
+=== Building LuaJIT for armeabi-v7a ===
++ cd /home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src
++ make clean
+make -C src clean
+make[1]: Entering directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+rm -f luajit libluajit.a libluajit.so host/minilua host/buildvm lj_vm.S lj_bcdef.h lj_ffdef.h lj_libdef.h lj_recdef.h lj_folddef.h host/buildvm_arch.h jit/vmdef.lua *.o host/*.o *.obj *.lib *.exp *.dll *.exe *.manifest *.pdb *.ilk
+make[1]: Leaving directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+++ nproc
++ make -j4 amalg 'HOST_CC=gcc -m32' CROSS=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi- STATIC_CC=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang 'DYNAMIC_CC=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang -fPIC' TARGET_LD=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang 'TARGET_AR=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar rcus' TARGET_STRIP=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip 'TARGET_CFLAGS=-fPIC -DLUAJIT_UNWIND_EXTERNAL -fno-stack-protector' BUILDMODE=static
+Building LuaJIT 2.1.0-beta3
+make -C src amalg
+make[1]: Entering directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+make all "LJCORE_O=ljamalg.o"
+make[2]: Entering directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+HOSTCC    host/minilua.o
+HOSTCC    host/buildvm_asm.o
+HOSTCC    host/buildvm_peobj.o
+HOSTCC    host/buildvm_lib.o
+HOSTCC    host/buildvm_fold.o
+CC        luajit.o
+HOSTLINK  host/minilua
+DYNASM    host/buildvm_arch.h
+HOSTCC    host/buildvm.o
+HOSTLINK  host/buildvm
+BUILDVM   lj_vm.S
+BUILDVM   lj_ffdef.h
+BUILDVM   lj_bcdef.h
+BUILDVM   lj_folddef.h
+BUILDVM   lj_recdef.h
+BUILDVM   lj_libdef.h
+BUILDVM   jit/vmdef.lua
+ASM       lj_vm.o
+CC        ljamalg.o
+In file included from ljamalg.c:22:
+In file included from ./lj_gc.c:27:
+./lj_trace.h:41:31: warning: unused function 'lj_trace_unwind' [-Wunused-function]
+   41 | LJ_FUNC uintptr_t LJ_FASTCALL lj_trace_unwind(jit_State *J, uintptr_t addr, ExitNo *ep);
+      |                               ^~~~~~~~~~~~~~~
+1 warning generated.
+AR        libluajit.a
+LINK      luajit
+OK        Successfully built LuaJIT
+make[2]: Leaving directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+make[1]: Leaving directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
++ local LIB_DIR=/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/armeabi-v7a
++ mkdir -p /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/armeabi-v7a
++ cp src/libluajit.a /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/armeabi-v7a/libluajit-5.1.a
+++ du -h /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/armeabi-v7a/libluajit-5.1.a
+++ cut -f1
++ echo '  -> /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/armeabi-v7a/libluajit-5.1.a (716K)'
+  -> /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/armeabi-v7a/libluajit-5.1.a (716K)
++ for ABI in "${ABI_LIST[@]}"
+++ echo x86_64
+++ xargs
++ ABI_TRIMMED=x86_64
++ case "$ABI_TRIMMED" in
++ build_luajit x86_64 x86_64-linux-android- x86_64-linux-android21- gcc
++ local ABI=x86_64 CROSS_PREFIX=x86_64-linux-android- CC_PREFIX=x86_64-linux-android21- HOST_CC=gcc
++ echo '=== Building LuaJIT for x86_64 ==='
+=== Building LuaJIT for x86_64 ===
++ cd /home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src
++ make clean
+make -C src clean
+make[1]: Entering directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+rm -f luajit libluajit.a libluajit.so host/minilua host/buildvm lj_vm.S lj_bcdef.h lj_ffdef.h lj_libdef.h lj_recdef.h lj_folddef.h host/buildvm_arch.h jit/vmdef.lua *.o host/*.o *.obj *.lib *.exp *.dll *.exe *.manifest *.pdb *.ilk
+make[1]: Leaving directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+++ nproc
++ make -j4 amalg HOST_CC=gcc CROSS=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android- STATIC_CC=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android21-clang 'DYNAMIC_CC=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android21-clang -fPIC' TARGET_LD=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android21-clang 'TARGET_AR=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar rcus' TARGET_STRIP=/usr/local/lib/android/sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip 'TARGET_CFLAGS=-fPIC -DLUAJIT_UNWIND_EXTERNAL -fno-stack-protector' BUILDMODE=static
+Building LuaJIT 2.1.0-beta3
+make -C src amalg
+make[1]: Entering directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+make all "LJCORE_O=ljamalg.o"
+make[2]: Entering directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+HOSTCC    host/minilua.o
+HOSTCC    host/buildvm_asm.o
+HOSTCC    host/buildvm_peobj.o
+HOSTCC    host/buildvm_lib.o
+HOSTCC    host/buildvm_fold.o
+CC        luajit.o
+HOSTLINK  host/minilua
+DYNASM    host/buildvm_arch.h
+HOSTCC    host/buildvm.o
+HOSTLINK  host/buildvm
+BUILDVM   lj_vm.S
+BUILDVM   lj_ffdef.h
+BUILDVM   lj_bcdef.h
+BUILDVM   lj_folddef.h
+BUILDVM   lj_recdef.h
+BUILDVM   lj_libdef.h
+BUILDVM   jit/vmdef.lua
+ASM       lj_vm.o
+CC        ljamalg.o
+AR        libluajit.a
+LINK      luajit
+OK        Successfully built LuaJIT
+make[2]: Leaving directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
+make[1]: Leaving directory '/home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src'
++ local LIB_DIR=/home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/x86_64
++ mkdir -p /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/x86_64
++ cp src/libluajit.a /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/x86_64/libluajit-5.1.a
+++ du -h /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/x86_64/libluajit-5.1.a
+++ cut -f1
++ echo '  -> /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/x86_64/libluajit-5.1.a (912K)'
+  -> /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/x86_64/libluajit-5.1.a (912K)
++ echo ''
+
++ echo '=== Installing headers ==='
+=== Installing headers ===
++ mkdir -p /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/include/luajit
++ cp /home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src/lua.h /home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src/lualib.h /home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src/lauxlib.h /home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src/luaconf.h /home/runner/work/ourtibia-mac/ourtibia-mac/source/luajit-src/src/luajit.h /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/include/luajit/
++ cat
++ echo ''
+
++ echo '=== Requested ABIs built successfully ==='
+=== Requested ABIs built successfully ===
++ for ABI in "${ABI_LIST[@]}"
+++ echo arm64-v8a
+++ xargs
++ ABI_TRIMMED=arm64-v8a
++ ls -lh /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/arm64-v8a/libluajit-5.1.a
+-rw-r--r-- 1 runner runner 799K Oct 19 09:56 /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/arm64-v8a/libluajit-5.1.a
++ for ABI in "${ABI_LIST[@]}"
+++ echo armeabi-v7a
+++ xargs
++ ABI_TRIMMED=armeabi-v7a
++ ls -lh /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/armeabi-v7a/libluajit-5.1.a
+-rw-r--r-- 1 runner runner 716K Oct 19 09:56 /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/armeabi-v7a/libluajit-5.1.a
++ for ABI in "${ABI_LIST[@]}"
+++ echo x86_64
+++ xargs
++ ABI_TRIMMED=x86_64
++ ls -lh /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/x86_64/libluajit-5.1.a
+-rw-r--r-- 1 runner runner 912K Oct 19 09:57 /home/runner/work/ourtibia-mac/ourtibia-mac/source/android/app/libs/lib/x86_64/libluajit-5.1.a
