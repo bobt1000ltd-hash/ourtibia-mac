@@ -606,6 +606,9 @@ local function onGameStart()
     trackerEvent = scheduleEvent(requestTracker, 2500)
   else
     renderTracker({})
+    -- 19.10.2026 (owner): the Quest Tracker does not open by itself - only with a tracked quest
+    -- (or the button in the Quest Log / Task Board)
+    if tracker:isVisible() then tracker:close() end
   end
 end
 local function onGameEnd()
