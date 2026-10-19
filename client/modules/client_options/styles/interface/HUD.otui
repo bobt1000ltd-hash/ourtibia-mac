@@ -43,6 +43,18 @@ UIWidget
       OptionCheckBox
         id: displayMana
         !text: tr('Display player mana bar')
+
+    // 19.10.2026 (Tobeto): instead of the Map button next to the equipment
+    SmallReversedQtPanel
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.top: prev.bottom
+      margin-top: 7
+      height: 22
+
+      OptionCheckBox
+        id: showMinimap
+        !text: tr('Show minimap')
   
     SmallReversedQtPanel
       anchors.left: parent.left

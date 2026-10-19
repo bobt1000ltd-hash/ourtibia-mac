@@ -286,6 +286,14 @@ return {
             end
         end
     },
+    -- 19.10.2026 (Tobeto): the minimap on / off (was the Map button next to the equipment)
+    showMinimap                       = {
+        value = true,
+        action = function(value, options, controller, panels, extraWidgets)
+            local mm = modules.game_minimap
+            if mm and mm.setVisible and g_game.isOnline() then pcall(mm.setVisible, value) end
+        end
+    },
     displayHarmony                     = {
         value = false,
         action = function(value, options, controller, panels, extraWidgets)

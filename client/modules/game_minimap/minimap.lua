@@ -148,6 +148,9 @@ function mapController:onGameStart()
             target:insertChild(1, ui)
         end
         ourApplyMinimapSize()
+        -- 19.10.2026: the HUD option decides if the minimap is shown
+        local co = modules.client_options
+        if co and co.getOption and co.getOption('showMinimap') == false then pcall(setVisible, false) end
     end, 500)
 
     self.ui.minimapBorder.minimap:load()
@@ -448,6 +451,18 @@ function ourSetupMinimapResize()
 end
 
 -- 18.10.2026: also works without the top menu icon (the Map button under PvP)
+-- 19.10.2026 (Tobeto): Options -> Interface -> HUD -> "Show minimap" (instead of the Map button)
+function setVisible(on)
+    local ui = mapController and mapController.ui
+    if not ui then return end
+    if (ui:isVisible() and true or false) ~= (on and true or false) then toggle() end
+    -- the minimap goes back to the top of its panel (above health / mana)
+    local p = ui:getParent()
+    if on and p and p.moveChildToIndex and p:getChildIndex(ui) ~= 1 then
+        p:moveChildToIndex(ui, 1)
+        if p.fitAll then pcall(function() p:fitAll() end) end
+    end
+end
 function toggle()
     local ui = mapController and mapController.ui
     if not ui then return end

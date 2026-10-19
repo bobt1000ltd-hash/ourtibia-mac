@@ -148,7 +148,7 @@ function ourPinTabs()
     nz:addAnchor(AnchorTop, 'myotsTabs', AnchorBottom)
     nz:addAnchor(AnchorLeft, 'parent', AnchorLeft)
     nz:addAnchor(AnchorRight, 'miniwindowScrollBar', AnchorLeft)
-    nz:setMarginLeft(8); nz:setMarginRight(6)
+    nz:setMarginLeft(8); nz:setMarginRight(6); nz:setMarginTop(2) -- 19.10.2026 (Tobeto): 2 px lower
     nz:hide()
     -- 17.10.2026 (Tobeto): the line under the fixed elements does not scroll either
     local line = g_ui.createWidget('HorizontalSeparator', skillsWindow)
@@ -164,7 +164,7 @@ function ourTabsOffset()
     local contents = skillsWindow and skillsWindow:getChildById('contentsPanel')
     local nz = skillsWindow and skillsWindow:getChildById('myotsNonZero')
     if not contents then return end
-    contents:setMarginTop(3 + 20 + 3 + ((nz and nz:isVisible()) and (18 + 6) or 0))
+    contents:setMarginTop(3 + 20 + 3 + ((nz and nz:isVisible()) and (18 + 8) or 0))
 end
 
 function skillController:onTerminate()

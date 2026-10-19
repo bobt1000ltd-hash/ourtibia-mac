@@ -317,7 +317,7 @@ MainWindow
     height: 40
     layout:
       type: horizontalBox
-      spacing: 6
+      spacing: 7
   Panel
     id: boardPanel
     anchors.top: tabs.bottom
@@ -334,8 +334,8 @@ MainWindow
       height: 516
       layout:
         type: grid
-        cell-size: 212 166
-        cell-spacing: 6
+        cell-size: 218 166
+        cell-spacing: 7
         num-columns: 3
         flow: true
     Button
@@ -343,7 +343,7 @@ MainWindow
       anchors.top: parent.top
       anchors.left: parent.left
       anchors.right: parent.right
-      margin-top: 344
+      margin-top: 346
       height: 166
       background-color: #00000000
       border-width: 1
@@ -363,9 +363,8 @@ MainWindow
       border-color: #3e3e3e
     Label
       id: done
-      anchors.left: active.right
+      anchors.left: parent.left
       anchors.bottom: parent.bottom
-      margin-left: 6
       width: 150
       height: 20
       text-align: center

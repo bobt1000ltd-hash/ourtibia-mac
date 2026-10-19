@@ -166,6 +166,8 @@ PhantomMiniWindow
       anchors.top: pvp.bottom
       margin-top: 3
       size: 44 18
+      // 19.10.2026 (Tobeto): moved to Options -> Interface -> HUD -> Show minimap
+      visible: false
       @onClick: |
         local mm = modules.game_minimap
         if mm and mm.toggle then mm.toggle() end

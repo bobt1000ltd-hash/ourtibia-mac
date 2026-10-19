@@ -115,7 +115,7 @@ local function renderBoard()
       -- 15.10.2026 (Tobeto): no NEW / ACTIVE tags - the yellow frame shows an active task
       tag:hide()
       local drop=c:getChildById('drop')
-      if daily and (status==0 or status==1 or status==3) then
+      if daily and status==1 then -- 19.10.2026 (Tobeto): cancel only for an active task
         drop:show();drop:setTooltip('Cancel this daily task.\nThe slot stays empty until the server save.')
         drop.onClick=function()
           local box;local function close() if box then box:destroy();box=nil end end
@@ -166,18 +166,19 @@ local function renderBoard()
   wl:setVisible(locked and true or false)
   if locked then wl:setText('Weekly tasks unlock at level '..locked..'.\nYour first weekly tasks are rolled when you reach it.');ui('unlock'):hide() end
   if daily then
-    ui('active'):show();ui('reroll'):show();ui('rerollPremium'):show();ui('reroll'):setEnabled(true)
+    ui('active'):hide();ui('reroll'):show();ui('rerollPremium'):show();ui('reroll'):setEnabled(true)
     ui('reroll').onClick=function() reroll('gold') end;ui('reroll'):setTooltip('')
-    ui('active'):setText('Active '..(board.active or 0)..'/3')
     ui('done'):setText('Completed today '..(board.done or 0)..'/3')
     ui('reset'):setText('Daily reset in '..duration(board.dailyLeft))
     local g=tonumber(board.rerollGold) or 0
     ui('reroll'):setText(g==0 and 'Reroll (free)' or ('Reroll ('..short(g)..' gp)'))
     local pp=tonumber(board.rerollPremium) or 0
     ui('rerollPremium'):setVisible(pp>0);ui('rerollPremium'):setText('Reroll ('..pp..' pp)')
+    -- 19.10.2026 (Tobeto): the reroll button sits on the right edge when there is no premium reroll
+    ui('reroll'):setMarginRight(pp>0 and 4 or -ui('rerollPremium'):getWidth())
   else
     local completed=0;for _,t in ipairs(board.weekly or {}) do if tonumber(t.status)==2 then completed=completed+1 end end
-    ui('active'):hide();ui('rerollPremium'):hide()
+    ui('active'):hide();ui('rerollPremium'):hide();ui('reroll'):setMarginRight(-ui('rerollPremium'):getWidth())
     -- 18.10.2026 (owner): one weekly reset every 20 levels (20, 40, 60, ...)
     local wr=tonumber(board.weeklyReset);local nx=tonumber(board.nextWeeklyReset)
     local rb=ui('reroll')
@@ -544,9 +545,9 @@ function init()
   -- 17.10.2026 (Tobeto): the locked third row looks like three locked task cards
   local u=ui('unlock');u:setText('');u:setBorderWidth(0);u:setPadding(0);u:setImageSource('')
   local row=g_ui.createWidget('UIWidget',u);row:fill('parent');row:setPhantom(true)
-  local lay=UIHorizontalLayout.create(row);lay:setSpacing(6);row:setLayout(lay)
+  local lay=UIHorizontalLayout.create(row);lay:setSpacing(7);row:setLayout(lay)
   for i=1,3 do
-    local c=g_ui.createWidget('UIWidget',row);c:setSize({width=212,height=166});c:setPhantom(true)
+    local c=g_ui.createWidget('UIWidget',row);c:setSize({width=218,height=166});c:setPhantom(true)
     c:setBackgroundColor('#1c1a14');c:setBorderWidth(1);c:setBorderColor('#6a5a30')
     local icon=g_ui.createWidget('UIWidget',c);icon:setSize({width=24,height=24});icon:setPhantom(true)
     icon:addAnchor(AnchorTop,'parent',AnchorTop);icon:addAnchor(AnchorHorizontalCenter,'parent',AnchorHorizontalCenter);icon:setMarginTop(34)
@@ -557,13 +558,15 @@ function init()
     t:setColor('#ffd35a');t:setText(i==2 and 'Locked task slot\n\nClick to unlock the third row\n(100 premium points)' or 'Locked task slot')
   end
   u:setTooltip('Unlock a third row of tasks (daily and weekly board) - 100 premium points')
-  for _,t in ipairs(TABS) do
-    local b=g_ui.createWidget('TaskTab',ui('tabs'));b:setText(t[2]);b.tabName=t[1];b:setWidth(164)
+  -- 19.10.2026 (Tobeto): the tabs fill the same width as the 3 task columns (668 px, 7 px gaps)
+  for ti,t in ipairs(TABS) do
+    local tw=ti==#TABS and 161 or 162
+    local b=g_ui.createWidget('TaskTab',ui('tabs'));b:setText(t[2]);b.tabName=t[1];b:setWidth(tw)
     b:getChildById('icon'):setItemId(t[3])
     b.onClick=function() setTab(t[1]) end
     -- 15.10.2026 (Tobeto): icon + text centred together in the tab
     local total=32+8+b:getTextSize().width
-    local left=math.max(4,math.floor((164-total)/2))
+    local left=math.max(4,math.floor((tw-total)/2))
     b:getChildById('icon'):setMarginLeft(left);b:setTextOffset({x=left+40,y=0})
   end
   -- 15.10.2026 (Tobeto): icons in the gold / tokens / task points counters
